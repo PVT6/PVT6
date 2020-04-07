@@ -16,6 +16,7 @@
             "mainClass": "com.example.backend.DemoApplication",
             "projectName": "backend",
             "args": ""
+ 
         }
     ]
 }
