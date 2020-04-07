@@ -4,9 +4,7 @@ Grupp 6 PVT
 Hej från Viktor
 Tisdag
 Hej från Fredrik
-<<<<<<< HEAD
 Hej från Martin
-=======
 Gör något
 Hej från Thomas
->>>>>>> 077cba0fba22500857ac59519bfa8bd231d2c149
+Hej och hejdå
