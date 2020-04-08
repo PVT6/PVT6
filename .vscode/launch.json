@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "type": "php",
+            "request": "launch",
+            "name": "Run using local PHP Interpreter",
+            "program": "${file}",
+            "runtimeExecutable": "C:\\xampp\\php\\php.exe"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-DemoApplication<backend>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.example.backend.DemoApplication",
+            "projectName": "backend",
+            "args": ""
+ 
+        }
+    ]
+}
