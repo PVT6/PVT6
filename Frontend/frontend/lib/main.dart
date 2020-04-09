@@ -105,12 +105,12 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
     return Scaffold(
-      body: Center(
-        child: Container(
-          color: Colors.purpleAccent,
-          child: Padding(
-            padding: const EdgeInsets.all(36.0),
-            child: Column(
+        body: Center(
+      child: Container(
+        color: Colors.purpleAccent,
+        child: Padding(
+          padding: const EdgeInsets.all(36.0),
+          child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -150,29 +150,61 @@ class _MyHomePageState extends State<MyHomePage> {
                 //   textAlign: TextAlign.center,
                 // ),
                 // SizedBox(height: 10.0), forgotPassword,
-                SignInButton(
-                  Buttons.Facebook,
-                  text: "Sign up with Facebook",
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SecondRoute()),
-                    );
-                  },
+                // SignInButton(
+                //   Buttons.Facebook,
+                //   text: "Sign up with Facebook",
+                //   onPressed: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(builder: (context) => SecondRoute()),
+                //     );
+                //   },
+                // ),
+                // // SizedBox(height: 10.0), facebookButton,
+                // // SizedBox(height: 10.0), googleButton,
+                // SignInButton(
+                //   Buttons.Google,
+                //   text: "Sign up with Google",
+                //   onPressed: () {
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => SecondRoute()),
+                // );
+                //   },
+                // ),
+                // SizedBox(height: 5.0), mailButton,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    SignInButton(
+                      Buttons.Facebook,
+                      mini: true,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SecondRoute()),
+                        );
+                      },
+                    ),
+                    SignInButton(
+                      Buttons.Facebook,
+                      mini: true,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SecondRoute()),
+                        );
+                      },
+                    ),
+                    SignInButton(
+                      Buttons.Email,
+                      mini: true,
+                      onPressed: () {},
+                    ),
+                  ],
                 ),
-                // SizedBox(height: 10.0), facebookButton,
-                // SizedBox(height: 10.0), googleButton,
-                SignInButton(
-                  Buttons.Google,
-                  text: "Sign up with Google",
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SecondRoute()),
-                    );
-                  },
-                ),
-                SizedBox(height: 5.0), mailButton,
                 FlatButton(
                   onPressed: () {
                     Navigator.push(
@@ -180,36 +212,13 @@ class _MyHomePageState extends State<MyHomePage> {
                       MaterialPageRoute(builder: (context) => SecondRoute()),
                     );
                   },
-                  child: new Text("Continue without login >", textAlign: TextAlign.right),
-                  
+                  child: new Text("Continue without login >",
+                      textAlign: TextAlign.right),
                 ),
-//                     Row(
-//   mainAxisAlignment: MainAxisAlignment.spaceAround,
-//   children: const <Widget>[
-//     Icon(
-//       Icons.favorite,
-//       color: Colors.pink,
-//       size: 24.0,
-//       semanticLabel: 'Text to announce in accessibility modes',
-//     ),
-//     Icon(
-//       Icons.audiotrack,
-//       color: Colors.green,
-//       size: 30.0,
-//     ),
-//     Icon(
-//       Icons.beach_access,
-//       color: Colors.blue,
-//       size: 36.0,
-//     ),
-//   ],
-// )
-              ],
-            ),
-          ),
+              ]),
         ),
       ),
-    );
+    ));
   }
 }
 
