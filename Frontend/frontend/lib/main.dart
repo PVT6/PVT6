@@ -68,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final loginButon = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
-      color: Color(0xff01A0C7),
+      color: Color(0xff01A0C7), //hexadecimal för ljusgrön behövs
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -107,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
         body: Center(
       child: Container(
-        color: Colors.purpleAccent,
+        color: Colors.lightBlueAccent,
         child: Padding(
           padding: const EdgeInsets.all(36.0),
           child: Column(
@@ -132,47 +132,34 @@ class _MyHomePageState extends State<MyHomePage> {
                 SizedBox(
                   height: 5.0,
                 ),
-                FlatButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SecondRoute()),
-                    );
-                  },
-                  child: new Text("Forgot Password?"),
-                ),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      FlatButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SecondRoute()),
+                          );
+                        },
+                        child: new Text("Forgot Password?"),
+                      ),
+                      FlatButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SecondRoute()),
+                          );
+                        },
+                        child: new Text("New user? Sign up"),
+                      ),
+                    ]),
                 Text(
                   'OR',
                   textAlign: TextAlign.center,
                 ),
-                // Text(
-                //   'Forgot password?',
-                //   textAlign: TextAlign.center,
-                // ),
-                // SizedBox(height: 10.0), forgotPassword,
-                // SignInButton(
-                //   Buttons.Facebook,
-                //   text: "Sign up with Facebook",
-                //   onPressed: () {
-                //     Navigator.push(
-                //       context,
-                //       MaterialPageRoute(builder: (context) => SecondRoute()),
-                //     );
-                //   },
-                // ),
-                // // SizedBox(height: 10.0), facebookButton,
-                // // SizedBox(height: 10.0), googleButton,
-                // SignInButton(
-                //   Buttons.Google,
-                //   text: "Sign up with Google",
-                //   onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => SecondRoute()),
-                // );
-                //   },
-                // ),
-                // SizedBox(height: 5.0), mailButton,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
@@ -187,17 +174,30 @@ class _MyHomePageState extends State<MyHomePage> {
                         );
                       },
                     ),
-                    SignInButton(
-                      Buttons.Facebook,
-                      mini: true,
-                      onPressed: () {
+                    // SizedBox(
+                    //   child: Image.asset(
+                    //     "assets/googleLoginMini.png", //google mini finns ej i flutter, tillfällig lösning
+                    //     fit: BoxFit.contain,
+                    //   ),
+                    // ),
+                    SizedBox(
+                        child: InkWell(
+                      onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => SecondRoute()),
                         );
                       },
-                    ),
+                      child: Container(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20.0),
+                          child: Image.asset(
+                            'googleLoginMini.png',
+                          ),
+                        ),
+                      ),
+                    )),
                     SignInButton(
                       Buttons.Email,
                       mini: true,
@@ -223,22 +223,129 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class SecondRoute extends StatelessWidget {
+  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+
   @override
   Widget build(BuildContext context) {
+    final emailField = TextField(
+        obscureText: false,
+        style: style,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "Email adress",
+        ));
+    final nameField = TextField(
+        obscureText: true,
+        style: style,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "Name",
+        ));
+    final surnameField = TextField(
+        obscureText: true,
+        style: style,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "Surname",
+        ));
+    final passwordField = TextField(
+        obscureText: true,
+        style: style,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "Password",
+        ));
+    final passwordRepeatField = TextField(
+        obscureText: true,
+        style: style,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "Repeat password",
+        ));
+    final phoneField = TextField(
+        obscureText: true,
+        style: style,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "Phone number",
+        ));
+    final loginButon = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(30.0),
+      color: Color(0xff01A0C7),
+      child: MaterialButton(
+        minWidth: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () {
+                    Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => MyHomePage()),
+          );
+        },
+        child: Text("Login",
+            textAlign: TextAlign.center,
+            style: style.copyWith(
+                color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
+    );
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Stockholm Light"),
-        ),
-        body: Center(
-            child: Container(
-          color: Colors.purpleAccent,
-          child: SizedBox(
-            height: 170.0,
-            child: Image.asset(
-              "assets/mapPlaceholder.png",
-              fit: BoxFit.contain,
+      body: Center(
+        child: Container(
+          color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(36.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      FlatButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SecondRoute()),
+                          );
+                        },
+                        child: new Text("Forgot Password?"),
+                      ),
+                      FlatButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SecondRoute()),
+                          );
+                        },
+                        child: new Text("New user? Sign up"),
+                      ),
+                    ]),
+                SizedBox(height: 5.0),
+                nameField,
+                SizedBox(height: 5.0),
+                surnameField,
+                SizedBox(height: 5.0),
+                emailField,
+                SizedBox(height: 5.0),
+                passwordField,
+                SizedBox(height: 5.0),
+                passwordRepeatField,
+                SizedBox(height: 5.0),
+                phoneField,
+                SizedBox(
+                  height: 35.0,
+                ),
+                loginButon,
+                SizedBox(
+                  height: 15.0,
+                ),
+              ],
             ),
           ),
-        )));
+        ),
+      ),
+    );
   }
 }

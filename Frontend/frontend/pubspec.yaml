@@ -43,6 +43,7 @@ flutter:
   assets:
    - logo.png
    - mapPlaceholder.png
+   - googleLoginMini.png
    
 
   # An image asset can refer to one or more resolution-specific "variants", see
