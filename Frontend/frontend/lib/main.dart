@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+//import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 void main() => runApp(MyApp());
 
@@ -84,30 +85,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 color: Colors.white, fontWeight: FontWeight.bold)),
       ),
     );
-
-    final mailButton = Material(
-      elevation: 5.0,
-      borderRadius: BorderRadius.circular(30.0),
-      color: Color(0xff01A0C7),
-      child: MaterialButton(
-        minWidth: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => SecondRoute()),
-          );
-        },
-        child: Text("Create an account",
-            textAlign: TextAlign.center,
-            style: style.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold)),
-      ),
-    );
     return Scaffold(
         body: Center(
       child: Container(
-        color: Colors.lightBlueAccent,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/backgroundStockholm.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Padding(
           padding: const EdgeInsets.all(36.0),
           child: Column(
@@ -117,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 SizedBox(
                   height: 90.0,
                   child: Image.asset(
-                    "assets/logo.png",
+                    "assets/logo.png", //http://www.picturetopeople.org/p2p/text_effects_generator.p2p/transparent_text_effect eller hitta bra font och lägg till text()
                     fit: BoxFit.contain,
                   ),
                 ),
@@ -143,7 +129,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                 builder: (context) => SecondRoute()),
                           );
                         },
-                        child: new Text("Forgot Password?"),
+                        child: new Text(
+                          "Forgot Password?",
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
                       FlatButton(
                         onPressed: () {
@@ -153,7 +142,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 builder: (context) => SecondRoute()),
                           );
                         },
-                        child: new Text("New user? Sign up"),
+                        child: new Text("New user? Sign up",
+                            style: TextStyle(color: Colors.white)),
                       ),
                     ]),
                 Text(
@@ -209,7 +199,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SecondRoute()),
+                      MaterialPageRoute(builder: (context) => MainPage()),
                     );
                   },
                   child: new Text("Continue without login >",
@@ -223,7 +213,7 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class SecondRoute extends StatelessWidget {
-  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+  final TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
   @override
   Widget build(BuildContext context) {
@@ -277,9 +267,9 @@ class SecondRoute extends StatelessWidget {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
-                    Navigator.push(
+          Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => MyHomePage()),
+            MaterialPageRoute(builder: (context) => MainPage()),
           );
         },
         child: Text("Login",
@@ -309,7 +299,19 @@ class SecondRoute extends StatelessWidget {
                                 builder: (context) => SecondRoute()),
                           );
                         },
-                        child: new Text("Forgot Password?"),
+                        //child: new Text("Forgot Password?"),
+                        child: new IconButton(
+                          icon: Icon(Icons.arrow_back),
+                          alignment: Alignment.topLeft,
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MyHomePage()),
+                            );
+                          },
+                        ),
+                        //BackButton({Key key, Color color, VoidCallback onPressed})
                       ),
                       FlatButton(
                         onPressed: () {
@@ -319,7 +321,7 @@ class SecondRoute extends StatelessWidget {
                                 builder: (context) => SecondRoute()),
                           );
                         },
-                        child: new Text("New user? Sign up"),
+                        child: new Text("New profile"),
                       ),
                     ]),
                 SizedBox(height: 5.0),
@@ -344,6 +346,62 @@ class SecondRoute extends StatelessWidget {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class MainPage extends StatelessWidget {
+  final TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: Center(
+  //       child: Container(
+  // decoration: BoxDecoration(
+  //   image: DecorationImage(
+  //     image: AssetImage("assets/mapPlaceholder.png"),
+  //     fit: BoxFit.cover,
+  //   ),
+  // ),
+  //         //child: BottomAppBar()
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: AppBar(title: const Text('Tasks - Bottom App Bar')),
+      floatingActionButton: FloatingActionButton.extended(
+        elevation: 4.0,
+        icon: const Icon(Icons.add),
+        label: const Text('New route'),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => MyHomePage()),
+          );
+        },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+        child: new Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.menu),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {},
+            )
+          ],
         ),
       ),
     );
