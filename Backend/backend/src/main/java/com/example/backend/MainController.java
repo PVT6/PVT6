@@ -30,21 +30,21 @@ public class MainController {
         return "Saved";
     }
 
-  @GetMapping(path="/find")
-  public  @ResponseBody User findUser(@RequestParam String name) {
+  // @GetMapping(path="/find")
+  // public  @ResponseBody User findUser(@RequestParam String name) {
       
-        Iterable<User> data = userRepository.findAll();
-        User found = null; 
-        for (User t : data){
-            if (t.getName().equals(name)){
-                found = t;
-            }
-        }
-        return found;
+  //       Iterable<User> data = userRepository.findAll();
+  //       User found = null; 
+  //       for (User t : data){
+  //           if (t.getName().equals(name)){
+  //               found = t;
+  //           }
+  //       }
+  //       return found;
     
         
 
-  }
+  // }
 
 
 

@@ -45,6 +45,7 @@ build/
 .svn/
 
 # IntelliJ related
+*.class
 *.iml
 *.ipr
 *.iws
