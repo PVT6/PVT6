@@ -136,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 builder: (context) => SecondRoute()),
                           );
                         },
-                        child: new Text("New user? Sign up",
+                        child: new Text("New user? Sign up", //den här overflowar9
                             style: TextStyle(color: Colors.white)),
                       ),
                     ]),
