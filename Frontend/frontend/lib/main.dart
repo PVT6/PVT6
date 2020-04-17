@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+Color darkGreen = Colors.green[900];
+Color lightGreen = Colors.green[100];
 
 void main() => runApp(MyApp());
 
@@ -71,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final loginButon = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
-      color: Color(0xff01A0C7), //hexadecimal för ljusgrön behövs
+      color: Colors.green[900], //hexadecimal för ljusgrön behövs
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -88,27 +90,17 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
     return Scaffold(
+      backgroundColor: lightGreen,
         body: Center(
       child: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/backgroundStockholm.png"),
-            fit: BoxFit.cover,
-          ),
-        ),
+
         child: Padding(
           padding: const EdgeInsets.all(36.0),
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                SizedBox(
-                  height: 90.0,
-                  child: Image.asset(
-                    "assets/logo.png", //http://www.picturetopeople.org/p2p/text_effects_generator.p2p/transparent_text_effect eller hitta bra font och lägg till text()
-                    fit: BoxFit.contain,
-                  ),
-                ),
+
                 SizedBox(height: 20.0),
                 emailField,
                 SizedBox(height: 20.0),
@@ -144,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 builder: (context) => SecondRoute()),
                           );
                         },
-                        child: new Text("New user? Sign up",
+                        child: new Text("New user? Sign up", //den här overflowar9
                             style: TextStyle(color: Colors.white)),
                       ),
                     ]),
