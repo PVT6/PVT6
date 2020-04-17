@@ -1,10 +1,14 @@
 package com.example.backend;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
+
+import com.opencsv.CSVReader;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,20 +29,31 @@ public class LightController    {
     @GetMapping(path = "/update") // Map ONLY POST Requests
     public @ResponseBody String update() {
       HttpURLConnection connection = null;
+      String r = "";
       try {
         URL url = new URL("https://openstreetgs.stockholm.se/geoservice/api/0b9df6fc-fb6f-4d3e-a972-01dede8ac029/wfs?service=wfs&version=1.1.0&request=GetFeature&typeName=od_gis:Belysningsmontage&outputFormat=csv");
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
         int responseCode = httpConn.getResponseCode();
         if (responseCode == HttpURLConnection.HTTP_OK) {
           System.out.println("Heyo");
+          BufferedReader br = new BufferedReader(new InputStreamReader(httpConn.getInputStream()));
+          CSVReader csvReader  = new CSVReader(br);
+          String[] nextRecord; 
+          while ((nextRecord = csvReader.readNext()) != null) { 
+            for (String cell : nextRecord) { 
+                System.out.print(cell + "\t"); 
+            } 
+            System.out.println(); 
+        } 
         }
       } 
       catch (IOException ex) {
         ex.printStackTrace();
+        r = "Error";
       }
      
 
-        return "Success";
+        return r;
     }
 
   
