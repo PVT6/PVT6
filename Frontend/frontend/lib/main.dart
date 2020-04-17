@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 Color darkGreen = Colors.green[900];
 Color lightGreen = Colors.green[100];
 
@@ -79,8 +81,9 @@ class _MyHomePageState extends State<MyHomePage> {
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
           Navigator.push(
+            //fixa UI för felmeddelande
             context,
-            MaterialPageRoute(builder: (context) => SecondRouteState()),
+            MaterialPageRoute(builder: (context) => MapsDemo()),
           );
         },
         child: Text("Login",
@@ -90,119 +93,119 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
     return Scaffold(
-      backgroundColor: lightGreen,
+        backgroundColor: lightGreen,
         body: Center(
-      child: Container(
-
-        child: Padding(
-          padding: const EdgeInsets.all(36.0),
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-
-                SizedBox(height: 20.0),
-                emailField,
-                SizedBox(height: 20.0),
-                passwordField,
-                SizedBox(
-                  height: 35.0,
-                ),
-                loginButon,
-                SizedBox(
-                  height: 5.0,
-                ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      FlatButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SecondRouteState()),
-                          );
-                        },
-                        child: new Text(
-                          "Forgot Password?",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                      FlatButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SecondRouteState()),
-                          );
-                        },
-                        child: new Text("New user? Sign up", //den här overflowar9
-                            style: TextStyle(color: Colors.white)),
-                      ),
-                    ]),
-                Text(
-                  'OR',
-                  textAlign: TextAlign.center,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+          child: Container(
+            child: Padding(
+              padding: const EdgeInsets.all(36.0),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    SignInButton(
-                      Buttons.Facebook,
-                      mini: true,
+                    SizedBox(height: 20.0),
+                    emailField,
+                    SizedBox(height: 20.0),
+                    passwordField,
+                    SizedBox(
+                      height: 35.0,
+                    ),
+                    loginButon,
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          FlatButton(
+                            onPressed: () {
+                              //borde skapa egen sida för detta, om det inte görs med firebase?
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SecondRouteState()),
+                              );
+                            },
+                            child: new Text(
+                              "Forgot Password?",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                          FlatButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SecondRouteState()),
+                              );
+                            },
+                            child: new Text(
+                                "New user? Sign up", //den här overflowar9
+                                style: TextStyle(color: Colors.white)),
+                          ),
+                        ]),
+                    Text(
+                      'OR',
+                      textAlign: TextAlign.center,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        SignInButton(
+                          Buttons.Facebook,
+                          mini: true,
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MapsDemo()),
+                            );
+                          },
+                        ),
+                        // SizedBox(
+                        //   child: Image.asset(
+                        //     "assets/googleLoginMini.png", //google mini finns ej i flutter, tillfällig lösning
+                        //     fit: BoxFit.contain,
+                        //   ),
+                        // ),
+                        SizedBox(
+                            child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MapsDemo()),
+                            );
+                          },
+                          child: Container(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20.0),
+                              child: Image.asset(
+                                'googleLoginMini.png',
+                              ),
+                            ),
+                          ),
+                        )),
+                        SignInButton(
+                          Buttons.Email,
+                          mini: true,
+                          onPressed: () {},
+                        ),
+                      ],
+                    ),
+                    FlatButton(
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => SecondRouteState()),
+                          MaterialPageRoute(builder: (context) => MapsDemo()),
                         );
                       },
+                      child: new Text("Continue without login >",
+                          textAlign: TextAlign.right),
                     ),
-                    // SizedBox(
-                    //   child: Image.asset(
-                    //     "assets/googleLoginMini.png", //google mini finns ej i flutter, tillfällig lösning
-                    //     fit: BoxFit.contain,
-                    //   ),
-                    // ),
-                    SizedBox(
-                        child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SecondRouteState()),
-                        );
-                      },
-                      child: Container(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20.0),
-                          child: Image.asset(
-                            'googleLoginMini.png',
-                          ),
-                        ),
-                      ),
-                    )),
-                    SignInButton(
-                      Buttons.Email,
-                      mini: true,
-                      onPressed: () {},
-                    ),
-                  ],
-                ),
-                FlatButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MapsDemo()),
-                    );
-                  },
-                  child: new Text("Continue without login >",
-                      textAlign: TextAlign.right),
-                ),
-              ]),
-        ),
-      ),
-    ));
+                  ]),
+            ),
+          ),
+        ));
   }
 }
 
@@ -215,7 +218,8 @@ class SecondRouteState extends StatefulWidget {
   SecondRoute createState() => SecondRoute();
 }
 
-class SecondRoute extends State<SecondRouteState> { //måste ha state, liknande mapdemo
+class SecondRoute extends State<SecondRouteState> {
+  //måste ha state, liknande mapdemo
   final TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
   @override
@@ -365,7 +369,6 @@ class MapsDemo extends StatefulWidget {
 }
 
 class MapsDemoState extends State<MapsDemo> {
-  //
   Completer<GoogleMapController> _controller = Completer();
   static const LatLng _center = const LatLng(59.334591, 18.063240);
   final Set<Marker> _markers = {};
@@ -417,23 +420,20 @@ class MapsDemoState extends State<MapsDemo> {
   }
 
   String _randomString(int length) {
-   var rand = new Random();
-   var codeUnits = new List.generate(
-      length, 
-      (index){
-         return rand.nextInt(33)+89;
-      }
-   );
+    var rand = new Random();
+    var codeUnits = new List.generate(length, (index) {
+      return rand.nextInt(33) + 89;
+    });
 
-   return new String.fromCharCodes(codeUnits);
-}
+    return new String.fromCharCodes(codeUnits);
+  }
 
   Widget button(Function function, IconData icon) {
     return FloatingActionButton(
       heroTag: _randomString(10),
       onPressed: function,
       materialTapTargetSize: MaterialTapTargetSize.padded,
-      backgroundColor: Colors.blue,
+      backgroundColor: Colors.green[900],
       child: Icon(
         icon,
         size: 36.0,
@@ -445,10 +445,12 @@ class MapsDemoState extends State<MapsDemo> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        backgroundColor: Colors.green[900],
         floatingActionButton: FloatingActionButton.extended(
           elevation: 4.0,
           icon: const Icon(Icons.add),
           label: const Text('Create new route'),
+          backgroundColor: Colors.green[900],
           onPressed: () {
             Navigator.push(
               context,
@@ -457,7 +459,6 @@ class MapsDemoState extends State<MapsDemo> {
           },
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-
         body: Stack(
           children: <Widget>[
             GoogleMap(
@@ -491,8 +492,8 @@ class MapsDemoState extends State<MapsDemo> {
             ),
           ],
         ),
-        appBar: AppBar(title: Text("SafeLight Stockholm")),
-
+        appBar: AppBar(title: Text("SafeLight Stockholm"), backgroundColor: Colors.green[900],),
+        
         drawer: Drawer(
           child: ListView(
             padding: EdgeInsets.zero,
@@ -501,23 +502,20 @@ class MapsDemoState extends State<MapsDemo> {
                 accountName: Text("Jakob Ödman"),
                 accountEmail: Text("fakeMail123@gmail.com"),
                 currentAccountPicture: CircleAvatar(
-                  backgroundColor:
-                      Theme.of(context).platform == TargetPlatform.iOS
-                          ? Colors.blue
-                          : Colors.white,
+                  backgroundColor: Colors.green[900],
                   child: Text(
-                    "PH", //placeholder, kanske användarbild här?
+                    "PH", //placeholder, kanske användarbild här? ändra då text till backgroundimage
                     style: TextStyle(fontSize: 40.0),
                   ),
                 ),
               ),
               ListTile(
-                title: Text('Item 1'),
+                title: Text('Settings'),
                 onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
-                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SettingsState()),
+                  );
                 },
               ),
               ListTile(
@@ -534,5 +532,280 @@ class MapsDemoState extends State<MapsDemo> {
         ),
       ),
     );
+  }
+}
+
+class SettingsState extends StatefulWidget {
+  SettingsState() : super();
+
+  final String title = "Maps Demo";
+
+  @override
+  Settings createState() => Settings();
+}
+
+class Settings extends State<SettingsState> {
+  // final TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+
+  bool _dark;
+
+  @override
+  void initState() {
+    super.initState();
+    _dark = false;
+  }
+
+  Brightness _getBrightness() {
+    return _dark ? Brightness.dark : Brightness.light;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Theme(
+      isMaterialAppTheme: true,
+      data: ThemeData(
+        brightness: _getBrightness(),
+      ),
+      child: Scaffold(
+        backgroundColor: _dark ? null : Colors.green[100],
+        appBar: AppBar(
+          elevation: 0,
+          brightness: _getBrightness(),
+          iconTheme: IconThemeData(color: _dark ? Colors.white : Colors.black),
+          backgroundColor: Colors.transparent,
+          title: Text(
+            'Settings',
+            style: TextStyle(color: _dark ? Colors.white : Colors.black),
+          ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(FontAwesomeIcons.moon),
+              onPressed: () {
+                setState(() {
+                  _dark = !_dark;
+                });
+              },
+            )
+          ],
+        ),
+        body: Stack(
+          fit: StackFit.expand,
+          children: <Widget>[
+            SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Card(
+                    elevation: 8.0,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)),
+                    color: Colors.green[900],
+                    child: ListTile(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => EditProfile()),
+                        );
+                        //open edit profile
+                      },
+                      title: Text(
+                        "Namn Efternamn",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      leading: CircleAvatar(
+                        backgroundImage:
+                            new AssetImage('assets/googleLoginMini.png'),
+                      ),
+                      trailing: Icon(
+                        Icons.edit,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10.0),
+                  Card(
+                    elevation: 4.0,
+                    margin: const EdgeInsets.fromLTRB(32.0, 8.0, 32.0, 16.0),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)),
+                    child: Column(
+                      children: <Widget>[
+                        ListTile(
+                          leading: Icon(
+                            Icons.lock_outline,
+                            color: Colors.green[900],
+                          ),
+                          title: Text("Privacy Settings"),
+                          trailing: Icon(Icons.keyboard_arrow_right),
+                          onTap: () {
+                            //skapa ny sida
+                          },
+                        ),
+                        _buildDivider(),
+                        ListTile(
+                          leading: Icon(
+                            FontAwesomeIcons.language,
+                            color: Colors.green[900],
+                          ),
+                          title: Text("Change Language"),
+                          trailing: Icon(Icons.keyboard_arrow_right),
+                          onTap: () {
+                            //ändra språk
+                          },
+                        ),
+                        _buildDivider(),
+                        ListTile(
+                          leading: Icon(
+                            Icons.location_on,
+                            color: Colors.green[900],
+                          ),
+                          title: Text("Map Settings"),
+                          trailing: Icon(Icons.keyboard_arrow_right),
+                          onTap: () {
+                            //open change location
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 20.0),
+                  Text(
+                    "Options",
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SwitchListTile(
+                    activeColor: Colors.green[900],
+                    contentPadding: const EdgeInsets.all(0),
+                    value: true,
+                    title: Text("Share Location With Friends"),
+                    onChanged: (val) {},
+                  ),
+                  SwitchListTile(
+                    activeColor: Colors.green[900],
+                    contentPadding: const EdgeInsets.all(0),
+                    value: false,
+                    title: Text("Enable Emergancy Button"),
+                    onChanged: (val) {},
+                  ),
+                  SwitchListTile(
+                    activeColor: Colors.green[900],
+                    contentPadding: const EdgeInsets.all(0),
+                    value: true,
+                    title: Text("Enable Notifications"),
+                    onChanged: (val) {},
+                  ),
+                  SwitchListTile(
+                    activeColor: Colors.green[900],
+                    contentPadding: const EdgeInsets.all(0),
+                    value: true,
+                    title: Text("Fingerprint login"),
+                    onChanged: (val) {},
+                  ),
+                  const SizedBox(height: 60.0),
+                ],
+              ),
+            ),
+            Positioned(
+              bottom: -20,
+              left: -20,
+              child: Container(
+                width: 80,
+                height: 80,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Colors.green[900],
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 00,
+              left: 00,
+              child: IconButton(
+                icon: Icon(
+                  FontAwesomeIcons.powerOff,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MyHomePage()),
+                  );
+                },
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Container _buildDivider() {
+    return Container(
+      margin: const EdgeInsets.symmetric(
+        horizontal: 8.0,
+      ),
+      width: double.infinity,
+      height: 1.0,
+      color: Colors.grey.shade400,
+    );
+  }
+}
+
+class EditProfile extends StatefulWidget {
+  EditProfile() : super();
+
+  final String title = "Maps Demo";
+
+  @override
+  EditProfileState createState() => EditProfileState();
+}
+
+class EditProfileState extends State<EditProfile> {
+  final TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+        appBar: new AppBar(title: const Text('Edit Profile'), actions: <Widget>[
+          new Container(
+              padding: const EdgeInsets.fromLTRB(0.0, 10.0, 5.0, 10.0),
+              child: new MaterialButton(
+                child: new Text('Save'),
+                onPressed: () {
+                  //spara ändringar
+                },
+              ))
+        ]),
+        body: new Form(
+            child: new ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          children: <Widget>[
+            new Container(
+              child: new TextField(
+                decoration: const InputDecoration(labelText: "First Name"),
+              ),
+            ),
+            new Container(
+              child: new TextField(
+                decoration: const InputDecoration(labelText: "Last Name"),
+              ),
+            ),
+            new Container(
+              child: new TextField(
+                decoration: const InputDecoration(
+                    labelText: "Email", hintText: "abc@gmail.com"),
+              ),
+            ),
+          ],
+        )));
   }
 }
