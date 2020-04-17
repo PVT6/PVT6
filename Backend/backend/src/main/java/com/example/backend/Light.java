@@ -1,5 +1,6 @@
 package com.example.backend;
 
+import javax.persistence.OneToOne;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,9 +15,19 @@ public class Light {
   private String name;
   private String address;
   private String type; 
+  private String updatedAt;
+  private String createdAt;
 
-  public Light(){
-      
+  @OneToOne
+  private Position pos;
+
+  public Light(String name, String address, String type, String updatedAt, String createdAt, float x, float y){
+      this.name = name;
+      this.address = address;
+      this.type = type;
+      this.updatedAt = updatedAt;
+      this.createdAt = createdAt;
+      this.pos = new Position(x,y);
   }
 
   public Integer getId() {
@@ -30,8 +41,7 @@ public class Light {
   public String getName() {
     return name;
   }
-
-  public void setName(String name) {
+   public void setName(String name) {
     this.name = name;
   }
 
