@@ -78,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => SecondRoute()),
+            MaterialPageRoute(builder: (context) => SecondRouteState()),
           );
         },
         child: Text("Login",
@@ -128,7 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => SecondRoute()),
+                                builder: (context) => SecondRouteState()),
                           );
                         },
                         child: new Text(
@@ -141,7 +141,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => SecondRoute()),
+                                builder: (context) => SecondRouteState()),
                           );
                         },
                         child: new Text("New user? Sign up",
@@ -162,7 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => SecondRoute()),
+                              builder: (context) => SecondRouteState()),
                         );
                       },
                     ),
@@ -178,7 +178,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => SecondRoute()),
+                              builder: (context) => SecondRouteState()),
                         );
                       },
                       child: Container(
@@ -214,7 +214,16 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class SecondRoute extends StatelessWidget {
+class SecondRouteState extends StatefulWidget {
+  SecondRouteState() : super();
+
+  final String title = "Maps Demo";
+
+  @override
+  SecondRoute createState() => SecondRoute();
+}
+
+class SecondRoute extends State<SecondRouteState> { //måste ha state, liknande mapdemo
   final TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
   @override
@@ -298,7 +307,7 @@ class SecondRoute extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => SecondRoute()),
+                                builder: (context) => SecondRouteState()),
                           );
                         },
                         //child: new Text("Forgot Password?"),
@@ -320,7 +329,7 @@ class SecondRoute extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => SecondRoute()),
+                                builder: (context) => SecondRouteState()),
                           );
                         },
                         child: new Text("New profile"),
