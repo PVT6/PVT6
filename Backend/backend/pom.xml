@@ -44,19 +44,10 @@
 			<artifactId>hibernate-core</artifactId>
 			<version>5.4.0.Final</version>
 		</dependency>
-		<dependency>
-			<groupId>com.google.firebase</groupId>
-			<artifactId>firebase-auth</artifactId>
-			<version>19.3.0</version>
-		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.google.firebase/firebase-auth -->
 		
-		
-		
-		<!-- <dependency>
-			<groupId>com.google.firebase</groupId>
-			<artifactId>firebase-auth</artifactId>
-			<version>19.3.0</version>
-		</dependency>  -->
+
+
 		
 		
 		<dependency>
@@ -105,11 +96,18 @@
 		
 	</build>
 	<repositories>
+		
 		<repository>
 			<id>spring-releases</id>
 			<url>https://repo.spring.io/libs-release</url>
+			
 		</repository>
-	</repositories>
+	
+    <repository>
+            <id>google</id>
+            <url>https://maven.google.com</url>
+        </repository>
+  </repositories>
 	<pluginRepositories>
 		<pluginRepository>
 			<id>spring-releases</id>
