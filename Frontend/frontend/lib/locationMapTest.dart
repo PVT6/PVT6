@@ -37,6 +37,7 @@ class MapSampleState extends State<MapSample> {
   static const LatLng _center = const LatLng(59.334591, 18.063240);
   LatLng _lastMapPosition = _center;
   Location location;
+  BitmapDescriptor pinLocationIcon;
 
   Set<Polyline> _polyLines = Set<Polyline>();
   List<LatLng> polylineCoordinates = [];
@@ -48,6 +49,13 @@ class MapSampleState extends State<MapSample> {
     loading = true;
     location = new Location();
     polylinePoints = PolylinePoints();
+
+    BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(devicePixelRatio: 2.5), 'assets/profilePH.png')
+        .then((onValue) {
+      //här kan vi skapa rund bild utifrån profilbild eller bara rund med initialer som i settings
+      pinLocationIcon = onValue;
+    });
 
     location.onLocationChanged.listen((LocationData cLoc) {
       // cLoc contains the lat and long of the
@@ -69,27 +77,24 @@ class MapSampleState extends State<MapSample> {
       bearing: CAMERA_BEARING,
       target: LatLng(currentLocation.latitude, currentLocation.longitude),
     );
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(cPosition));
+    // final GoogleMapController controller = await _controller.future;
+    // controller.animateCamera(CameraUpdate.newCameraPosition(cPosition));
     // do this inside the setState() so Flutter gets notified
     // that a widget update is due
-    
-      setState(() async {
 
-            final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(cPosition));
-        // updated position
-        var pinPosition =
-            LatLng(currentLocation.latitude, currentLocation.longitude);
+    setState(() {
+      // updated position
+      var pinPosition =
+          LatLng(currentLocation.latitude, currentLocation.longitude);
 
-        // the trick is to remove the marker (by id)
-        // and add it again at the updated location
-        _markers.removeWhere((m) => m.markerId.value == 'sourcePin');
-        _markers.add(Marker(
-            markerId: MarkerId('sourcePin'),
-            position: pinPosition, // updated position
-            icon: BitmapDescriptor.defaultMarker));
-      });
+      // the trick is to remove the marker (by id)
+      // and add it again at the updated location
+      _markers.removeWhere((m) => m.markerId.value == 'sourcePin');
+      _markers.add(Marker(
+          markerId: MarkerId('sourcePin'),
+          position: pinPosition, // updated position
+          icon: pinLocationIcon));
+    });
   }
 
   void showPinsOnMap() {
@@ -104,7 +109,7 @@ class MapSampleState extends State<MapSample> {
     _markers.add(Marker(
       markerId: MarkerId('sourcePin'),
       position: pinPosition,
-      icon: BitmapDescriptor.defaultMarker,
+      icon: pinLocationIcon,
     ));
     // destination pin
     //  _markers.add(Marker(
@@ -273,6 +278,9 @@ class MapSampleState extends State<MapSample> {
 
   _handleTap(LatLng point) {
     setState(() {
+      _markers.clear();
+      polylineCoordinates.clear();
+      _polyLines.clear();
       _lastMapPosition = point;
       destinationLocation = LocationData.fromMap(
           {"latitude": point.latitude, "longitude": point.longitude});
