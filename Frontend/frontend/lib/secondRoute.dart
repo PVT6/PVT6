@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:frontend/verifyEmail.dart';
 
 import 'mapsDemo.dart';
 
@@ -125,8 +126,8 @@ class SecondRoute extends State<SecondRouteState> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MapsDemo()),
-                    );
+                      MaterialPageRoute(builder: (context) => PinCodeVerificationScreen(),
+                    ));
                   },
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
