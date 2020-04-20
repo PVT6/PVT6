@@ -192,7 +192,9 @@ class _MyHomePageState extends State<MyHomePage> {
                         SignInButton(
                           Buttons.Email,
                           mini: true,
-                          onPressed: () {},
+                          onPressed: () {
+                            
+                          },
                         ),
                       ],
                     ),
