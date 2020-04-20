@@ -1,9 +1,12 @@
 package com.example.backend;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -17,6 +20,10 @@ public class Position {
     private Long id;
     private Double x;
     private Double y;
+
+   
+
+    
     Position(){};
     Position(Double x, Double y){
         this.x = x;
