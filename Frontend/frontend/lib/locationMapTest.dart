@@ -4,6 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:math';
 
 import 'contacts.dart';
 import 'settings.dart';
@@ -24,16 +25,52 @@ class MapSampleState extends State<MapSample> {
   Completer<GoogleMapController> _controller = Completer();
   static LatLng latLng;
   LocationData currentLocation;
-  
-
-  
-  
+  MapType _currentMapType = MapType.normal;
+  static const LatLng _center = const LatLng(59.334591, 18.063240);
+  LatLng _lastMapPosition = _center;
 
   @override
   void initState() {
     getLocation();
     loading = true;
     super.initState();
+  }
+
+    _onCameraMoveDestination(CameraPosition position) {
+    _lastMapPosition = position.target;
+  }
+
+    String _randomString(int length) {
+    var rand = new Random();
+    var codeUnits = new List.generate(length, (index) {
+      return rand.nextInt(33) + 89;
+    });
+
+    return new String.fromCharCodes(codeUnits);
+  }
+
+    _onMapTypeButtonPressed() {
+    setState(() {
+      _currentMapType = _currentMapType == MapType.normal
+          ? MapType.satellite
+          : MapType.normal;
+    });
+  }
+
+    _onAddDestinationButtonPressed() {
+    setState(() {
+      _markers.add(
+        Marker(
+          markerId: MarkerId(_lastMapPosition.toString()),
+          position: _lastMapPosition,
+          infoWindow: InfoWindow(
+            title: 'This is a Title',
+            snippet: 'This is a snippet',
+          ),
+          icon: BitmapDescriptor.defaultMarker,
+        ),
+      );
+    });
   }
 
   getLocation() async {
@@ -67,6 +104,7 @@ class MapSampleState extends State<MapSample> {
 
   void onCameraMove(CameraPosition position) {
     latLng = position.target;
+    _lastMapPosition = position.target;
   }
 
   List<LatLng> _convertToLatLng(List points) {
@@ -133,34 +171,69 @@ class MapSampleState extends State<MapSample> {
     return lList;
   }
 
+    Widget button(Function function, IconData icon) {
+    return FloatingActionButton(
+      heroTag: _randomString(10),
+      onPressed: function,
+      materialTapTargetSize: MaterialTapTargetSize.padded,
+      backgroundColor: Colors.blue,
+      child: Icon(
+        icon,
+        size: 36.0,
+      ),
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     print("getLocation111:$latLng");
     return MaterialApp(
       home: Scaffold(
-        body: loading
-            ? Container(
-                color: Colors.red,
-              )
-            : GoogleMap(
-                polylines: polyLines,
-                markers: _markers,
-                mapType: MapType.normal,
-                initialCameraPosition: CameraPosition(
-                  target: latLng,
-                  zoom: 14.4746,
-                ),
-                onCameraMove: onCameraMove,
-                onMapCreated: (GoogleMapController controller) {
-                  _controller.complete(controller);
-                },
-              ),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
             sendRequest();
           },
-          label: Text('Destination'),
+          label: const Text('Create new route'),
+          backgroundColor: Colors.blue,
           icon: Icon(Icons.directions_boat),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        body: Stack(
+          children: <Widget>[
+            loading
+                ? Container(
+                    color: Colors.red,
+                  )
+                : GoogleMap(
+                    polylines: polyLines,
+                    markers: _markers,
+                    mapType: _currentMapType,
+                    initialCameraPosition: CameraPosition(
+                      target: latLng,
+                      zoom: 14.4746,
+                    ),
+                    onCameraMove: onCameraMove, 
+                    onMapCreated: (GoogleMapController controller) {
+                      _controller.complete(controller);
+                    },
+                  ),
+                              Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Align(
+                alignment: Alignment.topRight,
+                child: Column(
+                  children: <Widget>[
+                    button(_onMapTypeButtonPressed, Icons.map),
+                    SizedBox(
+                      height: 16.0,
+                    ),
+                    button(_onAddDestinationButtonPressed, Icons.add_location),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
         appBar: AppBar(
           title: Text("SafeLight Stockholm"),
