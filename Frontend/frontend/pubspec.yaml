@@ -20,11 +20,18 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_signin_button: ^1.0.0
-  google_maps_flutter: ^0.5.11
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
+  google_maps_flutter: ^0.5.26
   cupertino_icons: ^0.1.2
   font_awesome_flutter: ^8.5.0
+  permission_handler: ^4.0.0
+  contacts_service: ^0.3.10
+  location: ^3.0.2
+  http: ^0.12.0+4
+  google_map_polyline: ^0.2.0+1
+  flutter_polyline_points: ^0.1.0
+  
+
+  
   
 dev_dependencies:
   flutter_test:
@@ -47,6 +54,8 @@ flutter:
    - mapPlaceholder.png
    - googleLoginMini.png
    - backgroundStockholm.png
+   - SafeLightLogo.png
+
    
 
   # An image asset can refer to one or more resolution-specific "variants", see
