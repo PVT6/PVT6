@@ -5,18 +5,17 @@
 plugins {
     id 'java'
     id 'maven-publish'
-    apply plugin: 'com.android.application'
-    // Add the following line:
-    apply plugin: 'com.google.gms.google-services'  // Google Services plugin
-
-
+    id 'war'
 }
 
 repositories {
     mavenLocal()
-    google()
     maven {
         url = uri('https://repo.spring.io/libs-release')
+    }
+
+    maven {
+        url = uri('https://maven.google.com')
     }
 
     maven {
@@ -29,17 +28,12 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.2.6.RELEASE'
     implementation 'com.github.goober:coordinate-transformation-library:1.1'
     implementation 'org.hibernate:hibernate-core:5.4.0.Final'
-    implementation 'com.google.firebase:firebase-auth:19.3.0'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.10.3'
     implementation 'com.opencsv:opencsv:4.0'
     runtimeOnly 'mysql:mysql-connector-java:8.0.19'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.2.6.RELEASE'
     providedCompile 'org.springframework.boot:spring-boot-starter-tomcat:2.2.6.RELEASE'
-    classpath 'com.google.gms:google-services:4.3.3'
-    
-
 }
-
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
