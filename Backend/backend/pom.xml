@@ -44,7 +44,13 @@
 			<artifactId>hibernate-core</artifactId>
 			<version>5.4.0.Final</version>
 		</dependency>
+<<<<<<< HEAD
 		<!-- https://mvnrepository.com/artifact/com.google.firebase/firebase-auth -->
+=======
+		
+		
+		
+>>>>>>> e176dddbd4c3473901cc1275f93618a98d9850e3
 		
 
 
@@ -124,6 +130,7 @@
 			<name>Internal repo</name>
 			<url>git@github.com:PVT6/PVT6.git</url>
 		</repository>
+
 	</distributionManagement>
 
 
