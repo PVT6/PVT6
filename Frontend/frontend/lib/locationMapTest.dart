@@ -28,6 +28,7 @@ class MapSampleState extends State<MapSample> {
   MapType _currentMapType = MapType.normal;
   static const LatLng _center = const LatLng(59.334591, 18.063240);
   LatLng _lastMapPosition = _center;
+  Location location;
 
   @override
   void initState() {
@@ -36,11 +37,7 @@ class MapSampleState extends State<MapSample> {
     super.initState();
   }
 
-    _onCameraMoveDestination(CameraPosition position) {
-    _lastMapPosition = position.target;
-  }
-
-    String _randomString(int length) {
+  String _randomString(int length) {
     var rand = new Random();
     var codeUnits = new List.generate(length, (index) {
       return rand.nextInt(33) + 89;
@@ -49,7 +46,7 @@ class MapSampleState extends State<MapSample> {
     return new String.fromCharCodes(codeUnits);
   }
 
-    _onMapTypeButtonPressed() {
+  _onMapTypeButtonPressed() {
     setState(() {
       _currentMapType = _currentMapType == MapType.normal
           ? MapType.satellite
@@ -57,21 +54,7 @@ class MapSampleState extends State<MapSample> {
     });
   }
 
-    _onAddDestinationButtonPressed() {
-    setState(() {
-      _markers.add(
-        Marker(
-          markerId: MarkerId(_lastMapPosition.toString()),
-          position: _lastMapPosition,
-          infoWindow: InfoWindow(
-            title: 'This is a Title',
-            snippet: 'This is a snippet',
-          ),
-          icon: BitmapDescriptor.defaultMarker,
-        ),
-      );
-    });
-  }
+
 
   getLocation() async {
     var location = new Location();
@@ -104,7 +87,6 @@ class MapSampleState extends State<MapSample> {
 
   void onCameraMove(CameraPosition position) {
     latLng = position.target;
-    _lastMapPosition = position.target;
   }
 
   List<LatLng> _convertToLatLng(List points) {
@@ -118,7 +100,7 @@ class MapSampleState extends State<MapSample> {
   }
 
   void sendRequest() async {
-    LatLng destination = LatLng(59.334591, 18.063240);
+    LatLng destination = _lastMapPosition;//LatLng(59.334591, 18.063240);
     String route =
         await _googleMapsServices.getRouteCoordinates(latLng, destination);
     createRoute(route);
@@ -171,7 +153,7 @@ class MapSampleState extends State<MapSample> {
     return lList;
   }
 
-    Widget button(Function function, IconData icon) {
+  Widget button(Function function, IconData icon) {
     return FloatingActionButton(
       heroTag: _randomString(10),
       onPressed: function,
@@ -184,6 +166,22 @@ class MapSampleState extends State<MapSample> {
     );
   }
 
+   _handleTap(LatLng point) {
+    setState(() {
+      _lastMapPosition = point;
+      _markers.add(
+        Marker(
+          markerId: MarkerId(point.toString()),
+          position: point,
+          infoWindow: InfoWindow(
+            title: 'This is a Title',
+            snippet: 'This is a snippet',
+          ),
+          icon: BitmapDescriptor.defaultMarker,
+        ),
+      );
+    });
+}
 
   @override
   Widget build(BuildContext context) {
@@ -213,12 +211,13 @@ class MapSampleState extends State<MapSample> {
                       target: latLng,
                       zoom: 14.4746,
                     ),
-                    onCameraMove: onCameraMove, 
+                    onTap: _handleTap,
+                    onCameraMove: onCameraMove,
                     onMapCreated: (GoogleMapController controller) {
                       _controller.complete(controller);
                     },
                   ),
-                              Padding(
+            Padding(
               padding: EdgeInsets.all(16.0),
               child: Align(
                 alignment: Alignment.topRight,
@@ -228,7 +227,6 @@ class MapSampleState extends State<MapSample> {
                     SizedBox(
                       height: 16.0,
                     ),
-                    button(_onAddDestinationButtonPressed, Icons.add_location),
                   ],
                 ),
               ),
