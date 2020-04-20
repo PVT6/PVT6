@@ -106,6 +106,18 @@ class _MyHomePageState extends State<MyHomePage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
+                    Row(children: <Widget>[
+                      Expanded(
+                        child: Image.asset(
+                          'assets/logophase4png.png',
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          'Stockholm SafeLight',
+                        ),
+                      ),
+                    ]),
                     SizedBox(height: 20.0),
                     emailField,
                     SizedBox(height: 20.0),
@@ -192,9 +204,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         SignInButton(
                           Buttons.Email,
                           mini: true,
-                          onPressed: () {
-                            
-                          },
+                          onPressed: () {},
                         ),
                       ],
                     ),
@@ -214,21 +224,3 @@ class _MyHomePageState extends State<MyHomePage> {
         ));
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

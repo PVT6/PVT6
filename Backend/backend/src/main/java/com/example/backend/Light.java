@@ -1,6 +1,7 @@
 package com.example.backend;
 
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -29,6 +30,7 @@ public class Light {
   private String createdAt;
 
   @OneToOne(fetch = FetchType.LAZY)
+  @PrimaryKeyJoinColumn
   @MapsId
   private Position pos;
   public Light(){}

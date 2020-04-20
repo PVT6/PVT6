@@ -44,19 +44,10 @@
 			<artifactId>hibernate-core</artifactId>
 			<version>5.4.0.Final</version>
 		</dependency>
-		<dependency>
-			<groupId>com.google.firebase</groupId>
-			<artifactId>firebase-auth</artifactId>
-			<version>19.3.0</version>
-		</dependency>
 		
 		
-		
-		<!-- <dependency>
-			<groupId>com.google.firebase</groupId>
-			<artifactId>firebase-auth</artifactId>
-			<version>19.3.0</version>
-		</dependency>  -->
+
+
 		
 		
 		<dependency>
@@ -105,11 +96,18 @@
 		
 	</build>
 	<repositories>
+		
 		<repository>
 			<id>spring-releases</id>
 			<url>https://repo.spring.io/libs-release</url>
+			
 		</repository>
-	</repositories>
+	
+    <repository>
+            <id>google</id>
+            <url>https://maven.google.com</url>
+        </repository>
+  </repositories>
 	<pluginRepositories>
 		<pluginRepository>
 			<id>spring-releases</id>
@@ -126,6 +124,7 @@
 			<name>Internal repo</name>
 			<url>git@github.com:PVT6/PVT6.git</url>
 		</repository>
+
 	</distributionManagement>
 
 

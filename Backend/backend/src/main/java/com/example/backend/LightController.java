@@ -117,7 +117,6 @@ public class LightController    {
        
      
             while ((nextRecord = csvReader.readNext()) != null) { 
-            
               String swerefPosition [] = nextRecord[24].replace("POINT (", "").replace(")", "").split(" ");
               SWEREF99Position position = new SWEREF99Position(Float.parseFloat(swerefPosition[0]), Float.parseFloat(swerefPosition[1]), SWEREFProjection.sweref_99_18_00);
               WGS84Position wgsPos = position.toWGS84();
