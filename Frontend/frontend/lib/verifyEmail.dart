@@ -155,7 +155,6 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
                   child: FlatButton(
                     //if statement, är det rätt ifyllt blir det verifierat
                     onPressed: () {
-
                       // conditions for validating
                       if (currentText.length != 6 || currentText != "towtow") {
                         errorController.add(ErrorAnimationType
@@ -164,13 +163,10 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
                           hasError = true;
                         });
                       } else {
-                        setState(() {
-                          hasError = false;
-                          scaffoldKey.currentState.showSnackBar(SnackBar(
-                            content: Text("Aye!!"),
-                            duration: Duration(seconds: 2),
-                          ));
-                        });
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => MapsDemo()),
+                        );
                       }
                     },
                     child: Center(

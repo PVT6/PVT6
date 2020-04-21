@@ -38,6 +38,7 @@ class MapSampleState extends State<MapSample> {
   LatLng _lastMapPosition = _center;
   Location location;
   BitmapDescriptor pinLocationIcon;
+  
 
   Set<Polyline> _polyLines = Set<Polyline>();
   List<LatLng> polylineCoordinates = [];

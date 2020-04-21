@@ -49,25 +49,43 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
+  bool hasError = false;
+  String currentText = "";
+  String currentTextPW = "";
+
   @override
   Widget build(BuildContext context) {
     final emailField = TextField(
-        obscureText: false,
-        style: style,
-        decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Username",
-        ));
+      obscureText: false,
+      style: style,
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        hintText: "Username",
+      ),
+      onChanged: (value) {
+        print(value);
+        setState(() {
+          currentText = value;
+        });
+      },
+    );
     //       border:
     //           OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     // );
     final passwordField = TextField(
-        obscureText: true,
-        style: style,
-        decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Password",
-        ));
+      obscureText: true,
+      style: style,
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        hintText: "Password",
+      ),
+      onChanged: (value) {
+        print(value);
+        setState(() {
+          currentTextPW = value;
+        });
+      },
+    );
     //       border:
     //           OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     // );
@@ -79,11 +97,18 @@ class _MyHomePageState extends State<MyHomePage> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
-          Navigator.push(
-            //fixa UI för felmeddelande
-            context,
-            MaterialPageRoute(builder: (context) => MapsDemo()),
-          );
+          if (currentText != "towtow" || currentTextPW != "towtow") {
+            // errorController.add(
+            //     ErrorAnimationType.shake); // Triggering error shake animation
+            setState(() {
+              hasError = true;
+            });
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MapsDemo()),
+            );
+          }
         },
         child: Text("Login",
             textAlign: TextAlign.center,
@@ -107,6 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
+                      SizedBox(height: 70.0),
                       Row(children: <Widget>[
                         Expanded(
                           child: Image.asset(
