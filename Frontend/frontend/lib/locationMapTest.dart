@@ -42,6 +42,8 @@ class MapSampleState extends State<MapSample> {
   Set<Polyline> _polyLines = Set<Polyline>();
   List<LatLng> polylineCoordinates = [];
   PolylinePoints polylinePoints;
+  int _currentIndex = 0;
+  final List<Widget> _children = [];
 
   @override
   void initState() {
@@ -164,6 +166,10 @@ class MapSampleState extends State<MapSample> {
           ? MapType.satellite
           : MapType.normal;
     });
+  }
+
+  _onEmergancyButtonPressed() {
+    //fyll i emergancyfunktion här
   }
 
   getLocation() async {
@@ -301,29 +307,34 @@ class MapSampleState extends State<MapSample> {
   @override
   Widget build(BuildContext context) {
     print("getLocation111:$latLng");
-    CameraPosition initialCameraPosition = CameraPosition(
-        zoom: CAMERA_ZOOM,
-        tilt: CAMERA_TILT,
-        bearing: CAMERA_BEARING,
-        target: SOURCE_LOCATION);
-    if (currentLocation != null) {
-      initialCameraPosition = CameraPosition(
-          target: LatLng(currentLocation.latitude, currentLocation.longitude),
-          zoom: CAMERA_ZOOM,
-          tilt: CAMERA_TILT,
-          bearing: CAMERA_BEARING);
-    }
     return MaterialApp(
       home: Scaffold(
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            sendRequest();
-          },
-          label: const Text('Create new route'),
-          backgroundColor: Colors.blue,
-          icon: Icon(Icons.directions_boat),
+        // floatingActionButton: FloatingActionButton.extended(
+        //   onPressed: () {
+        //     sendRequest();
+        //   },
+        //   label: const Text('Create new route'),
+        //   backgroundColor: Colors.blue,
+        //   icon: Icon(Icons.directions_boat),
+        // ),
+        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: 0, // this will be set when a new tab is tapped
+          items: [
+            BottomNavigationBarItem(
+              icon: new Icon(Icons.pin_drop),
+              title: new Text('Explore'),
+            ),
+            BottomNavigationBarItem(
+              icon: new Icon(Icons.home),
+              title: new Text('Commute'),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              title: Text('Profile'),
+            ),
+          ],
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: Stack(
           children: <Widget>[
             loading
@@ -352,10 +363,21 @@ class MapSampleState extends State<MapSample> {
             Padding(
               padding: EdgeInsets.all(16.0),
               child: Align(
-                alignment: Alignment.topRight,
+                alignment: Alignment.bottomLeft,
                 child: Column(
                   children: <Widget>[
                     button(_onMapTypeButtonPressed, Icons.map),
+                    SizedBox(
+                      height: 16.0,
+                    ),
+                    button(_onEmergancyButtonPressed, Icons.phone),
+                    SizedBox(
+                      height: 16.0,
+                    ),
+                    button(
+                        sendRequest,
+                        Icons
+                            .arrow_right), //kan skapa en annan icon här om önskat, föredrar själv knappen create new route
                     SizedBox(
                       height: 16.0,
                     ),

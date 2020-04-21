@@ -100,126 +100,128 @@ class _MyHomePageState extends State<MyHomePage> {
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft,
                     colors: [Colors.green, Colors.blue])),
-            child: Padding(
-              padding: const EdgeInsets.all(36.0),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Row(children: <Widget>[
-                      Expanded(
-                        child: Image.asset(
-                          'assets/logophase4png.png',
-                        ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          'Stockholm SafeLight',
-                        ),
-                      ),
-                    ]),
-                    SizedBox(height: 20.0),
-                    emailField,
-                    SizedBox(height: 20.0),
-                    passwordField,
-                    SizedBox(
-                      height: 35.0,
-                    ),
-                    loginButon,
-                    SizedBox(
-                      height: 5.0,
-                    ),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          FlatButton(
-                            onPressed: () {
-                              //borde skapa egen sida för detta, om det inte görs med firebase?
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SecondRouteState()),
-                              );
-                            },
-                            child: new Text(
-                              "Forgot Password?",
-                              style: TextStyle(color: Colors.white),
-                            ),
+            child: Stack(fit: StackFit.expand, children: <Widget>[
+              SingleChildScrollView(
+                padding: const EdgeInsets.all(36.0),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Row(children: <Widget>[
+                        Expanded(
+                          child: Image.asset(
+                            'assets/logophase4png.png',
                           ),
-                          FlatButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SecondRouteState()),
-                              );
-                            },
-                            child: new Text(
-                                "New user? Sign up", //den här overflowar9
-                                style: TextStyle(color: Colors.white)),
-                          ),
-                        ]),
-                    Text(
-                      'OR',
-                      textAlign: TextAlign.center,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        SignInButton(
-                          Buttons.Facebook,
-                          mini: true,
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MapsDemo()),
-                            );
-                          },
                         ),
-                        // SizedBox(
-                        //   child: Image.asset(
-                        //     "assets/googleLoginMini.png", //google mini finns ej i flutter, tillfällig lösning
-                        //     fit: BoxFit.contain,
-                        //   ),
-                        // ),
-                        SizedBox(
-                            child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MapsDemo()),
-                            );
-                          },
-                          child: Container(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20.0),
-                              child: Image.asset(
-                                'googleLoginMini.png',
+                        Expanded(
+                          child: Text(
+                            'Stockholm SafeLight',
+                          ),
+                        ),
+                      ]),
+                      SizedBox(height: 20.0),
+                      emailField,
+                      SizedBox(height: 20.0),
+                      passwordField,
+                      SizedBox(
+                        height: 35.0,
+                      ),
+                      loginButon,
+                      SizedBox(
+                        height: 5.0,
+                      ),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            FlatButton(
+                              onPressed: () {
+                                //borde skapa egen sida för detta, om det inte görs med firebase?
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SecondRouteState()),
+                                );
+                              },
+                              child: new Text(
+                                "Forgot Password?",
+                                style: TextStyle(color: Colors.white),
                               ),
                             ),
+                            FlatButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SecondRouteState()),
+                                );
+                              },
+                              child: new Text(
+                                  "New user? Sign up", //den här overflowar9
+                                  style: TextStyle(color: Colors.white)),
+                            ),
+                          ]),
+                      Text(
+                        'OR',
+                        textAlign: TextAlign.center,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          SignInButton(
+                            Buttons.Facebook,
+                            mini: true,
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MapsDemo()),
+                              );
+                            },
                           ),
-                        )),
-                        SignInButton(
-                          Buttons.Email,
-                          mini: true,
-                          onPressed: () {},
-                        ),
-                      ],
-                    ),
-                    FlatButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => MapsDemo()),
-                        );
-                      },
-                      child: new Text("Continue without login >",
-                          textAlign: TextAlign.right),
-                    ),
-                  ]),
-            ),
+                          // SizedBox(
+                          //   child: Image.asset(
+                          //     "assets/googleLoginMini.png", //google mini finns ej i flutter, tillfällig lösning
+                          //     fit: BoxFit.contain,
+                          //   ),
+                          // ),
+                          SizedBox(
+                              child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MapsDemo()),
+                              );
+                            },
+                            child: Container(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20.0),
+                                child: Image.asset(
+                                  'googleLoginMini.png',
+                                ),
+                              ),
+                            ),
+                          )),
+                          SignInButton(
+                            Buttons.Email,
+                            mini: true,
+                            onPressed: () {},
+                          ),
+                        ],
+                      ),
+                      FlatButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => MapsDemo()),
+                          );
+                        },
+                        child: new Text("Continue without login >",
+                            textAlign: TextAlign.right),
+                      ),
+                    ]),
+              ),
+            ]),
           ),
         ));
   }
