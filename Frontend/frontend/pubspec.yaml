@@ -32,6 +32,7 @@ dependencies:
   pin_input_text_field: ^3.0.1
   pin_code_fields: ^2.5.1
   firebase_auth: ^0.14.0+5
+  intro_slider: ^2.2.9
   
 
   
@@ -60,6 +61,9 @@ flutter:
    - SafeLightLogo.png
    - logophase4png.png
    - profilePH.png
+   - photo_eraser.png
+   - photo_pencil.png
+   - photo_ruler.png
 
    
 

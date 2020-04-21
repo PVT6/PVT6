@@ -43,8 +43,7 @@ class MapSampleState extends State<MapSample> {
   Set<Polyline> _polyLines = Set<Polyline>();
   List<LatLng> polylineCoordinates = [];
   PolylinePoints polylinePoints;
-  int _currentIndex = 0;
-  final List<Widget> _children = [];
+
 
   @override
   void initState() {

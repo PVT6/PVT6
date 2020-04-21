@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:frontend/mapsDemo.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
+import 'intro_slider.dart';
+
 Color darkGreen = Colors.green[900];
 Color lightGreen = Colors.green[100];
 
@@ -165,7 +167,7 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
                       } else {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => MapsDemo()),
+                          MaterialPageRoute(builder: (context) => IntroScreen()),
                         );
                       }
                     },
