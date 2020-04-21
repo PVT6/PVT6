@@ -31,6 +31,7 @@ dependencies:
   flutter_polyline_points: ^0.1.0
   pin_input_text_field: ^3.0.1
   pin_code_fields: ^2.5.1
+  firebase_auth: ^0.14.0+5
   
 
   
