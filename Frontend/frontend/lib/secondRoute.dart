@@ -7,7 +7,6 @@ import 'package:frontend/verifyEmail.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:frontend/services/auth.dart';
 
-import 'locationMapTest.dart';
 import 'mapsDemo.dart';
 
 class SecondRouteState extends StatefulWidget {
@@ -147,14 +146,15 @@ class SecondRoute extends State<SecondRouteState> {
                     if (_formKey.currentState.validate()) {
                       dynamic result = await _auth.registerWithEmailAndPassword(
                           email, password);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MapSample()),
-                      );
                       if (result == null) {
                         setState(() {
                           error = 'Please supply a valid email';
                         });
+                      } else {
+                        Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MapsDemo()),
+            );
                       }
                     }
                   },
