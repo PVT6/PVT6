@@ -32,7 +32,9 @@ dependencies:
   pin_input_text_field: ^3.0.1
   pin_code_fields: ^2.5.1
   firebase_auth: ^0.14.0+5
+  firebase_database: ^3.0.7
   intro_slider: ^2.2.9
+  google_sign_in: ^4.4.3
   
 
   

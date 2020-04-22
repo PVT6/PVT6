@@ -55,13 +55,20 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final emailField = TextField(
+    final emailField = TextFormField(
       obscureText: false,
       style: style,
+      keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         hintText: "Username",
+        icon: new Icon(
+          Icons.mail,
+          color: Colors.grey,
+        ),
       ),
+      validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
+      onSaved: (value) => currentText = value.trim(),
       onChanged: (value) {
         print(value);
         setState(() {
@@ -72,13 +79,19 @@ class _MyHomePageState extends State<MyHomePage> {
     //       border:
     //           OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     // );
-    final passwordField = TextField(
+    final passwordField = TextFormField(
       obscureText: true,
       style: style,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         hintText: "Password",
+        icon: new Icon(
+          Icons.lock,
+          color: Colors.grey,
+        ),
       ),
+      validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
+      onSaved: (value) => currentTextPW = value.trim(),
       onChanged: (value) {
         print(value);
         setState(() {
@@ -96,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {
+        onPressed: () { //validateAndSubmit,
           if (currentText != "towtow" || currentTextPW != "towtow") {
             // errorController.add(
             //     ErrorAnimationType.shake); // Triggering error shake animation
@@ -252,3 +265,5 @@ class _MyHomePageState extends State<MyHomePage> {
         ));
   }
 }
+
+

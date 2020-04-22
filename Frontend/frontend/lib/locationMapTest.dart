@@ -38,12 +38,10 @@ class MapSampleState extends State<MapSample> {
   LatLng _lastMapPosition = _center;
   Location location;
   BitmapDescriptor pinLocationIcon;
-  
 
   Set<Polyline> _polyLines = Set<Polyline>();
   List<LatLng> polylineCoordinates = [];
   PolylinePoints polylinePoints;
-
 
   @override
   void initState() {
@@ -73,12 +71,12 @@ class MapSampleState extends State<MapSample> {
     // create a new CameraPosition instance
     // every time the location changes, so the camera
     // follows the pin as it moves with an animation
-    CameraPosition cPosition = CameraPosition(
-      zoom: CAMERA_ZOOM,
-      tilt: CAMERA_TILT,
-      bearing: CAMERA_BEARING,
-      target: LatLng(currentLocation.latitude, currentLocation.longitude),
-    );
+    // CameraPosition cPosition = CameraPosition(
+    //   zoom: CAMERA_ZOOM,
+    //   tilt: CAMERA_TILT,
+    //   bearing: CAMERA_BEARING,
+    //   target: LatLng(currentLocation.latitude, currentLocation.longitude),
+    // );
     // final GoogleMapController controller = await _controller.future;
     // controller.animateCamera(CameraUpdate.newCameraPosition(cPosition));
     // do this inside the setState() so Flutter gets notified
@@ -398,6 +396,7 @@ class MapSampleState extends State<MapSample> {
               UserAccountsDrawerHeader(
                 accountName: Text("Jakob Ödman"),
                 accountEmail: Text("fakeMail123@gmail.com"),
+                onDetailsPressed: () {},
                 currentAccountPicture: CircleAvatar(
                   child: Text(
                     "PH", //placeholder, kanske användarbild här? ändra då text till backgroundimage(user.getImage)
@@ -424,7 +423,11 @@ class MapSampleState extends State<MapSample> {
                 },
               ),
               ListTile(
-                title: Text('Placeholder'),
+                title: Text('Saved routes'),
+                onTap: () {},
+              ),
+              ListTile(
+                title: Text('Offline maps'),
                 onTap: () {},
               ),
             ],
