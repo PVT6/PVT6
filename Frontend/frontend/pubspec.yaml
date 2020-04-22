@@ -35,6 +35,7 @@ dependencies:
   firebase_database: ^3.0.7
   intro_slider: ^2.2.9
   google_sign_in: ^4.4.3
+  provider: ^3.1.0
   
 
   
