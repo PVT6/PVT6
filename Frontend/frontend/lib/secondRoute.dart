@@ -150,6 +150,11 @@ class SecondRoute extends State<SecondRouteState> {
                         setState(() {
                           error = 'Please supply a valid email';
                         });
+                      } else {
+                        Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MapsDemo()),
+            );
                       }
                     }
                   },
