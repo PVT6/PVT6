@@ -24,7 +24,7 @@ try {
 }
 }
 
-Future signInWithEmailAndPasswor(String email, String password) async { //Kan lägga till mer saker sen.
+Future signInWithEmailAndPassword(String email, String password) async { //Kan lägga till mer saker sen.
 try {
   AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
   FirebaseUser user = result.user;
