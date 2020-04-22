@@ -14,11 +14,11 @@ class _MapBoxState extends State<Mapbox> {
         appBar: new AppBar(title: new Text('Leaflet Maps')),
         body: new FlutterMap(
             options: new MapOptions(
-                center: new LatLng(40.71, -74.00), minZoom: 10.0),
+                center: new LatLng(59.334591, 18.063240), minZoom: 15.0),
             layers: [
               new TileLayerOptions(
                   urlTemplate:
-                      "https://api.mapbox.com/styles/v1/lucas-domeij/ck9b3kgpp096a1iqs11f9jnji/tiles/256/%7Bz%7D/%7Bx%7D/%7By%7D@2x?access_token=pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A",
+                      "https://api.mapbox.com/styles/v1/lucas-domeij/ck9b3kgpp096a1iqs11f9jnji/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A",
                   additionalOptions: {
                     'accessToken':'pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A',
                     'id': 'Streets-copy'
