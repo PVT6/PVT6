@@ -25,7 +25,7 @@ dependencies:
   font_awesome_flutter: ^8.5.0
   permission_handler: ^4.0.0
   contacts_service: ^0.3.10
-  location: ^3.0.2
+  location: any
   http: ^0.12.0+4
   google_map_polyline: ^0.2.0+1
   flutter_polyline_points: ^0.1.0
@@ -36,10 +36,11 @@ dependencies:
   intro_slider: ^2.2.9
   google_sign_in: ^4.4.3
   mapbox_gl: ^0.0.5
-  flutter_map: ^0.9.0
+  flutter_map: any
   provider: ^3.1.0
   geolocator: ^5.3.1
   geolocation: ^1.1.2
+  user_location: any
   
 
   

@@ -1,8 +1,9 @@
-
 import 'package:flutter/material.dart';
+import 'package:user_location/user_location.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
-import 'package:geolocation/geolocation.dart';
+
+
 
 class Mapbox extends StatefulWidget {
   @override
@@ -12,43 +13,30 @@ class Mapbox extends StatefulWidget {
 class _MapBoxState extends State<Mapbox> {
   MapController controller = new MapController();
 
-  getPermission() async {
-    final GeolocationResult result =
-        await Geolocation.requestLocationPermission(
-            permission: const LocationPermission(
-                android: LocationPermissionAndroid.fine,
-                ios: LocationPermissionIOS.always));
-    return result;
-  }
+ 
+  UserLocationOptions userLocationOptions;
 
-  getLocation() {
-    return getPermission().then((result) async {
-      if (result.isSucessful) {
-        final coords =
-            await Geolocation.currentLocation(accuracy: LocationAccuracy.best);
-      }
-    });
-  }
+  List<Marker> markers = [];
 
-  buildMap() {
-    getLocation().then((response) {
-      if (response.isSuccessful) {
-        response.listen((value) {
-          controller.move(
-              new LatLng(value.location.latitude, value.location.longitude),
-              15.0);
-        });
-      }
-    });
-  }
+  
 
   @override
   Widget build(BuildContext context) {
+    userLocationOptions = UserLocationOptions(
+                context: context,
+                mapController: controller,
+                markers: markers,
+                );
     return new Scaffold(
         appBar: new AppBar(title: new Text('Leaflet Maps')),
         body: new FlutterMap(
             mapController: controller,
-            options: new MapOptions(center: buildMap(), minZoom: 15.0), //ändra detta till coordinate för att komma tillbaka till stockholm
+            options: new MapOptions(center: LatLng(0,0), minZoom: 15.0,
+             plugins: [
+             // ADD THIS
+              UserLocationPlugin(),
+            ]
+            ), //ändra detta till coordinate för att komma tillbaka till stockholm
             layers: [
               new TileLayerOptions(
                   urlTemplate:
@@ -58,22 +46,12 @@ class _MapBoxState extends State<Mapbox> {
                         'pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A',
                     'id': 'Streets-copy'
                   }),
-              new MarkerLayerOptions(markers: [
-                new Marker(
-                    // width: 45.0,
-                    // height: 45.0,
-                    // point: new LatLng(40.73, -74.00),
-                    // builder: (context) => new Container(
-                    //       child: IconButton(
-                    //         icon: Icon(Icons.location_on),
-                    //         color: Colors.red,
-                    //         iconSize: 45.0,
-                    //         onPressed: () {
-                    //           print('Marker tapped');
-                    //         },
-                    //       ),
-                    )
-              ])
-            ]));
+               MarkerLayerOptions(markers: markers),
+            // ADD THIS
+            userLocationOptions,
+              
+            ]
+            
+            ));
   }
 }
