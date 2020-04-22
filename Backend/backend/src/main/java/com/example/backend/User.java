@@ -15,6 +15,14 @@ public class User {
 
   private String email;
 
+  private String phoneNumber;
+
+  private String emailAddress;
+
+  private Position position;
+
+  //private (fingerprint) fingerprint
+
   public Integer getId() {
     return id;
   }
