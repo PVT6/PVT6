@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:frontend/services/auth.dart';
 import 'package:frontend/verifyEmail.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:frontend/services/auth.dart';
 
 import 'mapsDemo.dart';
 
@@ -18,24 +19,29 @@ class SecondRouteState extends StatefulWidget {
 }
 
 class SecondRoute extends State<SecondRouteState> {
-  
   final TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
   final AuthService _auth = AuthService();
 
-  
+  final _formKey = GlobalKey<FormState>();
+
+  String email = '';
+  String password = '';
+  String error = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                colors: [Colors.green, Colors.blue])),
+        body: Container(
+      width: double.infinity,
+      height: double.infinity,
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [Colors.green, Colors.blue])),
+      child: Form(
+        key: _formKey,
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,7 +79,10 @@ class SecondRoute extends State<SecondRouteState> {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 32, vertical: 8.0),
-                child: TextField(
+                child: TextFormField(
+                  onChanged: (val) {
+                    setState(() => email = val);
+                  },
                   decoration: InputDecoration(
                       labelText: "Email", hasFloatingPlaceholder: true),
                 ),
@@ -89,7 +98,10 @@ class SecondRoute extends State<SecondRouteState> {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 32, vertical: 8.0),
-                child: TextField(
+                child: TextFormField(
+                  onChanged: (val) {
+                    setState(() => password = val);
+                  },
                   obscureText: true,
                   decoration: InputDecoration(
                       labelText: "Password", hasFloatingPlaceholder: true),
@@ -130,11 +142,16 @@ class SecondRoute extends State<SecondRouteState> {
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(30.0),
                           bottomLeft: Radius.circular(30.0))),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => PinCodeVerificationScreen(),
-                    ));
+                  onPressed: () async {
+                    if (_formKey.currentState.validate()) {
+                      dynamic result = await _auth.registerWithEmailAndPassword(
+                          email, password);
+                      if (result == null) {
+                        setState(() {
+                          error = 'Please supply a valid email';
+                        });
+                      }
+                    }
                   },
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -158,6 +175,9 @@ class SecondRoute extends State<SecondRouteState> {
           ),
         ),
       ),
-    );
+    ));
   }
 }
+
+//add this : dynamic result = await _auth.registerWithEmailAndPassword(email, password);
+//if result == null
