@@ -1,12 +1,17 @@
 package com.example.backend;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "Dog")
 public class Dog {
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
+
     private String name;
     private String race;
     private Float weight;

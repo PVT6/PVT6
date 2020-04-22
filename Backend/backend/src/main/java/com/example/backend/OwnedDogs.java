@@ -3,12 +3,17 @@ package com.example.backend;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "OwnedDogs")
 public class OwnedDogs {
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
+
     private List<Integer> dogList;
 
     public Integer getId() {
