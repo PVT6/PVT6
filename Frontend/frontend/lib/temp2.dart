@@ -47,13 +47,8 @@ class _MapBoxState extends State<Mapbox> {
     return new Scaffold(
         appBar: new AppBar(title: new Text('Leaflet Maps')),
         body: new FlutterMap(
-<<<<<<< HEAD
-            options: new MapOptions(
-                center: new LatLng(59.334591, 18.063240), minZoom: 16.0),
-=======
             mapController: controller,
             options: new MapOptions(center: buildMap(), minZoom: 15.0), //ändra detta till coordinate för att komma tillbaka till stockholm
->>>>>>> 3cfbe65a75f7ab8bceda7d498bd755361848c0a8
             layers: [
               new TileLayerOptions(
                   urlTemplate:
