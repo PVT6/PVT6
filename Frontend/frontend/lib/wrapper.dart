@@ -11,6 +11,13 @@ class Wrapper extends StatelessWidget {
     // return home scrren eller authenticate widget.
     //https://youtu.be/z05m8nlPRxk?t=394  
     
-    return Authenticate();
+
+    if (user == null) {
+      return Authenticate();
+    } else {
+      //Byt ut "Authenticate" till våran hem skärm.
+      return Authenticate(); // ska skicka användaren till hem skärmen
+    }
+    
   }
 }
