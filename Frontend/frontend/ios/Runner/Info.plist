@@ -62,6 +62,11 @@
 <key>NSRemindersUsageDescription</key>
 <string>reminders</string>
 
+    <key>MGLMapboxAccessToken</key>
+    <string>YOUR API KEY</string
+    <key>io.flutter.embedded_views_preview</key>
+    <true/>
+
 <key>NSLocationAlwaysUsageDescription</key>
 <string>Your location is required for this app</string>
 <key>NSLocationWhenInUseUsageDescription</key>

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:frontend/services/auth.dart';
 import 'package:frontend/verifyEmail.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -20,7 +21,7 @@ class SecondRoute extends State<SecondRouteState> {
   
   final TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
-
+  final AuthService _auth = AuthService();
 
   
 

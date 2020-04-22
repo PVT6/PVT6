@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:frontend/temp2.dart';
 import 'mapsDemo.dart';
 import 'secondRoute.dart';
 
@@ -244,7 +245,13 @@ class _MyHomePageState extends State<MyHomePage> {
                           SignInButton(
                             Buttons.Email,
                             mini: true,
-                            onPressed: () {},
+                            onPressed: () {
+                               Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Mapbox()),
+                              );
+                            },
                           ),
                         ],
                       ),
