@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:frontend/services/auth.dart';
 import 'package:frontend/temp2.dart';
 import 'mapsDemo.dart';
 import 'secondRoute.dart';
@@ -53,6 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool hasError = false;
   String currentText = "";
   String currentTextPW = "";
+  final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -110,10 +112,11 @@ class _MyHomePageState extends State<MyHomePage> {
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () { //validateAndSubmit,
-          if (currentText != "towtow" || currentTextPW != "towtow") {
-            // errorController.add(
-            //     ErrorAnimationType.shake); // Triggering error shake animation
+        onPressed: () {
+          dynamic result =
+              _auth.signInWithEmailAndPassword(currentText, currentTextPW);
+              print(result);
+          if (result == null) {
             setState(() {
               hasError = true;
             });
@@ -123,6 +126,20 @@ class _MyHomePageState extends State<MyHomePage> {
               MaterialPageRoute(builder: (context) => MapsDemo()),
             );
           }
+
+          //validateAndSubmit,
+          // if (currentText != "towtow" || currentTextPW != "towtow") {
+          //   // errorController.add(
+          //   //     ErrorAnimationType.shake); // Triggering error shake animation
+          //   setState(() {
+          //     hasError = true;
+          //   });
+          // } else {
+          //   Navigator.push(
+          //     context,
+          //     MaterialPageRoute(builder: (context) => MapsDemo()),
+          //   );
+          // }
         },
         child: Text("Login",
             textAlign: TextAlign.center,
@@ -218,12 +235,6 @@ class _MyHomePageState extends State<MyHomePage> {
                               );
                             },
                           ),
-                          // SizedBox(
-                          //   child: Image.asset(
-                          //     "assets/googleLoginMini.png", //google mini finns ej i flutter, tillfällig lösning
-                          //     fit: BoxFit.contain,
-                          //   ),
-                          // ),
                           SizedBox(
                               child: InkWell(
                             onTap: () {
@@ -246,7 +257,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             Buttons.Email,
                             mini: true,
                             onPressed: () {
-                               Navigator.push(
+                              Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => Mapbox()),
@@ -272,5 +283,3 @@ class _MyHomePageState extends State<MyHomePage> {
         ));
   }
 }
-
-
