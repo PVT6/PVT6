@@ -14,7 +14,7 @@ class _MapBoxState extends State<Mapbox> {
         appBar: new AppBar(title: new Text('Leaflet Maps')),
         body: new FlutterMap(
             options: new MapOptions(
-                center: new LatLng(59.334591, 18.063240), minZoom: 15.0),
+                center: new LatLng(59.334591, 18.063240), minZoom: 16.0),
             layers: [
               new TileLayerOptions(
                   urlTemplate:
