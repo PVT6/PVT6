@@ -161,3 +161,6 @@ class SecondRoute extends State<SecondRouteState> {
     );
   }
 }
+
+//add this : dynamic result = await _auth.registerWithEmailAndPassword(email, password);
+//if result == null
