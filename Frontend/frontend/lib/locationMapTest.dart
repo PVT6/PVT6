@@ -57,7 +57,7 @@ class MapSampleState extends State<MapSample> {
       pinLocationIcon = onValue;
     });
 
-    location.onLocationChanged.listen((LocationData cLoc) {
+    location.onLocationChanged().listen((LocationData cLoc) {
       // cLoc contains the lat and long of the
       // current user's position in real time,
       // so we're holding on to it
@@ -172,7 +172,7 @@ class MapSampleState extends State<MapSample> {
 
   getLocation() async {
     var location = new Location();
-    location.onLocationChanged.listen((currentLocation) {
+    location.onLocationChanged().listen((currentLocation) {
       print(currentLocation.latitude);
       print(currentLocation.longitude);
       setState(() {
