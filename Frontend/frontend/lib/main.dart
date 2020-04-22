@@ -107,8 +107,8 @@ class _MyHomePageState extends State<MyHomePage> {
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {
-          dynamic result =
+        onPressed: () async {
+          dynamic result = await
               _auth.signInWithEmailAndPassword(currentText, currentTextPW);
           print(result);
           if (result == null) {
