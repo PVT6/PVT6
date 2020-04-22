@@ -21,7 +21,7 @@ class _MapBoxState extends State<Mapbox> {
                       "https://api.mapbox.com/styles/v1/lucas-domeij/ck9b3kgpp096a1iqs11f9jnji/tiles/256/%7Bz%7D/%7Bx%7D/%7By%7D@2x?access_token=pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A",
                   additionalOptions: {
                     'accessToken':'pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A',
-                    'id': 'mapbox.mapbox_street-v7'
+                    'id': 'Streets-copy'
                   }
                   ),
               new MarkerLayerOptions(markers: [
