@@ -152,9 +152,9 @@ class SecondRoute extends State<SecondRouteState> {
                         });
                       } else {
                         Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MapsDemo()),
-            );
+                          context,
+                          MaterialPageRoute(builder: (context) => MapsDemo()),
+                        );
                       }
                     }
                   },

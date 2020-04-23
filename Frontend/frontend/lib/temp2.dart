@@ -31,7 +31,7 @@ class _MapBoxState extends State<Mapbox> {
         appBar: new AppBar(title: new Text('Leaflet Maps')),
         body: new FlutterMap(
             mapController: controller,
-            options: new MapOptions(center: LatLng(0,0), minZoom: 15.0,
+            options: new MapOptions(center: LatLng(0,0), minZoom: 15.0, 
              plugins: [
              // ADD THIS
               UserLocationPlugin(),
