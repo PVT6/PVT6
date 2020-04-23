@@ -1,17 +1,22 @@
 package com.example.backend;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "User")
 public class User {
   @Id
-  @GeneratedValue(strategy=GenerationType.AUTO)
-  private Integer id;
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USERS_SEQ")
+  @SequenceGenerator(name = "USERS_SEQ", sequenceName = "SEQUENCE_USERS")
+  private Long id;
 
   private String name;
 
@@ -19,19 +24,23 @@ public class User {
 
   private String phoneNumber;
 
+  @OneToOne(fetch = FetchType.LAZY)
   private Position position;
 
   //(fingerprint)
 
   //(password)
 
-  private Integer contactsId;
+  @OneToMany(fetch = FetchType.LAZY)
+  private Long contactId;
 
   //route
 
-  private Integer ownedDogsId;
+  @OneToMany(fetch = FetchType.LAZY)
+  private Dog ownedDog;
 
-  private Integer searchHistoryId;
+  @OneToMany(fetch = FetchType.LAZY)
+  private Integer searchHistoryId; //unsure
 
   //instagram
 
@@ -39,16 +48,16 @@ public class User {
 
   //google
 
-  private Integer createdAt;
+  private Long createdAt;
   //YYYYMMDDHHMM (temporary)                           
-  private Integer updatedAt;
+  private Long updatedAt;
 
 
-  public Integer getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -84,20 +93,20 @@ public class User {
     this.position = position;
   }
 
-  public Integer getContactsId() {
-    return contactsId;
+  public Long getContactId() {
+    return contactId;
   }
 
-  public void setContactsId(Integer contactsId) {
-    this.contactsId = contactsId;
+  public void setContactId(Long contactId) {
+    this.contactId = contactId;
   }
 
-  public Integer getOwnedDogsId() {
-    return ownedDogsId;
+  public Dog getOwnedDog() {
+    return ownedDog;
   }
 
-  public void setOwnedDogsId(Integer ownedDogsId) {
-    this.ownedDogsId = ownedDogsId;
+  public void setOwnedDog(Dog ownedDog) {
+    this.ownedDog = ownedDog;
   }
 
   public Integer getSearchHistoryId() {
@@ -108,19 +117,19 @@ public class User {
     this.searchHistoryId = searchHistoryId;
   }
 
-  public Integer getCreatedAt() {
+  public Long getCreatedAt() {
     return createdAt;
   }
 
-  public void setCreatedAt(Integer createdAt) {
+  public void setCreatedAt(Long createdAt) {
     this.createdAt = createdAt;
   }
 
-  public Integer getUpdatedAt() {
+  public Long getUpdatedAt() {
     return updatedAt;
   }
 
-  public void setUpdatedAt(Integer updatedAt) {
+  public void setUpdatedAt(Long updatedAt) {
     this.updatedAt = updatedAt;
   }
 }
