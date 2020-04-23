@@ -1,5 +1,7 @@
 package com.example.backend;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,7 +17,7 @@ public class SearchHistory {
     private Long id;
 
     @OneToMany
-    private Position pos;
+    private Set<Position> pos;
 
     public Long getId() {
         return id;
@@ -25,11 +27,11 @@ public class SearchHistory {
         this.id = id;
     }
 
-    public Position getPos() {
+    public Set getPos() {
         return pos;
     }
 
     public void setPosd(Position pos) {
-        this.pos = pos;
+        this.pos.add(pos);
     }
 }

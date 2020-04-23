@@ -1,5 +1,8 @@
 package com.example.backend;
 
+import java.util.Set;
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -16,7 +19,7 @@ public class ContactList {
     private Long id;
 
     @OneToMany(fetch = FetchType.LAZY)
-    private User user;
+    private Set<User> user;
     
     public Long getId() {
         return id;
@@ -26,11 +29,11 @@ public class ContactList {
         this.id = id;
     }
 
-    public User getUser() {
+    public Set<User> getUser() {
         return user;
     }
 
     public void setUser(User user) {
-        this.user = user;
+        this.user.add(user);
     }
 }

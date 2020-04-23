@@ -1,5 +1,8 @@
 package com.example.backend;
 
+import java.util.Set;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -17,6 +20,10 @@ public class User {
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USERS_SEQ")
   @SequenceGenerator(name = "USERS_SEQ", sequenceName = "SEQUENCE_USERS")
   private Long id;
+
+  @Column(name = "UID", unique = true, nullable = false)
+  private String uid;
+
 
   private String name;
 
@@ -37,9 +44,9 @@ public class User {
   //route
 
   @OneToMany(fetch = FetchType.LAZY)
-  private Dog ownedDog;
+  private Set<Dog> ownedDog;
 
-  @OneToMany(fetch = FetchType.LAZY)
+  @OneToOne(fetch = FetchType.LAZY)
   private SearchHistory searchHistory; //unsure
 
   //instagram
@@ -51,8 +58,17 @@ public class User {
   private Long createdAt;
   //YYYYMMDDHHMM (temporary)                           
   private Long updatedAt;
+ 
+  public User(String uid){
+    this.uid = uid;
+  }
+  public User(){
+  
+  }
 
-
+  public String getUid() {
+    return uid;
+  }
   public Long getId() {
     return id;
   }
@@ -101,12 +117,12 @@ public class User {
     this.contactList = contactList;
   }
 
-  public Dog getOwnedDog() {
+  public Set<Dog> getOwnedDog() {
     return ownedDog;
   }
 
   public void setOwnedDog(Dog ownedDog) {
-    this.ownedDog = ownedDog;
+    this.ownedDog.add(ownedDog);
   }
 
   public SearchHistory getSearchHistory() {
