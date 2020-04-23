@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:frontend/MySignInPage.dart';
 
 import 'main.dart';
 import 'editProfile.dart';
@@ -214,7 +215,7 @@ class SettingsState extends State<Settings> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MyHomePage()),
+                      MaterialPageRoute(builder: (context) => MySignInPage()),
                     );
                   },
                 ),
