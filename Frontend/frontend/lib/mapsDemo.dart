@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:frontend/MySignInPage.dart';
 import 'package:frontend/locationMapTest.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -195,7 +196,7 @@ class MapsDemoState extends State<MapsDemo> {
                         Navigator.push(
                             context,
                             new MaterialPageRoute(
-                                builder: (context) => MyHomePage()))
+                                builder: (context) => MySignInPage()))
                       }),
             ],
           ),
