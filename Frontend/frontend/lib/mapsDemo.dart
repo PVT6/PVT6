@@ -5,6 +5,7 @@ import 'package:frontend/locationMapTest.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:frontend/main.dart';
+import 'package:frontend/profile.dart';
 import 'package:frontend/temp.dart';
 import 'package:user_location/user_location.dart';
 import 'package:flutter_map/flutter_map.dart';

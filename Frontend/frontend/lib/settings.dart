@@ -3,6 +3,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:frontend/MySignInPage.dart';
+import 'package:frontend/services/auth.dart';
+
 
 import 'main.dart';
 import 'editProfile.dart';
@@ -18,7 +20,7 @@ class Settings extends StatefulWidget {
 
 class SettingsState extends State<Settings> {
   // final TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
-
+  final AuthService _auth = AuthService();
   bool _dark;
 
   @override
@@ -212,7 +214,8 @@ class SettingsState extends State<Settings> {
                     FontAwesomeIcons.powerOff,
                     color: Colors.white,
                   ),
-                  onPressed: () {
+                  onPressed: () async {
+                    await _auth.signOut();
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => MySignInPage()),
