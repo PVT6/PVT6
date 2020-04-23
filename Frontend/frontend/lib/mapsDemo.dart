@@ -6,6 +6,7 @@ import 'package:frontend/locationMapTest.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/profile.dart';
+import 'package:frontend/services/auth.dart';
 import 'package:frontend/temp.dart';
 import 'package:user_location/user_location.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -26,7 +27,7 @@ class MapsDemo extends StatefulWidget {
 
 class MapsDemoState extends State<MapsDemo> {
   MapController controller = new MapController();
-
+  final AuthService _auth = AuthService();
   UserLocationOptions userLocationOptions;
 
   List<Marker> markers = [];
@@ -193,7 +194,8 @@ class MapsDemoState extends State<MapsDemo> {
               CustomListTile(
                   Icons.lock,
                   'Log out',
-                  () => {
+                  () async => {
+                      await _auth.signOut(),
                         Navigator.push(
                             context,
                             new MaterialPageRoute(
