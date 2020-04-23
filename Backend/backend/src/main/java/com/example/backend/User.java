@@ -27,12 +27,12 @@ public class User {
   @OneToOne(fetch = FetchType.LAZY)
   private Position position;
 
-  //(fingerprint)
+  //fingerprint
 
-  //(password)
+  //password
 
-  @OneToMany(fetch = FetchType.LAZY)
-  private Long contactId;
+  @OneToOne(fetch = FetchType.LAZY)
+  private ContactList contactList;
 
   //route
 
@@ -40,7 +40,7 @@ public class User {
   private Dog ownedDog;
 
   @OneToMany(fetch = FetchType.LAZY)
-  private Integer searchHistoryId; //unsure
+  private SearchHistory searchHistory; //unsure
 
   //instagram
 
@@ -93,12 +93,12 @@ public class User {
     this.position = position;
   }
 
-  public Long getContactId() {
-    return contactId;
+  public ContactList getContactList() {
+    return contactList;
   }
 
-  public void setContactId(Long contactId) {
-    this.contactId = contactId;
+  public void setContactList(ContactList contactList) {
+    this.contactList = contactList;
   }
 
   public Dog getOwnedDog() {
@@ -109,12 +109,12 @@ public class User {
     this.ownedDog = ownedDog;
   }
 
-  public Integer getSearchHistoryId() {
-    return searchHistoryId;
+  public SearchHistory getSearchHistory() {
+    return searchHistory;
   }
 
-  public void setSearchHistoryId(Integer searchHistoryId) {
-    this.searchHistoryId = searchHistoryId;
+  public void setSearchHistory(SearchHistory searchHistory) {
+    this.searchHistory = searchHistory;
   }
 
   public Long getCreatedAt() {
