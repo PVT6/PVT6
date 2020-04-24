@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:frontend/services/auth.dart';
-import 'package:frontend/temp2.dart';
+import 'package:frontend/temp.dart';
 import 'mapsDemo.dart';
 import 'secondRoute.dart';
 
@@ -96,20 +96,6 @@ class _MySignInPageState extends State<MySignInPage> {
               MaterialPageRoute(builder: (context) => MapsDemo()),
             );
           }
-
-          //validateAndSubmit,
-          // if (currentText != "towtow" || currentTextPW != "towtow") {
-          //   // errorController.add(
-          //   //     ErrorAnimationType.shake); // Triggering error shake animation
-          //   setState(() {
-          //     hasError = true;
-          //   });
-          // } else {
-          //   Navigator.push(
-          //     context,
-          //     MaterialPageRoute(builder: (context) => MapsDemo()),
-          //   );
-          // }
         },
         child: Text("Login",
             textAlign: TextAlign.center,

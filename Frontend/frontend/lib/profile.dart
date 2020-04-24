@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:frontend/addPet.dart';
 
 class ProfileEightPage extends StatelessWidget {
   static final String path = "lib/src/pages/profile/profile8.dart";
@@ -7,37 +7,54 @@ class ProfileEightPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey.shade100,
-        extendBodyBehindAppBar: true,
-        extendBody: true,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
+      backgroundColor: Colors.grey.shade100,
+      extendBodyBehindAppBar: true,
+      extendBody: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            ProfileHeader(
+              avatar: new AssetImage("profilePH.png"),
+              coverImage: new AssetImage("backgroundStockholm.png"),
+              title:
+                  "Namn Efternamn", //"user.GetName()" där getName är en string som return namn + efternamn
+              subtitle: "Dog lover",
+              actions: <Widget>[
+                //Row med items
+                MaterialButton(
+                  color: Colors.white,
+                  shape: CircleBorder(),
+                  elevation: 0,
+                  child: Icon(Icons.edit),
+                  onPressed: () {},
+                ),
+                SizedBox(
+                  width: 230,
+                ),
+                MaterialButton(
+                  color: Colors.white,
+                  shape: CircleBorder(),
+                  elevation: 0,
+                  child: Icon(Icons.pets),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AddDog()),
+                    );
+                  },
+                ),
+              ],
+            ),
+            const SizedBox(height: 10.0),
+            UserInfo(),
+          ],
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              ProfileHeader(
-                avatar: new AssetImage("profilePH.png"),
-                coverImage: new AssetImage("backgroundStockholm.png"),
-                title: "Ramesh Mana",
-                subtitle: "Manager",
-                actions: <Widget>[
-                  MaterialButton(
-                    color: Colors.white,
-                    shape: CircleBorder(),
-                    elevation: 0,
-                    child: Icon(Icons.edit),
-                    onPressed: () {},
-                  )
-                ],
-              ),
-              const SizedBox(height: 10.0),
-              UserInfo(),
-              
-            ],
-          ),
-        ));
+      ),
+    );
   }
 }
 
@@ -102,6 +119,50 @@ class UserInfo extends StatelessWidget {
                 ],
               ),
             ),
+          ),
+          Container(
+            padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
+            alignment: Alignment.topLeft,
+            child: Text(
+              "My Dogs",
+              style: TextStyle(
+                color: Colors.black87,
+                fontWeight: FontWeight.w500,
+                fontSize: 16,
+              ),
+              textAlign: TextAlign.left,
+            ),
+          ),
+          Row(
+            children: <Widget>[
+              SizedBox(
+                  child: InkWell(
+                onTap: () {},
+                child: Container(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20.0),
+                    child: Image.asset(
+                      'googleLoginMini.png',
+                    ),
+                  ),
+                ),
+              )),
+              SizedBox(
+                width: 70,
+              ),
+              SizedBox(
+                  child: InkWell(
+                onTap: () {},
+                child: Container(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20.0),
+                    child: Image.asset(
+                      'googleLoginMini.png',
+                    ),
+                  ),
+                ),
+              )),
+            ],
           )
         ],
       ),
@@ -158,7 +219,7 @@ class ProfileHeader extends StatelessWidget {
             children: <Widget>[
               Avatar(
                 image: avatar,
-                radius: 40,
+                radius: 60,
                 backgroundColor: Colors.white,
                 borderColor: Colors.grey.shade300,
                 borderWidth: 4.0,
