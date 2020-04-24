@@ -14,10 +14,45 @@ class AddDog extends StatefulWidget {
 class AddDogState extends State<AddDog> {
   final TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
+  List _cities = [
+    "Cluj-Napoca",
+    "Bucuresti",
+    "Timisoara",
+    "Brasov",
+    "Constanta"
+  ];
+
+  List<DropdownMenuItem<String>> _dropDownMenuItems;
+  String _currentCity;
+
+  @override
+  void initState() {
+    _dropDownMenuItems = getDropDownMenuItems();
+    _currentCity = _dropDownMenuItems[0].value;
+    super.initState();
+  }
+
+  List<DropdownMenuItem<String>> getDropDownMenuItems() {
+    List<DropdownMenuItem<String>> items = new List();
+    for (String city in _cities) {
+      // here we are creating the drop down menu items, you can customize the item right here
+      // but I'll just use a simple text for this
+      items.add(new DropdownMenuItem(value: city, child: new Text(city)));
+    }
+    return items;
+  }
+
+  void changedDropDownItem(String selectedCity) {
+    print("Selected city $selectedCity, we are going to refresh the UI");
+    setState(() {
+      _currentCity = selectedCity;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      
+
         // appBar: PreferredSize(
         //   preferredSize: Size.fromHeight(50.0),
         //   child: AppBar(
@@ -42,7 +77,7 @@ class AddDogState extends State<AddDog> {
             coverImage: new AssetImage("backgroundStockholm.png"),
             actions: <Widget>[
               //Row med items
-            
+
               SizedBox(
                 width: 230,
               ),
@@ -132,18 +167,11 @@ class AddDogState extends State<AddDog> {
                   SizedBox(
                     width: 14,
                   ),
-                  Radio(
-                    value: null,
-                    groupValue: null,
-                    onChanged: (val) {},
+                  DropdownButton(
+                    value: _currentCity,
+                    items: _dropDownMenuItems,
+                    onChanged: changedDropDownItem,
                   ),
-                  Text("Male"),
-                  Radio(
-                    value: null,
-                    groupValue: null,
-                    onChanged: (val) {},
-                  ),
-                  Text("Female"),
                 ],
               ),
               Row(
@@ -286,15 +314,15 @@ class ProfileHeader extends StatelessWidget {
                 borderColor: Colors.grey.shade300,
                 borderWidth: 4.0,
               ),
-              Row(children: <Widget>[
-                SizedBox(width: 120),
-                IconButton(
-              icon: Icon(FontAwesomeIcons.camera),
-              onPressed: () {
-              },
-            ),
-              ],),
-              
+              Row(
+                children: <Widget>[
+                  SizedBox(width: 120),
+                  IconButton(
+                    icon: Icon(FontAwesomeIcons.camera),
+                    onPressed: () {},
+                  ),
+                ],
+              ),
             ],
           ),
         ),
