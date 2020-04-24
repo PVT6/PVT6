@@ -14,61 +14,65 @@ class AddDog extends StatefulWidget {
 class AddDogState extends State<AddDog> {
   final TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
-  List _cities = [
-    "Cluj-Napoca",
-    "Bucuresti",
-    "Timisoara",
-    "Brasov",
-    "Constanta"
+  List _sex = [
+    "Male",
+    "Female",
   ];
+
+  List<DropdownMenuItem<String>> _dropDownMenuItemsSex;
+  String _currentSex;
+
+    List _cities =
+  ["Yes", "No"];
 
   List<DropdownMenuItem<String>> _dropDownMenuItems;
   String _currentCity;
 
   @override
   void initState() {
-    _dropDownMenuItems = getDropDownMenuItems();
+    _dropDownMenuItemsSex = getDropDownMenuItemsSex();
+    _currentSex = _dropDownMenuItemsSex[0].value;
+      _dropDownMenuItems = getDropDownMenuItems();
     _currentCity = _dropDownMenuItems[0].value;
     super.initState();
   }
-
-  List<DropdownMenuItem<String>> getDropDownMenuItems() {
+    List<DropdownMenuItem<String>> getDropDownMenuItems() {
     List<DropdownMenuItem<String>> items = new List();
     for (String city in _cities) {
-      // here we are creating the drop down menu items, you can customize the item right here
-      // but I'll just use a simple text for this
-      items.add(new DropdownMenuItem(value: city, child: new Text(city)));
+      items.add(new DropdownMenuItem(
+          value: city,
+          child: new Text(city)
+      ));
     }
     return items;
   }
 
+  List<DropdownMenuItem<String>> getDropDownMenuItemsSex() {
+    List<DropdownMenuItem<String>> items = new List();
+    for (String sex in _sex) {
+      // here we are creating the drop down menu items, you can customize the item right here
+      // but I'll just use a simple text for this
+      items.add(new DropdownMenuItem(value: sex, child: new Text(sex)));
+    }
+    return items;
+  }
   void changedDropDownItem(String selectedCity) {
-    print("Selected city $selectedCity, we are going to refresh the UI");
     setState(() {
       _currentCity = selectedCity;
+    });
+  }
+
+
+  void changedDropDownItemSex(String selectedSex) {
+    print("Selected city $selectedSex, we are going to refresh the UI");
+    setState(() {
+      _currentSex = selectedSex;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-
-        // appBar: PreferredSize(
-        //   preferredSize: Size.fromHeight(50.0),
-        //   child: AppBar(
-        //     backgroundColor: Colors.blue,
-        //     title: Text(
-        //       'New Dog',
-        //       style: TextStyle(color: Colors.white),
-        //     ),
-        //     actions: <Widget>[
-        //       IconButton(
-        //         icon: Icon(FontAwesomeIcons.plus),
-        //         onPressed: () {},
-        //       )
-        //     ],
-        //   ),
-        // ),
         body: SingleChildScrollView(
       child: Column(
         children: <Widget>[
@@ -87,10 +91,6 @@ class AddDogState extends State<AddDog> {
                 elevation: 0,
                 child: Icon(Icons.photo),
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AddDog()),
-                  );
                 },
               ),
             ],
@@ -168,9 +168,9 @@ class AddDogState extends State<AddDog> {
                     width: 14,
                   ),
                   DropdownButton(
-                    value: _currentCity,
-                    items: _dropDownMenuItems,
-                    onChanged: changedDropDownItem,
+                    value: _currentSex,
+                    items: _dropDownMenuItemsSex,
+                    onChanged: changedDropDownItemSex,
                   ),
                 ],
               ),
@@ -184,21 +184,13 @@ class AddDogState extends State<AddDog> {
                     width: 5,
                   ),
                   Text("Neutered"),
-                  Radio(
-                    value: null,
-                    groupValue: null,
-                    onChanged: (val) {},
-                  ),
-                  Text("Yes"),
-                  SizedBox(
-                    width: 9,
-                  ),
-                  Radio(
-                    value: null,
-                    groupValue: null,
-                    onChanged: (val) {},
-                  ),
-                  Text("No"),
+                  SizedBox(width: 27,),
+                DropdownButton(
+                value: _currentCity,
+                items: _dropDownMenuItems,
+                onChanged: changedDropDownItem,
+              )
+                  
                 ],
               ),
               Row(

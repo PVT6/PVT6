@@ -44,6 +44,7 @@ dependencies:
   mapbox_search_flutter: any
   color: any
   mapbox_search: any
+  polygon_clipper: ^1.0.2
   
 dev_dependencies:
   flutter_test:
@@ -73,6 +74,18 @@ flutter:
    - photo_pencil.png
    - photo_ruler.png
    - DogBackground.jpg
+   - Bellevueparken.jpg
+   - BrewDog.jpg
+   - BrommaKyrka.jpg
+   - DogBakery.jpg
+   - hundrastgard-henriksdal.jpg
+   - Hundoarna.jpg
+   - Langholmen.jpg
+   - ormingesHundrastgard.jpg
+   - Valdemarsudde.jpg
+   - AkersbergasHundpark.jpg
+   - LeBistro.jpg
+   - HimmelskaHundar.jpg
 
    
 
