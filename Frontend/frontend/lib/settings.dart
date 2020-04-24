@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:frontend/MySignInPage.dart';
 import 'package:frontend/services/auth.dart';
 
-
 import 'main.dart';
 import 'editProfile.dart';
 
@@ -59,7 +58,7 @@ class SettingsState extends State<Settings> {
                   _dark = !_dark;
                 });
               },
-            )
+            ),
           ],
         ),
         body: Container(

@@ -8,6 +8,7 @@ import 'package:frontend/main.dart';
 import 'package:frontend/profile.dart';
 import 'package:frontend/services/auth.dart';
 import 'package:frontend/temp.dart';
+import 'package:frontend/temp2.dart';
 import 'package:user_location/user_location.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
@@ -15,6 +16,11 @@ import 'package:latlong/latlong.dart';
 import 'contacts.dart';
 import 'settings.dart';
 import 'locationMapTest.dart';
+
+ MapController controller = new MapController();
+
+ const kApiKey = 'pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A';
+
 
 class MapsDemo extends StatefulWidget {
   MapsDemo() : super();
@@ -26,7 +32,7 @@ class MapsDemo extends StatefulWidget {
 }
 
 class MapsDemoState extends State<MapsDemo> {
-  MapController controller = new MapController();
+  
   final AuthService _auth = AuthService();
   UserLocationOptions userLocationOptions;
 
@@ -60,8 +66,9 @@ class MapsDemoState extends State<MapsDemo> {
       context: context,
       mapController: controller,
       markers: markers,
+      updateMapLocationOnPositionChange: false,
     );
-    return MaterialApp(
+    return new MaterialApp(
       home: Scaffold(
         backgroundColor: Colors.blue,
         bottomNavigationBar: BottomNavigationBar(
