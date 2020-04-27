@@ -44,6 +44,7 @@ dependencies:
   mapbox_search_flutter: any
   color: any
   mapbox_search: any
+  requests: ^3.1.0
   polygon_clipper: ^1.0.2
   flutter_custom_clippers: ^1.1.1
   numberpicker: ^1.2.0

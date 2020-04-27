@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:http/http.dart' as http;
 class AuthService{
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -13,10 +13,23 @@ class AuthService{
 
 // register with email & password
 
-Future registerWithEmailAndPassword(String email, String password) async { //Kan lägga till mer saker sen.
+Future registerWithEmailAndPassword(String email, String password, String phone, String lastname, String firstname) async { //Kan lägga till mer saker sen.
 try {
   AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
   FirebaseUser user = result.user;
+  
+
+  var url = 'https://group6-15.pvt.dsv.su.se/user/new';
+
+   var response = await http.post(Uri.parse(url),  body: {'uid': user.uid, 'email': email, 'phone': phone, 'name': firstname+" "+lastname});
+
+  print(response.body);
+  if (response.statusCode == 200){
+
+  }
+  else {
+    throw("FAILED TO CONNECT TO DB");
+  }
   return user;
 }catch(e){
   print(e.toString());
@@ -28,6 +41,15 @@ Future signInWithEmailAndPassword(String email, String password) async { //Kan l
 try {
   AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
   FirebaseUser user = result.user;
+  var url = 'https://group6-15.pvt.dsv.su.se/user/find?uid=${user.uid}';
+
+   var response = await http.get(Uri.parse(url));
+     if (response.body == "Found"){
+
+  }
+  else {
+    throw("FAILED TO CONNECT TO DB or Non user found");
+  }
   return user;
 }catch(e){
   print(e.toString());

@@ -27,6 +27,9 @@ class SecondRoute extends State<SecondRouteState> {
 
   String email = '';
   String password = '';
+  String phone = '';
+  String firstname = '';
+  String lastname = '';
   String error = '';
 
   @override
@@ -64,6 +67,9 @@ class SecondRoute extends State<SecondRouteState> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 32, vertical: 8.0),
                 child: TextField(
+                     onChanged: (val) {
+                    setState(() => firstname = val);
+                  },
                   decoration: InputDecoration(
                       labelText: "Name", hasFloatingPlaceholder: true),
                 ),
@@ -72,6 +78,9 @@ class SecondRoute extends State<SecondRouteState> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 32, vertical: 8.0),
                 child: TextField(
+                     onChanged: (val) {
+                    setState(() => lastname = val);
+                  },
                   decoration: InputDecoration(
                       labelText: "Last name", hasFloatingPlaceholder: true),
                 ),
@@ -91,6 +100,9 @@ class SecondRoute extends State<SecondRouteState> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 32, vertical: 8.0),
                 child: TextField(
+                     onChanged: (val) {
+                    setState(() => phone = val);
+                  },
                   decoration: InputDecoration(
                       labelText: "Phone number", hasFloatingPlaceholder: true),
                 ),
@@ -145,7 +157,7 @@ class SecondRoute extends State<SecondRouteState> {
                   onPressed: () async {
                     if (_formKey.currentState.validate()) {
                       dynamic result = await _auth.registerWithEmailAndPassword(
-                          email, password);
+                          email, password, phone, lastname, firstname);
                       if (result == null) {
                         setState(() {
                           error = 'Please supply a valid email';

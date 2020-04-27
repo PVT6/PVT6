@@ -1,10 +1,14 @@
 package com.example.backend;
+
+import javax.validation.constraints.Null;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.provider.HibernateUtils;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,8 +26,8 @@ public class UserController    {
     private UserRepository userRepository;
 
     @PostMapping(path = "/new") // Map ONLY POST Requests
-    public @ResponseBody String addNewUser(@RequestParam String uid) {
-        User n = new User(uid);
+    public @ResponseBody String addNewUser(@RequestParam String uid, String email, String phone, String name) {
+        User n = new User(uid, email, phone, name);
         userRepository.save(n);
         return "Saved";
     }
@@ -34,10 +38,15 @@ public class UserController    {
         return u;
     }
 
-    // @GetMapping(path = "/find")
-    // public @ResponseBody User findUser(@RequestParam String uid){
-        
-    //     return ;
-    // }
+     @GetMapping(path = "/find")
+     public @ResponseBody String findUser(@RequestParam String uid){
+       User u = userRepository.findByUid(uid);
+        if (u == null){
+            return "Not found";
+        }
+        else {
+            return "Found" ;
+        }
+     }
 }
 
