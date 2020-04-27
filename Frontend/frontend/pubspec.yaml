@@ -44,14 +44,11 @@ dependencies:
   mapbox_search_flutter: any
   color: any
   mapbox_search: any
-<<<<<<< HEAD
   requests: ^3.1.0
-=======
   polygon_clipper: ^1.0.2
   flutter_custom_clippers: ^1.1.1
   numberpicker: ^1.2.0
   flutter_mapbox_navigation: ^0.0.10
->>>>>>> master
   
 dev_dependencies:
   flutter_test:
