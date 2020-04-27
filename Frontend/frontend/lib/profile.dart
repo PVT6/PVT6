@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/addPet.dart';
+import 'package:frontend/dogProfile.dart';
 
 class ProfileEightPage extends StatelessWidget {
   static final String path = "lib/src/pages/profile/profile8.dart";
@@ -82,7 +83,12 @@ class UserInfo extends StatelessWidget {
             children: <Widget>[
               SizedBox(
                   child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DogProfile()),
+                  );
+                },
                 child: Container(
                   width: 100,
                   height: 100,
@@ -99,7 +105,12 @@ class UserInfo extends StatelessWidget {
               ),
               SizedBox(
                   child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DogProfile()),
+                  );
+                },
                 child: Container(
                   width: 100,
                   height: 100,
