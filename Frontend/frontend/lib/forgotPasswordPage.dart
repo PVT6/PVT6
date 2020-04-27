@@ -17,9 +17,9 @@ class _ForgotPasswordPage extends State<ForgotPasswordPage> {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   final AuthService _auth = AuthService();
   bool hasError = false;
+  String email = "";
 
 Widget build(BuildContext context) {
-  String email = "";
 
   return Scaffold(
     appBar: AppBar(
@@ -36,13 +36,16 @@ Widget build(BuildContext context) {
             TextFormField(
               onChanged: (val) {
                 setState(() => email = val);
+                print(email);
               }
             ),
             SizedBox(height: 20.0),
             RaisedButton(
               child: Text('Reset Password'),
               onPressed: () async{
-
+                print("Pressed button.");
+                print(email);
+                await _auth.sendPasswordResetEmail(email);
               }
             )
           ]

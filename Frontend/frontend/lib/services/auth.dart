@@ -48,5 +48,10 @@ Future signOut() async {
 
 //More sign in methods. 
 
+// Reset Password
+Future sendPasswordResetEmail(String email) async {
+  return _auth.sendPasswordResetEmail(email: email);
+}
+
 
 }
