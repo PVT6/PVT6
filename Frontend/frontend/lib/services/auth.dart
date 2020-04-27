@@ -13,15 +13,15 @@ class AuthService{
 
 // register with email & password
 
-Future registerWithEmailAndPassword(String email, String password) async { //Kan lägga till mer saker sen.
+Future registerWithEmailAndPassword(String email, String password, String phone, String lastname, String firstname) async { //Kan lägga till mer saker sen.
 try {
   AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
   FirebaseUser user = result.user;
-  // https://group6-15.pvt.dsv.su.se/
-  // var url = 'https://group6-15.pvt.dsv.su.se/user/new';
+  
+
   var url = 'https://group6-15.pvt.dsv.su.se/user/new';
 
-   var response = await http.post(Uri.parse(url),  body: {'uid': user.uid});
+   var response = await http.post(Uri.parse(url),  body: {'uid': user.uid, 'email': email, 'phone': phone, 'name': firstname+" "+lastname});
 
   print(response.body);
   if (response.statusCode == 200){

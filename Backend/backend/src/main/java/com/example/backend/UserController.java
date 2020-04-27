@@ -1,5 +1,7 @@
 package com.example.backend;
 
+import javax.validation.constraints.Null;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.StatelessSession;
@@ -24,8 +26,8 @@ public class UserController    {
     private UserRepository userRepository;
 
     @PostMapping(path = "/new") // Map ONLY POST Requests
-    public @ResponseBody String addNewUser(@RequestParam String uid) {
-        User n = new User(uid);
+    public @ResponseBody String addNewUser(@RequestParam String uid, String email, String phone, String name) {
+        User n = new User(uid, email, phone, name);
         userRepository.save(n);
         return "Saved";
     }
@@ -37,9 +39,14 @@ public class UserController    {
     }
 
      @GetMapping(path = "/find")
-     public @ResponseBody User findUser(@RequestParam String uid){
+     public @ResponseBody String findUser(@RequestParam String uid){
        User u = userRepository.findByUid(uid);
-        return u ;
+        if (u == null){
+            return "Not found";
+        }
+        else {
+            return "Found" ;
+        }
      }
 }
 
