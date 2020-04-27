@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:http/http.dart' as http;
 class AuthService{
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -17,6 +17,19 @@ Future registerWithEmailAndPassword(String email, String password) async { //Kan
 try {
   AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
   FirebaseUser user = result.user;
+  // https://group6-15.pvt.dsv.su.se/
+  // var url = 'https://group6-15.pvt.dsv.su.se/user/new';
+  var url = 'https://group6-15.pvt.dsv.su.se/user/new';
+
+   var response = await http.post(Uri.parse(url),  body: {'uid': user.uid});
+
+  print(response.body);
+  if (response.statusCode == 200){
+
+  }
+  else {
+    throw("FAILED TO CONNECT TO DB");
+  }
   return user;
 }catch(e){
   print(e.toString());
