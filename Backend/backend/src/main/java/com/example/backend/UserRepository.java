@@ -1,6 +1,7 @@
 package com.example.backend;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import com.example.backend.*;
@@ -9,5 +10,6 @@ import com.example.backend.*;
 // CRUD refers Create, Read, Update, Delete
 
 public interface UserRepository extends JpaRepository<User, Integer> {
-
+    @Query("FROM User WHERE uid = ?1")
+    User findByUid(String uid);
 }
