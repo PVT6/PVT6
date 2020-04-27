@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:frontend/services/auth.dart';
 import 'MySignInPage.dart';
 
-class ForgotPasswordPageState extends StatefulWidget {
-  ForgotPasswordPageState() : super();
+class ForgotPasswordPage extends StatefulWidget {
+  ForgotPasswordPage() : super();
 
   final String title = "Forgot Password";
 
@@ -12,7 +12,7 @@ class ForgotPasswordPageState extends StatefulWidget {
 }
 
 
-class _ForgotPasswordPage extends State<MySignInPage> {
+class _ForgotPasswordPage extends State<ForgotPasswordPage> {
 
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   final AuthService _auth = AuthService();
@@ -25,19 +25,6 @@ Widget build(BuildContext context) {
     appBar: AppBar(
       elevation: 0.0,
       title: Text('Forgot Password'),
-      actions: <Widget>[
-        FlatButton.icon(
-          icon: Icon(Icons.arrow_back),
-          onPressed: (){
-            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MySignInPage()),
-                              );
-
-          },
-        )
-      ]
     ),
 
     body: Container(

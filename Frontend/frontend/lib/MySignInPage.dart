@@ -7,6 +7,7 @@ import 'package:frontend/temp.dart';
 import 'mapsDemo.dart';
 import 'secondRoute.dart';
 import 'package:latlong/latlong.dart';
+import 'forgotPasswordPage.dart';
 
 LatLng basic = new LatLng(59.343431, 18.094141);
 
@@ -158,7 +159,7 @@ class _MySignInPageState extends State<MySignInPage> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              SecondRouteState()),
+                                              ForgotPasswordPage()),
                                     );
                                   },
                                   child: new Text(
@@ -173,7 +174,7 @@ class _MySignInPageState extends State<MySignInPage> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              ForgotPasswordPageState()),
+                                              SecondRouteState()),
                                     );
                                   },
                                   child: new Text(
