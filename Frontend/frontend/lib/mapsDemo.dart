@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:frontend/MySignInPage.dart';
+import 'package:frontend/browseDogParks.dart';
 import 'package:frontend/locationMapTest.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -17,10 +18,10 @@ import 'contacts.dart';
 import 'settings.dart';
 import 'locationMapTest.dart';
 
- MapController controller = new MapController();
+MapController controller = new MapController();
 
- const kApiKey = 'pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A';
-
+const kApiKey =
+    'pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A';
 
 class MapsDemo extends StatefulWidget {
   MapsDemo() : super();
@@ -32,7 +33,6 @@ class MapsDemo extends StatefulWidget {
 }
 
 class MapsDemoState extends State<MapsDemo> {
-  
   final AuthService _auth = AuthService();
   UserLocationOptions userLocationOptions;
 
@@ -153,8 +153,19 @@ class MapsDemoState extends State<MapsDemo> {
             padding: EdgeInsets.zero,
             children: <Widget>[
               UserAccountsDrawerHeader(
-                accountName: Text("Jakob Ödman"),
-                accountEmail: Text("fakeMail123@gmail.com"),
+                accountName: Text(
+                  'Jakob Ödman',
+                  style: TextStyle(
+                      color: textYellow,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24.0,
+                      letterSpacing: 1.1),
+                ),
+                accountEmail: Text(
+                  'fakemail@gmail.com',
+                  style: TextStyle(
+                      color: Colors.white, fontSize: 16.0, letterSpacing: 1.1),
+                ),
                 currentAccountPicture: CircleAvatar(
                   child: Text(
                     "PH", //placeholder, kanske användarbild här? ändra då text till backgroundimage(user.getImage)
@@ -196,13 +207,13 @@ class MapsDemoState extends State<MapsDemo> {
                         Navigator.push(
                             context,
                             new MaterialPageRoute(
-                                builder: (context) => Settings()))
+                                builder: (context) => BrowseDogParks()))
                       }),
               CustomListTile(
                   Icons.lock,
                   'Log out',
                   () async => {
-                      await _auth.signOut(),
+                        await _auth.signOut(),
                         Navigator.push(
                             context,
                             new MaterialPageRoute(

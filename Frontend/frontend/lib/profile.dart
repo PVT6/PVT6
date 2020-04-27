@@ -7,7 +7,7 @@ class ProfileEightPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: Colors.blue.shade100,
       extendBodyBehindAppBar: true,
       extendBody: true,
       appBar: AppBar(
@@ -69,6 +69,54 @@ class UserInfo extends StatelessWidget {
             padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
             alignment: Alignment.topLeft,
             child: Text(
+              "My Dogs",
+              style: TextStyle(
+                color: Colors.black87,
+                fontWeight: FontWeight.w500,
+                fontSize: 16,
+              ),
+              textAlign: TextAlign.left,
+            ),
+          ),
+          Row(
+            children: <Widget>[
+              SizedBox(
+                  child: InkWell(
+                onTap: () {},
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20.0),
+                    child: Image.asset(
+                      'BrewDog.jpg',
+                    ),
+                  ),
+                ),
+              )),
+              SizedBox(
+                width: 10,
+              ),
+              SizedBox(
+                  child: InkWell(
+                onTap: () {},
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20.0),
+                    child: Image.asset(
+                      'LeBistro.jpg',
+                    ),
+                  ),
+                ),
+              )),
+            ],
+          ),
+          Container(
+            padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
+            alignment: Alignment.topLeft,
+            child: Text(
               "User Information",
               style: TextStyle(
                 color: Colors.black87,
@@ -93,24 +141,47 @@ class UserInfo extends StatelessWidget {
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 12, vertical: 4),
                             leading: Icon(Icons.my_location),
-                            title: Text("Location"),
-                            subtitle: Text("Stockholm"),
+                            title: Text(
+                              "Location",
+                              style: TextStyle(color: Colors.blue.shade300),
+                            ),
+                            subtitle: Text(
+                              "Stockholm",
+                              style: TextStyle(color: Colors.blue.shade300),
+                            ),
                           ),
                           ListTile(
                             leading: Icon(Icons.email),
-                            title: Text("Email"),
-                            subtitle: Text("testmail@gmail.com"),
+                            title: Text(
+                              "Email",
+                              style: TextStyle(color: Colors.blue.shade300),
+                            ),
+                            subtitle: Text(
+                              "testmail@gmail.com",
+                              style: TextStyle(color: Colors.blue.shade300),
+                            ),
                           ),
                           ListTile(
                             leading: Icon(Icons.phone),
-                            title: Text("Phone"),
-                            subtitle: Text("070-XXX XX XX"),
+                            title: Text(
+                              "Phone",
+                              style: TextStyle(color: Colors.blue.shade300),
+                            ),
+                            subtitle: Text(
+                              "070-XXX XX XX",
+                              style: TextStyle(color: Colors.blue.shade300),
+                            ),
                           ),
                           ListTile(
                             leading: Icon(Icons.person),
-                            title: Text("About Me"),
+                            title: Text(
+                              "About Me",
+                              style: TextStyle(color: Colors.blue.shade300),
+                            ),
                             subtitle: Text(
-                                "I love big fluffy dogs. Proud owner of a Bernese Mountain Dog"),
+                              "I love big fluffy dogs. Proud owner of a Bernese Mountain Dog",
+                              style: TextStyle(color: Colors.blue.shade300),
+                            ),
                           ),
                         ],
                       ),
@@ -120,50 +191,6 @@ class UserInfo extends StatelessWidget {
               ),
             ),
           ),
-          Container(
-            padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
-            alignment: Alignment.topLeft,
-            child: Text(
-              "My Dogs",
-              style: TextStyle(
-                color: Colors.black87,
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
-              ),
-              textAlign: TextAlign.left,
-            ),
-          ),
-          Row(
-            children: <Widget>[
-              SizedBox(
-                  child: InkWell(
-                onTap: () {},
-                child: Container(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20.0),
-                    child: Image.asset(
-                      'googleLoginMini.png',
-                    ),
-                  ),
-                ),
-              )),
-              SizedBox(
-                width: 70,
-              ),
-              SizedBox(
-                  child: InkWell(
-                onTap: () {},
-                child: Container(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20.0),
-                    child: Image.asset(
-                      'googleLoginMini.png',
-                    ),
-                  ),
-                ),
-              )),
-            ],
-          )
         ],
       ),
     );

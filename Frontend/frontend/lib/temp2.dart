@@ -1,101 +1,121 @@
 import 'package:flutter/material.dart';
-import 'package:mapbox_search_flutter/mapbox_search_flutter.dart';
-import 'package:user_location/user_location.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong/latlong.dart';
- MapController controller = new MapController();
+import 'dart:async';
 
- const kApiKey = 'pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A';
-class Mapbox extends StatefulWidget {
+import 'package:flutter/services.dart';
+import 'package:flutter_mapbox_navigation/flutter_mapbox_navigation.dart';
+
+
+class Navigation extends StatefulWidget {
   @override
-  _MapBoxState createState() => new _MapBoxState();
- 
+  _MyAppState createState() => _MyAppState();
 }
 
-class _MapBoxState extends State<Mapbox> {
-  
+class _MyAppState extends State<Navigation> {
+  String _platformVersion = 'Android';
+  final _origin =
+      Location(name: "City Hall", latitude: 42.886448, longitude: -78.878372);
+  final _destination = Location(
+      name: "Downtown Buffalo", latitude: 42.8866177, longitude: -78.8814924);
 
- 
-  UserLocationOptions userLocationOptions;
-
-  List<Marker> markers = [];
-
-  
+  MapboxNavigation _directions;
+  bool _arrived = false;
+  double _distanceRemaining, _durationRemaining;
 
   @override
-  Widget build(BuildContext context) {
-    userLocationOptions = UserLocationOptions(
-                context: context,
-                mapController: controller,
-                updateMapLocationOnPositionChange: false,
-                markers: markers,
-                defaultZoom: 16.0
-                );
-    return new Scaffold(
-        appBar: new AppBar(title: new Text('Leaflet Maps')),
-        floatingActionButton: FloatingActionButton.extended(
-        label: Text('Search'),
-        icon: Icon(Icons.search),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => SearchPage(),
-            ),
-          );
-        },
-      ),
-        body: new FlutterMap(
-            mapController: controller,
-            options: new MapOptions(center: LatLng(0,0), minZoom: 15.0, 
-             plugins: [
-             // ADD THIS
-              UserLocationPlugin(),
-            ]
-            ), //ändra detta till coordinate för att komma tillbaka till stockholm
-            layers: [
-              new TileLayerOptions(
-                  urlTemplate:
-                      "https://api.mapbox.com/styles/v1/lucas-domeij/ck9b3kgpp096a1iqs11f9jnji/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A",
-                  additionalOptions: {
-                    'accessToken':
-                        'pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A',
-                    'id': 'Streets-copy'
-                  }),
-               MarkerLayerOptions(markers: markers),
-            // ADD THIS
-            userLocationOptions,
-              
-            ]
-            
-            ));
+  void initState() {
+    super.initState();
+    initPlatformState();
   }
-}
-class SearchPage extends StatelessWidget {
-  const SearchPage({Key key}) : super(key: key);
+
+  // Platform messages are asynchronous, so we initialize in an async method.
+  Future<void> initPlatformState() async {
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    _directions = MapboxNavigation(onRouteProgress: (arrived) async {
+      _distanceRemaining = await _directions.distanceRemaining;
+      _durationRemaining = await _directions.durationRemaining;
+
+      setState(() {
+        _arrived = arrived;
+      });
+      if (arrived)
+        {
+          await Future.delayed(Duration(seconds: 3));
+          await _directions.finishNavigation();
+        }
+    });
+
+    String platformVersion;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      platformVersion = await _directions.platformVersion;
+    } on PlatformException {
+      platformVersion = 'Failed to get platform version.';
+    }
+
+    setState(() {
+      _platformVersion = platformVersion;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.arrow_back_ios),
-        onPressed: () {
-          Navigator.pop(context);
-        },
-      ),
-      body: SafeArea(
-        bottom: false,
-        child: MapBoxPlaceSearchWidget(
-          popOnSelect: true,
-          apiKey: kApiKey,
-          searchHint: 'Search around',
-          limit: 10,
-          onSelected: (place) {
-            LatLng pos = new LatLng(place.geometry.coordinates[1], place.geometry.coordinates[0]);
-            controller.move( pos, 15.0 );
-          
-          },
-          context: context,
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Plugin example app'),
+        ),
+        body: Center(
+          child: Column(children: <Widget>[
+            SizedBox(
+              height: 30,
+            ),
+            Text('Running on: $_platformVersion\n'),
+            SizedBox(
+              height: 60,
+            ),
+            RaisedButton(
+              child: Text("Start Navigation"),
+              onPressed: () async {
+                await _directions.startNavigation(
+                    origin: _origin,
+                    destination: _destination,
+                    mode: NavigationMode.drivingWithTraffic,
+                    simulateRoute: true, language: "German", units: VoiceUnits.metric);
+              },
+            ),
+            SizedBox(
+              height: 60,
+            ),
+            Padding(
+              padding: EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Text("Distance Remaining: "),
+                      Text(_distanceRemaining != null
+                          ? "${(_distanceRemaining * 0.000621371).toStringAsFixed(1)} miles"
+                          : "---")
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Text("Duration Remaining: "),
+                      Text(_durationRemaining != null
+                          ? "${(_durationRemaining / 60).toStringAsFixed(0)} minutes"
+                          : "---")
+                    ],
+                  )
+                ],
+              ),
+            ),
+
+          ]),
         ),
       ),
     );
