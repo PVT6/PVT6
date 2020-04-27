@@ -5,6 +5,9 @@ import 'package:frontend/services/auth.dart';
 import 'package:frontend/temp.dart';
 import 'mapsDemo.dart';
 import 'secondRoute.dart';
+import 'package:latlong/latlong.dart';
+
+LatLng basic = new LatLng(59.343431, 18.094141);
 
 Color darkGreen = Colors.green[900];
 Color lightGreen = Colors.green[100];
@@ -104,14 +107,13 @@ class _MySignInPageState extends State<MySignInPage> {
       ),
     );
     return Scaffold(
-        backgroundColor: lightGreen,
         body: Center(
           child: Container(
             decoration: BoxDecoration(
                 gradient: LinearGradient(
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft,
-                    colors: [Colors.green, Colors.blue])),
+                    colors: [Colors.blue, Colors.blue.shade200])),
             child: Stack(fit: StackFit.expand, children: <Widget>[
               SingleChildScrollView(
                 padding: const EdgeInsets.all(36.0),
@@ -125,12 +127,12 @@ class _MySignInPageState extends State<MySignInPage> {
                           Row(children: <Widget>[
                             Expanded(
                               child: Image.asset(
-                                'assets/logophase4png.png',
+                                'assets/DogLogo.png',
                               ),
                             ),
                             Expanded(
                               child: Text(
-                                'Stockholm SafeLight',
+                                'Dog App',
                               ),
                             ),
                           ]),
@@ -220,7 +222,7 @@ class _MySignInPageState extends State<MySignInPage> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => Mapbox()),
+                                        builder: (context) => Mapbox(basic)),
                                   );
                                 },
                               ),

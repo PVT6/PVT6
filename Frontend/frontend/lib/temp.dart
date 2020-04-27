@@ -1,16 +1,19 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:frontend/dogsNearMe.dart';
 import 'package:frontend/profile.dart';
 import 'package:frontend/services/auth.dart';
+import 'package:frontend/temp2.dart';
+
 import 'package:mapbox_search_flutter/mapbox_search_flutter.dart';
 import 'package:user_location/user_location.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
 
 import 'MySignInPage.dart';
+import 'browseDogParks.dart';
 import 'contacts.dart';
-import 'mapsDemo.dart';
 import 'settings.dart';
 
 MapController controller = new MapController();
@@ -19,6 +22,9 @@ const kApiKey =
     'pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A';
 
 class Mapbox extends StatefulWidget {
+  final LatLng coordinates;
+
+  Mapbox(this.coordinates);
   @override
   _MapBoxState createState() => new _MapBoxState();
 }
@@ -58,12 +64,11 @@ class _MapBoxState extends State<Mapbox> {
     userLocationOptions = UserLocationOptions(
         context: context,
         mapController: controller,
-        onLocationUpdate: (LatLng pos) =>
-            userLocation = pos,
+        onLocationUpdate: (LatLng pos) => userLocation = pos,
         updateMapLocationOnPositionChange: false,
-        zoomToCurrentLocationOnLoad: true,
+        zoomToCurrentLocationOnLoad: false,
         markers: markers,
-        defaultZoom: 16.0);
+        defaultZoom: 30.0);
     return new Scaffold(
       appBar: new AppBar(title: new Text('Dog App')),
       drawer: Drawer(
@@ -71,8 +76,19 @@ class _MapBoxState extends State<Mapbox> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             UserAccountsDrawerHeader(
-              accountName: Text("Jakob Ödman"),
-              accountEmail: Text("fakeMail123@gmail.com"),
+              accountName: Text(
+                'Jakob Ödman',
+                style: TextStyle(
+                    color: textYellow,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24.0,
+                    letterSpacing: 1.1),
+              ),
+              accountEmail: Text(
+                'fakemail@gmail.com',
+                style: TextStyle(
+                    color: Colors.white, fontSize: 16.0, letterSpacing: 1.1),
+              ),
               currentAccountPicture: CircleAvatar(
                 child: Text(
                   "PH", //placeholder, kanske användarbild här? ändra då text till backgroundimage(user.getImage)
@@ -82,7 +98,7 @@ class _MapBoxState extends State<Mapbox> {
             ),
             CustomListTile(
                 Icons.person,
-                'Profile',
+                'My Dog Profile',
                 () => {
                       Navigator.push(
                           context,
@@ -114,7 +130,16 @@ class _MapBoxState extends State<Mapbox> {
                       Navigator.push(
                           context,
                           new MaterialPageRoute(
-                              builder: (context) => Settings()))
+                              builder: (context) => BrowseDogParks()))
+                    }),
+            CustomListTile(
+                Icons.pets,
+                'Dogs Near Me',
+                () => {
+                      Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (context) => DogsNearMe()))
                     }),
             CustomListTile(
                 Icons.lock,
@@ -142,26 +167,59 @@ class _MapBoxState extends State<Mapbox> {
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: new FlutterMap(
-          mapController: controller,
-          options:
-              new MapOptions(center: LatLng(0, 0), minZoom: 15.0, plugins: [
-            // ADD THIS
-            UserLocationPlugin(),
-          ]), //ändra detta till coordinate för att komma tillbaka till stockholm
-          layers: [
-            new TileLayerOptions(
-                urlTemplate:
-                    "https://api.mapbox.com/styles/v1/lucas-domeij/ck9b3kgpp096a1iqs11f9jnji/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A",
-                additionalOptions: {
-                  'accessToken':
-                      'pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A',
-                  'id': 'Streets-copy'
-                }),
-            MarkerLayerOptions(markers: markers),
-            // ADD THIS
-            userLocationOptions,
-          ]),
+      body: Stack(
+        children: [
+        FlutterMap(
+            mapController: controller,
+            options:
+                new MapOptions(center: widget.coordinates, minZoom: 15.0, plugins: [
+              // ADD THIS
+              UserLocationPlugin(),
+            ]), //ändra detta till coordinate för att komma tillbaka till stockholm
+            layers: [
+              new TileLayerOptions(
+                  urlTemplate:
+                      "https://api.mapbox.com/styles/v1/lucas-domeij/ck9b3kgpp096a1iqs11f9jnji/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A",
+                  additionalOptions: {
+                    'accessToken':
+                        'pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A',
+                    'id': 'Streets-copy'
+                  }),
+              MarkerLayerOptions(markers: [
+                new Marker(
+                    width: 45.0,
+                    height: 45.0,
+                    point: widget.coordinates,
+                    builder: (context) => new Container(
+                          child: IconButton(
+                            icon: Icon(Icons.pets),
+                            color: Colors.red,
+                            iconSize: 45.0,
+                            onPressed: () {
+                              print('Marker tapped');
+                            },
+                          ),
+                        )),
+                new Marker(
+                    width: 45.0,
+                    height: 45.0,
+                    point: userLocation,
+                    builder: (context) => new Container(
+                          child: IconButton(
+                            icon: Icon(Icons.person),
+                            color: Colors.red,
+                            iconSize: 45.0,
+                            onPressed: () {
+                              print('Marker tapped');
+                            },
+                          ),
+                        )),
+              ]),
+              // ADD THIS
+              userLocationOptions,
+            ]),
+            Column(children: <Widget>[],)
+      ]),
     );
   }
 }
@@ -192,6 +250,48 @@ class SearchPage extends StatelessWidget {
           },
           context: context,
         ),
+      ),
+    );
+  }
+}
+
+class CustomListTile extends StatelessWidget {
+  final IconData icon;
+  final String text;
+  final Function onTap;
+
+  CustomListTile(this.icon, this.text, this.onTap);
+  @override
+  Widget build(BuildContext context) {
+    //ToDO
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
+      child: Container(
+        decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(color: Colors.grey.shade400))),
+        child: InkWell(
+            splashColor: Colors.orangeAccent,
+            onTap: onTap,
+            child: Container(
+                height: 40,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Icon(icon),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                        ),
+                        Text(
+                          text,
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ],
+                    ),
+                    Icon(Icons.arrow_right)
+                  ],
+                ))),
       ),
     );
   }
