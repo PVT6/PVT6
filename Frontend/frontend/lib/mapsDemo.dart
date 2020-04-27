@@ -13,6 +13,7 @@ import 'package:frontend/temp2.dart';
 import 'package:user_location/user_location.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
+import 'package:flutter_config/flutter_config.dart';
 
 import 'contacts.dart';
 import 'settings.dart';
@@ -20,8 +21,8 @@ import 'locationMapTest.dart';
 
 MapController controller = new MapController();
 
-const kApiKey =
-    'pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A';
+//const kApiKey =
+    //'pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A';
 
 class MapsDemo extends StatefulWidget {
   MapsDemo() : super();
@@ -113,10 +114,10 @@ class MapsDemoState extends State<MapsDemo> {
                 layers: [
                   new TileLayerOptions(
                       urlTemplate:
-                          "https://api.mapbox.com/styles/v1/lucas-domeij/ck9b3kgpp096a1iqs11f9jnji/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A",
+                          FlutterConfig.get('MAPBOXAPI_URL'),
                       additionalOptions: {
                         'accessToken':
-                            'pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A',
+                            FlutterConfig.get('MAPBOX_ID'),
                         'id': 'Streets-copy'
                       }),
                   MarkerLayerOptions(markers: markers),
