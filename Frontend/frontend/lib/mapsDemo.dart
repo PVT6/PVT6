@@ -154,7 +154,7 @@ class MapsDemoState extends State<MapsDemo> {
             children: <Widget>[
               UserAccountsDrawerHeader(
                 accountName: Text(
-                  'Jakob Ödman',
+                  'Jakob Ödman', //userData
                   style: TextStyle(
                       color: textYellow,
                       fontWeight: FontWeight.bold,
@@ -162,13 +162,13 @@ class MapsDemoState extends State<MapsDemo> {
                       letterSpacing: 1.1),
                 ),
                 accountEmail: Text(
-                  'fakemail@gmail.com',
+                  'fakemail@gmail.com', //userData
                   style: TextStyle(
                       color: Colors.white, fontSize: 16.0, letterSpacing: 1.1),
                 ),
                 currentAccountPicture: CircleAvatar(
                   child: Text(
-                    "PH", //placeholder, kanske användarbild här? ändra då text till backgroundimage(user.getImage)
+                    "PH", //userData (om vi vill ha profilbild)
                     style: TextStyle(fontSize: 40.0),
                   ),
                 ),

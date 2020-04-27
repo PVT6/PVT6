@@ -90,7 +90,7 @@ class SettingsState extends State<Settings> {
                           //open edit profile
                         },
                         title: Text(
-                          "Namn Efternamn",
+                          "Namn Efternamn", //userData
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w500,

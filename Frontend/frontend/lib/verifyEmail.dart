@@ -81,7 +81,7 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
                       text: "Enter the code sent to ",
                       children: [
                         TextSpan(
-                            text: '+46701234567', //Phone number from user
+                            text: '+46701234567', //userData
                             style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
