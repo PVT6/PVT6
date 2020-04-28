@@ -50,8 +50,10 @@ public class UserController    {
         User u = userRepository.findByUid(uid);
         Dog d = new Dog(name, breed, age, weight);
         u.setOwnedDog(d);
+        userRepository.save(u);
         return "added new dog";
      }
+
      @GetMapping(value="/dogs")
      public Set<Dog> getMethodName(@RequestParam String uid) {
         User u = userRepository.findByUid(uid);
