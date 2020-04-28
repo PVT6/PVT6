@@ -1,5 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+
+
+
 class AuthService{
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -69,6 +73,38 @@ Future signOut() async {
 }
 
 //More sign in methods. 
+
+//Google sign in
+Future googleSignIn() async {
+  // GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+  // GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+  // final AuthCredential credential = GoogleAuthProvider.getCredential
+  // ( accessToken: googleAuth.accessToken,
+  //   idToken: googleAuth.idToken
+  // );
+  // FirebaseUser user = await _auth.signInWithCredential(credential);
+  // return user;
+  try {
+    GoogleSignIn googleSignIn = GoogleSignIn();
+    GoogleSignInAccount account = await googleSignIn.signIn();
+    AuthResult result = await _auth.signInWithCredential(GoogleAuthProvider.getCredential(
+      idToken: (await account.authentication).idToken,
+      accessToken: (await account.authentication).accessToken
+      ));
+    FirebaseUser user = result.user;
+    return user;
+
+  } catch(e) {
+    print("Error logging in with google.");
+    return null;
+
+  }
+
+
+
+}
+
+
 
 // Reset Password
 Future sendPasswordResetEmail(String email) async {
