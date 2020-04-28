@@ -7,7 +7,6 @@ import 'package:frontend/temp.dart';
 import 'mapsDemo.dart';
 import 'secondRoute.dart';
 import 'package:latlong/latlong.dart';
-import 'forgotPasswordPage.dart';
 
 LatLng basic = new LatLng(59.343431, 18.094141);
 
