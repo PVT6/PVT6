@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:frontend/profile.dart';
 import 'package:numberpicker/numberpicker.dart';
-
-
 
 class AddDog extends StatefulWidget {
   AddDog() : super();
@@ -14,7 +13,13 @@ class AddDog extends StatefulWidget {
 }
 
 class AddDogState extends State<AddDog> {
-  
+  final _formKey = GlobalKey<FormState>();
+
+  String name = '';
+  String breed = '';
+  String age = '';
+  String error = '';
+
   Widget _buildPageContent(BuildContext context) {
     return Container(
       color: Colors.blue.shade100,
@@ -58,84 +63,98 @@ class AddDogState extends State<AddDog> {
           ClipPath(
             clipper: RoundedDiagonalPathClipper(),
             child: Container(
-              height: 400,
-              padding: EdgeInsets.all(10.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(40.0)),
-                color: Colors.white,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                    height: 90.0,
+                height: 400,
+                padding: EdgeInsets.all(10.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(40.0)),
+                  color: Colors.white,
+                ),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 90.0,
+                      ),
+                      Container(
+                          padding: EdgeInsets.symmetric(horizontal: 20.0),
+                          child: TextField(
+                            onChanged: (val) {
+                              setState(() => name = val);
+                            },
+                            style: TextStyle(color: Colors.blue),
+                            decoration: InputDecoration(
+                                hintText: "Name",
+                                hintStyle:
+                                    TextStyle(color: Colors.blue.shade200),
+                                border: InputBorder.none,
+                                icon: Icon(
+                                  Icons.person,
+                                  color: Colors.blue,
+                                )),
+                          )),
+                      Container(
+                        child: Divider(
+                          color: Colors.blue.shade400,
+                        ),
+                        padding: EdgeInsets.only(
+                            left: 20.0, right: 20.0, bottom: 10.0),
+                      ),
+                      Container(
+                          padding: EdgeInsets.symmetric(horizontal: 20.0),
+                          child: TextField(
+                            onChanged: (val) {
+                              setState(() => breed = val);
+                            },
+                            style: TextStyle(color: Colors.blue),
+                            decoration: InputDecoration(
+                                hintText: "Breed",
+                                hintStyle:
+                                    TextStyle(color: Colors.blue.shade200),
+                                border: InputBorder.none,
+                                icon: Icon(
+                                  Icons.pets,
+                                  color: Colors.blue,
+                                )),
+                          )),
+                      Container(
+                        child: Divider(
+                          color: Colors.blue.shade400,
+                        ),
+                        padding: EdgeInsets.only(
+                            left: 20.0, right: 20.0, bottom: 10.0),
+                      ),
+                      Container(
+                          padding: EdgeInsets.symmetric(horizontal: 20.0),
+                          child: TextField(
+                            onChanged: (val) {
+                              setState(() => age = val);
+                            },
+                            style: TextStyle(color: Colors.blue),
+                            decoration: InputDecoration(
+                                hintText: "Age",
+                                hintStyle:
+                                    TextStyle(color: Colors.blue.shade200),
+                                border: InputBorder.none,
+                                icon: Icon(
+                                  Icons.calendar_today,
+                                  color: Colors.blue,
+                                )),
+                          )),
+                      Container(
+                        child: Divider(
+                          color: Colors.blue.shade400,
+                        ),
+                        padding: EdgeInsets.only(
+                            left: 20.0, right: 20.0, bottom: 10.0),
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                    ],
                   ),
-                  Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0),
-                      child: TextField(
-                        style: TextStyle(color: Colors.blue),
-                        decoration: InputDecoration(
-                            hintText: "Name",
-                            hintStyle: TextStyle(color: Colors.blue.shade200),
-                            border: InputBorder.none,
-                            icon: Icon(
-                              Icons.person,
-                              color: Colors.blue,
-                            )),
-                      )),
-                  Container(
-                    child: Divider(
-                      color: Colors.blue.shade400,
-                    ),
-                    padding:
-                        EdgeInsets.only(left: 20.0, right: 20.0, bottom: 10.0),
-                  ),
-                  Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0),
-                      child: TextField(
-                        style: TextStyle(color: Colors.blue),
-                        decoration: InputDecoration(
-                            hintText: "Breed",
-                            hintStyle: TextStyle(color: Colors.blue.shade200),
-                            border: InputBorder.none,
-                            icon: Icon(
-                              Icons.pets,
-                              color: Colors.blue,
-                            )),
-                      )),
-                  Container(
-                    child: Divider(
-                      color: Colors.blue.shade400,
-                    ),
-                    padding:
-                        EdgeInsets.only(left: 20.0, right: 20.0, bottom: 10.0),
-                  ),
-                  Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0),
-                      child: TextField(
-                        style: TextStyle(color: Colors.blue),
-                        decoration: InputDecoration(
-                            hintText: "Age",
-                            hintStyle: TextStyle(color: Colors.blue.shade200),
-                            border: InputBorder.none,
-                            icon: Icon(
-                              Icons.calendar_today,
-                              color: Colors.blue,
-                            )),
-                      )),
-                  Container(
-                    child: Divider(
-                      color: Colors.blue.shade400,
-                    ),
-                    padding:
-                        EdgeInsets.only(left: 20.0, right: 20.0, bottom: 10.0),
-                  ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                ],
-              ),
-            ),
+                )),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -152,7 +171,22 @@ class AddDogState extends State<AddDog> {
             child: Align(
               alignment: Alignment.bottomCenter,
               child: RaisedButton(
-                onPressed: () {},
+                onPressed: () async {
+                    if (_formKey.currentState.validate()) {
+                      dynamic result = await _auth.registerWithEmailAndPassword(
+                          name, breed, age);
+                      if (result == null) {
+                        setState(() {
+                          error = 'Please supply a valid email';
+                        });
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ProfileEightPage()),
+                        );
+                      }
+                    }
+                  },
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40.0)),
                 child: Text("Add dog", style: TextStyle(color: Colors.white70)),
