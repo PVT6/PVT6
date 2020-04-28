@@ -1,9 +1,9 @@
 library frontend.user;
 
 bool isLoggedIn = false;
-String name;
-String phone;
-String email;
+String name = "";
+String phone = "";
+String email = "";
 void setName(String n) {
   name = n;
 }
