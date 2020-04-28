@@ -6,7 +6,7 @@ import 'user.dart' as userlib;
 
 class ProfileEightPage extends StatelessWidget {
   static final String path = "lib/src/pages/profile/profile8.dart";
-  final prefs = SharedPreferences.getInstance();
+
   @override
   Widget build(BuildContext context) {
     
