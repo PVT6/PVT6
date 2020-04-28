@@ -32,6 +32,9 @@ public class Dog {
         this.weight = weight;
       
     }
+    public Dog(){
+        
+    }
 
     public Long getId() {
         return id;
