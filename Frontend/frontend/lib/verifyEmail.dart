@@ -3,7 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/mapsDemo.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-
+import 'user.dart' as userlib;
 import 'intro_slider.dart';
 
 Color darkGreen = Colors.green[900];
@@ -81,7 +81,7 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
                       text: "Enter the code sent to ",
                       children: [
                         TextSpan(
-                            text: '+46701234567', //userData
+                            text: userlib.phone, //userData
                             style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,

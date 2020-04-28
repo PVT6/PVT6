@@ -39,14 +39,9 @@ public class UserController    {
     }
 
      @GetMapping(path = "/find")
-     public @ResponseBody String findUser(@RequestParam String uid){
+     public @ResponseBody User findUser(@RequestParam String uid){
        User u = userRepository.findByUid(uid);
-        if (u == null){
-            return "Not found";
-        }
-        else {
-            return "Found" ;
-        }
+       return u;
      }
 }
 

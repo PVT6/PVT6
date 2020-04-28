@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+import '../user.dart' as userlib;
 
 
 
@@ -25,11 +28,14 @@ try {
 
   var url = 'https://group6-15.pvt.dsv.su.se/user/new';
 
-   var response = await http.post(Uri.parse(url),  body: {'uid': user.uid, 'email': email, 'phone': phone, 'name': firstname+" "+lastname});
+  var response = await http.post(Uri.parse(url),  body: {'uid': user.uid, 'email': email, 'phone': phone, 'name': firstname+" "+lastname});
 
   print(response.body);
   if (response.statusCode == 200){
-
+    userlib.setName(firstname+" "+lastname);
+    userlib.setPhone(phone);
+    userlib.setEmail(email);
+    userlib.setLogin(true);
   }
   else {
     throw("FAILED TO CONNECT TO DB");
@@ -48,8 +54,12 @@ try {
   var url = 'https://group6-15.pvt.dsv.su.se/user/find?uid=${user.uid}';
 
    var response = await http.get(Uri.parse(url));
-     if (response.body == "Found"){
-
+    if (response.body != ""){
+      var user = json.decode(response.body);
+      userlib.setName(user['name']);
+      userlib.setPhone(user['phoneNumber']);
+      userlib.setEmail(user['email']);
+      userlib.setLogin(true);
   }
   else {
     throw("FAILED TO CONNECT TO DB or Non user found");
