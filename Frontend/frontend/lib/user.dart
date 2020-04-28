@@ -14,11 +14,11 @@ void setPhone(String n) {
 void setEmail(String n) {
   email = n;
 }
-void setLogin(bool logged){
-  isLoggedIn = logged;
+void setLogin(bool n){
+  isLoggedIn = n;
 }
-void setUid(String uid){
-  uid = uid;
+void setUid(String n){
+  uid = n;
 }
 
 
