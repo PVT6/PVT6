@@ -201,12 +201,13 @@ class _MySignInPageState extends State<MySignInPage> {
                               ),
                               SizedBox(
                                   child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => MapsDemo()),
-                                  );
+                                onTap: () async {
+                                  await _auth.googleSignIn();
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //       builder: (context) => MapsDemo()),
+                                  // );
                                 },
                                 child: Container(
                                   child: ClipRRect(
