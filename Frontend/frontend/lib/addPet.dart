@@ -77,11 +77,17 @@ class AddDogState extends State<AddDog> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       SizedBox(
-                        height: 90.0,
+                        height: 70.0,
                       ),
                       Container(
                           padding: EdgeInsets.symmetric(horizontal: 20.0),
-                          child: TextField(
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Please enter some text';
+                              }
+                              return null;
+                            },
                             onChanged: (val) {
                               setState(() => name = val);
                             },
@@ -105,7 +111,13 @@ class AddDogState extends State<AddDog> {
                       ),
                       Container(
                           padding: EdgeInsets.symmetric(horizontal: 20.0),
-                          child: TextField(
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Please enter some text';
+                              }
+                              return null;
+                            },
                             onChanged: (val) {
                               setState(() => breed = val);
                             },
@@ -129,7 +141,13 @@ class AddDogState extends State<AddDog> {
                       ),
                       Container(
                           padding: EdgeInsets.symmetric(horizontal: 20.0),
-                          child: TextField(
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Please enter some text';
+                              }
+                              return null;
+                            },
                             onChanged: (val) {
                               setState(() => age = val);
                             },
@@ -174,22 +192,24 @@ class AddDogState extends State<AddDog> {
               alignment: Alignment.bottomCenter,
               child: RaisedButton(
                 onPressed: () async {
-                    if (_formKey.currentState.validate()) {
-                         var url = 'https://group6-15.pvt.dsv.su.se/user/${userlib.uid}/newdog';
-                         var response = await http.post(Uri.parse(url),  body: {'name': name, 'breed': breed, 'age': age, 'weight': "0" });
-                         if (response.statusCode == 200){
-                          Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => ProfileEightPage()),
-                          );
-                         } 
-                         else {
-
-                         }
-                        
-                      
-                    }
-                  },
+                  if (_formKey.currentState.validate()) {
+                    var url =
+                        'https://group6-15.pvt.dsv.su.se/user/${userlib.uid}/newdog';
+                    var response = await http.post(Uri.parse(url), body: {
+                      'name': name,
+                      'breed': breed,
+                      'age': age,
+                      'weight': "0"
+                    });
+                    if (response.statusCode == 200) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ProfileEightPage()),
+                      );
+                    } else {}
+                  }
+                },
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40.0)),
                 child: Text("Add dog", style: TextStyle(color: Colors.white70)),
