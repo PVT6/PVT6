@@ -77,14 +77,14 @@ class AddDogState extends State<AddDog> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       SizedBox(
-                        height: 70.0,
+                        height: 75.0,
                       ),
                       Container(
                           padding: EdgeInsets.symmetric(horizontal: 20.0),
                           child: TextFormField(
                             validator: (value) {
                               if (value.isEmpty) {
-                                return 'Please enter some text';
+                                return 'Required field';
                               }
                               return null;
                             },
@@ -114,7 +114,7 @@ class AddDogState extends State<AddDog> {
                           child: TextFormField(
                             validator: (value) {
                               if (value.isEmpty) {
-                                return 'Please enter some text';
+                                return 'Required field';
                               }
                               return null;
                             },
@@ -144,7 +144,7 @@ class AddDogState extends State<AddDog> {
                           child: TextFormField(
                             validator: (value) {
                               if (value.isEmpty) {
-                                return 'Please enter some text';
+                                return 'Required field';
                               }
                               return null;
                             },
@@ -209,7 +209,9 @@ class AddDogState extends State<AddDog> {
                         MaterialPageRoute(
                             builder: (context) => ProfileEightPage()),
                       );
-                    } else {}
+                    } else {
+                      
+                    }
                   }
                 },
                 shape: RoundedRectangleBorder(
