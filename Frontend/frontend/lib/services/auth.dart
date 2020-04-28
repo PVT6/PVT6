@@ -10,6 +10,7 @@ import '../user.dart' as userlib;
 class AuthService{
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
 // auth chnage user stream
   Stream<FirebaseUser> get user {
@@ -75,6 +76,7 @@ try {
 // sign out
 Future signOut() async {
   try {
+    await _googleSignIn.signOut();
     return await _auth.signOut();
   } catch(e){
     print(e.toString());
@@ -95,8 +97,7 @@ Future googleSignIn() async {
   // FirebaseUser user = await _auth.signInWithCredential(credential);
   // return user;
   try {
-    GoogleSignIn googleSignIn = GoogleSignIn();
-    GoogleSignInAccount account = await googleSignIn.signIn();
+    GoogleSignInAccount account = await _googleSignIn.signIn();
     AuthResult result = await _auth.signInWithCredential(GoogleAuthProvider.getCredential(
       idToken: (await account.authentication).idToken,
       accessToken: (await account.authentication).accessToken
