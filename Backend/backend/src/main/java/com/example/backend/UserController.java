@@ -1,5 +1,7 @@
 package com.example.backend;
 
+import java.util.Set;
+
 import javax.validation.constraints.Null;
 
 import org.hibernate.Session;
@@ -44,10 +46,17 @@ public class UserController    {
        return u;
      }
      @PostMapping(path = "/{uid}/newdog") // Map ONLY POST Requests
-     public @ResponseBody String addNewDog(@RequestParam String uid, String email, String phone, String name) {
+     public @ResponseBody String addNewDog(@RequestParam String uid, String name, String breed, String age, String weight) {
         User u = userRepository.findByUid(uid);
-     
+        Dog d = new Dog(name, breed, age, weight,u);
+        u.setOwnedDog(d);
         return "added new dog";
      }
+     @GetMapping(value="/{uid}/dogs")
+     public Set<Dog> getMethodName(@RequestParam String uid) {
+        User u = userRepository.findByUid(uid);
+        return u.getOwnedDog();
+     }
+     
 }
 
