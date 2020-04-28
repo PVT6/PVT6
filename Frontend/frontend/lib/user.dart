@@ -4,6 +4,7 @@ bool isLoggedIn = false;
 String name = "";
 String phone = "";
 String email = "";
+String uid = "";
 void setName(String n) {
   name = n;
 }
@@ -15,6 +16,9 @@ void setEmail(String n) {
 }
 void setLogin(bool logged){
   isLoggedIn = logged;
+}
+void setUid(String uid){
+  uid = uid;
 }
 
 
