@@ -22,15 +22,15 @@ public class Dog {
     private String age;
     private String weight;
     
-    @OneToOne(fetch = FetchType.LAZY)
-    private User u;
 
-    public Dog(String name, String breed, String age, String weight, User u){
+
+
+    public Dog(String name, String breed, String age, String weight){
         this.name = name;
         this.breed = breed;
         this.age = age;
         this.weight = weight;
-        this.u = u;
+      
     }
 
     public Long getId() {

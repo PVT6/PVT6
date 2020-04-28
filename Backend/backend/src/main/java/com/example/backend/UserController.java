@@ -48,7 +48,7 @@ public class UserController    {
      @PostMapping(path = "/newdog") // Map ONLY POST Requests
      public @ResponseBody String addNewDog(@RequestParam String uid, String name, String breed, String age, String weight) {
         User u = userRepository.findByUid(uid);
-        Dog d = new Dog(name, breed, age, weight, u);
+        Dog d = new Dog(name, breed, age, weight);
         u.setOwnedDog(d);
         return "added new dog";
      }

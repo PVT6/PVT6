@@ -22,7 +22,7 @@ public class DemoApplication extends SpringBootServletInitializer{
 	}
 	@GetMapping("/version")
 	public String test() {
-		return "1.0";
+		return "1.1";
 		
 	}
 
