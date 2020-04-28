@@ -72,9 +72,6 @@ public class User {
   
   }
 
-  public String getUid() {
-    return uid;
-  }
   public Long getId() {
     return id;
   }

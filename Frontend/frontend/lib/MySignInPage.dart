@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:frontend/forgotPasswordPage.dart';
 import 'package:frontend/services/auth.dart';
 import 'package:frontend/temp.dart';
 import 'mapsDemo.dart';
@@ -157,12 +158,13 @@ class _MySignInPageState extends State<MySignInPage> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              SecondRouteState()),
+                                              ForgotPasswordPage()),
                                     );
                                   },
                                   child: new Text(
                                     "Forgot Password?",
                                     style: TextStyle(color: Colors.white),
+                                    
                                   ),
                                 ),
                                 FlatButton(
