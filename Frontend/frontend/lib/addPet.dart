@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:frontend/profile.dart';
 import 'package:numberpicker/numberpicker.dart';
+import 'user.dart' as userlib;
+import 'package:http/http.dart' as http;
 
 class AddDog extends StatefulWidget {
   AddDog() : super();
@@ -173,18 +175,19 @@ class AddDogState extends State<AddDog> {
               child: RaisedButton(
                 onPressed: () async {
                     if (_formKey.currentState.validate()) {
-                      dynamic result = await _auth.registerWithEmailAndPassword(
-                          name, breed, age);
-                      if (result == null) {
-                        setState(() {
-                          error = 'Please supply a valid email';
-                        });
-                      } else {
-                        Navigator.push(
+                         var url = 'https://group6-15.pvt.dsv.su.se/user/${userlib.uid}/newdog';
+                         var response = await http.post(Uri.parse(url),  body: {'name': name, 'breed': breed, 'age': age, 'weight': "0" });
+                         if (response.statusCode == 200){
+                          Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => ProfileEightPage()),
-                        );
-                      }
+                          );
+                         } 
+                         else {
+
+                         }
+                        
+                      
                     }
                   },
                 shape: RoundedRectangleBorder(
