@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/addPet.dart';
+import 'package:frontend/dogProfile.dart';
 
 class ProfileEightPage extends StatelessWidget {
   static final String path = "lib/src/pages/profile/profile8.dart";
@@ -18,10 +19,10 @@ class ProfileEightPage extends StatelessWidget {
         child: Column(
           children: <Widget>[
             ProfileHeader(
-              avatar: new AssetImage("profilePH.png"),
-              coverImage: new AssetImage("backgroundStockholm.png"),
+              avatar: new AssetImage("profilePH.png"), //userData
+              coverImage: new AssetImage("backgroundStockholm.png"), //userData
               title:
-                  "Namn Efternamn", //"user.GetName()" där getName är en string som return namn + efternamn
+                  "Namn Efternamn", //userData
               subtitle: "Dog lover",
               actions: <Widget>[
                 //Row med items
@@ -82,7 +83,12 @@ class UserInfo extends StatelessWidget {
             children: <Widget>[
               SizedBox(
                   child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DogProfile()),
+                  );
+                },
                 child: Container(
                   width: 100,
                   height: 100,
@@ -99,7 +105,12 @@ class UserInfo extends StatelessWidget {
               ),
               SizedBox(
                   child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DogProfile()),
+                  );
+                },
                 child: Container(
                   width: 100,
                   height: 100,
@@ -117,7 +128,7 @@ class UserInfo extends StatelessWidget {
             padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
             alignment: Alignment.topLeft,
             child: Text(
-              "User Information",
+              "User Information", //userData
               style: TextStyle(
                 color: Colors.black87,
                 fontWeight: FontWeight.w500,

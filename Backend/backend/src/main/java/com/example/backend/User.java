@@ -62,6 +62,12 @@ public class User {
   public User(String uid){
     this.uid = uid;
   }
+  public User(String uid,  String email, String phone, String name){
+    this.uid = uid;
+    this.email = email;
+    this.phoneNumber = phone;
+    this.name = name;
+  }
   public User(){
   
   }

@@ -49,13 +49,13 @@ class EditProfileState extends State<EditProfile> {
               new Container(
                 child: new TextField(
                   decoration: const InputDecoration(
-                      labelText: "Email", hintText: "abc@gmail.com"),
+                      labelText: "Email", hintText: "abc@gmail.com"), //userData
                 ),
               ),
               new Container(
                 child: new TextField(
                   decoration: const InputDecoration(
-                      labelText: "Phonenumber", hintText: "070 XXX XX XX"),
+                      labelText: "Phonenumber", hintText: "070 XXX XX XX"), //userData
                 ),
               ),
             ],

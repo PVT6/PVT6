@@ -5,6 +5,7 @@ import 'package:frontend/dogsNearMe.dart';
 import 'package:frontend/profile.dart';
 import 'package:frontend/services/auth.dart';
 import 'package:frontend/temp2.dart';
+import 'package:flutter_config/flutter_config.dart';
 
 import 'package:mapbox_search_flutter/mapbox_search_flutter.dart';
 import 'package:user_location/user_location.dart';
@@ -18,8 +19,8 @@ import 'settings.dart';
 
 MapController controller = new MapController();
 
-const kApiKey =
-    'pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A';
+//const kApiKey =
+    //'pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A';
 
 class Mapbox extends StatefulWidget {
   final LatLng coordinates;
@@ -77,7 +78,7 @@ class _MapBoxState extends State<Mapbox> {
           children: <Widget>[
             UserAccountsDrawerHeader(
               accountName: Text(
-                'Jakob Ödman',
+                'Jakob Ödman', //userData
                 style: TextStyle(
                     color: textYellow,
                     fontWeight: FontWeight.bold,
@@ -85,13 +86,13 @@ class _MapBoxState extends State<Mapbox> {
                     letterSpacing: 1.1),
               ),
               accountEmail: Text(
-                'fakemail@gmail.com',
+                'fakemail@gmail.com', //userData
                 style: TextStyle(
                     color: Colors.white, fontSize: 16.0, letterSpacing: 1.1),
               ),
               currentAccountPicture: CircleAvatar(
                 child: Text(
-                  "PH", //placeholder, kanske användarbild här? ändra då text till backgroundimage(user.getImage)
+                  "PH", //userData
                   style: TextStyle(fontSize: 40.0),
                 ),
               ),
@@ -179,10 +180,10 @@ class _MapBoxState extends State<Mapbox> {
             layers: [
               new TileLayerOptions(
                   urlTemplate:
-                      "https://api.mapbox.com/styles/v1/lucas-domeij/ck9b3kgpp096a1iqs11f9jnji/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A",
+                      FlutterConfig.get('MAPBOXAPI_URL'),
                   additionalOptions: {
                     'accessToken':
-                        'pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A',
+                        FlutterConfig.get('MAPBOX_ID'),
                     'id': 'Streets-copy'
                   }),
               MarkerLayerOptions(markers: [
@@ -240,7 +241,7 @@ class SearchPage extends StatelessWidget {
         bottom: false,
         child: MapBoxPlaceSearchWidget(
           popOnSelect: true,
-          apiKey: kApiKey,
+          apiKey: FlutterConfig.get('MAPBOX_ID'),
           searchHint: 'Search around',
           limit: 10,
           onSelected: (place) {
