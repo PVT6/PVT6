@@ -5,11 +5,8 @@ import 'package:frontend/dogsNearMe.dart';
 import 'package:frontend/profile.dart';
 import 'package:frontend/services/auth.dart';
 import 'package:frontend/temp2.dart';
-<<<<<<< HEAD
 import 'user.dart' as userlib;
-=======
 import 'package:flutter_config/flutter_config.dart';
->>>>>>> master
 
 import 'package:mapbox_search_flutter/mapbox_search_flutter.dart';
 import 'package:user_location/user_location.dart';

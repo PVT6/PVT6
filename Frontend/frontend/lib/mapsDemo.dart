@@ -13,12 +13,9 @@ import 'package:frontend/temp2.dart';
 import 'package:user_location/user_location.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
-<<<<<<< HEAD
 import 'user.dart' as userlib;
-=======
 import 'package:flutter_config/flutter_config.dart';
 
->>>>>>> master
 import 'contacts.dart';
 import 'settings.dart';
 import 'locationMapTest.dart';
