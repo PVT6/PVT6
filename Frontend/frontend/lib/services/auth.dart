@@ -51,7 +51,7 @@ Future signOut() async {
 // Reset Password
 Future sendPasswordResetEmail(String email) async {
   try {
-    return _auth.sendPasswordResetEmail(email: email);
+    return await _auth.sendPasswordResetEmail(email: email);
   } catch(e){
     print(e.toString());
     return null;
