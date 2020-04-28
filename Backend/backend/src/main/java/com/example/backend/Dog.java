@@ -1,9 +1,11 @@
 package com.example.backend;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -16,8 +18,20 @@ public class Dog {
     private Long id;
 
     private String name;
-    private String race;
-    private Float weight;
+    private String breed;
+    private String age;
+    private String weight;
+    
+    @OneToOne(fetch = FetchType.LAZY)
+    private User u;
+
+    public Dog(String name, String breed, String age, String weight){
+        this.name = name;
+        this.breed = breed;
+        this.age = age;
+        this.weight = weight;
+
+    }
 
     public Long getId() {
         return id;
@@ -30,24 +44,29 @@ public class Dog {
     public String getName() {
         return name;
     }
-
+    public String getAge() {
+        return age;
+    }
+    public void setAge(String age) {
+        this.age = age;
+    }
     public void setName(String name) {
         this.name = name;
     }
 
     public String getRace() {
-        return race;
+        return breed;
     }
 
     public void setRace(String race) {
-        this.race = race;
+        this.breed = race;
     }
 
-    public Float getWeight() {
+    public String getWeight() {
         return weight;
     }
 
-    public void setWeight(Float weight) {
+    public void setWeight(String weight) {
         this.weight = weight;
     }
 
