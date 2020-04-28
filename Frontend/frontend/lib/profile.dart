@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:frontend/addPet.dart';
 import 'package:frontend/dogProfile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'user.dart' as userlib;
+import 'package:http/http.dart' as http;
+import 'dog.dart';
 
 class ProfileEightPage extends StatelessWidget {
   static final String path = "lib/src/pages/profile/profile8.dart";
@@ -62,9 +66,24 @@ class ProfileEightPage extends StatelessWidget {
   }
 }
 
-class UserInfo extends StatelessWidget {
+class UserInfo extends StatelessWidget {    
+  List<Dog> dogs ;                
+   Future<void> getDogs() async {
+    var uid = userlib.uid;
+    var url = 'https://group6-15.pvt.dsv.su.se/user/dogs?uid=${uid}';              
+    var response = await http.get(Uri.parse(url));
+    if(response.statusCode == 200){
+      dogs = (json.decode(response.body) as List).map((i) => Dog.fromJson(i)).toList();
+    }
+    else{
+      // ERROR HÄR
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    // SKRIVA IN SÅ ATT LISTAN ANVÄNDS 
+    getDogs();
     return Container(
       padding: EdgeInsets.all(10),
       child: Column(
@@ -89,7 +108,7 @@ class UserInfo extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => DogProfile()),
+                    MaterialPageRoute(builder: (context) => DogProfile(dogs[0].name, dogs[0].age, dogs[0].weight, dogs[0].breed)),
                   );
                 },
                 child: Container(
@@ -111,7 +130,7 @@ class UserInfo extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => DogProfile()),
+                    MaterialPageRoute(builder: (context) => DogProfile("test1","12","4","444")),
                   );
                 },
                 child: Container(

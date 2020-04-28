@@ -210,7 +210,7 @@ class AddDogState extends State<AddDog> {
                             builder: (context) => ProfileEightPage()),
                       );
                     } else {
-                      
+                      // ERROR MEDELANDE HÄR
                     }
                   }
                 },

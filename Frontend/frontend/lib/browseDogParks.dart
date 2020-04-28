@@ -74,7 +74,7 @@ class MenuItemsList extends StatelessWidget {
                               Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => DogProfile()),
+                                        builder: (context) => DogProfile("test1","12","4","444")),
                                   )
                             },
                             () => {},
