@@ -45,14 +45,14 @@ public class UserController    {
        User u = userRepository.findByUid(uid);
        return u;
      }
-     @PostMapping(path = "/{uid}/newdog") // Map ONLY POST Requests
+     @PostMapping(path = "/newdog") // Map ONLY POST Requests
      public @ResponseBody String addNewDog(@RequestParam String uid, String name, String breed, String age, String weight) {
         User u = userRepository.findByUid(uid);
-        Dog d = new Dog(name, breed, age, weight,u);
+        Dog d = new Dog(name, breed, age, weight, u);
         u.setOwnedDog(d);
         return "added new dog";
      }
-     @GetMapping(value="/{uid}/dogs")
+     @GetMapping(value="/dogs")
      public Set<Dog> getMethodName(@RequestParam String uid) {
         User u = userRepository.findByUid(uid);
         return u.getOwnedDog();
