@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/addPet.dart';
 import 'package:frontend/dogProfile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'user.dart' as userlib;
 
 class ProfileEightPage extends StatelessWidget {
   static final String path = "lib/src/pages/profile/profile8.dart";
-
+  final prefs = SharedPreferences.getInstance();
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       backgroundColor: Colors.blue.shade100,
       extendBodyBehindAppBar: true,
@@ -22,7 +25,7 @@ class ProfileEightPage extends StatelessWidget {
               avatar: new AssetImage("profilePH.png"), //userData
               coverImage: new AssetImage("backgroundStockholm.png"), //userData
               title:
-                  "Namn Efternamn", //userData
+                  userlib.name, //userData
               subtitle: "Dog lover",
               actions: <Widget>[
                 //Row med items
@@ -168,7 +171,7 @@ class UserInfo extends StatelessWidget {
                               style: TextStyle(color: Colors.blue.shade300),
                             ),
                             subtitle: Text(
-                              "testmail@gmail.com",
+                               userlib.email,
                               style: TextStyle(color: Colors.blue.shade300),
                             ),
                           ),
@@ -179,7 +182,7 @@ class UserInfo extends StatelessWidget {
                               style: TextStyle(color: Colors.blue.shade300),
                             ),
                             subtitle: Text(
-                              "070-XXX XX XX",
+                              userlib.phone,
                               style: TextStyle(color: Colors.blue.shade300),
                             ),
                           ),

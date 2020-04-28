@@ -5,11 +5,13 @@ import 'package:frontend/dogsNearMe.dart';
 import 'package:frontend/profile.dart';
 import 'package:frontend/services/auth.dart';
 import 'package:frontend/temp2.dart';
+import 'user.dart' as userlib;
 
 import 'package:mapbox_search_flutter/mapbox_search_flutter.dart';
 import 'package:user_location/user_location.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
+
 
 import 'MySignInPage.dart';
 import 'browseDogParks.dart';
@@ -77,7 +79,7 @@ class _MapBoxState extends State<Mapbox> {
           children: <Widget>[
             UserAccountsDrawerHeader(
               accountName: Text(
-                'Jakob Ödman', //userData
+                userlib.name, //userData
                 style: TextStyle(
                     color: textYellow,
                     fontWeight: FontWeight.bold,
@@ -85,7 +87,7 @@ class _MapBoxState extends State<Mapbox> {
                     letterSpacing: 1.1),
               ),
               accountEmail: Text(
-                'fakemail@gmail.com', //userData
+                userlib.email, //userData
                 style: TextStyle(
                     color: Colors.white, fontSize: 16.0, letterSpacing: 1.1),
               ),

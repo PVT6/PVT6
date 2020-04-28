@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-
+import 'user.dart' as userlib;
 class EditProfile extends StatefulWidget {
   EditProfile() : super();
 
@@ -15,6 +15,7 @@ class EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
+    var email = userlib.email;
     return new Scaffold(
       appBar: new AppBar(title: const Text('Edit Profile'), actions: <Widget>[
         new Container(
@@ -49,13 +50,13 @@ class EditProfileState extends State<EditProfile> {
               new Container(
                 child: new TextField(
                   decoration: const InputDecoration(
-                      labelText: "Email", hintText: "abc@gmail.com"), //userData
+                      labelText: "Email", hintText: "abc@gmail.com"), //userData // Måste vara en const så går inte
                 ),
               ),
               new Container(
                 child: new TextField(
                   decoration: const InputDecoration(
-                      labelText: "Phonenumber", hintText: "070 XXX XX XX"), //userData
+                      labelText: "Phonenumber", hintText: "070 XXX XX XX"), //userData  // Måste vara en const så går inte
                 ),
               ),
             ],

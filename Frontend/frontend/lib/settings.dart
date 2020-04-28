@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:frontend/MySignInPage.dart';
 import 'package:frontend/services/auth.dart';
-
+import 'user.dart' as userlib;
 import 'main.dart';
 import 'editProfile.dart';
 
@@ -90,7 +90,7 @@ class SettingsState extends State<Settings> {
                           //open edit profile
                         },
                         title: Text(
-                          "Namn Efternamn", //userData
+                          userlib.name, //userData
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w500,

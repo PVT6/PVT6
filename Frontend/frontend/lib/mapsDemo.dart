@@ -13,7 +13,7 @@ import 'package:frontend/temp2.dart';
 import 'package:user_location/user_location.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
-
+import 'user.dart' as userlib;
 import 'contacts.dart';
 import 'settings.dart';
 import 'locationMapTest.dart';
@@ -154,7 +154,7 @@ class MapsDemoState extends State<MapsDemo> {
             children: <Widget>[
               UserAccountsDrawerHeader(
                 accountName: Text(
-                  'Jakob Ödman', //userData
+                  userlib.name, //userData
                   style: TextStyle(
                       color: textYellow,
                       fontWeight: FontWeight.bold,
@@ -162,7 +162,7 @@ class MapsDemoState extends State<MapsDemo> {
                       letterSpacing: 1.1),
                 ),
                 accountEmail: Text(
-                  'fakemail@gmail.com', //userData
+                  userlib.email, //userData
                   style: TextStyle(
                       color: Colors.white, fontSize: 16.0, letterSpacing: 1.1),
                 ),
