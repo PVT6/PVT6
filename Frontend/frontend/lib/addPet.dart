@@ -193,13 +193,15 @@ class AddDogState extends State<AddDog> {
               child: RaisedButton(
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
+                    print(".");
                     var url =
-                        'https://group6-15.pvt.dsv.su.se/user/${userlib.uid}/newdog';
+                        'https://group6-15.pvt.dsv.su.se/user/newdog';
                     var response = await http.post(Uri.parse(url), body: {
                       'name': name,
                       'breed': breed,
                       'age': age,
-                      'weight': "0"
+                      'weight': "0",
+                      'uid': userlib.uid
                     });
                     if (response.statusCode == 200) {
                       Navigator.push(
