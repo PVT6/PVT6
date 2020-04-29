@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/addPet.dart';
 import 'package:frontend/dogProfile.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 import 'user.dart' as userlib;
 
 class ProfileEightPage extends StatelessWidget {
-  static final String path = "lib/src/pages/profile/profile8.dart";
+
 
   @override
   Widget build(BuildContext context) {
