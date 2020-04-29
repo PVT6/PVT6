@@ -191,7 +191,8 @@ class _MySignInPageState extends State<MySignInPage> {
                               SignInButton(
                                 Buttons.Facebook,
                                 mini: true,
-                                onPressed: () {
+                                onPressed: () async {
+                                  await _auth.facebookSignIn();
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import '../user.dart' as userlib;
@@ -11,6 +12,8 @@ class AuthService{
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  //Facebook sign in
+  FacebookLogin fbLogin = new FacebookLogin();
 
 // auth chnage user stream
   Stream<FirebaseUser> get user {
@@ -86,6 +89,52 @@ Future signOut() async {
 
 //More sign in methods. 
 
+//Facebook sign in
+Future facebookSignIn() async {
+  try {
+    final facebookLoginResult = await fbLogin
+                .logIn(['email', 'public_profile']);
+                      FacebookAccessToken myToken = facebookLoginResult.accessToken;
+                                            //assuming sucess in FacebookLoginStatus.loggedIn
+                                            // we use FacebookAuthProvider class to get a credential from accessToken
+                                            // this will return an AuthCredential object that we will use to auth in firebase
+                        AuthCredential credential= FacebookAuthProvider.getCredential(accessToken: myToken.token);
+                                            // this line do auth in firebase with your facebook credential.
+                                    FirebaseUser firebaseUser = (
+                                      await FirebaseAuth.instance.signInWithCredential(credential)
+                                       ).user;
+                                       return firebaseUser;
+   
+  }
+  catch(e){
+      print("error signing in with Facebook");
+      return null;
+    }
+}
+// fbLogin.logIn(['email', 'public_profile'])
+                                  // .then((result) async {
+                                    /// in some point of your code you will get facebookLoginResult 
+
+
+                                  //    switch(result.status){
+                                  //      case FacebookLoginStatus.loggedIn:
+                                  //      FirebaseAuth.instance
+                                  //        .signInWithCredential(
+                                  //        FacebookAccessToken: result.FacebookAccessToken.token)
+                                  //        .then((signedInUser){
+                                  //          print('Signed in as ${signedInUser.displayName}');
+                                  //          Navigator.push(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //         builder: (context) => MapsDemo()),
+                                  //   );
+                                  //        } )
+                                  //        .catchError((e){
+                                  //          print(e);
+                                  //        });
+                                  //   }
+                                  //  });
+
 //Google sign in
 Future googleSignIn() async {
   // GoogleSignInAccount googleUser = await _googleSignIn.signIn();
@@ -106,7 +155,7 @@ Future googleSignIn() async {
     return user;
 
   } catch(e) {
-    print("Error logging in with google.");
+    print("Error signing in with google.");
     return null;
 
   }
