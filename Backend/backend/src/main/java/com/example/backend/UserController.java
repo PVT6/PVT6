@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.provider.HibernateUtils;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,7 +59,7 @@ public class UserController    {
         }
      }
 
-     @PostMapping(value="/updatePhoneNumber")
+     @PostMapping(value="/updatephonenumber")
      public @ResponseBody boolean newPhoneNumberForUser(@RequestBody String uid, String newPhone ) {
         try{
             User u = userRepository.findByUid(uid);
@@ -71,7 +72,7 @@ public class UserController    {
          
      }
 
-     @PostMapping(value="/updateEmail")
+     @PostMapping(value="/updateemail")
      public @ResponseBody boolean newEmailForUser(@RequestBody String uid, String newEmail ) {
         try{
             User u = userRepository.findByUid(uid);
@@ -83,9 +84,22 @@ public class UserController    {
         }
          
      }
+
+
+     @DeleteMapping(value = "/deleteuser")
+     public @ResponseBody boolean deleteUser(@RequestBody String uid) {
+        try{
+            User u = userRepository.findByUid(uid);
+            userRepository.delete(u);
+            return true;
+        } catch(Exception e) {
+            System.out.println(e.toString());
+            return false;
+     }
+    }
      
      
 
     
-}
+    }
 
