@@ -4,118 +4,107 @@ import 'package:frontend/profile.dart';
 import 'package:frontend/user.dart';
 
 import 'addPet.dart';
+import 'dog.dart';
 
 class DogProfile extends StatefulWidget {
-  String age;
+  Dog dog;
 
-  String breed;
-  String name;
-  String weight;
-
-  
-  DogProfile(String name, String age, String weight, String breed) : super() {
-    this.age = age;
-    this.name = name;
-    this.weight = weight;
-    this.breed = breed;
+  DogProfile(Dog dog) : super() {
+    this.dog = dog;
   }
 
-  
-
   final String title = "Maps Demo";
- 
+
 //String name, String age, String weight, String breed
   @override
-  DogProfileState createState() => DogProfileState(this.name, this.age, this.weight, this.breed);
+  DogProfileState createState() => DogProfileState(this.dog);
 }
 
 class DogProfileState extends State<DogProfile> {
-  String age;
-  String breed;
-  String name;
-  String weight;
-  DogProfileState(String name, String age, String weight, String breed){
-    this.age = age;
-    this.name = name;
-    this.breed = breed;
-    this.weight = weight;
+ 
+  Dog dog;
+
+  DogProfileState(Dog dog) {
+    this.dog = dog;
   }
 
   @override
   Widget build(BuildContext context) {
-        return Scaffold(
-          body: SingleChildScrollView(
-            child: Column(
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Stack(
               children: <Widget>[
-                Stack(
-                  children: <Widget>[
-                    SizedBox(
-                        height: 300.0,
-                        child: Carousel(
-                          boxFit: BoxFit.cover,
-                          autoplay: false,
-                          animationCurve: Curves.fastOutSlowIn,
-                          animationDuration: Duration(milliseconds: 1000),
-                          dotSize: 6.0,
-                          dotIncreasedColor: Color(0xFFFF335C),
-                          dotBgColor: Colors.transparent,
-                          dotPosition: DotPosition.topRight,
-                          dotVerticalPadding: 10.0,
-                          showIndicator: true,
-                          indicatorBgPadding: 7.0,
-                          images: [
-                            Image.asset("BrewDog.jpg"),
-                            Image.asset("ormingesHundrastgard.jpg"),
-                            Image.asset("HimmelskaHundar.jpg"),
-                            Image.asset("LeBistro.jpg"),
-                          ],
-                        )),
-                    Positioned(
-                      bottom: 20.0,
-                      left: 20.0,
-                      right: 20.0,
-                      child: Row(
-                        children: <Widget>[
-                          SizedBox(width: 280,),
-                          MaterialButton(
-                            color: Colors.white,
-                            shape: CircleBorder(),
-                            elevation: 0,
-                            child: Icon(Icons.edit),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => AddDog()),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-                Divider(),
-                Padding(
-                  padding:
-                      const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                SizedBox(
+                    height: 300.0,
+                    child: Carousel(
+                      boxFit: BoxFit.cover,
+                      autoplay: false,
+                      animationCurve: Curves.fastOutSlowIn,
+                      animationDuration: Duration(milliseconds: 1000),
+                      dotSize: 6.0,
+                      dotIncreasedColor: Color(0xFFFF335C),
+                      dotBgColor: Colors.transparent,
+                      dotPosition: DotPosition.topRight,
+                      dotVerticalPadding: 10.0,
+                      showIndicator: true,
+                      indicatorBgPadding: 7.0,
+                      images: [
+                        Image.asset("BrewDog.jpg"),
+                        Image.asset("ormingesHundrastgard.jpg"),
+                        Image.asset("HimmelskaHundar.jpg"),
+                        Image.asset("LeBistro.jpg"),
+                      ],
+                    )),
+                Positioned(
+                  bottom: 20.0,
+                  left: 20.0,
+                  right: 20.0,
+                  child: Row(
                     children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Text(
-                            name,
-                            style: Theme.of(context).textTheme.title,
-                          ),
-                          SizedBox(
-                            width: 200,
-                          ),
-                          Icon(
-                            Icons.pets,
-                            color: Colors.blue,
-                          ),
-                          Text(
-                            breed,
+                      SizedBox(
+                        width: 280,
+                      ),
+                      MaterialButton(
+                        color: Colors.white,
+                        shape: CircleBorder(),
+                        elevation: 0,
+                        child: Icon(Icons.edit),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => AddDog()),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+            Divider(),
+            Padding(
+              padding:
+                  const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        dog.name,
+                        style: Theme.of(context).textTheme.title,
+                      ),
+                      SizedBox(
+                        width: 200,
+                      ),
+                      Icon(
+                        Icons.pets,
+                        color: Colors.blue,
+                      ),
+                      Text(
+                        dog.breed,
                         style: TextStyle(color: Colors.blue),
                       )
                     ],
@@ -144,7 +133,7 @@ class DogProfileState extends State<DogProfile> {
                         width: 36,
                       ),
                       Text(
-                        age,
+                        dog.age,
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
@@ -152,7 +141,7 @@ class DogProfileState extends State<DogProfile> {
                         width: 105.0,
                       ),
                       Text(
-                        weight,
+                        dog.weight,
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
@@ -211,6 +200,13 @@ class DogProfileState extends State<DogProfile> {
                                 MaterialPageRoute(
                                     builder: (context) => ProfileEightPage()),
                               );
+                            },
+                          ),
+                          FlatButton(
+                            child: Text('Owners Profile'),
+                            color: Colors.blue,
+                            onPressed: () {
+                              //vill ta bort object från lista här
                             },
                           ),
                         ],

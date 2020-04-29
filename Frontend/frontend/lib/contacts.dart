@@ -104,6 +104,8 @@ class _ContactListPageState extends State<ContactListPage> {
       body: SafeArea(
         child: _contacts != null
             ? ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
                 itemCount: _contacts?.length ?? 0,
                 itemBuilder: (BuildContext context, int index) {
                   Contact c = _contacts?.elementAt(index);

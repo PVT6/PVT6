@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/dogProfile.dart';
 import 'package:latlong/latlong.dart';
 import 'package:frontend/dogPlaceDesc.dart';
+
 import 'temp2.dart';
 
 var textYellow = Color(0xFFf6c24d);
@@ -16,6 +17,7 @@ var redLight = Color(0xFFf2dcdf);
 var blue = Color(0xFF398bcf);
 var blueLight = Color(0xFFc1dbee);
 LatLng location = new LatLng(0, 0);
+
 
 class BrowseDogParks extends StatelessWidget {
   @override
@@ -71,11 +73,7 @@ class MenuItemsList extends StatelessWidget {
                             'Hundöarna Drottningholm',
                             "Looking for a place where your dog can run free with other dogs look no further, hundöarna at Drottningholms castle are is by all means the place for you to visit. The park is home for majestice trees and bridges, aswell as a quite place for peaceful walks. Perfect for walkers and dogowners alike.",
                             () => {
-                              Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => DogProfile("test1","12","4","444")),
-                                  )
+                              
                             },
                             () => {},
                             location = new LatLng(59.321841, 17.886783),
