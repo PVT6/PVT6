@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 @Controller // This means that this class is a Controller
@@ -43,5 +45,47 @@ public class UserController    {
        User u = userRepository.findByUid(uid);
        return u;
      }
+
+     @PostMapping(value="/updatename")
+     public @ResponseBody boolean newNameForUser(@RequestBody String uid, String newName) {
+         try{
+            User u = userRepository.findByUid(uid);
+            u.setName(newName);
+            return true;
+        } catch(Exception e) {
+            System.out.println(e.toString());
+            return false;
+        }
+     }
+
+     @PostMapping(value="/updatePhoneNumber")
+     public @ResponseBody boolean newPhoneNumberForUser(@RequestBody String uid, String newPhone ) {
+        try{
+            User u = userRepository.findByUid(uid);
+            u.setPhoneNumber(newPhone);
+            return true;
+        } catch(Exception e) {
+            System.out.println(e.toString());
+            return false;
+        }
+         
+     }
+
+     @PostMapping(value="/updateEmail")
+     public @ResponseBody boolean newEmailForUser(@RequestBody String uid, String newEmail ) {
+        try{
+            User u = userRepository.findByUid(uid);
+            u.setEmail(newEmail);
+            return true;
+        } catch(Exception e) {
+            System.out.println(e.toString());
+            return false;
+        }
+         
+     }
+     
+     
+
+    
 }
 
