@@ -15,7 +15,7 @@ class EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
-    var email = userlib.email;
+   
     return new Scaffold(
       appBar: new AppBar(title: const Text('Edit Profile'), actions: <Widget>[
         new Container(
@@ -39,16 +39,19 @@ class EditProfileState extends State<EditProfile> {
             children: <Widget>[
               new Container(
                 child: new TextField(
+                  controller: new TextEditingController(text: userlib.name),
                   decoration: const InputDecoration(labelText: "First Name"),
                 ),
               ),
               new Container(
                 child: new TextField(
+                  controller: new TextEditingController(text: userlib.name),
                   decoration: const InputDecoration(labelText: "Last Name", ),
                 ),
               ),
               new Container(
                 child: new TextField(
+                  controller: new TextEditingController(text: userlib.email),
                   decoration: const InputDecoration(
                       labelText: "Email", ), //userData // Måste vara en const så går inte
                 ),
