@@ -44,19 +44,20 @@ class EditProfileState extends State<EditProfile> {
               ),
               new Container(
                 child: new TextField(
-                  decoration: const InputDecoration(labelText: "Last Name"),
+                  decoration: const InputDecoration(labelText: "Last Name", ),
                 ),
               ),
               new Container(
                 child: new TextField(
                   decoration: const InputDecoration(
-                      labelText: "Email", hintText: "abc@gmail.com"), //userData // Måste vara en const så går inte
+                      labelText: "Email", ), //userData // Måste vara en const så går inte
                 ),
               ),
               new Container(
                 child: new TextField(
+                  controller: new TextEditingController(text: userlib.phone),
                   decoration: const InputDecoration(
-                      labelText: "Phonenumber", hintText: "070 XXX XX XX"), //userData  // Måste vara en const så går inte
+                      labelText: "Phonenumber", ), //userData  // Måste vara en const så går inte
                 ),
               ),
             ],
