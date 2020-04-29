@@ -80,6 +80,7 @@ try {
 Future signOut() async {
   try {
     await _googleSignIn.signOut();
+    await fbLogin.logOut();
     return await _auth.signOut();
   } catch(e){
     print(e.toString());
@@ -155,7 +156,7 @@ Future googleSignIn() async {
     return user;
 
   } catch(e) {
-    print("Error signing in with google.");
+    print("Error logging in with google.");
     return null;
 
   }
