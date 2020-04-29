@@ -75,6 +75,13 @@ class SettingsState extends State<Settings> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    Text(
+                      "Profile",
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     Card(
                       elevation: 8.0,
                       shape: RoundedRectangleBorder(
@@ -98,7 +105,7 @@ class SettingsState extends State<Settings> {
                         ),
                         leading: CircleAvatar(
                           backgroundImage:
-                              new AssetImage('assets/googleLoginMini.png'),
+                              new AssetImage('assets/profilePH.png'),
                         ),
                         trailing: Icon(
                           Icons.edit,
@@ -149,6 +156,30 @@ class SettingsState extends State<Settings> {
                               //open change location
                             },
                           ),
+                          _buildDivider(),
+                          ListTile(
+                            leading: Icon(
+                              Icons.settings,
+                              color: Colors.blue,
+                            ),
+                            title: Text("Placeholder"),
+                            trailing: Icon(Icons.keyboard_arrow_right),
+                            onTap: () {
+                              //open change location
+                            },
+                          ),
+                          _buildDivider(),
+                          ListTile(
+                            leading: Icon(
+                              Icons.settings,
+                              color: Colors.blue,
+                            ),
+                            title: Text("Placeholder"),
+                            trailing: Icon(Icons.keyboard_arrow_right),
+                            onTap: () {
+                              //open change location
+                            },
+                          ),
                         ],
                       ),
                     ),
@@ -171,7 +202,7 @@ class SettingsState extends State<Settings> {
                       activeColor: Colors.blue,
                       contentPadding: const EdgeInsets.all(0),
                       value: false,
-                      title: Text("Enable Emergancy Button"),
+                      title: Text("See Local User On Map"),
                       onChanged: (val) {},
                     ),
                     SwitchListTile(
