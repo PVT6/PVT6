@@ -88,14 +88,6 @@ Future signOut() async {
 
 //Google sign in
 Future googleSignIn() async {
-  // GoogleSignInAccount googleUser = await _googleSignIn.signIn();
-  // GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-  // final AuthCredential credential = GoogleAuthProvider.getCredential
-  // ( accessToken: googleAuth.accessToken,
-  //   idToken: googleAuth.idToken
-  // );
-  // FirebaseUser user = await _auth.signInWithCredential(credential);
-  // return user;
   try {
     GoogleSignInAccount account = await _googleSignIn.signIn();
     AuthResult result = await _auth.signInWithCredential(GoogleAuthProvider.getCredential(
@@ -103,6 +95,7 @@ Future googleSignIn() async {
       accessToken: (await account.authentication).accessToken
       ));
     FirebaseUser user = result.user;
+    userExistsOrNot(user);
     return user;
 
   } catch(e) {
@@ -125,8 +118,43 @@ Future sendPasswordResetEmail(String email) async {
     print(e.toString());
     return null;
   }
+}
+
+Future userExistsOrNot(FirebaseUser user) async {
+  var url = 'https://group6-15.pvt.dsv.su.se/user/find?uid=${user.uid}';
+  var response = await http.get(Uri.parse(url));
+
+  if (response.body != ""){
+      var user = json.decode(response.body);
+      userlib.setName(user['name']);
+      userlib.setPhone(user['phoneNumber']);
+      userlib.setEmail(user['email']);
+      userlib.setLogin(true);
+  } else {
+     url = 'https://group6-15.pvt.dsv.su.se/user/new';
+
+     var response = await http.post(Uri.parse(url),  body: {'uid': user.uid, 'email': user.email, 'phone': "", 'name': user.displayName});
+
+     print(response.body);
+     if (response.statusCode == 200){
+         userlib.setName(user.displayName);
+         userlib.setPhone("");
+         userlib.setEmail(user.email);
+         userlib.setLogin(true);
+       }else {
+    throw("FAILED TO CONNECT TO DB");
+  }
+  return true;
+
+  }
+
+
+
+
+
 
   
+
 }
 
 
