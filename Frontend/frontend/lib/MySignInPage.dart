@@ -97,7 +97,7 @@ class _MySignInPageState extends State<MySignInPage> {
           } else {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => MapsDemo()),
+             MaterialPageRoute(builder: (context) => MapsDemo()),
             );
           }
         },
@@ -164,7 +164,7 @@ class _MySignInPageState extends State<MySignInPage> {
                                   child: new Text(
                                     "Forgot Password?",
                                     style: TextStyle(color: Colors.white),
-                                    
+
                                   ),
                                 ),
                                 FlatButton(
@@ -211,12 +211,18 @@ class _MySignInPageState extends State<MySignInPage> {
                               SizedBox(
                                   child: InkWell(
                                 onTap: () async {
-                                  await _auth.googleSignIn();
-                                  // Navigator.push(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //       builder: (context) => MapsDemo()),
-                                  // );
+                                 dynamic result = await _auth.googleSignIn();
+                                  print(result);
+                                  if (result == null) {
+                                    setState(() {
+                                      hasError = true;
+                                     });
+                                    } else {
+                                      Navigator.push(
+                                        context,
+                                     MaterialPageRoute(builder: (context) => MapsDemo()),
+                                     );
+                                  }
                                 },
                                 child: Container(
                                   child: ClipRRect(

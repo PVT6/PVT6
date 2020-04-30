@@ -11,6 +11,9 @@ class Wrapper extends StatelessWidget {
     final user = Provider.of<FirebaseUser>(context); // Getting user data from the provider.
     // return home scrren eller authenticate widget.
     //https://youtu.be/z05m8nlPRxk?t=394  
+
+    print('User :');
+    print(user);
     
 
     if (user == null) {
