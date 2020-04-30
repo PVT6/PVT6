@@ -203,7 +203,7 @@ class DogProfileState extends State<DogProfile> {
                             },
                           ),
                           FlatButton(
-                            child: Text('Owners Profile'),
+                            child: Text('Remove dog'),
                             color: Colors.blue,
                             onPressed: () {
                               //vill ta bort object från lista här
