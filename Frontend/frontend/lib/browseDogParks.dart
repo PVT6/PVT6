@@ -77,7 +77,13 @@ class MenuItemsList extends StatelessWidget {
                                         builder: (context) => DogProfile()),
                                   )
                             },
-                            () => {},
+                            () => {
+                              Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Navigation()),
+                                  )
+                            },
                             location = new LatLng(59.321841, 17.886783),
                           )))
             },

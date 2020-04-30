@@ -63,13 +63,13 @@
 <string>reminders</string>
 
     <key>MGLMapboxAccessToken</key>
-    <string>YOUR API KEY</string
+    <string>pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A</string
     <key>io.flutter.embedded_views_preview</key>
     <true/>
 
 <key>NSLocationAlwaysUsageDescription</key>
 <string>Your location is required for this app</string>
 <key>NSLocationWhenInUseUsageDescription</key>
-<string>Your location is required for this app</string>
+<string>Shows your location on the map and helps improve OpenStreetMap.</string>
 </dict>
 </plist>

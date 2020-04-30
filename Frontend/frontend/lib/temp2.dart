@@ -11,11 +11,11 @@ class Navigation extends StatefulWidget {
 }
 
 class _MyAppState extends State<Navigation> {
-  String _platformVersion = 'Android';
+  String _platformVersion = 'Unknown';
   final _origin =
-      Location(name: "City Hall", latitude: 42.886448, longitude: -78.878372);
+      Location(name: "City Hall", latitude: 59.321841, longitude: 17.886783);
   final _destination = Location(
-      name: "Downtown Buffalo", latitude: 42.8866177, longitude: -78.8814924);
+      name: "Downtown Buffalo", latitude: 59.355280, longitude: 17.920966);
 
   MapboxNavigation _directions;
   bool _arrived = false;
@@ -83,7 +83,7 @@ class _MyAppState extends State<Navigation> {
                 await _directions.startNavigation(
                     origin: _origin,
                     destination: _destination,
-                    mode: NavigationMode.drivingWithTraffic,
+                    mode: NavigationMode.walking,
                     simulateRoute: true, language: "German", units: VoiceUnits.metric);
               },
             ),

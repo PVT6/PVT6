@@ -35,7 +35,7 @@ class Mapbox extends StatefulWidget {
 class _MapBoxState extends State<Mapbox> {
   final AuthService _auth = AuthService();
   LatLng userLocation;
-
+  
   UserLocationOptions userLocationOptions;
 
   List<Marker> markers = [];
