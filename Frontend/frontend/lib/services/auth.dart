@@ -104,6 +104,7 @@ Future facebookSignIn() async {
                                     FirebaseUser firebaseUser = (
                                       await FirebaseAuth.instance.signInWithCredential(credential)
                                        ).user;
+                                       userExistsOrNot(firebaseUser);
                                        return firebaseUser;
    
   }
@@ -112,29 +113,7 @@ Future facebookSignIn() async {
       return null;
     }
 }
-// fbLogin.logIn(['email', 'public_profile'])
-                                  // .then((result) async {
-                                    /// in some point of your code you will get facebookLoginResult 
 
-
-                                  //    switch(result.status){
-                                  //      case FacebookLoginStatus.loggedIn:
-                                  //      FirebaseAuth.instance
-                                  //        .signInWithCredential(
-                                  //        FacebookAccessToken: result.FacebookAccessToken.token)
-                                  //        .then((signedInUser){
-                                  //          print('Signed in as ${signedInUser.displayName}');
-                                  //          Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //         builder: (context) => MapsDemo()),
-                                  //   );
-                                  //        } )
-                                  //        .catchError((e){
-                                  //          print(e);
-                                  //        });
-                                  //   }
-                                  //  });
 
 //Google sign in
 Future googleSignIn() async {
