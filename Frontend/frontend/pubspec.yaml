@@ -33,6 +33,7 @@ dependencies:
   pin_code_fields: ^2.5.1
   firebase_auth: ^0.14.0+5
   firebase_database: ^3.0.7
+  flutter_facebook_login: 
   intro_slider: ^2.2.9
   google_sign_in: ^4.4.3
   mapbox_gl: ^0.0.5
@@ -50,7 +51,6 @@ dependencies:
   numberpicker: ^1.2.0
   flutter_mapbox_navigation: ^0.0.10
   carousel_pro: ^1.0.0
-
   
 dev_dependencies:
   flutter_config: ^1.0.7

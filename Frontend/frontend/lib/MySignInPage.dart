@@ -191,13 +191,22 @@ class _MySignInPageState extends State<MySignInPage> {
                               SignInButton(
                                 Buttons.Facebook,
                                 mini: true,
-                                onPressed: () {
+                                onPressed: () async {
+                                  dynamic result = await _auth.facebookSignIn();
+                                  print(result);
+                                  if(result == null){
+                                     setState(() {
+                                     hasError = true;
+                                     });
+                                  } else {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => MapsDemo()),
                                   );
+                                  }
                                 },
+
                               ),
                               SizedBox(
                                   child: InkWell(
