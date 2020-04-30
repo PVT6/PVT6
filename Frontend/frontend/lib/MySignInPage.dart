@@ -194,7 +194,7 @@ class _MySignInPageState extends State<MySignInPage> {
                                 onPressed: () async {
                                   dynamic result = await _auth.facebookSignIn();
                                   print(result);
-                                  if(result = null){
+                                  if(result == null){
                                      setState(() {
                                      hasError = true;
                                      });
