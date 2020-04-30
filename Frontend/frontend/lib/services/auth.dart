@@ -97,15 +97,10 @@ Future googleSignIn() async {
     FirebaseUser user = result.user;
     userExistsOrNot(user);
     return user;
-
   } catch(e) {
     print("Error logging in with google.");
     return null;
-
   }
-
-
-
 }
 
 
