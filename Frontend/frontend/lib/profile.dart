@@ -8,11 +8,12 @@ import 'user.dart' as userlib;
 import 'package:http/http.dart' as http;
 import 'dog.dart';
 
-List<Dog> userDogs = [];
+
 
 class ProfileEightPage extends StatefulWidget {
-  ProfileEightPage() : super();
 
+  ProfileEightPage() : super() ;
+  
   final String title = "Maps Demo";
 
   @override
@@ -21,11 +22,14 @@ class ProfileEightPage extends StatefulWidget {
 
 
 class ProfileEightPageState extends State<ProfileEightPage> {
-
+  ProfileEightPageState() {
+   
+  }
   @override
-  void initState() {
-    super.initState();
+  initState() {
     UserInfo().getDogs();
+    super.initState();
+    
   }
 
   @override
@@ -85,6 +89,7 @@ class ProfileEightPageState extends State<ProfileEightPage> {
 
 class UserInfo extends StatelessWidget {
   List<Dog> dogs;
+  List<Dog> userDogs;
 
   
 
@@ -105,7 +110,7 @@ class UserInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // SKRIVA IN SÅ ATT LISTAN ANVÄNDS
-    getDogs();
+    
 
     return Container(
       padding: EdgeInsets.all(10),
@@ -145,7 +150,7 @@ class UserInfo extends StatelessWidget {
                                   },
                                   leading: (c.name != null && c.name.length > 0)
                                       ? CircleAvatar(
-                                          child: Text("hej"),
+                                          child: Text("D"),
                                         )
                                       : CircleAvatar(child: Text(c.name)),
                                   title: Text(c.name + " " + c.breed ?? ""),
