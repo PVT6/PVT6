@@ -22,15 +22,6 @@ class ProfileEightPage extends StatefulWidget {
 
 
 class ProfileEightPageState extends State<ProfileEightPage> {
-  ProfileEightPageState() {
-   
-  }
-  @override
-  initState() {
-    UserInfo().getDogs();
-    super.initState();
-    
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +78,9 @@ class ProfileEightPageState extends State<ProfileEightPage> {
   }
 }
 
+
 class UserInfo extends StatelessWidget {
+  
   List<Dog> dogs;
   List<Dog> userDogs;
 
@@ -110,8 +103,8 @@ class UserInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // SKRIVA IN SÅ ATT LISTAN ANVÄNDS
+    getDogs();
     
-
     return Container(
       padding: EdgeInsets.all(10),
       child: Column(
@@ -150,7 +143,7 @@ class UserInfo extends StatelessWidget {
                                   },
                                   leading: (c.name != null && c.name.length > 0)
                                       ? CircleAvatar(
-                                          child: Text("D"),
+                                          child: Text("Bild"), //här kan man lägga bild istället när det ordnats i hundklass
                                         )
                                       : CircleAvatar(child: Text(c.name)),
                                   title: Text(c.name + " " + c.breed ?? ""),
@@ -162,48 +155,6 @@ class UserInfo extends StatelessWidget {
                             ),
                     ],
                   )),
-
-              // SizedBox(
-              //     child: InkWell(
-              //   onTap: () {
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(builder: (context) => DogProfile(dogs[0].name, dogs[0].age, dogs[0].weight, dogs[0].breed)),
-              //     );
-              //   },
-              //   child: Container(
-              //     width: 100,
-              //     height: 100,
-              //     child: ClipRRect(
-              //       borderRadius: BorderRadius.circular(20.0),
-              //       child: Image.asset(
-              //         'BrewDog.jpg',
-              //       ),
-              //     ),
-              //   ),
-              // )),
-              // SizedBox(
-              //   width: 10,
-              // ),
-              // SizedBox(
-              //     child: InkWell(
-              //   onTap: () {
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(builder: (context) => DogProfile("test1","12","4","444")),
-              //     );
-              //   },
-              //   child: Container(
-              //     width: 100,
-              //     height: 100,
-              //     child: ClipRRect(
-              //       borderRadius: BorderRadius.circular(20.0),
-              //       child: Image.asset(
-              //         'LeBistro.jpg',
-              //       ),
-              //     ),
-              //   ),
-              // )),
           
           Container(
             padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
