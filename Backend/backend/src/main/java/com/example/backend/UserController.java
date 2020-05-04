@@ -49,53 +49,50 @@ public class UserController    {
 
      @PostMapping(value="/updatename")
      public @ResponseBody boolean newNameForUser(@RequestBody String uid, String newName) {
-         try{
             User u = userRepository.findByUid(uid);
-            u.setName(newName);
-            return true;
-        } catch(Exception e) {
-            System.out.println(e.toString());
-            return false;
-        }
+            if(u != null){
+                u.setName(newName);
+                return true;
+            }else{
+                return false;
+            }
      }
 
      @PostMapping(value="/updatephonenumber")
      public @ResponseBody boolean newPhoneNumberForUser(@RequestBody String uid, String newPhone ) {
-        try{
             User u = userRepository.findByUid(uid);
-            u.setPhoneNumber(newPhone);
-            return true;
-        } catch(Exception e) {
-            System.out.println(e.toString());
-            return false;
-        }
-         
+            if(u != null){
+                u.setPhoneNumber(newPhone);
+                return true;
+            }else{
+                return false;
+            }
      }
 
      @PostMapping(value="/updateemail")
      public @ResponseBody boolean newEmailForUser(@RequestBody String uid, String newEmail ) {
-        try{
             User u = userRepository.findByUid(uid);
-            u.setEmail(newEmail);
-            return true;
-        } catch(Exception e) {
-            System.out.println(e.toString());
-            return false;
-        }
+            if(u != null){
+                u.setEmail(newEmail);
+                return true;
+            }else{
+                return false;
+            }
+            
          
      }
 
 
      @DeleteMapping(value = "/deleteuser")
      public @ResponseBody boolean deleteUser(@RequestBody String uid) {
-        try{
             User u = userRepository.findByUid(uid);
-            userRepository.delete(u);
-            return true;
-        } catch(Exception e) {
-            System.out.println(e.toString());
-            return false;
-     }
+            if(u != null){
+                userRepository.delete(u);
+                return true;
+            }else{
+                return false;
+            }
+            
     }
      
      
