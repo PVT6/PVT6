@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/dogProfile.dart';
+import 'package:frontend/userFiles/dogProfile.dart';
 import 'package:latlong/latlong.dart';
 import 'package:frontend/dogPlaceDesc.dart';
 

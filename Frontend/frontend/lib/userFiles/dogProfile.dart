@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
-import 'package:frontend/profile.dart';
+import 'package:frontend/userFiles/profile.dart';
 
 import 'addPet.dart';
 

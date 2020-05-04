@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:frontend/forgotPasswordPage.dart';
+import 'package:frontend/loginFiles/forgotPasswordPage.dart';
+import 'package:frontend/mapFiles/mapsDemo.dart';
+import 'package:frontend/mapFiles/temp.dart';
 import 'package:frontend/services/auth.dart';
-import 'package:frontend/temp.dart';
-import 'mapsDemo.dart';
 import 'secondRoute.dart';
 import 'package:latlong/latlong.dart';
 

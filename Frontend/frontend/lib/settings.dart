@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:frontend/MySignInPage.dart';
+import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'package:frontend/services/auth.dart';
-import 'user.dart' as userlib;
-import 'editProfile.dart';
+import 'package:frontend/userFiles/editProfile.dart';
+import 'package:frontend/userFiles/user.dart' as userlib;
+
+
 
 class Settings extends StatefulWidget {
   Settings() : super();

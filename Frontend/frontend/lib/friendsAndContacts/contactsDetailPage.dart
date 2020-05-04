@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-
-import 'package:frontend/updateContacts.dart';
+import 'package:frontend/friendsAndContacts/updateContacts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:contacts_service/contacts_service.dart';
+import 'package:frontend/userFiles/addPet.dart';
 
-import 'addPet.dart';
+
 
 class ContactDetailsPage extends StatelessWidget {
   //tycker inte grönt tema passar jättebra på denna klass, prata ihop om ett allmänt tema för appen senare i projektet

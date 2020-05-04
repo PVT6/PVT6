@@ -2,10 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:frontend/mapFiles/mapsDemo.dart';
 import 'package:frontend/services/auth.dart';
-
-
-import 'mapsDemo.dart';
 
 class SecondRouteState extends StatefulWidget {
   SecondRouteState() : super();

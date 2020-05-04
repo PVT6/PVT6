@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/mapsDemo.dart';
+import 'package:frontend/mapFiles/mapsDemo.dart';
 import 'package:intro_slider/intro_slider.dart';
 import 'package:intro_slider/slide_object.dart';
 

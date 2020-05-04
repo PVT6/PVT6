@@ -1,24 +1,19 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:frontend/MySignInPage.dart';
 import 'package:frontend/browseDogParks.dart';
-import 'package:frontend/locationMapTest.dart';
-
+import 'package:frontend/friendsAndContacts/contacts.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:frontend/main.dart';
-import 'package:frontend/profile.dart';
+import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'package:frontend/services/auth.dart';
-import 'package:frontend/temp.dart';
-import 'package:frontend/temp2.dart';
+import 'package:frontend/settings.dart';
+import 'package:frontend/userFiles/user.dart' as userlib;
+import 'package:frontend/userFiles/profile.dart';
 import 'package:user_location/user_location.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
-import 'user.dart' as userlib;
 import 'package:flutter_config/flutter_config.dart';
 
-import 'contacts.dart';
-import 'settings.dart';
-import 'locationMapTest.dart';
+
 
 MapController controller = new MapController();
 
