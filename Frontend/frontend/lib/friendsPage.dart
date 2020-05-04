@@ -171,22 +171,22 @@ class SearchUsers extends StatefulWidget {
 class _MyHomePageState extends State<SearchUsers> {
   TextEditingController editingController = TextEditingController();
 
-  final duplicateItems = List<String>.generate(10000, (i) => "Item $i");
+  final duplicateItems = databaseUser;
   var items = List<User>();
 
   @override
   void initState() {
-    items.addAll(databaseUser);
+    items.addAll(duplicateItems);
     super.initState();
   }
 
-  void filterSearchResults(User query) {
+  void filterSearchResults(String query) {
     List<User> dummySearchList = List<User>();
-    dummySearchList.addAll(databaseUser);
-    if (query != null) {
+    dummySearchList.addAll(duplicateItems);
+    if (query.isNotEmpty) {
       List<User> dummyListData = List<User>();
       dummySearchList.forEach((item) {
-        if (item.name.contains(query.name)) {
+        if (item.name == query) {
           dummyListData.add(item);
         }
       });
@@ -198,7 +198,7 @@ class _MyHomePageState extends State<SearchUsers> {
     } else {
       setState(() {
         items.clear();
-        items.addAll(databaseUser);
+        items.addAll(duplicateItems);
       });
     }
   }
@@ -226,7 +226,7 @@ class _MyHomePageState extends State<SearchUsers> {
             ),
             Expanded(
               child: ListView.builder(
-                    itemCount: databaseUser?.length ??
+                    itemCount: items?.length ??
                         0, //lägga till vår egen lista på denna bör funka
                     itemBuilder: (BuildContext context, int index) {
                       User c = databaseUser?.elementAt(index);
