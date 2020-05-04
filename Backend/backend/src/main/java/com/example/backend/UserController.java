@@ -10,12 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.provider.HibernateUtils;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 @Controller // This means that this class is a Controller
@@ -43,5 +46,57 @@ public class UserController    {
        User u = userRepository.findByUid(uid);
        return u;
      }
-}
+
+     @PostMapping(value="/updatename")
+     public @ResponseBody boolean newNameForUser(@RequestBody String uid, String newName) {
+            User u = userRepository.findByUid(uid);
+            if(u != null){
+                u.setName(newName);
+                return true;
+            }else{
+                return false;
+            }
+     }
+
+     @PostMapping(value="/updatephonenumber")
+     public @ResponseBody boolean newPhoneNumberForUser(@RequestBody String uid, String newPhone ) {
+            User u = userRepository.findByUid(uid);
+            if(u != null){
+                u.setPhoneNumber(newPhone);
+                return true;
+            }else{
+                return false;
+            }
+     }
+
+     @PostMapping(value="/updateemail")
+     public @ResponseBody boolean newEmailForUser(@RequestBody String uid, String newEmail ) {
+            User u = userRepository.findByUid(uid);
+            if(u != null){
+                u.setEmail(newEmail);
+                return true;
+            }else{
+                return false;
+            }
+            
+         
+     }
+
+
+     @DeleteMapping(value = "/deleteuser")
+     public @ResponseBody boolean deleteUser(@RequestBody String uid) {
+            User u = userRepository.findByUid(uid);
+            if(u != null){
+                userRepository.delete(u);
+                return true;
+            }else{
+                return false;
+            }
+            
+    }
+     
+     
+
+    
+    }
 

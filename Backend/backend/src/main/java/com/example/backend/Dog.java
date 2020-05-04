@@ -19,6 +19,7 @@ public class Dog {
     private String race;
     private Float weight;
 
+    
     public Long getId() {
         return id;
     }
