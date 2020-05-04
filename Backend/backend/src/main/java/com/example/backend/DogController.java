@@ -20,15 +20,13 @@ public class DogController {
 
     @GetMapping(path = "/findDog")
     public @ResponseBody Dog findUser(@RequestParam int id) {
-        Optional<Dog> optinalEntity = dogRepository.findById(id);
-        Dog d = optinalEntity.get();
+        Dog d = dogRepository.findById(id).get();
         return d;
     }
 
     @PostMapping(value="/updatedogname")
      public @ResponseBody boolean newNameForDog(@RequestBody int id, String newName) {
-            Optional<Dog> optinalEntity = dogRepository.findById(id);
-            Dog d = optinalEntity.get();
+            Dog d = dogRepository.findById(id).get();
             if(d != null){
                 d.setName(newName);
                 return true;
@@ -39,8 +37,7 @@ public class DogController {
 
      @PostMapping(value="/updatedogweight")
      public @ResponseBody boolean newWeightForDog(@RequestBody int id, String newWeight) {
-        Optional<Dog> optinalEntity = dogRepository.findById(id);
-        Dog d = optinalEntity.get();
+        Dog d = dogRepository.findById(id).get();
         if(d != null){
             d.setWeight(newWeight);
             return true;
@@ -51,8 +48,7 @@ public class DogController {
 
      @PostMapping(value="/updatedogage")
      public @ResponseBody boolean newAgeForDog(@RequestBody int id, String newAge) {
-        Optional<Dog> optinalEntity = dogRepository.findById(id);
-        Dog d = optinalEntity.get();
+        Dog d = dogRepository.findById(id).get();
         if(d != null){
             d.setAge(newAge);
             return true;
