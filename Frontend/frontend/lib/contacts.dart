@@ -88,7 +88,6 @@ class _ContactListPageState extends State<ContactListPage> {
           details: null);
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,6 +122,66 @@ class _ContactListPageState extends State<ContactListPage> {
             : Center(
                 child: CircularProgressIndicator(),
               ),
+      ),
+    );
+  }
+}
+
+class SearchUsers extends StatefulWidget {
+  SearchUsers({Key key, this.title}) : super(key: key);
+  final String title;
+
+  @override
+  _MyHomePageState createState() => new _MyHomePageState();
+}
+
+class _MyHomePageState extends State<SearchUsers> {
+  TextEditingController editingController = TextEditingController();
+
+  final duplicateItems = List<String>.generate(10000, (i) => "Item $i");
+  var items = List<String>();
+
+  @override
+  void initState() {
+    items.addAll(duplicateItems);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                onChanged: (value) {
+                  
+                },
+                controller: editingController,
+                decoration: InputDecoration(
+                    labelText: "Search",
+                    hintText: "Search",
+                    prefixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(25.0)))),
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: items.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text('${items[index]}'),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

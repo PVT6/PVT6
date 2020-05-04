@@ -3,6 +3,7 @@ import 'package:frontend/dogProfile.dart';
 import 'package:latlong/latlong.dart';
 import 'package:frontend/dogPlaceDesc.dart';
 import 'temp2.dart';
+import 'friendsPage.dart';
 
 var textYellow = Color(0xFFf6c24d);
 var iconYellow = Color(0xFFf4bf47);
@@ -104,7 +105,13 @@ class MenuItemsList extends StatelessWidget {
                             'Location',
                             'Orminges hundrastgård',
                             'With an agility track aswell as an abundance of trees, + desc',
-                            () => {},
+                            () => {
+                              Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => FriendsPage()),
+                                  )
+                            },
                             () => {},
                             location = new LatLng(59.334389, 18.254072),
                           )))
