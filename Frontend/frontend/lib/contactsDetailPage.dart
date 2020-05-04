@@ -12,16 +12,12 @@ class ContactDetailsPage extends StatelessWidget {
   final Contact _contact;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { //denna klass kommer antaligen inte användas
     return Scaffold(
       appBar: AppBar(
         title: Text(_contact.displayName ?? ""),
         backgroundColor: Colors.blue,
-        actions: <Widget>[ //vill inte ha denna funktion
-          // IconButton(
-          //   icon: Icon(Icons.delete),
-          //   onPressed: () => ContactsService.deleteContact(_contact),
-          // ),
+        actions: <Widget>[ 
           IconButton(
             icon: Icon(Icons.update),
             onPressed: () => Navigator.of(context).push(
@@ -35,143 +31,9 @@ class ContactDetailsPage extends StatelessWidget {
         ],
       ),
       body: SafeArea(
-        //använd kommentarer nedan för att se hur man använder objects från kontakter!
-        // child: ListView(
-        //   children: <Widget>[
-        //     ListTile(
-        //       title: Text("Name"),
-        //       trailing: Text(_contact.givenName ?? ""),
-        //     ),
-        //     ListTile(
-        //       title: Text("Last Name"),
-        //       trailing: Text(_contact.familyName ?? ""),
-        //     ),
-        //     ItemsTile("Phones", _contact.phones),
-        //     ItemsTile("Emails", _contact.emails),
-        //     SwitchListTile(
-        //       activeColor: Colors.green[900],
-        //       contentPadding: const EdgeInsets.all(0),
-        //       value: true,
-        //       title: Text("Allow Location Sharing"),
-        //       onChanged: (val) {},
-        //     ),
-        //   ],
-        // ),
         child: ListView(
           children: <Widget>[
-            // Container(
-            //   height: 200,
-            //   decoration: BoxDecoration(
-            //       gradient: LinearGradient(
-            //           begin: Alignment.centerLeft,
-            //           end: Alignment.centerRight,
-            //           stops: [0.5, 0.9],
-            //           colors: [Colors.red, Colors.deepOrange.shade300])),
-            //   child: Column(
-            //     mainAxisAlignment: MainAxisAlignment.center,
-            //     crossAxisAlignment: CrossAxisAlignment.center,
-            //     children: <Widget>[
-            //       Row(
-            //         mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //         children: <Widget>[
-            //           CircleAvatar(
-            //             child: Icon(
-            //               Icons.call,
-            //               size: 30.0,
-            //             ),
-            //             minRadius: 30.0,
-            //             backgroundColor: Colors.red.shade600,
-            //           ),
-            //           (_contact.avatar != null && _contact.avatar.length > 0)
-            //               ? CircleAvatar(
-            //                   minRadius: 60,
-            //                   backgroundColor: Colors.deepOrange.shade300,
-            //                   backgroundImage: MemoryImage(_contact.avatar))
-            //               : CircleAvatar(
-            //                   minRadius: 60,
-            //                   backgroundColor: Colors.deepOrange.shade300,
-            //                   child: Text(_contact.initials())),
-            //           // CircleAvatar(
-            //           //   minRadius: 60,
-            //           //   backgroundColor: Colors.deepOrange.shade300,
-            //           //   child: CircleAvatar(
-            //           //     backgroundImage:
-            //           //         new AssetImage('assets/googleLoginMini.png'),
-            //           //     minRadius: 50,
-            //           //   ),
-            //           // ),
-            //           CircleAvatar(
-            //             child: Icon(
-            //               Icons.message,
-            //               size: 30.0,
-            //             ),
-            //             minRadius: 30.0,
-            //             backgroundColor: Colors.red.shade600,
-            //           ),
-            //         ],
-            //       ),
-            //       SizedBox(
-            //         height: 10,
-            //       ),
-            //       Text(
-            //         _contact.familyName ?? "",
-            //         style: TextStyle(fontSize: 22.0, color: Colors.white),
-            //       ),
-            //       Text(
-            //         _contact.givenName ?? "",
-            //         style:
-            //             TextStyle(fontSize: 14.0, color: Colors.red.shade700),
-            //       )
-            //     ],
-            //   ),
-            // ),
-            // Container(
-            //   // height: 50,
-            //   child: Row(
-            //     children: <Widget>[
-            //       Expanded(
-            //         child: Container(
-            //           color: Colors.deepOrange.shade300,
-            //           child: ListTile(
-            //             title: Text(
-            //               "50895m",
-            //               textAlign: TextAlign.center,
-            //               style: TextStyle(
-            //                   color: Colors.white,
-            //                   fontWeight: FontWeight.bold,
-            //                   fontSize: 24.0),
-            //             ),
-            //             subtitle: Text(
-            //               "Distance",
-            //               textAlign: TextAlign.center,
-            //               style: TextStyle(color: Colors.red),
-            //             ),
-            //           ),
-            //         ),
-            //       ),
-            //       Expanded(
-            //         child: Container(
-            //           color: Colors.red,
-            //           child: ListTile(
-            //             title: Text(
-            //               "Årsta",
-            //               textAlign: TextAlign.center,
-            //               style: TextStyle(
-            //                   color: Colors.white,
-            //                   fontWeight: FontWeight.bold,
-            //                   fontSize: 24.0),
-            //             ),
-            //             subtitle: Text(
-            //               "Stockholm",
-            //               textAlign: TextAlign.center,
-            //               style: TextStyle(color: Colors.white70),
-            //             ),
-            //           ),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
+
             ProfileHeader(
               avatar: new MemoryImage(_contact.avatar), //userData
               coverImage: new MemoryImage(_contact.avatar), //userData

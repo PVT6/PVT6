@@ -22,8 +22,6 @@ import 'locationMapTest.dart';
 
 MapController controller = new MapController();
 
-//const kApiKey =
-    //'pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A';
 
 class MapsDemo extends StatefulWidget {
   MapsDemo() : super();
@@ -90,18 +88,6 @@ class MapsDemoState extends State<MapsDemo> {
             ),
           ],
         ),
-        // floatingActionButton: FloatingActionButton.extended(
-        //   elevation: 4.0,
-        //   icon: const Icon(Icons.add),
-        //   label: const Text('Create new route'),
-        //   backgroundColor: Colors.blue,
-        //   onPressed: () {
-        //     Navigator.push(
-        //       context,
-        //       MaterialPageRoute(builder: (context) => MapSample()),
-        //     );
-        //   },
-        // ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: Stack(
           children: <Widget>[
