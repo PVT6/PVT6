@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:frontend/dog.dart';
 import 'package:frontend/dogsNearMe.dart';
 import 'package:frontend/profile.dart';
 import 'package:frontend/services/auth.dart';
@@ -18,8 +19,13 @@ import 'MySignInPage.dart';
 import 'browseDogParks.dart';
 import 'contacts.dart';
 import 'settings.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 MapController controller = new MapController();
+List<Dog> dogs;
+List<Dog> userDogs;
+
 
 //const kApiKey =
     //'pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A';
@@ -47,6 +53,19 @@ class _MapBoxState extends State<Mapbox> {
     });
 
     return new String.fromCharCodes(codeUnits);
+  }
+    Future<void> getDogs() async {
+    var uid = userlib.uid;
+    var url = 'https://group6-15.pvt.dsv.su.se/user/dogs?uid=${uid}';
+    var response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      dogs = (json.decode(response.body) as List)
+          .map((i) => Dog.fromJson(i))
+          .toList();
+      userDogs = dogs;
+    } else {
+      // ERROR HÄR
+    }
   }
 
   Widget button(Function function, IconData icon) {

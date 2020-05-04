@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:frontend/MySignInPage.dart';
 import 'package:frontend/browseDogParks.dart';
+import 'package:frontend/dog.dart';
 import 'package:frontend/locationMapTest.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -18,7 +19,11 @@ import 'package:flutter_config/flutter_config.dart';
 
 import 'contacts.dart';
 import 'settings.dart';
-import 'locationMapTest.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+List<Dog> dogs;
+List<Dog> userDogs;
 
 MapController controller = new MapController();
 
@@ -49,6 +54,20 @@ class MapsDemoState extends State<MapsDemo> {
     return new String.fromCharCodes(codeUnits);
   }
 
+    Future<void> getDogs() async {
+    var uid = userlib.uid;
+    var url = 'https://group6-15.pvt.dsv.su.se/user/dogs?uid=${uid}';
+    var response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      dogs = (json.decode(response.body) as List)
+          .map((i) => Dog.fromJson(i))
+          .toList();
+      userDogs = dogs;
+    } else {
+      // ERROR HÄR
+    }
+  }
+
   Widget button(Function function, IconData icon) {
     return FloatingActionButton(
       heroTag: _randomString(10),
@@ -64,6 +83,7 @@ class MapsDemoState extends State<MapsDemo> {
 
   @override
   Widget build(BuildContext context) {
+    getDogs();
     userLocationOptions = UserLocationOptions(
       context: context,
       mapController: controller,

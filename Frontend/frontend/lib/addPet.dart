@@ -1,9 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:frontend/dog.dart';
 import 'package:frontend/profile.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'user.dart' as userlib;
 import 'package:http/http.dart' as http;
+
+List<Dog> dogs;
+List<Dog> userDogs;
 
 class AddDog extends StatefulWidget {
   AddDog() : super();
@@ -21,6 +27,20 @@ class AddDogState extends State<AddDog> {
   String breed = '';
   String age = '';
   String error = '';
+
+     Future<void> getDogs() async {
+    var uid = userlib.uid;
+    var url = 'https://group6-15.pvt.dsv.su.se/user/dogs?uid=${uid}';
+    var response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      dogs = (json.decode(response.body) as List)
+          .map((i) => Dog.fromJson(i))
+          .toList();
+      userDogs = dogs;
+    } else {
+      // ERROR HÄR
+    }
+  }
 
   Widget _buildPageContent(BuildContext context) {
     return Container(
@@ -45,7 +65,11 @@ class AddDogState extends State<AddDog> {
               FloatingActionButton(
                 mini: true,
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ProfileEightPage()),
+                      );
                 },
                 backgroundColor: Colors.blue,
                 child: Icon(Icons.arrow_back),
@@ -204,6 +228,7 @@ class AddDogState extends State<AddDog> {
                       'uid': userlib.uid
                     });
                     if (response.statusCode == 200) {
+                      getDogs();
                       Navigator.push(
                         context,
                         MaterialPageRoute(
