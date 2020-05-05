@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/browseDogParks.dart';
 import 'package:frontend/friendsAndContacts/contacts.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:frontend/friendsAndContacts/friendsPage.dart';
 import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'package:frontend/services/auth.dart';
 import 'package:frontend/settings.dart';
@@ -172,7 +173,7 @@ class MapsDemoState extends State<MapsDemo> {
                         Navigator.push(
                             context,
                             new MaterialPageRoute(
-                                builder: (context) => Contacts()))
+                                builder: (context) => FriendsPage()))
                       }),
               CustomListTile(
                   Icons.settings,
