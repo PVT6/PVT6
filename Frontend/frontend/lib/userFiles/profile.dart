@@ -1,19 +1,19 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:frontend/addPet.dart';
-import 'package:frontend/dogProfile.dart';
-import 'package:frontend/mapsDemo.dart';
+import 'package:frontend/mapFiles/temp.dart';
+import 'package:frontend/userFiles/addPet.dart';
+import 'package:frontend/userFiles/dogProfile.dart';
+import 'package:flutter/cupertino.dart';
 import 'user.dart' as userlib;
+import 'package:frontend/mapFiles/mapsDemo.dart';
 import 'package:http/http.dart' as http;
-import 'dog.dart';
+import '../dog.dart';
 
 
 
 class ProfileEightPage extends StatefulWidget {
   ProfileEightPage() : super();
-
-  final String title = "Maps Demo";
 
   @override
   ProfileEightPageState createState() => ProfileEightPageState();

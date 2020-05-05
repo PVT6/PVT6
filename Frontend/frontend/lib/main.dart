@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:frontend/services/auth.dart';
-import 'MySignInPage.dart';
 import 'package:provider/provider.dart';
 import 'wrapper.dart';
 import 'package:flutter_config/flutter_config.dart';

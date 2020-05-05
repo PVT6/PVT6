@@ -2,14 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
-import 'package:frontend/dog.dart';
-import 'package:frontend/profile.dart';
-import 'package:numberpicker/numberpicker.dart';
-import 'user.dart' as userlib;
+import 'package:frontend/mapFiles/temp.dart';
+import 'package:frontend/userFiles/profile.dart';
 import 'package:http/http.dart' as http;
-import 'mapsDemo.dart';
-
-
+import 'user.dart' as userlib;
+import '../dog.dart';
 class AddDog extends StatefulWidget {
   AddDog() : super();
 
