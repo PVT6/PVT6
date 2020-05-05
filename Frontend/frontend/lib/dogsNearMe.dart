@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:latlong/latlong.dart';
 import 'package:frontend/dogPlaceDesc.dart';
-import 'browseDogParks.dart';
+
 
 var green = Color(0xFF4caf6a);
 var greenLight = Color(0xFFd8ebde);

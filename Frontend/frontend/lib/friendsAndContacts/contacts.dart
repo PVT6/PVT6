@@ -40,8 +40,6 @@ class _ContactListPageState extends State<ContactListPage> {
     if (permissionStatus == PermissionStatus.granted) {
       var contacts =
           (await ContactsService.getContacts(withThumbnails: false)).toList();
-//      var contacts = (await ContactsService.getContactsForPhone("8554964652"))
-//          .toList();
       setState(() {
         _contacts = contacts;
       });

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/addPet.dart';
-import 'package:frontend/dogProfile.dart';
+import 'package:frontend/userFiles/addPet.dart';
+import 'package:frontend/userFiles/dogProfile.dart';
 
 import 'user.dart' as userlib;
 
