@@ -7,9 +7,8 @@ import 'package:frontend/profile.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'user.dart' as userlib;
 import 'package:http/http.dart' as http;
+import 'mapsDemo.dart';
 
-List<Dog> dogs;
-List<Dog> userDogs;
 
 class AddDog extends StatefulWidget {
   AddDog() : super();
