@@ -1,26 +1,30 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:frontend/mapFiles/temp.dart';
 import 'package:frontend/userFiles/addPet.dart';
 import 'package:frontend/userFiles/dogProfile.dart';
-
+import 'package:flutter/cupertino.dart';
 import 'user.dart' as userlib;
+import 'package:frontend/mapFiles/mapsDemo.dart';
 import 'package:http/http.dart' as http;
-import 'dog.dart';
+import '../dog.dart';
 
 
 
-class ProfileEightPage extends StatelessWidget {
-
+class ProfileEightPage extends StatefulWidget {
+  ProfileEightPage() : super();
 
   @override
   ProfileEightPageState createState() => ProfileEightPageState();
 }
 
-
 class ProfileEightPageState extends State<ProfileEightPage> {
-  List<Dog> dogs;
-  List<Dog> userDogs;
+  @override
+  void initState() {
+    super.initState();
+    
+  }
 
   Future<void> getDogs() async {
     var uid = userlib.uid;
@@ -35,14 +39,12 @@ class ProfileEightPageState extends State<ProfileEightPage> {
       // ERROR HÄR
     }
   }
+
   @override
   Widget build(BuildContext context) {
-    getDogs();
     return Scaffold(
       backgroundColor: Colors.blue.shade100,
-      
       extendBody: true,
-      
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -83,138 +85,7 @@ class ProfileEightPageState extends State<ProfileEightPage> {
               ],
             ),
             const SizedBox(height: 10.0),
-            Container(
-      padding: EdgeInsets.all(10),
-      child: Column(
-        children: <Widget>[
-          Container(
-            padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
-            alignment: Alignment.topLeft,
-            child: Text(
-              "My Dogs",
-              style: TextStyle(
-                color: Colors.black87,
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
-              ),
-              textAlign: TextAlign.left,
-            ),
-          ),
-          
-              SingleChildScrollView(
-                  physics: ScrollPhysics(),
-                  child: Column(
-                    children: <Widget>[
-                      userDogs != null
-                          ? ListView.builder(
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: userDogs?.length ?? 0,
-                              itemBuilder: (BuildContext context, int index) {
-                                Dog c = userDogs?.elementAt(index);
-                                return ListTile(
-                                  onTap: () {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                DogProfile(c)));
-                                  },
-                                  leading: (c.name != null && c.name.length > 0)
-                                      ? CircleAvatar(
-                                          child: Text("Bild"), //här kan man lägga bild istället när det ordnats i hundklass
-                                        )
-                                      : CircleAvatar(child: Text(c.name)),
-                                  title: Text(c.name + " " + c.breed ?? ""),
-                                );
-                              },
-                            )
-                          : Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                    ],
-                  )),
-          
-          Container(
-            padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
-            alignment: Alignment.topLeft,
-            child: Text(
-              "User Information", //userData
-              style: TextStyle(
-                color: Colors.black87,
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
-              ),
-              textAlign: TextAlign.left,
-            ),
-          ),
-          Card(
-            child: Container(
-              alignment: Alignment.topLeft,
-              padding: EdgeInsets.all(15),
-              child: Column(
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      ...ListTile.divideTiles(
-                        color: Colors.grey,
-                        tiles: [
-                          ListTile(
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 4),
-                            leading: Icon(Icons.my_location),
-                            title: Text(
-                              "Location",
-                              style: TextStyle(color: Colors.blue.shade300),
-                            ),
-                            subtitle: Text(
-                              "Stockholm",
-                              style: TextStyle(color: Colors.blue.shade300),
-                            ),
-                          ),
-                          ListTile(
-                            leading: Icon(Icons.email),
-                            title: Text(
-                              "Email",
-                              style: TextStyle(color: Colors.blue.shade300),
-                            ),
-                            subtitle: Text(
-                              userlib.email,
-                              style: TextStyle(color: Colors.blue.shade300),
-                            ),
-                          ),
-                          ListTile(
-                            leading: Icon(Icons.phone),
-                            title: Text(
-                              "Phone",
-                              style: TextStyle(color: Colors.blue.shade300),
-                            ),
-                            subtitle: Text(
-                              userlib.phone,
-                              style: TextStyle(color: Colors.blue.shade300),
-                            ),
-                          ),
-                          ListTile(
-                            leading: Icon(Icons.person),
-                            title: Text(
-                              "About Me",
-                              style: TextStyle(color: Colors.blue.shade300),
-                            ),
-                            subtitle: Text(
-                              "I love big fluffy dogs. Proud owner of a Bernese Mountain Dog",
-                              style: TextStyle(color: Colors.blue.shade300),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    ),
+            UserInfo(),
           ],
         ),
       ),
@@ -222,33 +93,11 @@ class ProfileEightPageState extends State<ProfileEightPage> {
   }
 }
 
-
 class UserInfo extends StatelessWidget {
-  
-  List<Dog> dogs;
-  List<Dog> userDogs;
-
-  
-
-  Future<void> getDogs() async {
-    var uid = userlib.uid;
-    var url = 'https://group6-15.pvt.dsv.su.se/user/dogs?uid=${uid}';
-    var response = await http.get(Uri.parse(url));
-    if (response.statusCode == 200) {
-      dogs = (json.decode(response.body) as List)
-          .map((i) => Dog.fromJson(i))
-          .toList();
-      userDogs = dogs;
-    } else {
-      // ERROR HÄR
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     // SKRIVA IN SÅ ATT LISTAN ANVÄNDS
-    getDogs();
-    
+
     return Container(
       padding: EdgeInsets.all(10),
       child: Column(
@@ -266,40 +115,38 @@ class UserInfo extends StatelessWidget {
               textAlign: TextAlign.left,
             ),
           ),
-          
-              SingleChildScrollView(
-                  physics: ScrollPhysics(),
-                  child: Column(
-                    children: <Widget>[
-                      userDogs != null
-                          ? ListView.builder(
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: userDogs?.length ?? 0,
-                              itemBuilder: (BuildContext context, int index) {
-                                Dog c = userDogs?.elementAt(index);
-                                return ListTile(
-                                  onTap: () {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                DogProfile(c)));
-                                  },
-                                  leading: (c.name != null && c.name.length > 0)
-                                      ? CircleAvatar(
-                                          child: Text("Bild"), //här kan man lägga bild istället när det ordnats i hundklass
-                                        )
-                                      : CircleAvatar(child: Text(c.name)),
-                                  title: Text(c.name + " " + c.breed ?? ""),
-                                );
+          SingleChildScrollView(
+              physics: ScrollPhysics(),
+              child: Column(
+                children: <Widget>[
+                  userDogs != null
+                      ? ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: userDogs?.length ?? 0,
+                          itemBuilder: (BuildContext context, int index) {
+                            Dog c = userDogs?.elementAt(index);
+                            return ListTile(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        DogProfile(c)));
                               },
-                            )
-                          : Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                    ],
-                  )),
-          
+                              leading: (c.name != null && c.name.length > 0)
+                                  ? CircleAvatar(
+                                      child: Text(
+                                          "Bild"), //här kan man lägga bild istället när det ordnats i hundklass
+                                    )
+                                  : CircleAvatar(child: Text(c.name)),
+                              title: Text(c.name + " " + c.breed ?? ""),
+                            );
+                          },
+                        )
+                      : Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                ],
+              )),
           Container(
             padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
             alignment: Alignment.topLeft,

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:frontend/userFiles/profile.dart';
-
+import '../dog.dart';
+import 'user.dart' as userlib;
 import 'addPet.dart';
-import 'dog.dart';
+
 
 class DogProfile extends StatefulWidget {
   Dog dog;
