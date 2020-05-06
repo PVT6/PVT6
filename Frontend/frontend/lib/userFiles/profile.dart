@@ -1,31 +1,57 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:frontend/addPet.dart';
-import 'package:frontend/dogProfile.dart';
-
+import 'package:frontend/mapFiles/temp.dart';
+import 'package:frontend/userFiles/addPet.dart';
+import 'package:frontend/userFiles/dogProfile.dart';
+import 'package:flutter/cupertino.dart';
 import 'user.dart' as userlib;
+import 'package:frontend/mapFiles/mapsDemo.dart';
+import 'package:http/http.dart' as http;
+import '../dog.dart';
 
-class ProfileEightPage extends StatelessWidget {
 
+
+class ProfileEightPage extends StatefulWidget {
+  ProfileEightPage() : super();
+
+  @override
+  ProfileEightPageState createState() => ProfileEightPageState();
+}
+
+class ProfileEightPageState extends State<ProfileEightPage> {
+  @override
+  void initState() {
+    super.initState();
+    
+  }
+
+  Future<void> getDogs() async {
+    var uid = userlib.uid;
+    var url = 'https://group6-15.pvt.dsv.su.se/user/dogs?uid=${uid}';
+    var response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      dogs = (json.decode(response.body) as List)
+          .map((i) => Dog.fromJson(i))
+          .toList();
+      userDogs = dogs;
+    } else {
+      // ERROR HÄR
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       backgroundColor: Colors.blue.shade100,
-      extendBodyBehindAppBar: true,
       extendBody: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             ProfileHeader(
               avatar: new AssetImage("profilePH.png"), //userData
               coverImage: new AssetImage("backgroundStockholm.png"), //userData
-              title:
-                  userlib.name, //userData
+              title: userlib.name, //userData
               subtitle: "Dog lover",
               actions: <Widget>[
                 //Row med items
@@ -33,8 +59,13 @@ class ProfileEightPage extends StatelessWidget {
                   color: Colors.white,
                   shape: CircleBorder(),
                   elevation: 0,
-                  child: Icon(Icons.edit),
-                  onPressed: () {},
+                  child: Icon(Icons.arrow_back),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MapsDemo()),
+                    );
+                  },
                 ),
                 SizedBox(
                   width: 230,
@@ -65,6 +96,8 @@ class ProfileEightPage extends StatelessWidget {
 class UserInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // SKRIVA IN SÅ ATT LISTAN ANVÄNDS
+
     return Container(
       padding: EdgeInsets.all(10),
       child: Column(
@@ -82,51 +115,38 @@ class UserInfo extends StatelessWidget {
               textAlign: TextAlign.left,
             ),
           ),
-          Row(
-            children: <Widget>[
-              SizedBox(
-                  child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => DogProfile()),
-                  );
-                },
-                child: Container(
-                  width: 100,
-                  height: 100,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20.0),
-                    child: Image.asset(
-                      'BrewDog.jpg',
-                    ),
-                  ),
-                ),
+          SingleChildScrollView(
+              physics: ScrollPhysics(),
+              child: Column(
+                children: <Widget>[
+                  userDogs != null
+                      ? ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: userDogs?.length ?? 0,
+                          itemBuilder: (BuildContext context, int index) {
+                            Dog c = userDogs?.elementAt(index);
+                            return ListTile(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        DogProfile(c)));
+                              },
+                              leading: (c.name != null && c.name.length > 0)
+                                  ? CircleAvatar(
+                                      child: Text(
+                                          "Bild"), //här kan man lägga bild istället när det ordnats i hundklass
+                                    )
+                                  : CircleAvatar(child: Text(c.name)),
+                              title: Text(c.name + " " + c.breed ?? ""),
+                            );
+                          },
+                        )
+                      : Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                ],
               )),
-              SizedBox(
-                width: 10,
-              ),
-              SizedBox(
-                  child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => DogProfile()),
-                  );
-                },
-                child: Container(
-                  width: 100,
-                  height: 100,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20.0),
-                    child: Image.asset(
-                      'LeBistro.jpg',
-                    ),
-                  ),
-                ),
-              )),
-            ],
-          ),
           Container(
             padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
             alignment: Alignment.topLeft,
@@ -171,7 +191,7 @@ class UserInfo extends StatelessWidget {
                               style: TextStyle(color: Colors.blue.shade300),
                             ),
                             subtitle: Text(
-                               userlib.email,
+                              userlib.email,
                               style: TextStyle(color: Colors.blue.shade300),
                             ),
                           ),

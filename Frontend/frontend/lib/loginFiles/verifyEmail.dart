@@ -1,10 +1,9 @@
 import 'dart:async';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/mapsDemo.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'user.dart' as userlib;
 import 'intro_slider.dart';
+import 'package:frontend/userFiles/user.dart' as userlib;
 
 Color darkGreen = Colors.green[900];
 Color lightGreen = Colors.green[100];

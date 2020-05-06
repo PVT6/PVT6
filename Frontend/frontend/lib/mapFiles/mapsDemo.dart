@@ -1,29 +1,25 @@
+import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:frontend/MySignInPage.dart';
 import 'package:frontend/browseDogParks.dart';
-import 'package:frontend/locationMapTest.dart';
-
+import 'package:frontend/friendsAndContacts/contacts.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:frontend/main.dart';
-import 'package:frontend/profile.dart';
+import 'package:frontend/loginFiles/MySignInPage.dart';
+import 'package:frontend/mapFiles/temp.dart';
 import 'package:frontend/services/auth.dart';
-import 'package:frontend/temp.dart';
-import 'package:frontend/temp2.dart';
+import 'package:frontend/settings.dart';
+import 'package:frontend/userFiles/user.dart' as userlib;
+import 'package:frontend/userFiles/profile.dart';
 import 'package:user_location/user_location.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
-import 'user.dart' as userlib;
 import 'package:flutter_config/flutter_config.dart';
+import 'package:http/http.dart' as http;
+import '../dog.dart';
 
-import 'contacts.dart';
-import 'settings.dart';
-import 'locationMapTest.dart';
 
 MapController controller = new MapController();
 
-//const kApiKey =
-    //'pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A';
 
 class MapsDemo extends StatefulWidget {
   MapsDemo() : super();
@@ -49,6 +45,20 @@ class MapsDemoState extends State<MapsDemo> {
     return new String.fromCharCodes(codeUnits);
   }
 
+    Future<void> getDogs() async {
+    var uid = userlib.uid;
+    var url = 'https://group6-15.pvt.dsv.su.se/user/dogs?uid=${uid}';
+    var response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      dogs = (json.decode(response.body) as List)
+          .map((i) => Dog.fromJson(i))
+          .toList();
+      userDogs = dogs;
+    } else {
+      // ERROR HÄR
+    }
+  }
+
   Widget button(Function function, IconData icon) {
     return FloatingActionButton(
       heroTag: _randomString(10),
@@ -64,6 +74,7 @@ class MapsDemoState extends State<MapsDemo> {
 
   @override
   Widget build(BuildContext context) {
+    getDogs();
     userLocationOptions = UserLocationOptions(
       context: context,
       mapController: controller,
@@ -90,18 +101,6 @@ class MapsDemoState extends State<MapsDemo> {
             ),
           ],
         ),
-        // floatingActionButton: FloatingActionButton.extended(
-        //   elevation: 4.0,
-        //   icon: const Icon(Icons.add),
-        //   label: const Text('Create new route'),
-        //   backgroundColor: Colors.blue,
-        //   onPressed: () {
-        //     Navigator.push(
-        //       context,
-        //       MaterialPageRoute(builder: (context) => MapSample()),
-        //     );
-        //   },
-        // ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: Stack(
           children: <Widget>[

@@ -1,9 +1,10 @@
 import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
-import '../user.dart' as userlib;
+import 'package:frontend/userFiles/user.dart' as userlib;
 
 
 
@@ -11,6 +12,8 @@ class AuthService{
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  //Facebook sign in
+  FacebookLogin fbLogin = new FacebookLogin();
 
 // auth chnage user stream
   Stream<FirebaseUser> get user {
@@ -36,6 +39,7 @@ try {
     userlib.setName(firstname+" "+lastname);
     userlib.setPhone(phone);
     userlib.setEmail(email);
+    userlib.setUid(user.uid);
     userlib.setLogin(true);
   }
   else {
@@ -56,10 +60,11 @@ try {
 
    var response = await http.get(Uri.parse(url));
     if (response.body != ""){
-      var user = json.decode(response.body);
-      userlib.setName(user['name']);
-      userlib.setPhone(user['phoneNumber']);
-      userlib.setEmail(user['email']);
+      var users = json.decode(response.body);
+      userlib.setName(users['name']);
+      userlib.setPhone(users['phoneNumber']);
+      userlib.setEmail(users['email']);
+      userlib.setUid(user.uid);
       userlib.setLogin(true);
   }
   else {
@@ -77,6 +82,7 @@ try {
 Future signOut() async {
   try {
     await _googleSignIn.signOut();
+    await fbLogin.logOut();
     return await _auth.signOut();
   } catch(e){
     print(e.toString());
@@ -86,16 +92,33 @@ Future signOut() async {
 
 //More sign in methods. 
 
+//Facebook sign in
+Future facebookSignIn() async {
+  try {
+    final facebookLoginResult = await fbLogin
+                .logIn(['email', 'public_profile']);
+                      FacebookAccessToken myToken = facebookLoginResult.accessToken;
+                                            //assuming sucess in FacebookLoginStatus.loggedIn
+                                            // we use FacebookAuthProvider class to get a credential from accessToken
+                                            // this will return an AuthCredential object that we will use to auth in firebase
+                        AuthCredential credential= FacebookAuthProvider.getCredential(accessToken: myToken.token);
+                                            // this line do auth in firebase with your facebook credential.
+                                    FirebaseUser firebaseUser = (
+                                      await FirebaseAuth.instance.signInWithCredential(credential)
+                                       ).user;
+                                       userExistsOrNot(firebaseUser);
+                                       return firebaseUser;
+   
+  }
+  catch(e){
+      print("error signing in with Facebook");
+      return null;
+    }
+}
+
+
 //Google sign in
 Future googleSignIn() async {
-  // GoogleSignInAccount googleUser = await _googleSignIn.signIn();
-  // GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-  // final AuthCredential credential = GoogleAuthProvider.getCredential
-  // ( accessToken: googleAuth.accessToken,
-  //   idToken: googleAuth.idToken
-  // );
-  // FirebaseUser user = await _auth.signInWithCredential(credential);
-  // return user;
   try {
     GoogleSignInAccount account = await _googleSignIn.signIn();
     AuthResult result = await _auth.signInWithCredential(GoogleAuthProvider.getCredential(
@@ -103,16 +126,12 @@ Future googleSignIn() async {
       accessToken: (await account.authentication).accessToken
       ));
     FirebaseUser user = result.user;
+    userExistsOrNot(user);
     return user;
-
   } catch(e) {
     print("Error logging in with google.");
     return null;
-
   }
-
-
-
 }
 
 
@@ -125,8 +144,43 @@ Future sendPasswordResetEmail(String email) async {
     print(e.toString());
     return null;
   }
+}
+
+Future userExistsOrNot(FirebaseUser user) async {
+  var url = 'https://group6-15.pvt.dsv.su.se/user/find?uid=${user.uid}';
+  var response = await http.get(Uri.parse(url));
+
+  if (response.body != ""){
+      var user = json.decode(response.body);
+      userlib.setName(user['name']);
+      userlib.setPhone(user['phoneNumber']);
+      userlib.setEmail(user['email']);
+      userlib.setLogin(true);
+  } else {
+     url = 'https://group6-15.pvt.dsv.su.se/user/new';
+
+     var response = await http.post(Uri.parse(url),  body: {'uid': user.uid, 'email': user.email, 'phone': "", 'name': user.displayName});
+
+     print(response.body);
+     if (response.statusCode == 200){
+         userlib.setName(user.displayName);
+         userlib.setPhone("");
+         userlib.setEmail(user.email);
+         userlib.setLogin(true);
+       }else {
+    throw("FAILED TO CONNECT TO DB");
+  }
+  return true;
+
+  }
+
+
+
+
+
 
   
+
 }
 
 
