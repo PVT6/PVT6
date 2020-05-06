@@ -1,5 +1,7 @@
 package com.example.backend;
 
+import java.util.Set;
+
 import javax.validation.constraints.Null;
 
 import org.hibernate.Session;
@@ -41,11 +43,27 @@ public class UserController    {
         return u;
     }
 
-     @GetMapping(path = "/find")
-     public @ResponseBody User findUser(@RequestParam String uid){
+    @GetMapping(path = "/dogs")
+    public @ResponseBody Set<Dog> findDogs(@RequestParam String uid) {
+        User u = userRepository.findByUid(uid);
+        return u.getOwnedDog();    
+    }
+
+
+    @GetMapping(path = "/find")
+    public @ResponseBody User findUser(@RequestParam String uid){
        User u = userRepository.findByUid(uid);
        return u;
-     }
+    }
+
+    @PostMapping(path = "/newdog") // Map ONLY POST Requests
+    public @ResponseBody String addNewDog(@RequestParam String uid, String name, String breed, String age, String weight) {
+        User u = userRepository.findByUid(uid);
+        Dog d = new Dog(name, breed, age, weight);
+        u.setOwnedDog(d);
+        userRepository.save(u);
+        return "added new dog";
+    }
 
      @PostMapping(value="/updatename")
      public @ResponseBody boolean newNameForUser(@RequestBody String uid, String newName) {
@@ -93,10 +111,7 @@ public class UserController    {
                 return false;
             }
             
-    }
-     
-     
-
+    }    
     
     }
 

@@ -39,6 +39,7 @@ try {
     userlib.setName(firstname+" "+lastname);
     userlib.setPhone(phone);
     userlib.setEmail(email);
+    userlib.setUid(user.uid);
     userlib.setLogin(true);
   }
   else {
@@ -59,10 +60,11 @@ try {
 
    var response = await http.get(Uri.parse(url));
     if (response.body != ""){
-      var user = json.decode(response.body);
-      userlib.setName(user['name']);
-      userlib.setPhone(user['phoneNumber']);
-      userlib.setEmail(user['email']);
+      var users = json.decode(response.body);
+      userlib.setName(users['name']);
+      userlib.setPhone(users['phoneNumber']);
+      userlib.setEmail(users['email']);
+      userlib.setUid(user.uid);
       userlib.setLogin(true);
   }
   else {
