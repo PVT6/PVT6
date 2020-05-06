@@ -1,135 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/temp.dart';
+import 'package:frontend/mapFiles/temp.dart';
 import 'package:latlong/latlong.dart';
 
-
-class DogPlaceDesc extends StatefulWidget {
-  DogPlaceDesc() : super();
-
-  final String title = "Maps Demo";
-
-  @override
-  DogPlaceDescState createState() => DogPlaceDescState();
-}
-
-class DogPlaceDescState extends State<DogPlaceDesc> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Description'),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Stack(
-              children: <Widget>[
-                Container(
-                    height: 300,
-                    width: double.infinity,
-                    child: Image.asset("Hundoarna.jpg")),
-                Positioned(
-                  bottom: 20.0,
-                  left: 20.0,
-                  right: 20.0,
-                  child: Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.star,
-                        color: Colors.yellow,
-                      ),
-                      SizedBox(width: 10.0),
-                      Text(
-                        "4.5",
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w600),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Text("Grundtvigsgatan 33, 168 48 Bromma"),
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.share),
-                        onPressed: () {},
-                      )
-                    ],
-                  ),
-                  Text(
-                    "Hundöarna drottningholm",
-                    style: Theme.of(context).textTheme.title,
-                  ),
-                  Divider(),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Icon(Icons.favorite_border),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      Text("20.2k"),
-                      SizedBox(
-                        width: 16.0,
-                      ),
-                      Icon(Icons.comment),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      Text("2.2k"),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  Text(
-                    "Looking for a place where your dog can run free with other dogs look no further, hundöarna at Drottningholms castle are is by all means the place for you to visit. The park is home for majestice trees and bridges, aswell as a quite place for peaceful walks. Perfect for walkers and dogowners alike.",
-                    textAlign: TextAlign.justify,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      ButtonBar(
-                        children: <Widget>[
-                          FlatButton(
-                            child: Text('View on Map'),
-                            color: Colors.blue,
-                            onPressed: () {/** */},
-                          ),
-                          FlatButton(
-                            child: Text('Directions'),
-                            color: Colors.blue,
-                            onPressed: () {/** */},
-                          ),
-                          FlatButton(
-                            child: Text('Common routes'),
-                            color: Colors.blue,
-                            onPressed: () {/** */},
-                          ),
-                        ],
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class DogPlaceDesc2 extends StatelessWidget {
   final String image;
@@ -144,11 +16,6 @@ class DogPlaceDesc2 extends StatelessWidget {
 
   DogPlaceDesc2(this.image, this.rating, this.location, this.title, this.desc,
        this.directions, this.commonRoutes, this.coordinates);
-
-  void _sendDataBack(BuildContext context) {
-    LatLng viewOnMap = coordinates;
-    Navigator.pop(context, viewOnMap);
-  }
 
   @override
   Widget build(BuildContext context) {

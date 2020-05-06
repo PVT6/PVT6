@@ -1,14 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:frontend/friendsAndContacts/contacts.dart';
+import 'package:frontend/settings.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:math';
-
-import 'contacts.dart';
-import 'settings.dart';
 
 const apiKey = "AIzaSyCDdx8s1gSU908drNXjk-T7JA4ZMTEBOD4";
 
@@ -58,9 +57,6 @@ class MapSampleState extends State<MapSample> {
     });
 
     location.onLocationChanged().listen((LocationData cLoc) {
-      // cLoc contains the lat and long of the
-      // current user's position in real time,
-      // so we're holding on to it
       currentLocation = cLoc;
       updatePinOnMap();
     });
@@ -68,27 +64,10 @@ class MapSampleState extends State<MapSample> {
   }
 
   void updatePinOnMap() async {
-    // create a new CameraPosition instance
-    // every time the location changes, so the camera
-    // follows the pin as it moves with an animation
-    // CameraPosition cPosition = CameraPosition(
-    //   zoom: CAMERA_ZOOM,
-    //   tilt: CAMERA_TILT,
-    //   bearing: CAMERA_BEARING,
-    //   target: LatLng(currentLocation.latitude, currentLocation.longitude),
-    // );
-    // final GoogleMapController controller = await _controller.future;
-    // controller.animateCamera(CameraUpdate.newCameraPosition(cPosition));
-    // do this inside the setState() so Flutter gets notified
-    // that a widget update is due
 
     setState(() {
-      // updated position
       var pinPosition =
           LatLng(currentLocation.latitude, currentLocation.longitude);
-
-      // the trick is to remove the marker (by id)
-      // and add it again at the updated location
       _markers.removeWhere((m) => m.markerId.value == 'sourcePin');
       _markers.add(Marker(
           markerId: MarkerId('sourcePin'),
@@ -98,28 +77,13 @@ class MapSampleState extends State<MapSample> {
   }
 
   void showPinsOnMap() {
-    // get a LatLng for the source location
-    // from the LocationData currentLocation object
     var pinPosition =
         LatLng(currentLocation.latitude, currentLocation.longitude);
-    // get a LatLng out of the LocationData object
-    //  var destPosition = LatLng(destinationLocation.latitude,
-    //  destinationLocation.longitude);
-    // add the initial source location pin
     _markers.add(Marker(
       markerId: MarkerId('sourcePin'),
       position: pinPosition,
       icon: pinLocationIcon,
     ));
-    // destination pin
-    //  _markers.add(Marker(
-    //     markerId: MarkerId('destPin'),
-    //     position: destPosition,
-    //     icon: destinationIcon
-    //  ));
-    // set the route lines on the map from source to destination
-    // for more info follow this tutorial
-    //setPolylines();
   }
 
   void setPolylines() async {
@@ -144,8 +108,6 @@ class MapSampleState extends State<MapSample> {
   }
 
   void setInitialLocation() async {
-    // set the initial location by pulling the user's
-    // current location from the location's getLocation()
     currentLocation = await location.getLocation();
   }
 
@@ -180,24 +142,10 @@ class MapSampleState extends State<MapSample> {
       });
 
       print("getLocation:$latLng");
-      //_onAddMarkerButtonPressed();
       loading = false;
     });
   }
 
-  // void _onAddMarkerButtonPressed() {
-  //   setState(() {
-  //     _markers.add(Marker(
-  //       markerId: MarkerId("111"),
-  //       position: latLng,
-  //       icon: BitmapDescriptor.defaultMarker,
-  //       infoWindow: InfoWindow(
-  //         title: 'You are here',
-  //         snippet: 'Info',
-  //       ),
-  //     ));
-  //   });
-  // }
 
   void onCameraMove(CameraPosition position) {
     latLng = position.target;
@@ -307,15 +255,6 @@ class MapSampleState extends State<MapSample> {
     print("getLocation111:$latLng");
     return MaterialApp(
       home: Scaffold(
-        // floatingActionButton: FloatingActionButton.extended(
-        //   onPressed: () {
-        //     sendRequest();
-        //   },
-        //   label: const Text('Create new route'),
-        //   backgroundColor: Colors.blue,
-        //   icon: Icon(Icons.directions_boat),
-        // ),
-        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: 0, // this will be set when a new tab is tapped
           items: [

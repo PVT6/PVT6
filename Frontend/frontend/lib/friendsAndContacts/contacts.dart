@@ -40,8 +40,6 @@ class _ContactListPageState extends State<ContactListPage> {
     if (permissionStatus == PermissionStatus.granted) {
       var contacts =
           (await ContactsService.getContacts(withThumbnails: false)).toList();
-//      var contacts = (await ContactsService.getContactsForPhone("8554964652"))
-//          .toList();
       setState(() {
         _contacts = contacts;
       });
@@ -104,9 +102,7 @@ class _ContactListPageState extends State<ContactListPage> {
       body: SafeArea(
         child: _contacts != null
             ? ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: _contacts?.length ?? 0,
+                itemCount: _contacts?.length ?? 0, //lägga till vår egen lista på denna bör funka
                 itemBuilder: (BuildContext context, int index) {
                   Contact c = _contacts?.elementAt(index);
                   return ListTile(

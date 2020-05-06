@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
-import 'package:frontend/profile.dart';
-import 'package:numberpicker/numberpicker.dart';
-import 'user.dart' as userlib;
-import 'package:http/http.dart' as http;
 
 class AddDog extends StatefulWidget {
   AddDog() : super();
