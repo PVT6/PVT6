@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/routePickerMap/routePickerUI.dart';
 import 'package:frontend/userFiles/dogProfile.dart';
 import 'package:latlong/latlong.dart';
 import 'package:frontend/dogPlaceDesc.dart';
@@ -97,7 +98,15 @@ class MenuItemsList extends StatelessWidget {
                             'Location',
                             'Orminges hundrastgård',
                             'With an agility track aswell as an abundance of trees, + desc',
-                            () => {},
+                           
+                           
+                            () => {
+                              Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => RoutePage()),
+                                  )
+                            }, //Här
                             () => {},
                             location = new LatLng(59.334389, 18.254072),
                           )))
