@@ -4,45 +4,45 @@ import 'package:frontend/userFiles/dogProfile.dart';
 
 List<User> friends;
 List<User> users = [
-  User('Jakob', "123@gmail.com", '123',true),
-  User('Sharon', "123@gmail.com", '123',false),
-  User('Erik', "123@gmail.com", '123',true)
+  User('Jakob', "123@gmail.com", '123', true),
+  User('Sharon', "123@gmail.com", '123', false),
+  User('Erik', "123@gmail.com", '123', true)
 ];
 
 List<User> databaseUser = [
-    User('Jakob', "123@gmail.com", '123',true),
-  User('Sharon', "123@gmail.com", '123',false),
-  User('Erik', "123@gmail.com", '123',true),
-    User('Johan', "123@gmail.com", '123',true),
-  User('Lina', "123@gmail.com", '123',false),
-  User('Karl', "123@gmail.com", '123',true),
-    User('Ella', "123@gmail.com", '123',true),
-  User('Marika', "123@gmail.com", '123',false),
-  User('Pär', "123@gmail.com", '123',true),
-    User('Mattias', "123@gmail.com", '123',true),
-  User('Viktor', "123@gmail.com", '123',false),
-  User('Emma', "123@gmail.com", '123',true),
-    User('Daniel', "123@gmail.com", '123',true),
-  User('Johanna', "123@gmail.com", '123',false),
-  User('Kevin', "123@gmail.com", '123',true),
-    User('Elsa', "123@gmail.com", '123',true),
-  User('Sara', "123@gmail.com", '123',false),
-  User('Emil', "123@gmail.com", '123',true),
-    User('Joel', "123@gmail.com", '123',true),
-  User('Siri', "123@gmail.com", '123',false),
-  User('Eskil', "123@gmail.com", '123',true),
-    User('Simon', "123@gmail.com", '123',true),
-  User('Linn', "123@gmail.com", '123',false),
-  User('Linda', "123@gmail.com", '123',true),
-    User('Habib', "123@gmail.com", '123',true),
-  User('Ashraf', "123@gmail.com", '123',false),
-  User('Lukas', "123@gmail.com", '123',true),
-    User('John', "123@gmail.com", '123',true),
-  User('Daniella', "123@gmail.com", '123',false),
-  User('Trött', "123@gmail.com", '123',true),
-    User('På', "123@gmail.com", '123',true),
-  User('Namn', "123@gmail.com", '123',false),
-  User('Nu', "123@gmail.com", '123',true),
+  User('Jakob', "123@gmail.com", '123', true),
+  User('Sharon', "123@gmail.com", '123', false),
+  User('Erik', "123@gmail.com", '123', true),
+  User('Johan', "123@gmail.com", '123', true),
+  User('Lina', "123@gmail.com", '123', false),
+  User('Karl', "123@gmail.com", '123', true),
+  User('Ella', "123@gmail.com", '123', true),
+  User('Marika', "123@gmail.com", '123', false),
+  User('Pär', "123@gmail.com", '123', true),
+  User('Mattias', "123@gmail.com", '123', true),
+  User('Viktor', "123@gmail.com", '123', false),
+  User('Emma', "123@gmail.com", '123', true),
+  User('Daniel', "123@gmail.com", '123', true),
+  User('Johanna', "123@gmail.com", '123', false),
+  User('Kevin', "123@gmail.com", '123', true),
+  User('Elsa', "123@gmail.com", '123', true),
+  User('Sara', "123@gmail.com", '123', false),
+  User('Emil', "123@gmail.com", '123', true),
+  User('Joel', "123@gmail.com", '123', true),
+  User('Siri', "123@gmail.com", '123', false),
+  User('Eskil', "123@gmail.com", '123', true),
+  User('Simon', "123@gmail.com", '123', true),
+  User('Linn', "123@gmail.com", '123', false),
+  User('Linda', "123@gmail.com", '123', true),
+  User('Habib', "123@gmail.com", '123', true),
+  User('Ashraf', "123@gmail.com", '123', false),
+  User('Lukas', "123@gmail.com", '123', true),
+  User('John', "123@gmail.com", '123', true),
+  User('Daniella', "123@gmail.com", '123', false),
+  User('Trött', "123@gmail.com", '123', true),
+  User('På', "123@gmail.com", '123', true),
+  User('Namn', "123@gmail.com", '123', false),
+  User('Nu', "123@gmail.com", '123', true),
 ];
 
 class FriendsPage extends StatefulWidget {
@@ -58,6 +58,40 @@ class _HomePageState extends State<FriendsPage>
   void initState() {
     _tabController = new TabController(length: 3, vsync: this);
     super.initState();
+  }
+
+  showAlertDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Decline"),
+      onPressed: () {
+        Navigator.of(context).pop(); // dismiss dialog
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Accept"),
+      onPressed: () {
+        Navigator.of(context).pop(); // dismiss dialog
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Friend Request"),
+      content: Text("This user would like to add you"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   @override
@@ -110,7 +144,11 @@ class _HomePageState extends State<FriendsPage>
                     },
                   )
                 : Center(
-                    child: CircularProgressIndicator(),
+                    child: Text("No friends added",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 17)),
                   ),
           ),
           SafeArea(
@@ -129,13 +167,15 @@ class _HomePageState extends State<FriendsPage>
                         leading: CircleAvatar(child: Text("PH")),
                         title: Text(c.name ?? ""),
                         trailing: IconButton(
-                            icon: Icon(
-                              Icons.person_add,
-                              color: Colors.green,
-                              size: 37,
-                            ),
-                            onPressed:
-                                null), //onPressed Lägger till i vänner och tar bort från lista
+                          icon: Icon(
+                            Icons.person_add,
+                            color: Colors.green,
+                            size: 37,
+                          ),
+                          onPressed: () {
+                            showAlertDialog(context);
+                          },
+                        ), //onPressed Lägger till i vänner och tar bort från lista
                       );
                     },
                   )
@@ -157,7 +197,7 @@ class User {
   final String phone;
   bool friendstatus;
 
-  User(this.name, this.email, this.phone,this.friendstatus);
+  User(this.name, this.email, this.phone, this.friendstatus);
 }
 
 class SearchUsers extends StatefulWidget {
@@ -186,7 +226,7 @@ class _MyHomePageState extends State<SearchUsers> {
     if (query.isNotEmpty) {
       List<User> dummyListData = List<User>();
       dummySearchList.forEach((item) {
-        if (item.name == query) {
+        if (item.name.contains(query)) {
           dummyListData.add(item);
         }
       });
@@ -201,6 +241,40 @@ class _MyHomePageState extends State<SearchUsers> {
         items.addAll(duplicateItems);
       });
     }
+  }
+
+  showAlertDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop(); // dismiss dialog
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop(); // dismiss dialog
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Send Friend Request"),
+      content: Text("Would You Like To Add this User?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   @override
@@ -226,29 +300,30 @@ class _MyHomePageState extends State<SearchUsers> {
             ),
             Expanded(
               child: ListView.builder(
-                    itemCount: items?.length ??
-                        0, //lägga till vår egen lista på denna bör funka
-                    itemBuilder: (BuildContext context, int index) {
-                      User c = databaseUser?.elementAt(index);
-                      return ListTile(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  ProfileInfo(c)));
-                        },
-                        leading: CircleAvatar(child: Text("PH")),
-                        title: Text(c.name ?? ""),
-                        trailing: IconButton(
-                            icon: Icon(
-                              Icons.person_add,
-                              color: Colors.green,
-                              size: 37,
-                            ),
-                            onPressed:
-                                null), //onPressed Lägger till i vänner och tar bort från lista
-                      );
+                itemCount: items?.length ??
+                    0, //lägga till vår egen lista på denna bör funka
+                itemBuilder: (BuildContext context, int index) {
+                  User c = databaseUser?.elementAt(index);
+                  return ListTile(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (BuildContext context) => ProfileInfo(c)));
                     },
-                  ),
+                    leading: CircleAvatar(child: Text("PH")),
+                    title: Text(c.name ?? ""),
+                    trailing: IconButton(
+                      icon: Icon(
+                        Icons.person_add,
+                        color: Colors.green,
+                        size: 37,
+                      ),
+                      onPressed: () {
+                        showAlertDialog(context);
+                      },
+                    ), //onPressed Lägger till i vänner och tar bort från lista
+                  );
+                },
+              ),
             ),
           ],
         ),
@@ -258,18 +333,44 @@ class _MyHomePageState extends State<SearchUsers> {
 }
 
 class ProfileInfo extends StatefulWidget {
-  
   final User user;
 
   ProfileInfo(this.user);
-  
 
   @override
   ProfileInfoState createState() => new ProfileInfoState();
 }
 
 class ProfileInfoState extends State<ProfileInfo> {
- 
+  showAlertDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.of(context).pop(); // dismiss dialog
+        setState(() {
+          widget.user.friendstatus = false;
+        });
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("UserName"),
+      content: Text("Friend request sent"),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -302,9 +403,7 @@ class ProfileInfoState extends State<ProfileInfo> {
                         elevation: 0,
                         child: Icon(Icons.person_add),
                         onPressed: () {
-                           setState(() {
-                            widget.user.friendstatus = false;
-                          });
+                          showAlertDialog(context);
                         },
                       )
                     : MaterialButton(
