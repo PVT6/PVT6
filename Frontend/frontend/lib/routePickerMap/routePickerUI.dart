@@ -13,10 +13,6 @@ class RoutePage extends StatefulWidget {
 }
 
 class _RoutePage extends State<RoutePage> {
-  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
-  bool hasError = false;
-  final _formKey = GlobalKey<FormState>();
-  String email = "";
 
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -40,9 +36,9 @@ class _RoutePage extends State<RoutePage> {
         ),
         body: new TabBarView(
           children: [
-            new routePickerTab1(),
-            new routePickerTab2(),
-            new routePickerTab3()
+            new RoutePickerTab1(),
+            new RoutePickerTab2(),
+            new RoutePickerTab3()
           ]
         )
     )

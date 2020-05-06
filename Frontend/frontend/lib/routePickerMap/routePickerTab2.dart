@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 
-class routePickerTab2 extends StatefulWidget {
+class RoutePickerTab2 extends StatefulWidget {
   @override
-  _routePickerTab2 createState() => _routePickerTab2();
+  _RoutePickerTab2 createState() => _RoutePickerTab2();
 
 }
 
-class _routePickerTab2 extends State<routePickerTab2> {
+class _RoutePickerTab2 extends State<RoutePickerTab2> {
   final _formKey = GlobalKey<FormState>();
   String platsNamn = "";
   Widget build(BuildContext context){
@@ -19,6 +19,9 @@ class _routePickerTab2 extends State<routePickerTab2> {
            child: Column(children: <Widget>[
                   SizedBox(height: 20.0),
                   TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Ge en plats'
+                      ),
                       validator: (val) =>
                           val.isEmpty ? 'Ge en plats.' : null,
                       onChanged: (val) {
