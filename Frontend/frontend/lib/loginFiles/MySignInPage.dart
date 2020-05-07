@@ -20,7 +20,8 @@ class MySignInPage extends StatefulWidget {
   _MySignInPageState createState() => _MySignInPageState();
 }
 
-class _MySignInPageState extends State<MySignInPage> {
+class _MySignInPageState extends State<MySignInPage>
+    with SingleTickerProviderStateMixin {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
   bool hasError = false;
@@ -28,10 +29,36 @@ class _MySignInPageState extends State<MySignInPage> {
   String currentTextPW = "";
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
+  AnimationController controller;
+
+  @override
+  void initState() {
+    controller = AnimationController(
+        duration: const Duration(milliseconds: 500), vsync: this);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final emailField = TextFormField(
+    final Animation<double> offsetAnimation = Tween(begin: 0.0, end: 24.0)
+        .chain(CurveTween(curve: Curves.elasticIn))
+        .animate(controller)
+          ..addStatusListener((status) {
+            if (status == AnimationStatus.completed) {
+              controller.reverse();
+            }
+          });
+    final emailField = AnimatedBuilder(
+        animation: offsetAnimation,
+        builder: (buildContext, child) {
+          if (offsetAnimation.value < 0.0)
+            print('${offsetAnimation.value + 8.0}');
+          return Container( 
+              padding: EdgeInsets.only(
+                  left: offsetAnimation.value + 24.0,
+                  right: 24.0 - offsetAnimation.value),
+              child: Center(
+                child: TextFormField(
       obscureText: false,
       style: style,
       keyboardType: TextInputType.emailAddress,
@@ -48,24 +75,37 @@ class _MySignInPageState extends State<MySignInPage> {
       onChanged: (val) {
         setState(() => currentText = val);
       },
-    );
-    final passwordField = TextFormField(
-      obscureText: true,
-      style: style,
-      decoration: InputDecoration(
-        contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        hintText: "Password",
-        icon: new Icon(
-          Icons.lock,
-          color: Colors.grey,
-        ),
-      ),
-      validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
-      onSaved: (value) => currentTextPW = value.trim(),
-      onChanged: (val) {
-        setState(() => currentTextPW = val);
-      },
-    );
+    )));});
+    final passwordField = AnimatedBuilder(
+        animation: offsetAnimation,
+        builder: (buildContext, child) {
+          if (offsetAnimation.value < 0.0)
+            print('${offsetAnimation.value + 8.0}');
+          return Container( 
+              padding: EdgeInsets.only(
+                  left: offsetAnimation.value + 24.0,
+                  right: 24.0 - offsetAnimation.value),
+              child: Center(
+                child: TextFormField(
+                  obscureText: true,
+                  style: style,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                    hintText: "Password",
+                    icon: new Icon(
+                      Icons.lock,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  validator: (value) =>
+                      value.isEmpty ? 'Password can\'t be empty' : null,
+                  onSaved: (value) => currentTextPW = value.trim(),
+                  onChanged: (val) {
+                    setState(() => currentTextPW = val);
+                  },
+                ),
+              ));
+        });
     final loginButon = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
@@ -74,18 +114,18 @@ class _MySignInPageState extends State<MySignInPage> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () async {
-          dynamic result = await _auth.signInWithEmailAndPassword(
-              currentText, currentTextPW);
-          print(result);
-          if (result == null) {
-            setState(() {
-              hasError = true;
-            });
-          } else {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MapsDemo()),
-            );
+          if (_formKey.currentState.validate()) {
+            dynamic result = await _auth.signInWithEmailAndPassword(
+                currentText, currentTextPW);
+            print(result);
+            if (result == null) {
+              controller.forward(from: 0.0);
+            } else {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MapsDemo()),
+              );
+            }
           }
         },
         child: Text("Login",
@@ -248,3 +288,5 @@ class _MySignInPageState extends State<MySignInPage> {
     ));
   }
 }
+
+

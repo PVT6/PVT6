@@ -5,13 +5,6 @@ List<User> friends = [
   User('Karl', "123@gmail.com", '789', true),
   User('Ella', "123@gmail.com", '123', true),
   User('Marika', "123@gmail.com", '456', false),
-  User('Pär', "123@gmail.com", '789', true),
-  User('Mattias', "123@gmail.com", '123', true),
-  User('Viktor', "123@gmail.com", '456', false),
-  User('Emma', "123@gmail.com", '789', true),
-  User('Daniel', "123@gmail.com", '123', true),
-  User('Johanna', "123@gmail.com", '456', false),
-  User('Kevin', "123@gmail.com", '789', true),
 ];
 List<User> users = [
   User('Jakob', "123@gmail.com", '123', true),
@@ -63,6 +56,7 @@ class FriendsPage extends StatefulWidget {
 class _HomePageState extends State<FriendsPage>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
+  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
   @override
   void initState() {
@@ -78,20 +72,33 @@ class _HomePageState extends State<FriendsPage>
         Navigator.of(context).pop(); // dismiss dialog
       },
     );
-    Widget continueButton = FlatButton(
-      child: Text("Accept"),
-      onPressed: () {
-        Navigator.of(context).pop(); // dismiss dialog
-      },
+
+    Widget acceptButton = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(30.0),
+      color: Colors.green,
+      child: MaterialButton(
+        minWidth: 100,
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () {
+          Navigator.of(context).pop(); // dismiss dialog
+        },
+        child: Text("Accept",
+            textAlign: TextAlign.center,
+            style: style.copyWith(
+                color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
     );
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(32.0))),
       title: Text("Friend Request"),
       content: Text("This user would like to add you"),
       actions: [
         cancelButton,
-        continueButton,
+        acceptButton,
       ],
     );
 
@@ -108,7 +115,7 @@ class _HomePageState extends State<FriendsPage>
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text("Friends Page"),
+        title: new Text("             Friends Page"),
         bottom: TabBar(
           unselectedLabelColor: Colors.white,
           labelColor: Colors.amber,
@@ -129,82 +136,109 @@ class _HomePageState extends State<FriendsPage>
       ),
       body: TabBarView(
         children: [
-          SafeArea(
-              child: Column(
-            children: <Widget>[
-              Text("Friendlist"),
-              friends != null
-                  ? Card(
-                      elevation: 8.0,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0)),
-                      child: ListView.separated(
-                        separatorBuilder: (context, index) => Divider(
-                          color: Colors.black,
-                        ),
+          SingleChildScrollView(
+              physics: ScrollPhysics(),
+              child: Column(children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    // Text("My Friendlist", //snyggare font/text behövs
+                    // style: TextStyle(
+                    //           color: Colors.black,
+                    //           fontWeight: FontWeight.bold,
+                    //           fontSize: 18.0,
+                    //           letterSpacing: 1.1),),
+                  ],
+                ),
+                SizedBox(height: 5,),
+                friends != null
+                    ? ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
                         itemCount: friends?.length ??
                             0, //lägga till vår egen lista på denna bör funka
                         itemBuilder: (BuildContext context, int index) {
                           User c = friends?.elementAt(index);
-                          return ListTile(
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      ProfileInfo(c)));
-                            },
-                            leading: CircleAvatar(child: Text("PH")),
-                            title: Text(c.name ?? ""),
-                          );
+                          return Card(
+                              elevation: 8.0,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0)),
+                              child: ListTile(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          ProfileInfo(c)));
+                                },
+                                leading: CircleAvatar(child: Text("PH")),
+                                title: Text(c.name ?? ""),
+                                subtitle: Text("Stockholm, Vällingby . 53 min"),
+                                trailing: IconButton(
+                                  icon: Icon(
+                                    Icons.person_pin,
+                                    color: Colors.black,
+                                    size: 37,
+                                  ),
+                                  onPressed: () {},
+                                ),
+                              ));
                         },
-                      ))
-                  : Center(
-                      child: Text("No friends added",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 17)),
-                    ),
-            ],
-          )),
-          SafeArea(
-            child: users != null
-                ? Card(
-                    elevation: 8.0,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)),
-                    child: ListView.separated(
-                      separatorBuilder: (context, index) => Divider(
-                        color: Colors.black,
+                      )
+                    : Center(
+                        child: Text("No friends added",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 17)),
                       ),
-                      itemCount: users?.length ??
-                          0, //lägga till vår egen lista på denna bör funka
-                      itemBuilder: (BuildContext context, int index) {
-                        User c = users?.elementAt(index);
-                        return ListTile(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    ProfileInfo(c)));
-                          },
-                          leading: CircleAvatar(child: Text("PH")),
-                          title: Text(c.name ?? ""),
-                          trailing: IconButton(
-                            icon: Icon(
-                              Icons.person_add,
-                              color: Colors.green,
-                              size: 37,
-                            ),
-                            onPressed: () {
-                              showAlertDialog(context);
-                            },
-                          ), //onPressed Lägger till i vänner och tar bort från lista
-                        );
-                      },
-                    ))
-                : Center(
-                    child: CircularProgressIndicator(),
-                  ),
-          ),
+              ])),
+          SingleChildScrollView(
+              physics: ScrollPhysics(),
+              child: Column(children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    //titel och Icon här
+                  ],
+                ),
+                Divider(
+                  thickness: 3,
+                ),
+                users != null
+                    ? ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: users?.length ??
+                            0, //lägga till vår egen lista på denna bör funka
+                        itemBuilder: (BuildContext context, int index) {
+                          User c = users?.elementAt(index);
+                          return Card(
+                              elevation: 8.0,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0)),
+                              child: ListTile(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          ProfileInfo(c)));
+                                },
+                                leading: CircleAvatar(child: Text("PH")),
+                                title: Text(c.name ?? ""),
+                                subtitle: Text(c.email ?? ""),
+                                trailing: IconButton(
+                                  icon: Icon(
+                                    Icons.person_add,
+                                    color: Colors.green,
+                                    size: 37,
+                                  ),
+                                  onPressed: () {
+                                    showAlertDialog(context);
+                                  },
+                                ), //onPressed Lägger till i vänner och tar bort från lista
+                              ));
+                        },
+                      )
+                    : Center(
+                        child: CircularProgressIndicator(),
+                      ),
+              ])),
           SearchUsers()
         ],
         controller: _tabController,
@@ -232,6 +266,7 @@ class SearchUsers extends StatefulWidget {
 
 class _MyHomePageState extends State<SearchUsers> {
   TextEditingController editingController = TextEditingController();
+  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
   final duplicateItems = [
     User('Jakob', "123@gmail.com", '0763085859', true),
@@ -307,20 +342,32 @@ class _MyHomePageState extends State<SearchUsers> {
         Navigator.of(context).pop(); // dismiss dialog
       },
     );
-    Widget continueButton = FlatButton(
-      child: Text("Yes"),
-      onPressed: () {
-        Navigator.of(context).pop(); // dismiss dialog
-      },
+    Widget acceptButton = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(30.0),
+      color: Colors.green,
+      child: MaterialButton(
+        minWidth: 100,
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () {
+          Navigator.of(context).pop(); // dismiss dialog
+        },
+        child: Text("Yes",
+            textAlign: TextAlign.center,
+            style: style.copyWith(
+                color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
     );
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(32.0))),
       title: Text("Send Friend Request"),
       content: Text("Would You Like To Add this User?"),
       actions: [
         cancelButton,
-        continueButton,
+        acceptButton,
       ],
     );
 
@@ -355,39 +402,37 @@ class _MyHomePageState extends State<SearchUsers> {
               ),
             ),
             Expanded(
-              child: Card(
-                  elevation: 8.0,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
-                  child: ListView.separated(
-                    separatorBuilder: (context, index) => Divider(
-                      color: Colors.black,
-                    ),
-                    itemCount: items?.length ??
-                        0, //lägga till vår egen lista på denna bör funka
-                    itemBuilder: (context, index) {
-                      User c = items?.elementAt(index);
-                      return ListTile(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  ProfileInfo(c)));
+              child: ListView.builder(
+                itemCount: items?.length ??
+                    0, //lägga till vår egen lista på denna bör funka
+                itemBuilder: (context, index) {
+                  User c = items?.elementAt(index);
+                  return Card(
+                    elevation: 8.0,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)),
+                    child: ListTile(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (BuildContext context) => ProfileInfo(c)));
+                      },
+                      leading: CircleAvatar(child: Text("PH")),
+                      title: Text(c.name ?? ""),
+                      subtitle: Text(c.email ?? ""),
+                      trailing: IconButton(
+                        icon: Icon(
+                          Icons.person_add,
+                          color: Colors.green,
+                          size: 37,
+                        ),
+                        onPressed: () {
+                          showAlertDialog(context);
                         },
-                        leading: CircleAvatar(child: Text("PH")),
-                        title: Text(c.name ?? ""),
-                        trailing: IconButton(
-                          icon: Icon(
-                            Icons.person_add,
-                            color: Colors.green,
-                            size: 37,
-                          ),
-                          onPressed: () {
-                            showAlertDialog(context);
-                          },
-                        ), //onPressed Lägger till i vänner och tar bort från lista
-                      );
-                    },
-                  )),
+                      ), //onPressed Lägger till i vänner och tar bort från lista
+                    ),
+                  );
+                },
+              ),
             ),
           ],
         ),
@@ -406,6 +451,7 @@ class ProfileInfo extends StatefulWidget {
 }
 
 class ProfileInfoState extends State<ProfileInfo> {
+  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   showAlertDialog(BuildContext context) {
     // set up the button
     Widget okButton = FlatButton(
@@ -418,12 +464,34 @@ class ProfileInfoState extends State<ProfileInfo> {
       },
     );
 
+    Widget loginButon = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(30.0),
+      color: Colors.green,
+      child: MaterialButton(
+        minWidth: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () {
+          Navigator.of(context).pop(); // dismiss dialog
+          setState(() {
+            widget.user.friendstatus = false;
+          });
+        },
+        child: Text("Ok",
+            textAlign: TextAlign.center,
+            style: style.copyWith(
+                color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
+    );
+
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(32.0))),
       title: Text("UserName"),
       content: Text("Friend request sent"),
       actions: [
-        okButton,
+        loginButon,
       ],
     );
 
@@ -551,6 +619,8 @@ class ProfileInfoState extends State<ProfileInfo> {
                     ),
                   ),
                   Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)),
                     child: Container(
                       alignment: Alignment.topLeft,
                       padding: EdgeInsets.all(15),
