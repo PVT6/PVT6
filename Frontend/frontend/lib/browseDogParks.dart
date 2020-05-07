@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/routePickerMap/routePickerTab2.dart';
 import 'package:frontend/routePickerMap/routePickerUI.dart';
 import 'package:frontend/userFiles/dogProfile.dart';
 import 'package:latlong/latlong.dart';
 import 'package:frontend/dogPlaceDesc.dart';
+import 'routePickerMap/locationPickerPage.dart';
 
 var textYellow = Color(0xFFf6c24d);
 var iconYellow = Color(0xFFf4bf47);

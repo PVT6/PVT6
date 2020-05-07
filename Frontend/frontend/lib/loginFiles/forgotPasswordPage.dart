@@ -30,6 +30,7 @@ class _ForgotPasswordPage extends State<ForgotPasswordPage> {
                 child: Column(children: <Widget>[
                   SizedBox(height: 20.0),
                   TextFormField(
+                     decoration: new InputDecoration(labelText: "Enter Email"),
                       validator: (val) =>
                           val.isEmpty ? 'Enter an email.' : null,
                       onChanged: (val) {
