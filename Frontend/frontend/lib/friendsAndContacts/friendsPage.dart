@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
 
-import 'package:frontend/userFiles/dogProfile.dart';
-
-List<User> friends;
+List<User> friends = [
+  User('Lina', "123@gmail.com", '456', false),
+  User('Karl', "123@gmail.com", '789', true),
+  User('Ella', "123@gmail.com", '123', true),
+  User('Marika', "123@gmail.com", '456', false),
+  User('Pär', "123@gmail.com", '789', true),
+  User('Mattias', "123@gmail.com", '123', true),
+  User('Viktor', "123@gmail.com", '456', false),
+  User('Emma', "123@gmail.com", '789', true),
+  User('Daniel', "123@gmail.com", '123', true),
+  User('Johanna', "123@gmail.com", '456', false),
+  User('Kevin', "123@gmail.com", '789', true),
+];
 List<User> users = [
   User('Jakob', "123@gmail.com", '123', true),
   User('Sharon', "123@gmail.com", '123', false),
@@ -117,68 +127,80 @@ class _HomePageState extends State<FriendsPage>
         ),
         bottomOpacity: 1,
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          //lägga till specifik användare om man kan namnet(behöver egen page)
-        },
-      ),
       body: TabBarView(
         children: [
           SafeArea(
-            child: friends != null
-                ? ListView.builder(
-                    itemCount: friends?.length ??
-                        0, //lägga till vår egen lista på denna bör funka
-                    itemBuilder: (BuildContext context, int index) {
-                      User c = friends?.elementAt(index);
-                      return ListTile(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  ProfileInfo(c)));
+              child: Column(
+            children: <Widget>[
+              Text("Friendlist"),
+              friends != null
+                  ? Card(
+                      elevation: 8.0,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)),
+                      child: ListView.separated(
+                        separatorBuilder: (context, index) => Divider(
+                          color: Colors.black,
+                        ),
+                        itemCount: friends?.length ??
+                            0, //lägga till vår egen lista på denna bör funka
+                        itemBuilder: (BuildContext context, int index) {
+                          User c = friends?.elementAt(index);
+                          return ListTile(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      ProfileInfo(c)));
+                            },
+                            leading: CircleAvatar(child: Text("PH")),
+                            title: Text(c.name ?? ""),
+                          );
                         },
-                        leading: CircleAvatar(child: Text("PH")),
-                        title: Text(c.name ?? ""),
-                      );
-                    },
-                  )
-                : Center(
-                    child: Text("No friends added",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 17)),
-                  ),
-          ),
+                      ))
+                  : Center(
+                      child: Text("No friends added",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 17)),
+                    ),
+            ],
+          )),
           SafeArea(
             child: users != null
-                ? ListView.builder(
-                    itemCount: users?.length ??
-                        0, //lägga till vår egen lista på denna bör funka
-                    itemBuilder: (BuildContext context, int index) {
-                      User c = users?.elementAt(index);
-                      return ListTile(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  ProfileInfo(c)));
-                        },
-                        leading: CircleAvatar(child: Text("PH")),
-                        title: Text(c.name ?? ""),
-                        trailing: IconButton(
-                          icon: Icon(
-                            Icons.person_add,
-                            color: Colors.green,
-                            size: 37,
-                          ),
-                          onPressed: () {
-                            showAlertDialog(context);
+                ? Card(
+                    elevation: 8.0,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)),
+                    child: ListView.separated(
+                      separatorBuilder: (context, index) => Divider(
+                        color: Colors.black,
+                      ),
+                      itemCount: users?.length ??
+                          0, //lägga till vår egen lista på denna bör funka
+                      itemBuilder: (BuildContext context, int index) {
+                        User c = users?.elementAt(index);
+                        return ListTile(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    ProfileInfo(c)));
                           },
-                        ), //onPressed Lägger till i vänner och tar bort från lista
-                      );
-                    },
-                  )
+                          leading: CircleAvatar(child: Text("PH")),
+                          title: Text(c.name ?? ""),
+                          trailing: IconButton(
+                            icon: Icon(
+                              Icons.person_add,
+                              color: Colors.green,
+                              size: 37,
+                            ),
+                            onPressed: () {
+                              showAlertDialog(context);
+                            },
+                          ), //onPressed Lägger till i vänner och tar bort från lista
+                        );
+                      },
+                    ))
                 : Center(
                     child: CircularProgressIndicator(),
                   ),
@@ -212,40 +234,40 @@ class _MyHomePageState extends State<SearchUsers> {
   TextEditingController editingController = TextEditingController();
 
   final duplicateItems = [
-  User('Jakob', "123@gmail.com", '0763085859', true),
-  User('Sharon', "123@gmail.com", '456', false),
-  User('Erik', "123@gmail.com", '0763085858', true),
-  User('Johan', "123@gmail.com", '123', true),
-  User('Lina', "123@gmail.com", '456', false),
-  User('Karl', "123@gmail.com", '789', true),
-  User('Ella', "123@gmail.com", '123', true),
-  User('Marika', "123@gmail.com", '456', false),
-  User('Pär', "123@gmail.com", '789', true),
-  User('Mattias', "123@gmail.com", '123', true),
-  User('Viktor', "123@gmail.com", '456', false),
-  User('Emma', "123@gmail.com", '789', true),
-  User('Daniel', "123@gmail.com", '123', true),
-  User('Johanna', "123@gmail.com", '456', false),
-  User('Kevin', "123@gmail.com", '789', true),
-  User('Elsa', "123@gmail.com", '123', true),
-  User('Sara', "123@gmail.com", '456', false),
-  User('Emil', "123@gmail.com", '789', true),
-  User('Joel', "123@gmail.com", '123', true),
-  User('Siri', "123@gmail.com", '456', false),
-  User('Eskil', "123@gmail.com", '789', true),
-  User('Simon', "123@gmail.com", '123', true),
-  User('Linn', "123@gmail.com", '456', false),
-  User('Linda', "123@gmail.com", '789', true),
-  User('Habib', "123@gmail.com", '123', true),
-  User('Ashraf', "123@gmail.com", '456', false),
-  User('Lukas', "123@gmail.com", '789', true),
-  User('John', "123@gmail.com", '123', true),
-  User('Daniella', "123@gmail.com", '456', false),
-  User('Trött', "123@gmail.com", '789', true),
-  User('På', "123@gmail.com", '123', true),
-  User('Namn', "123@gmail.com", '456', false),
-  User('Nu', "123@gmail.com", '789', true),
-];
+    User('Jakob', "123@gmail.com", '0763085859', true),
+    User('Sharon', "123@gmail.com", '456', false),
+    User('Erik', "123@gmail.com", '0763085858', true),
+    User('Johan', "123@gmail.com", '123', true),
+    User('Lina', "123@gmail.com", '456', false),
+    User('Karl', "123@gmail.com", '789', true),
+    User('Ella', "123@gmail.com", '123', true),
+    User('Marika', "123@gmail.com", '456', false),
+    User('Pär', "123@gmail.com", '789', true),
+    User('Mattias', "123@gmail.com", '123', true),
+    User('Viktor', "123@gmail.com", '456', false),
+    User('Emma', "123@gmail.com", '789', true),
+    User('Daniel', "123@gmail.com", '123', true),
+    User('Johanna', "123@gmail.com", '456', false),
+    User('Kevin', "123@gmail.com", '789', true),
+    User('Elsa', "123@gmail.com", '123', true),
+    User('Sara', "123@gmail.com", '456', false),
+    User('Emil', "123@gmail.com", '789', true),
+    User('Joel', "123@gmail.com", '123', true),
+    User('Siri', "123@gmail.com", '456', false),
+    User('Eskil', "123@gmail.com", '789', true),
+    User('Simon', "123@gmail.com", '123', true),
+    User('Linn', "123@gmail.com", '456', false),
+    User('Linda', "123@gmail.com", '789', true),
+    User('Habib', "123@gmail.com", '123', true),
+    User('Ashraf', "123@gmail.com", '456', false),
+    User('Lukas', "123@gmail.com", '789', true),
+    User('John', "123@gmail.com", '123', true),
+    User('Daniella', "123@gmail.com", '456', false),
+    User('Trött', "123@gmail.com", '789', true),
+    User('På', "123@gmail.com", '123', true),
+    User('Namn', "123@gmail.com", '456', false),
+    User('Nu', "123@gmail.com", '789', true),
+  ];
   var items = List<User>();
 
   @override
@@ -333,31 +355,39 @@ class _MyHomePageState extends State<SearchUsers> {
               ),
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: items?.length ??
-                    0, //lägga till vår egen lista på denna bör funka
-                itemBuilder: (context, index) {
-                  User c = items?.elementAt(index);
-                  return ListTile(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (BuildContext context) => ProfileInfo(c)));
+              child: Card(
+                  elevation: 8.0,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0)),
+                  child: ListView.separated(
+                    separatorBuilder: (context, index) => Divider(
+                      color: Colors.black,
+                    ),
+                    itemCount: items?.length ??
+                        0, //lägga till vår egen lista på denna bör funka
+                    itemBuilder: (context, index) {
+                      User c = items?.elementAt(index);
+                      return ListTile(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  ProfileInfo(c)));
+                        },
+                        leading: CircleAvatar(child: Text("PH")),
+                        title: Text(c.name ?? ""),
+                        trailing: IconButton(
+                          icon: Icon(
+                            Icons.person_add,
+                            color: Colors.green,
+                            size: 37,
+                          ),
+                          onPressed: () {
+                            showAlertDialog(context);
+                          },
+                        ), //onPressed Lägger till i vänner och tar bort från lista
+                      );
                     },
-                    leading: CircleAvatar(child: Text("PH")),
-                    title: Text(c.name ?? ""),
-                    trailing: IconButton(
-                      icon: Icon(
-                        Icons.person_add,
-                        color: Colors.green,
-                        size: 37,
-                      ),
-                      onPressed: () {
-                        showAlertDialog(context);
-                      },
-                    ), //onPressed Lägger till i vänner och tar bort från lista
-                  );
-                },
-              ),
+                  )),
             ),
           ],
         ),
@@ -476,13 +506,7 @@ class ProfileInfoState extends State<ProfileInfo> {
                     children: <Widget>[
                       SizedBox(
                           child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => DogProfile()),
-                          );
-                        },
+                        onTap: () {},
                         child: Container(
                           width: 100,
                           height: 100,
@@ -499,13 +523,7 @@ class ProfileInfoState extends State<ProfileInfo> {
                       ),
                       SizedBox(
                           child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => DogProfile()),
-                          );
-                        },
+                        onTap: () {},
                         child: Container(
                           width: 100,
                           height: 100,
