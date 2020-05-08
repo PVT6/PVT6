@@ -28,7 +28,7 @@ class _RoutePickerTab1 extends State<RoutePickerTab1> {
             ], // Only numbers can be entered
         ),
         RaisedButton(
-                      child: Text('Reset Password'),
+                      child: Text('Generate a route'),
                       onPressed: () async {
                         if (km != "0" && km != "") {
                           

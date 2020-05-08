@@ -4,7 +4,7 @@ import 'package:frontend/routePickerMap/routePickerUI.dart';
 class LocationPickerPage extends StatefulWidget {
   LocationPickerPage () : super();
 
-  final String title = "Forgot Password";
+  final String title = "Directions";
 
   @override
   _LocationPickerPage  createState() => _LocationPickerPage ();
@@ -18,7 +18,7 @@ class _LocationPickerPage  extends State<LocationPickerPage> {
     return Scaffold(
         appBar: AppBar(
           elevation: 0.0,
-          title: Text('Forgot Password'),
+          title: Text('Get Direcions'),
         ),
         body: Container(
             padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
@@ -34,7 +34,7 @@ class _LocationPickerPage  extends State<LocationPickerPage> {
         ),
                   SizedBox(height: 20.0),
                   RaisedButton(
-                      child: Text('Reset Password'),
+                      child: Text('Show me the way'),
                       onPressed: () async {
                     
                       }),
