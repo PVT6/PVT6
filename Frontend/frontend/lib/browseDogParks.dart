@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/routePickerMap/locationPickerPage.dart';
 import 'package:frontend/routePickerMap/routePickerUI.dart';
 import 'package:frontend/userFiles/dogProfile.dart';
 import 'package:latlong/latlong.dart';
 import 'package:frontend/dogPlaceDesc.dart';
+import 'routePickerMap/locationPickerPage.dart';
 import 'routePickerMap/locationPickerPage.dart';
 
 var textYellow = Color(0xFFf6c24d);
@@ -105,7 +107,7 @@ class MenuItemsList extends StatelessWidget {
                               Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => RoutePage()),
+                                        builder: (context) => LocationPickerPage(location: "test")),
                                   )
                             }, //Här
                             () => {},
