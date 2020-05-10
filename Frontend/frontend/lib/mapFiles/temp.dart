@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/browseDogParks.dart';
 import 'package:frontend/dogsNearMe.dart';
 import 'package:frontend/friendsAndContacts/contacts.dart';
+import 'package:frontend/friendsAndContacts/friendsPage.dart';
 import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'package:frontend/services/auth.dart';
 import 'package:frontend/settings.dart';
@@ -131,7 +132,7 @@ class _MapBoxState extends State<Mapbox> {
                       Navigator.push(
                           context,
                           new MaterialPageRoute(
-                              builder: (context) => Contacts()))
+                              builder: (context) => FriendsPage()))
                     }),
             CustomListTile(
                 Icons.settings,

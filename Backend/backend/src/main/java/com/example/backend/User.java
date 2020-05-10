@@ -49,6 +49,9 @@ public class User {
   @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
   private Set<Dog> ownedDog;
 
+  @OneToMany(fetch = FetchType.LAZY)
+  private Set<ContactRequest> contactRequests;
+
   @OneToOne(fetch = FetchType.LAZY)
   private SearchHistory searchHistory; //unsure
 
@@ -118,6 +121,9 @@ public class User {
   public ContactList getContactList() {
     return contactList;
   }
+  public Set<ContactRequest> getContactRequest() {
+    return contactRequests;
+  }
 
   public void setContactList(ContactList contactList) {
     this.contactList = contactList;
@@ -126,6 +132,12 @@ public class User {
   public Set<Dog> getOwnedDog() {
     return ownedDog;
   }
+
+  
+  public void setContactRequest(ContactRequest r) {
+    this.contactRequests.add(r);
+  }
+
 
   public void setOwnedDog(Dog ownedDog) {
     this.ownedDog.add(ownedDog);
