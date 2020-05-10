@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:frontend/loginFiles/forgotPasswordPage.dart';
 import 'package:frontend/mapFiles/mapsDemo.dart';
 import 'package:frontend/mapFiles/temp.dart';
+import 'package:frontend/mapFiles/routeTest.dart';
 import 'package:frontend/services/auth.dart';
 import 'secondRoute.dart';
 import 'package:latlong/latlong.dart';
@@ -235,7 +236,7 @@ class _MySignInPageState extends State<MySignInPage> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => MapsDemo()),
+                            MaterialPageRoute(builder: (context) => MapPage()),
                           );
                         },
                         child: new Text("Continue without login >",
