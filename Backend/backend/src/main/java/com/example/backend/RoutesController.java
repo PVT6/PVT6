@@ -56,6 +56,9 @@ public class RoutesController {
            
             e1.printStackTrace();
         }
-        return  returnvalue ;
+        //return  returnvalue ;
+        return "https://api.mapbox.com/directions/v5/mapbox/walking/" + latlng1.toString() + ";"
+        + latlng2.toString() + ";" + latlng3.toString() + ";" + latlng1.toString()
+        + ".json?access_token=pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A&steps=true&overview=full&geometries=geojson&annotations=distance&continue_straight=true";
     }
 }
