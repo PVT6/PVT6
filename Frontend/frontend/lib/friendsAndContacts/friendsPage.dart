@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:frontend/userFiles/dogProfile.dart';
-
-List<User> friends;
+List<User> friends = [
+  User('Lina', "123@gmail.com", '456', false),
+  User('Karl', "123@gmail.com", '789', true),
+  User('Ella', "123@gmail.com", '123', true),
+  User('Marika', "123@gmail.com", '456', false),
+];
 List<User> users = [
   User('Jakob', "123@gmail.com", '123', true),
   User('Sharon', "123@gmail.com", '123', false),
@@ -11,38 +14,38 @@ List<User> users = [
 
 List<User> databaseUser = [
   User('Jakob', "123@gmail.com", '123', true),
-  User('Sharon', "123@gmail.com", '123', false),
-  User('Erik', "123@gmail.com", '123', true),
+  User('Sharon', "123@gmail.com", '456', false),
+  User('Erik', "123@gmail.com", '789', true),
   User('Johan', "123@gmail.com", '123', true),
-  User('Lina', "123@gmail.com", '123', false),
-  User('Karl', "123@gmail.com", '123', true),
+  User('Lina', "123@gmail.com", '456', false),
+  User('Karl', "123@gmail.com", '789', true),
   User('Ella', "123@gmail.com", '123', true),
-  User('Marika', "123@gmail.com", '123', false),
-  User('Pär', "123@gmail.com", '123', true),
+  User('Marika', "123@gmail.com", '456', false),
+  User('Pär', "123@gmail.com", '789', true),
   User('Mattias', "123@gmail.com", '123', true),
-  User('Viktor', "123@gmail.com", '123', false),
-  User('Emma', "123@gmail.com", '123', true),
+  User('Viktor', "123@gmail.com", '456', false),
+  User('Emma', "123@gmail.com", '789', true),
   User('Daniel', "123@gmail.com", '123', true),
-  User('Johanna', "123@gmail.com", '123', false),
-  User('Kevin', "123@gmail.com", '123', true),
+  User('Johanna', "123@gmail.com", '456', false),
+  User('Kevin', "123@gmail.com", '789', true),
   User('Elsa', "123@gmail.com", '123', true),
-  User('Sara', "123@gmail.com", '123', false),
-  User('Emil', "123@gmail.com", '123', true),
+  User('Sara', "123@gmail.com", '456', false),
+  User('Emil', "123@gmail.com", '789', true),
   User('Joel', "123@gmail.com", '123', true),
-  User('Siri', "123@gmail.com", '123', false),
-  User('Eskil', "123@gmail.com", '123', true),
+  User('Siri', "123@gmail.com", '456', false),
+  User('Eskil', "123@gmail.com", '789', true),
   User('Simon', "123@gmail.com", '123', true),
-  User('Linn', "123@gmail.com", '123', false),
-  User('Linda', "123@gmail.com", '123', true),
+  User('Linn', "123@gmail.com", '456', false),
+  User('Linda', "123@gmail.com", '789', true),
   User('Habib', "123@gmail.com", '123', true),
-  User('Ashraf', "123@gmail.com", '123', false),
-  User('Lukas', "123@gmail.com", '123', true),
+  User('Ashraf', "123@gmail.com", '456', false),
+  User('Lukas', "123@gmail.com", '789', true),
   User('John', "123@gmail.com", '123', true),
-  User('Daniella', "123@gmail.com", '123', false),
-  User('Trött', "123@gmail.com", '123', true),
+  User('Daniella', "123@gmail.com", '456', false),
+  User('Trött', "123@gmail.com", '789', true),
   User('På', "123@gmail.com", '123', true),
-  User('Namn', "123@gmail.com", '123', false),
-  User('Nu', "123@gmail.com", '123', true),
+  User('Namn', "123@gmail.com", '456', false),
+  User('Nu', "123@gmail.com", '789', true),
 ];
 
 class FriendsPage extends StatefulWidget {
@@ -53,6 +56,7 @@ class FriendsPage extends StatefulWidget {
 class _HomePageState extends State<FriendsPage>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
+  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
   @override
   void initState() {
@@ -68,20 +72,33 @@ class _HomePageState extends State<FriendsPage>
         Navigator.of(context).pop(); // dismiss dialog
       },
     );
-    Widget continueButton = FlatButton(
-      child: Text("Accept"),
-      onPressed: () {
-        Navigator.of(context).pop(); // dismiss dialog
-      },
+
+    Widget acceptButton = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(30.0),
+      color: Colors.green,
+      child: MaterialButton(
+        minWidth: 100,
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () {
+          Navigator.of(context).pop(); // dismiss dialog
+        },
+        child: Text("Accept",
+            textAlign: TextAlign.center,
+            style: style.copyWith(
+                color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
     );
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(32.0))),
       title: Text("Friend Request"),
       content: Text("This user would like to add you"),
       actions: [
         cancelButton,
-        continueButton,
+        acceptButton,
       ],
     );
 
@@ -98,7 +115,7 @@ class _HomePageState extends State<FriendsPage>
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text("Friends Page"),
+        title: new Text("             Friends Page"),
         bottom: TabBar(
           unselectedLabelColor: Colors.white,
           labelColor: Colors.amber,
@@ -117,72 +134,111 @@ class _HomePageState extends State<FriendsPage>
         ),
         bottomOpacity: 1,
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          //lägga till specifik användare om man kan namnet(behöver egen page)
-        },
-      ),
       body: TabBarView(
         children: [
-          SafeArea(
-            child: friends != null
-                ? ListView.builder(
-                    itemCount: friends?.length ??
-                        0, //lägga till vår egen lista på denna bör funka
-                    itemBuilder: (BuildContext context, int index) {
-                      User c = friends?.elementAt(index);
-                      return ListTile(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  ProfileInfo(c)));
+          SingleChildScrollView(
+              physics: ScrollPhysics(),
+              child: Column(children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    // Text("My Friendlist", //snyggare font/text behövs
+                    // style: TextStyle(
+                    //           color: Colors.black,
+                    //           fontWeight: FontWeight.bold,
+                    //           fontSize: 18.0,
+                    //           letterSpacing: 1.1),),
+                  ],
+                ),
+                SizedBox(height: 5,),
+                friends != null
+                    ? ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: friends?.length ??
+                            0, //lägga till vår egen lista på denna bör funka
+                        itemBuilder: (BuildContext context, int index) {
+                          User c = friends?.elementAt(index);
+                          return Card(
+                              elevation: 8.0,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0)),
+                              child: ListTile(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          ProfileInfo(c)));
+                                },
+                                leading: CircleAvatar(child: Text("PH")),
+                                title: Text(c.name ?? ""),
+                                subtitle: Text("Stockholm, Vällingby . 53 min"),
+                                trailing: IconButton(
+                                  icon: Icon(
+                                    Icons.person_pin,
+                                    color: Colors.black,
+                                    size: 37,
+                                  ),
+                                  onPressed: () {},
+                                ),
+                              ));
                         },
-                        leading: CircleAvatar(child: Text("PH")),
-                        title: Text(c.name ?? ""),
-                      );
-                    },
-                  )
-                : Center(
-                    child: Text("No friends added",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 17)),
-                  ),
-          ),
-          SafeArea(
-            child: users != null
-                ? ListView.builder(
-                    itemCount: users?.length ??
-                        0, //lägga till vår egen lista på denna bör funka
-                    itemBuilder: (BuildContext context, int index) {
-                      User c = users?.elementAt(index);
-                      return ListTile(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  ProfileInfo(c)));
+                      )
+                    : Center(
+                        child: Text("No friends added",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 17)),
+                      ),
+              ])),
+          SingleChildScrollView(
+              physics: ScrollPhysics(),
+              child: Column(children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    //titel och Icon här
+                  ],
+                ),
+                Divider(
+                  thickness: 3,
+                ),
+                users != null
+                    ? ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: users?.length ??
+                            0, //lägga till vår egen lista på denna bör funka
+                        itemBuilder: (BuildContext context, int index) {
+                          User c = users?.elementAt(index);
+                          return Card(
+                              elevation: 8.0,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0)),
+                              child: ListTile(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          ProfileInfo(c)));
+                                },
+                                leading: CircleAvatar(child: Text("PH")),
+                                title: Text(c.name ?? ""),
+                                subtitle: Text(c.email ?? ""),
+                                trailing: IconButton(
+                                  icon: Icon(
+                                    Icons.person_add,
+                                    color: Colors.green,
+                                    size: 37,
+                                  ),
+                                  onPressed: () {
+                                    showAlertDialog(context);
+                                  },
+                                ), //onPressed Lägger till i vänner och tar bort från lista
+                              ));
                         },
-                        leading: CircleAvatar(child: Text("PH")),
-                        title: Text(c.name ?? ""),
-                        trailing: IconButton(
-                          icon: Icon(
-                            Icons.person_add,
-                            color: Colors.green,
-                            size: 37,
-                          ),
-                          onPressed: () {
-                            showAlertDialog(context);
-                          },
-                        ), //onPressed Lägger till i vänner och tar bort från lista
-                      );
-                    },
-                  )
-                : Center(
-                    child: CircularProgressIndicator(),
-                  ),
-          ),
+                      )
+                    : Center(
+                        child: CircularProgressIndicator(),
+                      ),
+              ])),
           SearchUsers()
         ],
         controller: _tabController,
@@ -210,8 +266,43 @@ class SearchUsers extends StatefulWidget {
 
 class _MyHomePageState extends State<SearchUsers> {
   TextEditingController editingController = TextEditingController();
+  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
-  final duplicateItems = databaseUser;
+  final duplicateItems = [
+    User('Jakob', "123@gmail.com", '0763085859', true),
+    User('Sharon', "123@gmail.com", '456', false),
+    User('Erik', "123@gmail.com", '0763085858', true),
+    User('Johan', "123@gmail.com", '123', true),
+    User('Lina', "123@gmail.com", '456', false),
+    User('Karl', "123@gmail.com", '789', true),
+    User('Ella', "123@gmail.com", '123', true),
+    User('Marika', "123@gmail.com", '456', false),
+    User('Pär', "123@gmail.com", '789', true),
+    User('Mattias', "123@gmail.com", '123', true),
+    User('Viktor', "123@gmail.com", '456', false),
+    User('Emma', "123@gmail.com", '789', true),
+    User('Daniel', "123@gmail.com", '123', true),
+    User('Johanna', "123@gmail.com", '456', false),
+    User('Kevin', "123@gmail.com", '789', true),
+    User('Elsa', "123@gmail.com", '123', true),
+    User('Sara', "123@gmail.com", '456', false),
+    User('Emil', "123@gmail.com", '789', true),
+    User('Joel', "123@gmail.com", '123', true),
+    User('Siri', "123@gmail.com", '456', false),
+    User('Eskil', "123@gmail.com", '789', true),
+    User('Simon', "123@gmail.com", '123', true),
+    User('Linn', "123@gmail.com", '456', false),
+    User('Linda', "123@gmail.com", '789', true),
+    User('Habib', "123@gmail.com", '123', true),
+    User('Ashraf', "123@gmail.com", '456', false),
+    User('Lukas', "123@gmail.com", '789', true),
+    User('John', "123@gmail.com", '123', true),
+    User('Daniella', "123@gmail.com", '456', false),
+    User('Trött', "123@gmail.com", '789', true),
+    User('På', "123@gmail.com", '123', true),
+    User('Namn', "123@gmail.com", '456', false),
+    User('Nu', "123@gmail.com", '789', true),
+  ];
   var items = List<User>();
 
   @override
@@ -226,7 +317,7 @@ class _MyHomePageState extends State<SearchUsers> {
     if (query.isNotEmpty) {
       List<User> dummyListData = List<User>();
       dummySearchList.forEach((item) {
-        if (item.name.contains(query)) {
+        if (item.phone.contains(query)) {
           dummyListData.add(item);
         }
       });
@@ -251,20 +342,32 @@ class _MyHomePageState extends State<SearchUsers> {
         Navigator.of(context).pop(); // dismiss dialog
       },
     );
-    Widget continueButton = FlatButton(
-      child: Text("Yes"),
-      onPressed: () {
-        Navigator.of(context).pop(); // dismiss dialog
-      },
+    Widget acceptButton = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(30.0),
+      color: Colors.green,
+      child: MaterialButton(
+        minWidth: 100,
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () {
+          Navigator.of(context).pop(); // dismiss dialog
+        },
+        child: Text("Yes",
+            textAlign: TextAlign.center,
+            style: style.copyWith(
+                color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
     );
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(32.0))),
       title: Text("Send Friend Request"),
       content: Text("Would You Like To Add this User?"),
       actions: [
         cancelButton,
-        continueButton,
+        acceptButton,
       ],
     );
 
@@ -291,8 +394,8 @@ class _MyHomePageState extends State<SearchUsers> {
                 },
                 controller: editingController,
                 decoration: InputDecoration(
-                    labelText: "Search",
-                    hintText: "Search",
+                    labelText: "Search By Number",
+                    hintText: "ex:0701112233",
                     prefixIcon: Icon(Icons.search),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(25.0)))),
@@ -302,25 +405,31 @@ class _MyHomePageState extends State<SearchUsers> {
               child: ListView.builder(
                 itemCount: items?.length ??
                     0, //lägga till vår egen lista på denna bör funka
-                itemBuilder: (BuildContext context, int index) {
-                  User c = databaseUser?.elementAt(index);
-                  return ListTile(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (BuildContext context) => ProfileInfo(c)));
-                    },
-                    leading: CircleAvatar(child: Text("PH")),
-                    title: Text(c.name ?? ""),
-                    trailing: IconButton(
-                      icon: Icon(
-                        Icons.person_add,
-                        color: Colors.green,
-                        size: 37,
-                      ),
-                      onPressed: () {
-                        showAlertDialog(context);
+                itemBuilder: (context, index) {
+                  User c = items?.elementAt(index);
+                  return Card(
+                    elevation: 8.0,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)),
+                    child: ListTile(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (BuildContext context) => ProfileInfo(c)));
                       },
-                    ), //onPressed Lägger till i vänner och tar bort från lista
+                      leading: CircleAvatar(child: Text("PH")),
+                      title: Text(c.name ?? ""),
+                      subtitle: Text(c.email ?? ""),
+                      trailing: IconButton(
+                        icon: Icon(
+                          Icons.person_add,
+                          color: Colors.green,
+                          size: 37,
+                        ),
+                        onPressed: () {
+                          showAlertDialog(context);
+                        },
+                      ), //onPressed Lägger till i vänner och tar bort från lista
+                    ),
                   );
                 },
               ),
@@ -342,6 +451,7 @@ class ProfileInfo extends StatefulWidget {
 }
 
 class ProfileInfoState extends State<ProfileInfo> {
+  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   showAlertDialog(BuildContext context) {
     // set up the button
     Widget okButton = FlatButton(
@@ -354,12 +464,34 @@ class ProfileInfoState extends State<ProfileInfo> {
       },
     );
 
+    Widget loginButon = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(30.0),
+      color: Colors.green,
+      child: MaterialButton(
+        minWidth: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () {
+          Navigator.of(context).pop(); // dismiss dialog
+          setState(() {
+            widget.user.friendstatus = false;
+          });
+        },
+        child: Text("Ok",
+            textAlign: TextAlign.center,
+            style: style.copyWith(
+                color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
+    );
+
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(32.0))),
       title: Text("UserName"),
       content: Text("Friend request sent"),
       actions: [
-        okButton,
+        loginButon,
       ],
     );
 
@@ -442,13 +574,7 @@ class ProfileInfoState extends State<ProfileInfo> {
                     children: <Widget>[
                       SizedBox(
                           child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => DogProfile()),
-                          );
-                        },
+                        onTap: () {},
                         child: Container(
                           width: 100,
                           height: 100,
@@ -465,13 +591,7 @@ class ProfileInfoState extends State<ProfileInfo> {
                       ),
                       SizedBox(
                           child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => DogProfile()),
-                          );
-                        },
+                        onTap: () {},
                         child: Container(
                           width: 100,
                           height: 100,
@@ -499,6 +619,8 @@ class ProfileInfoState extends State<ProfileInfo> {
                     ),
                   ),
                   Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)),
                     child: Container(
                       alignment: Alignment.topLeft,
                       padding: EdgeInsets.all(15),

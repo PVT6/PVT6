@@ -1,5 +1,6 @@
 package com.example.backend;
 
+import org.hibernate.loader.custom.Return;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @SpringBootApplication
+
 public class DemoApplication extends SpringBootServletInitializer{
 
 	public static void main(String[] args) {
@@ -19,9 +21,9 @@ public class DemoApplication extends SpringBootServletInitializer{
 		return String.format(" %s", name); 
 		
 	}
-	@GetMapping("/test")
-	public String test(@RequestParam(value ="name", defaultValue ="World")String name) {
-		return String.format("Hello %s", name); 
+	@GetMapping("/version")
+	public String test() {
+		return "1.1";
 		
 	}
 

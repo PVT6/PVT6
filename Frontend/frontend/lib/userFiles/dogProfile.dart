@@ -1,19 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:frontend/userFiles/profile.dart';
-
+import '../dog.dart';
+import 'user.dart' as userlib;
 import 'addPet.dart';
 
+
 class DogProfile extends StatefulWidget {
-  DogProfile() : super();
+  Dog dog;
+
+  DogProfile(Dog dog) : super() {
+    this.dog = dog;
+  }
 
   final String title = "Maps Demo";
 
+//String name, String age, String weight, String breed
   @override
-  DogProfileState createState() => DogProfileState();
+  DogProfileState createState() => DogProfileState(this.dog);
 }
 
 class DogProfileState extends State<DogProfile> {
+ 
+  Dog dog;
+
+  DogProfileState(Dog dog) {
+    this.dog = dog;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +63,9 @@ class DogProfileState extends State<DogProfile> {
                   right: 20.0,
                   child: Row(
                     children: <Widget>[
-                      SizedBox(width: 280,),
+                      SizedBox(
+                        width: 280,
+                      ),
                       MaterialButton(
                         color: Colors.white,
                         shape: CircleBorder(),
@@ -77,7 +93,7 @@ class DogProfileState extends State<DogProfile> {
                   Row(
                     children: <Widget>[
                       Text(
-                        "Ella",
+                        dog.name,
                         style: Theme.of(context).textTheme.title,
                       ),
                       SizedBox(
@@ -88,7 +104,7 @@ class DogProfileState extends State<DogProfile> {
                         color: Colors.blue,
                       ),
                       Text(
-                        "Medium sized dog",
+                        dog.breed,
                         style: TextStyle(color: Colors.blue),
                       )
                     ],
@@ -117,7 +133,7 @@ class DogProfileState extends State<DogProfile> {
                         width: 36,
                       ),
                       Text(
-                        "4",
+                        dog.age,
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
@@ -125,7 +141,7 @@ class DogProfileState extends State<DogProfile> {
                         width: 105.0,
                       ),
                       Text(
-                        "21kg",
+                        dog.weight,
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
@@ -184,6 +200,13 @@ class DogProfileState extends State<DogProfile> {
                                 MaterialPageRoute(
                                     builder: (context) => ProfileEightPage()),
                               );
+                            },
+                          ),
+                          FlatButton(
+                            child: Text('Remove dog'),
+                            color: Colors.blue,
+                            onPressed: () {
+                              //vill ta bort object från lista här
                             },
                           ),
                         ],
