@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/userFiles/addDogTest.dart';
 
 List<User> friends = [
   User('Lina', "123@gmail.com", '456', false),
@@ -177,7 +178,11 @@ class _HomePageState extends State<FriendsPage>
                                     color: Colors.black,
                                     size: 37,
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          InputPage()));
+                                  },
                                 ),
                               ));
                         },

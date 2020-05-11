@@ -68,6 +68,7 @@ class _MyHomePageState extends State<SearchBreeds> {
   String filter;
 
   final duplicateItems = [
+    Breed('Mixed Breed'),
     Breed('Afador'),
     Breed('Affenhuahua'),
     Breed('Affenpinscher'),
@@ -466,10 +467,12 @@ class _MyHomePageState extends State<SearchBreeds> {
       body: Container(
         child: Column(
           children: <Widget>[
+
+            Text("All Breeds"),
             Container(
                 color: Colors.grey,
-                width: 300,
-                height: 75,
+                width: 420,
+                height: 200,
                 child: Card(
                   child: new ListView.builder(
                     itemCount: items.length,
