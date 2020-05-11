@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:frontend/routePickerMap/locationPickerPage.dart';
 import 'package:frontend/routePickerMap/routePickerUI.dart';
+=======
+import 'package:frontend/loginFiles/intro_slider.dart';
+>>>>>>> master
 import 'package:frontend/userFiles/dogProfile.dart';
 import 'package:latlong/latlong.dart';
 import 'package:frontend/dogPlaceDesc.dart';
@@ -24,20 +28,20 @@ class BrowseDogParks extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue.shade100,
+        backgroundColor: Colors.blue.shade100,
         body: Container(
-      child: ListView(
-        children: <Widget>[
-          SizedBox(height: 16.0),
-          MyAppBar(),
-          SizedBox(height: 16.0),
-          FoodListview(),
-          SizedBox(height: 16.0),
-          SizedBox(height: 16.0),
-          MenuItemsList()
-        ],
-      ),
-    ));
+          child: ListView(
+            children: <Widget>[
+              SizedBox(height: 16.0),
+              MyAppBar(),
+              SizedBox(height: 16.0),
+              FoodListview(),
+              SizedBox(height: 16.0),
+              SizedBox(height: 16.0),
+              MenuItemsList()
+            ],
+          ),
+        ));
   }
 }
 
@@ -75,17 +79,19 @@ class MenuItemsList extends StatelessWidget {
                             "Looking for a place where your dog can run free with other dogs look no further, hundöarna at Drottningholms castle are is by all means the place for you to visit. The park is home for majestice trees and bridges, aswell as a quite place for peaceful walks. Perfect for walkers and dogowners alike.",
                             () => {
                               Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => DogProfile()),
-                                  )
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => IntroScreen()),
+                              )
                             },
                             () => {},
                             location = new LatLng(59.321841, 17.886783),
                           )))
             },
           ),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           MenuItem(
             "ormingesHundrastgard.jpg",
             "4.5",
@@ -115,7 +121,9 @@ class MenuItemsList extends StatelessWidget {
                           )))
             },
           ),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           MenuItem(
             "AkersbergasHundpark.jpg",
             '4.5',
@@ -137,7 +145,9 @@ class MenuItemsList extends StatelessWidget {
                           )))
             },
           ),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           MenuItem(
             "hundrastgard-henriksdal.jpg",
             '4.5',
@@ -159,7 +169,9 @@ class MenuItemsList extends StatelessWidget {
                           )))
             },
           ),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           MenuItem(
             "Valdemarsudde.jpg",
             '4.5',
@@ -181,7 +193,9 @@ class MenuItemsList extends StatelessWidget {
                           )))
             },
           ),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           MenuItem(
             "BrommaKyrka.jpg",
             '4.5',
@@ -203,7 +217,9 @@ class MenuItemsList extends StatelessWidget {
                           )))
             },
           ),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           MenuItem(
             "Langholmen.jpg",
             '4.5',
@@ -225,7 +241,9 @@ class MenuItemsList extends StatelessWidget {
                           )))
             },
           ),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           MenuItem(
             "Bellevueparken.jpg",
             '4.5',
@@ -469,7 +487,7 @@ class MenuItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: new BoxDecoration(color: Colors.white),
+        decoration: new BoxDecoration(color: Colors.white),
         child: Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
             child: GestureDetector(
