@@ -52,6 +52,7 @@ dependencies:
   flutter_mapbox_navigation: ^0.0.10
   carousel_pro: ^1.0.0
   flutter_svg: ^0.17.4
+  image_picker: ^0.6.6+1
   
 dev_dependencies:
   flutter_config: ^1.0.7

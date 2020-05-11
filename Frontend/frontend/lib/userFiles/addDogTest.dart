@@ -4,6 +4,11 @@ import 'dart:math' as math;
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+const colorPurple = const Color(0xFF82658f);
+const colorPeachPink = const Color(0xFFffdcd2);
+const colorLighterPink = const Color(0xFFffe9e5);
+String dogName;
+
 enum Gender { male, female, other }
 
 const Color mainBlue = const Color.fromRGBO(77, 123, 243, 1.0);
@@ -53,15 +58,76 @@ class Breed {
   Breed(this.breed);
 }
 
+class NameSelect extends StatefulWidget {
+  NameSelect({Key key, this.title}) : super(key: key);
+  final String title;
+
+  @override
+  NameSelectState createState() => new NameSelectState();
+}
+
+class NameSelectState extends State<NameSelect> {
+  TextEditingController editingController = TextEditingController();
+  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+
+  bool _isVisible = true;
+
+  void showToast() {
+    setState(() {
+      _isVisible = !_isVisible;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+        appBar: new AppBar(
+          leading: Icon(Icons.verified_user),
+          elevation: 0,
+          title: Text('Name'),
+          backgroundColor: Theme.of(context).accentColor,
+          centerTitle: true,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.arrow_downward),
+              onPressed: showToast,
+            )
+          ],
+        ),
+        body: Visibility(
+            visible: _isVisible,
+            child: Column(children: <Widget>[
+              TextFormField(
+                obscureText: false,
+                style: style,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                  hintText: "Dogs Name",
+                  icon: new Icon(
+                    FontAwesomeIcons.dog,
+                    color: Colors.blue,
+                  ),
+                ),
+                validator: (value) =>
+                    value.isEmpty ? 'Name can\'t be empty' : null,
+                onChanged: (val) {
+                  setState(() => dogName = val);
+                },
+              )
+            ])));
+  }
+}
+
 class SearchBreeds extends StatefulWidget {
   SearchBreeds({Key key, this.title}) : super(key: key);
   final String title;
 
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  SearchBreedState createState() => new SearchBreedState();
 }
 
-class _MyHomePageState extends State<SearchBreeds> {
+class SearchBreedState extends State<SearchBreeds> {
   TextEditingController editingController = TextEditingController();
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
@@ -433,6 +499,8 @@ class _MyHomePageState extends State<SearchBreeds> {
     Breed('Yorkshire Terrier'),
   ];
   var items = List<String>();
+  String selectedBreed = '';
+  bool _isVisible = true;
 
   @override
   void initState() {
@@ -448,6 +516,12 @@ class _MyHomePageState extends State<SearchBreeds> {
     super.initState();
   }
 
+  void showToast() {
+    setState(() {
+      _isVisible = !_isVisible;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -459,16 +533,24 @@ class _MyHomePageState extends State<SearchBreeds> {
         centerTitle: true,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.delete),
-            onPressed: () {},
+            icon: Icon(Icons.arrow_downward),
+            onPressed: showToast,
           )
         ],
       ),
-      body: Container(
+      body: Visibility(
+        visible: _isVisible,
         child: Column(
           children: <Widget>[
-
-            Text("All Breeds"),
+            Text(
+              "Select a breed from the list below",
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w500,
+                fontSize: 16,
+              ),
+              textAlign: TextAlign.left,
+            ),
             Container(
                 color: Colors.grey,
                 width: 420,
@@ -484,8 +566,13 @@ class _MyHomePageState extends State<SearchBreeds> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10.0)),
                               child: ListTile(
-                                onTap: () {},
-                                leading: CircleAvatar(child: Icon(FontAwesomeIcons.dog)),
+                                onTap: () {
+                                  setState(() {
+                                    selectedBreed = c;
+                                  });
+                                },
+                                leading: CircleAvatar(
+                                    child: Icon(FontAwesomeIcons.dog)),
                                 title: Text(items[index] ?? ""),
                               ),
                             )
@@ -498,8 +585,13 @@ class _MyHomePageState extends State<SearchBreeds> {
                                       borderRadius:
                                           BorderRadius.circular(10.0)),
                                   child: ListTile(
-                                    onTap: () {},
-                                    leading: CircleAvatar(child: Icon(FontAwesomeIcons.dog)),
+                                    onTap: () {
+                                      setState(() {
+                                        selectedBreed = c;
+                                      });
+                                    },
+                                    leading: CircleAvatar(
+                                        child: Icon(FontAwesomeIcons.dog)),
                                     title: Text(items[index] ?? ""),
                                   ),
                                 )
@@ -521,6 +613,34 @@ class _MyHomePageState extends State<SearchBreeds> {
                         borderRadius: BorderRadius.all(Radius.circular(25.0)))),
               ),
             ),
+            Row(
+              children: <Widget>[
+                Container(
+                  width: 80,
+                  height: 80,
+                  child: Image.asset("DogLogo.png"),
+                ),
+                Text(
+                  "Selected breed: ",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+            if (selectedBreed != "")
+              Card(
+                color: colorPeachPink,
+                elevation: 8.0,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0)),
+                child: ListTile(
+                  leading: CircleAvatar(child: Icon(FontAwesomeIcons.dog)),
+                  title: Text(selectedBreed),
+                ),
+              )
           ],
         ),
       ),
@@ -531,18 +651,22 @@ class _MyHomePageState extends State<SearchBreeds> {
 class InputPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: new AppBar(title: new Text("             Friends Page")),
+      appBar: new AppBar(title: new Text("             Add Dog")),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            _buildTitle(context),
             Card(
+              margin: EdgeInsets.all(10),
                 elevation: 20,
-                child: Container(
-                    width: 420, height: 520, child: _buildCards(context))),
+                child: Container(width: 420, height: 120, child: NameSelect())),
+            Card(
+              margin: EdgeInsets.all(10),
+                elevation: 20,
+                child: Container(width: 420, height: 520, child: BuildCards())),
             // _buildBottom(context),
             Card(
+              margin: EdgeInsets.all(10),
                 elevation: 20,
                 child:
                     Container(width: 420, height: 500, child: SearchBreeds())),
@@ -568,49 +692,7 @@ class InputPage extends StatelessWidget {
         ));
   }
 
-  Widget _buildCards(BuildContext context) {
-    return Container(
-        padding: EdgeInsets.only(
-          left: 10.0,
-          right: 10.0,
-          top: screenAwareSize(32.0, context),
-        ),
-        child: Column(
-          children: <Widget>[
-            AppBar(
-              leading: Icon(Icons.verified_user),
-              elevation: 0,
-              title: Text('Measurements'),
-              backgroundColor: Theme.of(context).accentColor,
-              centerTitle: true,
-              actions: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () {},
-                )
-              ],
-            ),
-            Expanded(
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Column(
-                      children: <Widget>[
-                        Expanded(child: GenderCard()),
-                        Expanded(child: AgeCard()),
-                        Expanded(
-                          child: WeightCard(),
-                        )
-                      ],
-                    ),
-                  ),
-                  Expanded(child: HeightCard())
-                ],
-              ),
-            )
-          ],
-        ));
-  }
+
 
   Widget _tempCard(String label) {
     return Card(
@@ -629,6 +711,61 @@ class InputPage extends StatelessWidget {
       width: double.infinity,
       child: Switch(value: true, onChanged: (val) {}),
     );
+  }
+}
+
+class BuildCards extends StatefulWidget {
+  const BuildCards({Key key}) : super(key: key);
+
+  @override
+  BuildCardState createState() => BuildCardState();
+}
+
+class BuildCardState extends State<BuildCards> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          leading: Icon(Icons.verified_user),
+          elevation: 0,
+          title: Text('Measurements'),
+          backgroundColor: Theme.of(context).accentColor,
+          centerTitle: true,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {},
+            )
+          ],
+        ),
+        body: Container(
+            padding: EdgeInsets.only(
+              left: 10.0,
+              right: 10.0,
+              top: screenAwareSize(32.0, context),
+            ),
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Column(
+                          children: <Widget>[
+                            Expanded(child: GenderCard()),
+                            Expanded(child: AgeCard()),
+                            Expanded(
+                              child: WeightCard(),
+                            )
+                          ],
+                        ),
+                      ),
+                      Expanded(child: HeightCard())
+                    ],
+                  ),
+                )
+              ],
+            )));
   }
 }
 
@@ -1597,6 +1734,3 @@ class WeightSlider extends StatelessWidget {
     return true;
   }
 }
-
-
-
