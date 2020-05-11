@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/friendsAndContacts/addContactPage.dart';
 import 'package:frontend/mapFiles/temp.dart';
 import 'package:latlong/latlong.dart';
 
@@ -21,7 +22,8 @@ class DogPlaceDesc2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Description'),
+        backgroundColor: colorPurple,
+        title: Text('Description', style: TextStyle(color : colorPeachPink),),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -46,7 +48,7 @@ class DogPlaceDesc2 extends StatelessWidget {
                       Text(
                         rating,
                         style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w600),
+                            color: Colors.white, fontWeight: FontWeight.w600),
                       )
                     ],
                   ),
@@ -108,7 +110,7 @@ class DogPlaceDesc2 extends StatelessWidget {
                         children: <Widget>[
                           FlatButton(
                             child: Text('View on Map'),
-                            color: Colors.blue,
+                            color: colorPurple,
                             onPressed: () {
                               Navigator.push(
                                 context,
@@ -119,12 +121,12 @@ class DogPlaceDesc2 extends StatelessWidget {
                           ),
                           FlatButton(
                             child: Text('Directions'),
-                            color: Colors.blue,
+                            color: colorPurple,
                             onPressed: directions,
                           ),
                           FlatButton(
                             child: Text('Common routes'),
-                            color: Colors.blue,
+                            color: colorPurple,
                             onPressed: commonRoutes,
                           ),
                         ],

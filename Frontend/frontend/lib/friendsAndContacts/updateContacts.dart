@@ -5,6 +5,11 @@ import 'package:flutter/services.dart';
 
 import 'contacts.dart';
 
+// Färgschema #1
+const colorPurple = const Color(0xFF82658f);
+const colorPeachPink = const Color(0xFFffdcd2);
+const colorLighterPink = const Color(0xFFffe9e5);
+
 class UpdateContactsPage extends StatefulWidget {
   UpdateContactsPage({@required this.contact});
   final Contact contact;

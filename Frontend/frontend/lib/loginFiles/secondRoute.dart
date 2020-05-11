@@ -1,4 +1,4 @@
-
+import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/cupertino.dart';
@@ -38,7 +38,7 @@ class SecondRoute extends State<SecondRouteState> {
           gradient: LinearGradient(
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
-              colors: [Colors.green, Colors.blue])),
+              colors: [colorLighterPink, colorPeachPink])),
       child: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -50,12 +50,18 @@ class SecondRoute extends State<SecondRouteState> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.only(left: 32.0),
-                    child: Text(
-                      "New User",
-                      style: TextStyle(
-                          fontSize: 30.0, fontWeight: FontWeight.bold),
+                    child: BorderedText(
+                      strokeWidth: 5.0,
+                      strokeColor: colorPurple,
+                      child: Text(
+                        "New User",
+                        style: TextStyle(
+                            fontSize: 30.0,
+                            fontWeight: FontWeight.bold,
+                            color: colorPeachPink),
+                      ),
                     ),
-                  ),
+                  )
                 ],
               ),
               const SizedBox(height: 5.0),
@@ -63,22 +69,24 @@ class SecondRoute extends State<SecondRouteState> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 32, vertical: 8.0),
                 child: TextField(
-                     onChanged: (val) {
+                  onChanged: (val) {
                     setState(() => firstname = val);
                   },
                   decoration: InputDecoration(
                       labelText: "Name", hasFloatingPlaceholder: true),
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 32, vertical: 8.0),
                 child: TextField(
-                     onChanged: (val) {
+                  onChanged: (val) {
                     setState(() => lastname = val);
                   },
                   decoration: InputDecoration(
                       labelText: "Last name", hasFloatingPlaceholder: true),
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
               Padding(
@@ -90,17 +98,19 @@ class SecondRoute extends State<SecondRouteState> {
                   },
                   decoration: InputDecoration(
                       labelText: "Email", hasFloatingPlaceholder: true),
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 32, vertical: 8.0),
                 child: TextField(
-                     onChanged: (val) {
+                  onChanged: (val) {
                     setState(() => phone = val);
                   },
                   decoration: InputDecoration(
                       labelText: "Phone number", hasFloatingPlaceholder: true),
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
               Padding(
@@ -113,6 +123,7 @@ class SecondRoute extends State<SecondRouteState> {
                   obscureText: true,
                   decoration: InputDecoration(
                       labelText: "Password", hasFloatingPlaceholder: true),
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
               Padding(
@@ -123,6 +134,7 @@ class SecondRoute extends State<SecondRouteState> {
                   decoration: InputDecoration(
                       labelText: "Confirm password",
                       hasFloatingPlaceholder: true),
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ), //Tips till Terms and conditions nedan
               // Padding(
@@ -140,16 +152,37 @@ class SecondRoute extends State<SecondRouteState> {
               //   ),
               // ),
               const SizedBox(height: 60.0),
-              Align(
+              Container(
                 alignment: Alignment.centerRight,
                 child: RaisedButton(
                   padding: const EdgeInsets.fromLTRB(40.0, 16.0, 30.0, 16.0),
-                  color: Colors.yellow,
-                  elevation: 0,
+                  elevation: 20,
+                  color: colorPurple,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(30.0),
                           bottomLeft: Radius.circular(30.0))),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      BorderedText(
+                          strokeWidth: 5.0,
+                          strokeColor: colorPeachPink,
+                          child: Text(
+                            "Sign up".toUpperCase(),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.0,
+                                color: colorPurple),
+                          )),
+                      const SizedBox(width: 40.0),
+                      Icon(
+                        FontAwesomeIcons.arrowRight,
+                        color: colorPeachPink,
+                        size: 18.0,
+                      ),
+                    ],
+                  ),
                   onPressed: () async {
                     if (_formKey.currentState.validate()) {
                       dynamic result = await _auth.registerWithEmailAndPassword(
@@ -166,21 +199,6 @@ class SecondRoute extends State<SecondRouteState> {
                       }
                     }
                   },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Text(
-                        "Sign up".toUpperCase(),
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16.0),
-                      ),
-                      const SizedBox(width: 40.0),
-                      Icon(
-                        FontAwesomeIcons.arrowRight,
-                        size: 18.0,
-                      )
-                    ],
-                  ),
                 ),
               ),
               const SizedBox(height: 50.0),
@@ -191,5 +209,3 @@ class SecondRoute extends State<SecondRouteState> {
     ));
   }
 }
-
-

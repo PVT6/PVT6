@@ -53,6 +53,7 @@ dependencies:
   carousel_pro: ^1.0.0
   flutter_svg: ^0.17.4
   image_picker: ^0.6.6+1
+  bordered_text: ^1.0.0
   
 dev_dependencies:
   flutter_config: ^1.0.7
@@ -103,7 +104,19 @@ flutter:
    - weight_arrow.svg
    - gender_other.svg
    - Dog.svg
-
+   - emailicon40pxl.png
+   - facebookicon.png
+   - logoproject2.png
+   - facebookicon40pxl.png
+   - googleicon40pxl.png
+   - logolightpink.png
+   - logocolorpurpleback.png
+   - emailicon100pxl.png
+   - googleicon144pxl.png
+   - facebookicon140pxl.png
+   - logonavy.png
+   - logogreen.png
+   - logopurplepink.png
    
 
   # An image asset can refer to one or more resolution-specific "variants", see
