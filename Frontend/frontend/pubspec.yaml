@@ -51,6 +51,7 @@ dependencies:
   numberpicker: ^1.2.0
   flutter_mapbox_navigation: ^0.0.10
   carousel_pro: ^1.0.0
+  bordered_text: ^1.0.0
   
 dev_dependencies:
   flutter_config: ^1.0.7
@@ -94,7 +95,19 @@ flutter:
    - LeBistro.jpg
    - HimmelskaHundar.jpg
    - DogLogo.png
-
+   - emailicon40pxl.png
+   - facebookicon.png
+   - logoproject2.png
+   - facebookicon40pxl.png
+   - googleicon40pxl.png
+   - logolightpink.png
+   - logocolorpurpleback.png
+   - emailicon100pxl.png
+   - googleicon144pxl.png
+   - facebookicon140pxl.png
+   - logonavy.png
+   - logogreen.png
+   - logopurplepink.png
    
 
   # An image asset can refer to one or more resolution-specific "variants", see

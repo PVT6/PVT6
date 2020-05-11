@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/mapFiles/temp.dart';
 import 'package:frontend/userFiles/addPet.dart';
@@ -9,8 +10,6 @@ import 'user.dart' as userlib;
 import 'package:frontend/mapFiles/mapsDemo.dart';
 import 'package:http/http.dart' as http;
 import '../dog.dart';
-
-
 
 class ProfileEightPage extends StatefulWidget {
   ProfileEightPage() : super();
@@ -23,7 +22,6 @@ class ProfileEightPageState extends State<ProfileEightPage> {
   @override
   void initState() {
     super.initState();
-    
   }
 
   Future<void> getDogs() async {
@@ -43,7 +41,7 @@ class ProfileEightPageState extends State<ProfileEightPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue.shade100,
+      backgroundColor: colorLighterPink,
       extendBody: true,
       body: SingleChildScrollView(
         child: Column(
@@ -56,10 +54,10 @@ class ProfileEightPageState extends State<ProfileEightPage> {
               actions: <Widget>[
                 //Row med items
                 MaterialButton(
-                  color: Colors.white,
+                  color: colorPeachPink,
                   shape: CircleBorder(),
                   elevation: 0,
-                  child: Icon(Icons.arrow_back),
+                  child: Icon(Icons.arrow_back, color: colorPurple),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -71,10 +69,13 @@ class ProfileEightPageState extends State<ProfileEightPage> {
                   width: 230,
                 ),
                 MaterialButton(
-                  color: Colors.white,
+                  color: colorPeachPink,
                   shape: CircleBorder(),
                   elevation: 0,
-                  child: Icon(Icons.pets),
+                  child: Icon(
+                    Icons.pets,
+                    color: colorPurple,
+                  ),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -103,18 +104,21 @@ class UserInfo extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Container(
-            padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
-            alignment: Alignment.topLeft,
-            child: Text(
-              "My Dogs",
-              style: TextStyle(
-                color: Colors.black87,
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
-              ),
-              textAlign: TextAlign.left,
-            ),
-          ),
+              padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
+              alignment: Alignment.topLeft,
+              child: BorderedText(
+                strokeWidth: 5.0,
+                strokeColor: colorPurple,
+                child: Text(
+                  "My Dogs",
+                  style: TextStyle(
+                    color: colorLighterPink,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+              )),
           SingleChildScrollView(
               physics: ScrollPhysics(),
               child: Column(
@@ -150,16 +154,18 @@ class UserInfo extends StatelessWidget {
           Container(
             padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
             alignment: Alignment.topLeft,
-            child: Text(
+            child: BorderedText(strokeWidth: 6.0,
+            strokeColor: colorPurple,
+            child : Text(
               "User Information", //userData
               style: TextStyle(
-                color: Colors.black87,
+                color: colorLighterPink,
                 fontWeight: FontWeight.w500,
                 fontSize: 16,
               ),
               textAlign: TextAlign.left,
             ),
-          ),
+          )),
           Card(
             child: Container(
               alignment: Alignment.topLeft,
@@ -174,47 +180,47 @@ class UserInfo extends StatelessWidget {
                           ListTile(
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 12, vertical: 4),
-                            leading: Icon(Icons.my_location),
+                            leading: Icon(Icons.my_location, color: colorPurple),
                             title: Text(
                               "Location",
-                              style: TextStyle(color: Colors.blue.shade300),
+                              style: TextStyle(color: colorPurple),
                             ),
                             subtitle: Text(
                               "Stockholm",
-                              style: TextStyle(color: Colors.blue.shade300),
+                              style: TextStyle(color: colorPurple),
                             ),
                           ),
                           ListTile(
-                            leading: Icon(Icons.email),
+                            leading: Icon(Icons.email, color: colorPurple),
                             title: Text(
                               "Email",
-                              style: TextStyle(color: Colors.blue.shade300),
+                              style: TextStyle(color: colorPurple),
                             ),
                             subtitle: Text(
                               userlib.email,
-                              style: TextStyle(color: Colors.blue.shade300),
+                              style: TextStyle(color: colorPurple),
                             ),
                           ),
                           ListTile(
-                            leading: Icon(Icons.phone),
+                            leading: Icon(Icons.phone, color: colorPurple),
                             title: Text(
                               "Phone",
-                              style: TextStyle(color: Colors.blue.shade300),
+                              style: TextStyle(color: colorPurple),
                             ),
                             subtitle: Text(
                               userlib.phone,
-                              style: TextStyle(color: Colors.blue.shade300),
+                              style: TextStyle(color: colorPurple),
                             ),
                           ),
                           ListTile(
-                            leading: Icon(Icons.person),
+                            leading: Icon(Icons.person, color: colorPurple),
                             title: Text(
                               "About Me",
-                              style: TextStyle(color: Colors.blue.shade300),
+                              style: TextStyle(color: colorPurple),
                             ),
                             subtitle: Text(
                               "I love big fluffy dogs. Proud owner of a Bernese Mountain Dog",
-                              style: TextStyle(color: Colors.blue.shade300),
+                              style: TextStyle(color: colorPurple),
                             ),
                           ),
                         ],
@@ -314,7 +320,7 @@ class Avatar extends StatelessWidget {
   const Avatar(
       {Key key,
       @required this.image,
-      this.borderColor = Colors.grey,
+      this.borderColor = colorPurple,
       this.backgroundColor,
       this.radius = 30,
       this.borderWidth = 5})
@@ -324,7 +330,7 @@ class Avatar extends StatelessWidget {
   Widget build(BuildContext context) {
     return CircleAvatar(
       radius: radius + borderWidth,
-      backgroundColor: borderColor,
+      backgroundColor: colorPurple,
       child: CircleAvatar(
         radius: radius,
         backgroundColor: backgroundColor != null

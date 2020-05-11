@@ -90,9 +90,12 @@ class _ContactListPageState extends State<ContactListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Contacts')),
+      backgroundColor: colorLighterPink,
+      appBar: AppBar(title: Text('Contacts', style: TextStyle(color: colorPeachPink)),
+      backgroundColor: colorPurple),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        backgroundColor: colorPurple,
+        child: Icon(Icons.add, color: colorPeachPink,),
         onPressed: () {
           Navigator.of(context).pushNamed("/add").then((_) {
             refreshContacts();
