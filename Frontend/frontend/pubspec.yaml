@@ -51,6 +51,7 @@ dependencies:
   numberpicker: ^1.2.0
   flutter_mapbox_navigation: ^0.0.10
   carousel_pro: ^1.0.0
+  flutter_svg: ^0.17.4
   
 dev_dependencies:
   flutter_config: ^1.0.7
@@ -94,6 +95,13 @@ flutter:
    - LeBistro.jpg
    - HimmelskaHundar.jpg
    - DogLogo.png
+   - gender_arrow.svg
+   - gender_female.svg
+   - gender_male.svg
+   - person.svg
+   - weight_arrow.svg
+   - gender_other.svg
+   - Dog.svg
 
    
 
