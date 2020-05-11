@@ -1,30 +1,46 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/services/auth.dart';
+import 'package:flutter/services.dart';
+import 'package:mapbox_search_flutter/mapbox_search_flutter.dart';
+import 'tempDialog.dart';
 
-class HistoryPage extends StatefulWidget {
-  HistoryPage() : super();
 
-  final String title = "Forgot Password";
-
+class RoutePickerTab2 extends StatefulWidget {
   @override
-  _HistoryPage createState() => _HistoryPage();
+  _RoutePickerTab2 createState() => _RoutePickerTab2();
+
 }
 
-class _HistoryPage extends State<HistoryPage> {
-  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
-  final AuthService _auth = AuthService();
-  bool hasError = false;
-  final _formKey = GlobalKey<FormState>();
-  String email = "";
+class _RoutePickerTab2 extends State<RoutePickerTab2> {
+  List<String> litems = ["Sveden","Fisken","Be","Lloo"];
+  DialogForHistory dialog = new DialogForHistory();
+  Widget build(BuildContext context){
+    return new Scaffold(
+      body: new ListView.builder
+  (
+    padding: const EdgeInsets.all(8),
+    itemCount: litems.length,
+    itemBuilder: (BuildContext context, int index) {
+      return GestureDetector(
+        onTap: () async {
+         dialog.delete(context, '${litems[index]}');
+        } ,
+        child: Container(  
+        height: 75,
+        margin: EdgeInsets.all(2),
+        color: Colors.blue,
+        child: Center(
+          child: Text('${litems[index]}'),
+          
+          
+        )
 
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          elevation: 0.0,
-          title: Text('History'),
-        ),
-        body: Container(
-            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-            ));
+
+      ));
+    }
+    
+  ),
+
+      );
   }
+
 }
