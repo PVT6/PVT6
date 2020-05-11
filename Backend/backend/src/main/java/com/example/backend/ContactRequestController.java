@@ -5,6 +5,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,6 +26,27 @@ public class ContactRequestController {
         return userRepository.findByUid(uid).getContactRequest();
     }
 
+    @PostMapping(path="/answer")
+    public @ResponseBody String answerRequest(@RequestParam String e, String phone, String uid){
+        Set<ContactRequest> contactRequests = userRepository.findByUid(uid).getContactRequest();
+        contactRequests.forEach((element) ->{
+            if(element.getSender().getPhoneNumber() == phone){
+                switch(e) {
+                    case "accept":
+                    element.setStatus(Status.ACCEPTED);
+                    break;
+                    case "rejcet":
+                    element.setStatus(Status.REJECTRED);
+                    break;
+                }
+             
+            }
+           
+        });
+        return "true";
+    
+    }
+    
     @GetMapping(path="/all")
     public @ResponseBody ContactList getContacts(@RequestParam String uid){
         return userRepository.findByUid(uid).getContactList();
@@ -34,12 +56,16 @@ public class ContactRequestController {
         
         User sender = userRepository.findByUid(sendUid);
         User receiver  = userRepository.findByPhone(phone);
-        ContactRequest request = new ContactRequest(sender, receiver);
-        sender.setContactRequest(request);
-        receiver.setContactRequest(request);
-        userRepository.save(sender);
-        userRepository.save(receiver);
-        return "";
+        if (receiver != null) {
+            ContactRequest request = new ContactRequest(sender, receiver, Status.WAITING);
+            sender.setContactRequest(request);
+            receiver.setContactRequest(request);
+            userRepository.save(sender);
+            userRepository.save(receiver);
+            return "Sent friend request";
+        }
+        else 
+        return "No user found";
     }
     
 
