@@ -66,7 +66,7 @@ public class UserController    {
     }
 
     @PostMapping(value="/update")
-    public @ResponseBody String update(@RequestBody String uid, String name, String email, String phone){
+    public @ResponseBody String update(@RequestParam String uid, String name, String email, String phone){
         User u = userRepository.findByUid(uid);
         if(u != null){
             u.setName(name);
