@@ -20,15 +20,14 @@ class _MapPageState extends State<MapPage> {
   var points = <LatLng>[];
   void loadData() async {
     print("Loading geojson data");
-    final data = await http.get("https://api.mapbox.com/directions/v5/mapbox/walking/18.064034,59.338738;18.056411559317823,59.34593253503282;18.059948623152163,59.32885984909151;18.064034,59.338738.json?access_token=pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A&steps=true&overview=full&geometries=geojson&annotations=distance&continue_straight=true");
+    final data = await http.get("https://api.mapbox.com/directions/v5/mapbox/walking/18.064034,59.338738;18.073411113923477,59.332076081194614;18.071977555134517,59.34721459928733;18.064034,59.338738.json?access_token=pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A&steps=true&overview=full&geometries=geojson&annotations=distance&continue_straight=true");
     var jsonfile = json.decode(data.body);
     var routedata = jsonfile['routes'][0];
     var route = routedata["geometry"]["coordinates"];
+    var distantsInMeter = routedata["geometry"]["distance"];
+    var estimatedTime = routedata["geometry"]["duration"]; // MAN KAN ÄNDRA GÅNGHASTIGHET FÖR ATT FÅ MER ACCURATE
     
     for(var i = 0; i < route.length; i++){
-      
-  
-        
         points.add(new LatLng(route[i][1], route[i][0]));
     }
     print(points);
