@@ -30,7 +30,8 @@ public class ContactRequestController {
         return userRepository.findByUid(uid).getContactList();
     }
     @PostMapping(value="/new")
-    public @ResponseBody String sendRequest(@RequestBody String sendUid, String phone) {
+    public @ResponseBody String sendRequest(@RequestParam String sendUid, String phone) {
+        
         User sender = userRepository.findByUid(sendUid);
         User receiver  = userRepository.findByPhone(phone);
         ContactRequest request = new ContactRequest(sender, receiver);
