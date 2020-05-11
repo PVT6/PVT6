@@ -30,8 +30,6 @@ class _LocationPickerPage  extends State<LocationPickerPage> {
                       SizedBox(height: 20.0),
                        TextField(
                          controller: myController, 
-                   onChanged: (val) {
-                   setState(() => location = val); },
                    decoration: new InputDecoration(labelText: "Where do you want to go?",
                    border: new OutlineInputBorder(
                     borderSide: new BorderSide(color: Colors.black)),
@@ -41,6 +39,7 @@ class _LocationPickerPage  extends State<LocationPickerPage> {
                   RaisedButton(
                       child: Text('Show me the way'),
                       onPressed: () async {
+                        location = myController.text;
                     
                       }),
                     

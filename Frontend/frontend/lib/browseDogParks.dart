@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
 import 'package:frontend/routePickerMap/locationPickerPage.dart';
 import 'package:frontend/routePickerMap/routePickerUI.dart';
-=======
 import 'package:frontend/loginFiles/intro_slider.dart';
->>>>>>> master
 import 'package:frontend/userFiles/dogProfile.dart';
 import 'package:latlong/latlong.dart';
 import 'package:frontend/dogPlaceDesc.dart';
