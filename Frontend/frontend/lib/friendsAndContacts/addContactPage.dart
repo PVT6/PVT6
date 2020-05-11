@@ -3,7 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/services.dart';
 
-
+// Färgschema #1
+const colorPurple = const Color(0xFF82658f);
+const colorPeachPink = const Color(0xFFffdcd2);
+const colorLighterPink = const Color(0xFFffe9e5);
 
 class AddContactPage extends StatefulWidget {
   @override
@@ -20,6 +23,7 @@ class _AddContactPageState extends State<AddContactPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Add a contact"),
+        backgroundColor: colorPurple,
         actions: <Widget>[
           FlatButton(
             onPressed: () {

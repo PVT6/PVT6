@@ -20,6 +20,10 @@ import '../dog.dart';
 
 MapController controller = new MapController();
 
+// Färgschema #1
+const colorPurple = const Color(0xFF82658f);
+const colorPeachPink = const Color(0xFFffdcd2);
+const colorLighterPink = const Color(0xFFffe9e5);
 
 class MapsDemo extends StatefulWidget {
   MapsDemo() : super();
@@ -64,10 +68,11 @@ class MapsDemoState extends State<MapsDemo> {
       heroTag: _randomString(10),
       onPressed: function,
       materialTapTargetSize: MaterialTapTargetSize.padded,
-      backgroundColor: Colors.blue,
+      backgroundColor: colorPeachPink,
       child: Icon(
         icon,
         size: 36.0,
+        color: colorPurple,
       ),
     );
   }
@@ -83,21 +88,27 @@ class MapsDemoState extends State<MapsDemo> {
     );
     return new MaterialApp(
       home: Scaffold(
-        backgroundColor: Colors.blue,
+        backgroundColor: colorPurple,
         bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: colorPurple,
           currentIndex: 0, // this will be set when a new tab is tapped
           items: [
             BottomNavigationBarItem(
-              icon: new Icon(Icons.pin_drop),
-              title: new Text('Explore'),
+              icon: new Icon(Icons.pin_drop, color: colorPeachPink,),
+              title: new Text('Explore', style: TextStyle(color: colorPeachPink)),
             ),
             BottomNavigationBarItem(
-              icon: new Icon(Icons.home),
-              title: new Text('Commute'),
+              icon: new Icon(Icons.home, color: colorPeachPink,),
+              title: new Text('Commute',style: TextStyle(color: colorPeachPink)),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              title: Text('Profile'),
+              icon: Icon(Icons.favorite_border, color: colorPeachPink,),
+              title: Text('Feed',style: TextStyle(color: colorPeachPink)),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person, color: colorPeachPink,),
+              title: Text('Profile',style: TextStyle(color: colorPeachPink)),
             ),
           ],
         ),
@@ -146,14 +157,17 @@ class MapsDemoState extends State<MapsDemo> {
           ],
         ),
         appBar: AppBar(
-          title: Text("SafeLight Stockholm"),
-          backgroundColor: Colors.blue,
+          title: Text("DogWalk", style: TextStyle(color: colorPeachPink)),
+          backgroundColor: colorPurple,
         ),
         drawer: Drawer(
           child: ListView(
             padding: EdgeInsets.zero,
             children: <Widget>[
               UserAccountsDrawerHeader(
+                decoration: BoxDecoration(
+                  color: colorPurple
+                ),
                 accountName: Text(
                   userlib.name, //userData
                   style: TextStyle(
@@ -168,9 +182,10 @@ class MapsDemoState extends State<MapsDemo> {
                       color: Colors.white, fontSize: 16.0, letterSpacing: 1.1),
                 ),
                 currentAccountPicture: CircleAvatar(
+                  backgroundColor: colorLighterPink,
                   child: Text(
                     "PH", //userData (om vi vill ha profilbild)
-                    style: TextStyle(fontSize: 40.0),
+                    style: TextStyle(fontSize: 40.0, color: colorPurple),
                   ),
                 ),
               ),
@@ -202,7 +217,7 @@ class MapsDemoState extends State<MapsDemo> {
                                 builder: (context) => Settings()))
                       }),
               CustomListTile(
-                  Icons.local_florist,
+                  Icons.pets,
                   'Browse Dogparks',
                   () => {
                         Navigator.push(

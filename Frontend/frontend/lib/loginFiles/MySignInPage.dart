@@ -7,11 +7,28 @@ import 'package:frontend/mapFiles/temp.dart';
 import 'package:frontend/services/auth.dart';
 import 'secondRoute.dart';
 import 'package:latlong/latlong.dart';
+import 'package:bordered_text/bordered_text.dart';
 
 LatLng basic = new LatLng(59.343431, 18.094141);
 
 Color darkGreen = Colors.green[900];
 Color lightGreen = Colors.green[100];
+
+// Färgschema #1
+const colorPurple = const Color(0xFF82658f);
+const colorPeachPink = const Color(0xFFffdcd2);
+const colorLighterPink = const Color(0xFFffe9e5);
+// Färgschema #2
+const colorNavy = const Color(0xFF4b636e);
+const colorBabyBlue = const Color(0xFFe2f1f8);
+const colorLightNavy = const Color(0xFFa7c0cd);
+const colorNavyContour = const Color(0xFF90a4ae);
+//Färgschema #3
+const colorLightGreen = const Color(0xFFe8f5e9);
+const colorGreenContour = const Color(0xFF97b498);
+const colorLimeGreen = const Color(0xFFb2fab4);
+const colorGreen = const Color(0xFF75a478);
+const colorBrightGreen = const Color(0xFFdefadf);
 
 class MySignInPage extends StatefulWidget {
   MySignInPage({Key key, this.title}) : super(key: key);
@@ -40,7 +57,7 @@ class _MySignInPageState extends State<MySignInPage> {
         hintText: "Username",
         icon: new Icon(
           Icons.mail,
-          color: Colors.grey,
+          color: colorPurple,
         ),
       ),
       validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
@@ -57,7 +74,7 @@ class _MySignInPageState extends State<MySignInPage> {
         hintText: "Password",
         icon: new Icon(
           Icons.lock,
-          color: Colors.grey,
+          color: colorPurple,
         ),
       ),
       validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
@@ -69,7 +86,7 @@ class _MySignInPageState extends State<MySignInPage> {
     final loginButon = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
-      color: Colors.blue, //hexadecimal för ljusgrön behövs
+      color: colorPurple, //hexadecimal för ljusgrön behövs
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -101,7 +118,7 @@ class _MySignInPageState extends State<MySignInPage> {
             gradient: LinearGradient(
                 begin: Alignment.topRight,
                 end: Alignment.bottomLeft,
-                colors: [Colors.blue, Colors.blue.shade200])),
+                colors: [colorLighterPink, colorPeachPink])),
         child: Stack(fit: StackFit.expand, children: <Widget>[
           SingleChildScrollView(
             padding: const EdgeInsets.all(36.0),
@@ -111,16 +128,13 @@ class _MySignInPageState extends State<MySignInPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      SizedBox(height: 70.0),
+                      SizedBox(height: 50.0),
                       Row(children: <Widget>[
-                        Expanded(
+                        SizedBox(
+                          width: 360,
+                          height: 200,
                           child: Image.asset(
-                            'assets/DogLogo.png',
-                          ),
-                        ),
-                        Expanded(
-                          child: Text(
-                            'Dog App',
+                            'assets/logopurplepink.png',
                           ),
                         ),
                       ]),
@@ -139,6 +153,16 @@ class _MySignInPageState extends State<MySignInPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
                             FlatButton(
+                              child: BorderedText(strokeWidth: 3.0,
+                              strokeColor: colorPurple,
+                              child: Text(
+                                "Forgot Password?",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),),
                               onPressed: () {
                                 //borde skapa egen sida för detta, om det inte görs med firebase?
                                 Navigator.push(
@@ -148,35 +172,41 @@ class _MySignInPageState extends State<MySignInPage> {
                                           ForgotPasswordPage()),
                                 );
                               },
-                              child: new Text(
-                                "Forgot Password?",
-                                style: TextStyle(color: Colors.white),
-                              ),
                             ),
                             FlatButton(
+                              child: BorderedText(strokeWidth: 3.0,
+                              strokeColor: colorPurple,
+                              child: Text(
+                                "New user? Sign up",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),),
                               onPressed: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => SecondRouteState()),
                                 );
-                              },
-                              child: new Text(
-                                  "New user? Sign up", //den här overflowar9
-                                  style: TextStyle(color: Colors.white)),
-                            ),
+                              },),
                           ]),
                       Text(
                         'OR',
                         textAlign: TextAlign.center,
                       ),
                       Row(
+                        children: <Widget>[
+                          SizedBox(height: 20.0)
+                        ]
+                      ),
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
-                          SignInButton(
-                            Buttons.Facebook,
-                            mini: true,
-                            onPressed: () async {
+                          SizedBox(
+                              child: InkWell(
+                            onTap: () async {
                               dynamic result = await _auth.facebookSignIn();
                               print(result);
                               if (result == null) {
@@ -191,7 +221,18 @@ class _MySignInPageState extends State<MySignInPage> {
                                 );
                               }
                             },
-                          ),
+                            child: Container(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20.0),
+                                child: Image.asset(
+                                  'facebookicon140pxl.png',
+                                  height: 50,
+                                  width: 50,
+                                ),
+                              ),
+                            ),
+                          )),
+      
                           SizedBox(
                               child: InkWell(
                             onTap: () async {
@@ -213,22 +254,41 @@ class _MySignInPageState extends State<MySignInPage> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20.0),
                                 child: Image.asset(
-                                  'googleLoginMini.png',
+                                  'googleicon144pxl.png',
+                                  height: 50,
+                                  width: 50,
                                 ),
                               ),
                             ),
                           )),
-                          SignInButton(
-                            Buttons.Email,
-                            mini: true,
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Mapbox(basic)),
-                              );
+                          SizedBox(
+                              child: InkWell(
+                            onTap: () async {
+                              dynamic result = await _auth.googleSignIn();
+                              print(result);
+                              if (result == null) {
+                                setState(() {
+                                  hasError = true;
+                                });
+                              } else {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MapsDemo()),
+                                );
+                              }
                             },
-                          ),
+                            child: Container(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20.0),                              
+                                child: Image.asset(
+                                  'emailicon100pxl.png',
+                                  height: 50,
+                                  width: 50,
+                                ),
+                              ),
+                            ),
+                          )),
                         ],
                       ),
                       FlatButton(

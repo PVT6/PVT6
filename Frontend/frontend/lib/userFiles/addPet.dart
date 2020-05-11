@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:frontend/friendsAndContacts/addContactPage.dart';
 import 'package:frontend/mapFiles/temp.dart';
 import 'package:frontend/userFiles/profile.dart';
 import 'package:http/http.dart' as http;
@@ -40,14 +41,14 @@ class AddDogState extends State<AddDog> {
 
   Widget _buildPageContent(BuildContext context) {
     return Container(
-      color: Colors.blue.shade100,
+      color: colorLighterPink,
       child: ListView(
         children: <Widget>[
           SizedBox(
             height: 30.0,
           ),
           CircleAvatar(
-            child: Image.asset("DogLogo.png"),
+            child: Image.asset("logopurplepink.png"),
             maxRadius: 50,
             backgroundColor: Colors.transparent,
           ),
@@ -67,7 +68,7 @@ class AddDogState extends State<AddDog> {
                             builder: (context) => ProfileEightPage()),
                       );
                 },
-                backgroundColor: Colors.blue,
+                backgroundColor: colorPurple,
                 child: Icon(Icons.arrow_back),
               )
             ],
@@ -111,20 +112,20 @@ class AddDogState extends State<AddDog> {
                             onChanged: (val) {
                               setState(() => name = val);
                             },
-                            style: TextStyle(color: Colors.blue),
+                            style: TextStyle(color: colorPurple),
                             decoration: InputDecoration(
                                 hintText: "Name",
                                 hintStyle:
-                                    TextStyle(color: Colors.blue.shade200),
+                                    TextStyle(color: colorPurple),
                                 border: InputBorder.none,
                                 icon: Icon(
                                   Icons.person,
-                                  color: Colors.blue,
+                                  color: colorPurple,
                                 )),
                           )),
                       Container(
                         child: Divider(
-                          color: Colors.blue.shade400,
+                          color: colorPurple,
                         ),
                         padding: EdgeInsets.only(
                             left: 20.0, right: 20.0, bottom: 10.0),
@@ -141,20 +142,20 @@ class AddDogState extends State<AddDog> {
                             onChanged: (val) {
                               setState(() => breed = val);
                             },
-                            style: TextStyle(color: Colors.blue),
+                            style: TextStyle(color: colorPurple),
                             decoration: InputDecoration(
                                 hintText: "Breed",
                                 hintStyle:
-                                    TextStyle(color: Colors.blue.shade200),
+                                    TextStyle(color: colorPurple),
                                 border: InputBorder.none,
                                 icon: Icon(
                                   Icons.pets,
-                                  color: Colors.blue,
+                                  color: colorPurple,
                                 )),
                           )),
                       Container(
                         child: Divider(
-                          color: Colors.blue.shade400,
+                          color: colorPurple,
                         ),
                         padding: EdgeInsets.only(
                             left: 20.0, right: 20.0, bottom: 10.0),
@@ -171,20 +172,20 @@ class AddDogState extends State<AddDog> {
                             onChanged: (val) {
                               setState(() => age = val);
                             },
-                            style: TextStyle(color: Colors.blue),
+                            style: TextStyle(color: colorPurple),
                             decoration: InputDecoration(
                                 hintText: "Age",
                                 hintStyle:
-                                    TextStyle(color: Colors.blue.shade200),
+                                    TextStyle(color: colorPurple),
                                 border: InputBorder.none,
                                 icon: Icon(
                                   Icons.calendar_today,
-                                  color: Colors.blue,
+                                  color: colorPurple,
                                 )),
                           )),
                       Container(
                         child: Divider(
-                          color: Colors.blue.shade400,
+                          color: colorPurple,
                         ),
                         padding: EdgeInsets.only(
                             left: 20.0, right: 20.0, bottom: 10.0),
@@ -201,8 +202,9 @@ class AddDogState extends State<AddDog> {
             children: <Widget>[
               CircleAvatar(
                 radius: 40.0,
-                backgroundColor: Colors.blue.shade600,
+                backgroundColor: colorPurple,
                 child: Icon(Icons.photo),
+                foregroundColor: colorPeachPink,
               ),
             ],
           ),
@@ -237,8 +239,8 @@ class AddDogState extends State<AddDog> {
                 },
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40.0)),
-                child: Text("Add dog", style: TextStyle(color: Colors.white70)),
-                color: Colors.blue,
+                child: Text("Add dog", style: TextStyle(color: colorPeachPink)),
+                color: colorPurple,
               ),
             ),
           )
