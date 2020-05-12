@@ -63,7 +63,7 @@
 <string>reminders</string>
 
     <key>MGLMapboxAccessToken</key>
-    <string>YOUR API KEY</string
+    <string>pk.eyJ1IjoibWFydGluOTcwMyIsImEiOiJjazl2MmZrNDAwN2dtM2xtbzJneHBlZmd3In0.C2Nr6avH256SVRQ2XH9JKg</string
     <key>io.flutter.embedded_views_preview</key>
     <true/>
 

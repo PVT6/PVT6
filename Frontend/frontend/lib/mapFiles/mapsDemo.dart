@@ -18,6 +18,7 @@ import 'package:http/http.dart' as http;
 import '../dog.dart';
 
 
+
 MapController controller = new MapController();
 
 
@@ -113,12 +114,14 @@ class MapsDemoState extends State<MapsDemo> {
                 ]), //ändra detta till coordinate för att komma tillbaka till stockholm
                 layers: [
                   new TileLayerOptions(
-                      urlTemplate:
-                          FlutterConfig.get('MAPBOXAPI_URL'),
+                      urlTemplate: 
+                      "https://api.mapbox.com/styles/v1/martin9703/ck9v2fnez0l461iqlhw7335fv/wmts?access_token=pk.eyJ1IjoibWFydGluOTcwMyIsImEiOiJjazl2MmZrNDAwN2dtM2xtbzJneHBlZmd3In0.C2Nr6avH256SVRQ2XH9JKg2",
+                          //FlutterConfig.get('MAPBOXAPI_URL'),
                       additionalOptions: {
                         'accessToken':
-                            FlutterConfig.get('MAPBOX_ID'),
-                        'id': 'Streets-copy'
+                           'pk.eyJ1IjoibWFydGluOTcwMyIsImEiOiJjazl2MmZrNDAwN2dtM2xtbzJneHBlZmd3In0.C2Nr6avH256SVRQ2XH9JKg',
+                            //FlutterConfig.get('MAPBOX_ID'),
+                        'id': 'Basic'
                       }),
                   MarkerLayerOptions(markers: markers),
                   // ADD THIS
