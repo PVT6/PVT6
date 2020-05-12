@@ -40,6 +40,7 @@ class _LocationPickerPage  extends State<LocationPickerPage> {
                       child: Text('Show me the way'),
                       onPressed: () async {
                         location = myController.text;
+                        
                     
                       }),
                     

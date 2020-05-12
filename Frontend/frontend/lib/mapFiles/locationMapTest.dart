@@ -56,7 +56,7 @@ class MapSampleState extends State<MapSample> {
       pinLocationIcon = onValue;
     });
 
-    location.onLocationChanged().listen((LocationData cLoc) {
+    location.onLocationChanged.listen((LocationData cLoc) {
       currentLocation = cLoc;
       updatePinOnMap();
     });
@@ -134,7 +134,7 @@ class MapSampleState extends State<MapSample> {
 
   getLocation() async {
     var location = new Location();
-    location.onLocationChanged().listen((currentLocation) {
+    location.onLocationChanged.listen((currentLocation) {
       print(currentLocation.latitude);
       print(currentLocation.longitude);
       setState(() {
