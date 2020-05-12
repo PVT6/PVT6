@@ -453,6 +453,7 @@ class SearchBreedState extends State<SearchBreeds> {
                                 onTap: () {
                                   setState(() {
                                     selectedBreed = c;
+                                    finalBreed = c;
                                   });
                                 },
                                 leading: CircleAvatar(
@@ -472,6 +473,7 @@ class SearchBreedState extends State<SearchBreeds> {
                                     onTap: () {
                                       setState(() {
                                         selectedBreed = c;
+                                        finalBreed = c;
                                       });
                                     },
                                     leading: CircleAvatar(

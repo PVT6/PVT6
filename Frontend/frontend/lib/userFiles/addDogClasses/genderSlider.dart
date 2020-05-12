@@ -6,9 +6,14 @@ import '../addDogTest.dart';
 enum Gender { male, female, other }
 
 class GenderCard extends StatefulWidget {
-  final Gender initialGender;
+  final Gender gender;
+  final ValueChanged<Gender> onChanged;
 
-  const GenderCard({Key key, this.initialGender}) : super(key: key);
+  const GenderCard({
+    Key key,
+    this.gender = Gender.female,
+    this.onChanged,
+  }) : super(key: key);
 
   @override
   _GenderCardState createState() => _GenderCardState();
@@ -29,7 +34,6 @@ class _GenderCardState extends State<GenderCard>
 
   @override
   void initState() {
-    selectedGender = widget.initialGender;
     _arrowAnimationController = new AnimationController(
       vsync: this,
       lowerBound: -_defaultGenderAngle,

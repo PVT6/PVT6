@@ -170,7 +170,7 @@ class TransitionDot extends AnimatedWidget {
     double width = math.min(scaledSize, deviceWidth);
     Decoration decoration = BoxDecoration(
       shape: width < 0.9 * deviceWidth ? BoxShape.circle : BoxShape.rectangle,
-      color: Theme.of(context).primaryColor,
+      color: colorPurple,
     );
 
     Widget dot = Container(
@@ -214,5 +214,18 @@ class LoopedSizeAnimation extends Animatable<double> {
       double normalizedT = (t - fullExpansionEdge) / (1 - fullExpansionEdge);
       return defaultSize + normalizedT * 2000.0;
     }
+  }
+}
+class FadeRoute<T> extends MaterialPageRoute<T> {
+  FadeRoute({WidgetBuilder builder, RouteSettings settings})
+      : super(builder: builder, settings: settings);
+
+  @override
+  Duration get transitionDuration => const Duration(milliseconds: 500);
+
+  @override
+  Widget buildTransitions(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation, Widget child) {
+    return FadeTransition(opacity: animation, child: child);
   }
 }
