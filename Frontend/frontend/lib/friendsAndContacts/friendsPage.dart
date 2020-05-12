@@ -1,4 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:frontend/friendsAndContacts/sentRequest.dart';
+import 'package:http/http.dart' as http;
+import 'package:frontend/userFiles/user.dart' as userlib;
 
 List<User> friends = [
   User('Lina', "123@gmail.com", '456', false),
@@ -61,6 +66,18 @@ class _HomePageState extends State<FriendsPage>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+  List<SentRequest> sentRequest = [];
+  List<SentRequest> receivingRequests = [];
+
+  Future<void> getInfo() async {
+    //contacts
+    var url = 'https://group6-15.pvt.dsv.su.se/contacts/sentRequests?uid=${userlib.uid}';
+    var response = await http.get(Uri.parse(url));
+    List<SentRequest> sentRequest = (json.decode(response.body) as List)
+          .map((i) => SentRequest.fromJson(i))
+          .toList();
+ 
+  }
 
   @override
   void initState() {
@@ -294,8 +311,6 @@ class _HomePageState extends State<FriendsPage>
                                       color: Colors.yellow,
                                       size: 37,
                                     ),
-
-                                    
                                   ));
                             },
                           )
@@ -480,6 +495,7 @@ class _MyHomePageState extends State<SearchUsers> {
 
   @override
   Widget build(BuildContext context) {
+    String phone;
     return new Scaffold(
       body: Container(
         child: Column(
@@ -501,6 +517,7 @@ class _MyHomePageState extends State<SearchUsers> {
                         validator: (val) =>
                             val.isEmpty ? 'Enter a phonenumber.' : null,
                         onChanged: (val) {
+                          phone = val;
                           //setState(() => email = val);
                         },
                       ),
@@ -508,10 +525,17 @@ class _MyHomePageState extends State<SearchUsers> {
                       RaisedButton(
                           child: Text('Search User'),
                           onPressed: () async {
-                            if (userExists) {
-                              showAlertDialogApproved(context);
-                            } else {
-                              showAlertDialogDeclined(context);
+                            var url =
+                                'https://group6-15.pvt.dsv.su.se/contacts/new';
+
+                            var response = await http.post(Uri.parse(url),
+                                body: {'sendUid': userlib.uid, 'phone': phone});
+                            if (response.statusCode == 200) {
+                              if (response.body == "Sent friend request") {
+                                showAlertDialogApproved(context);
+                              } else {
+                                showAlertDialogDeclined(context);
+                              }
                             }
                           })
                     ])))
