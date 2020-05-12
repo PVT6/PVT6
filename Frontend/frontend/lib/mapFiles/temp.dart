@@ -93,7 +93,9 @@ class _MapBoxState extends State<Mapbox> {
       appBar: new AppBar(
           title: new Text('DogWalk Stockholm'), backgroundColor: colorPurple),
       drawer: Drawer(
-        child: ListView(
+        child: Container(
+          color: colorLighterPink,
+            child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
             UserAccountsDrawerHeader(
@@ -176,12 +178,14 @@ class _MapBoxState extends State<Mapbox> {
                     'assets/logopurplepink.png',
                   ),
                 ),
-                SizedBox(width: 30,),
+                SizedBox(
+                  width: 30,
+                ),
                 Material(
                   elevation: 5.0,
                   color: Colors.red,
                   child: MaterialButton(
-                    minWidth: 100,
+                    minWidth: 120,
                     padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                     onPressed: () async {
                       await _auth.signOut();
@@ -200,7 +204,7 @@ class _MapBoxState extends State<Mapbox> {
               ],
             )
           ],
-        ),
+        )),
       ),
       floatingActionButton: FloatingActionButton.extended(
         label: Text('Search'),
