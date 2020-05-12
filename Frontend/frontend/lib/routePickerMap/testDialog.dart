@@ -68,41 +68,4 @@ class TestDialog {
 }
 
 
-class TestDialog2 extends StatefulWidget {
-  @override
-  _TestDialog2 createState() => new _TestDialog2();
-}
 
-class _TestDialog2 extends State<TestDialog2> {
-  String km = "";
-
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      content: Container(
-        color: blue,
-        height: 20.0,
-        width: 20.0,
-      ),
-      actions: <Widget>[
-            FlatButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text("Cancel"),
-            ),
-            FlatButton(
-              onPressed: () {
-              
-              },
-              child: Text("Saved Routes"),
-            ),
-            FlatButton(
-              onPressed: () {
-                
-              },
-              child: Text("Start"),
-            ),
-      ]
-    );
-      
-       }
-
-}
