@@ -618,7 +618,7 @@ class SearchBreedState extends State<SearchBreeds> {
                 Container(
                   width: 80,
                   height: 80,
-                  child: Image.asset("DogLogo.png"),
+                  child: Image.asset("logopurplepink.png"),
                 ),
                 Text(
                   "Selected breed: ",
