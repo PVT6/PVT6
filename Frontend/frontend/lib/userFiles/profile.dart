@@ -120,7 +120,7 @@ class UserInfo extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   userDogs != null
-                      ? ListView.builder(
+                      ? ListView.builder( //https://pusher.com/tutorials/flutter-listviews
                           physics: NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemCount: userDogs?.length ?? 0,
