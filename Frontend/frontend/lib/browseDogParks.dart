@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/friendsAndContacts/addContactPage.dart';
 import 'package:frontend/loginFiles/intro_slider.dart';
 import 'package:frontend/userFiles/dogProfile.dart';
+import 'package:frontend/userFiles/friendsFeed.dart';
 import 'package:latlong/latlong.dart';
 import 'package:frontend/dogPlaceDesc.dart';
 
@@ -309,7 +310,13 @@ class FoodListview extends StatelessWidget {
                               'Location',
                               'Le Bistro',
                               'Dog friendly enviroment, + desc',
-                              () => {},
+                              () => {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => FriendsFeed()),
+                                )
+                              },
                               () => {},
                               location = new LatLng(59.334809, 18.032341),
                             )))
@@ -378,7 +385,10 @@ class MyAppBar extends StatelessWidget {
             color: colorPurple,
             shape: CircleBorder(),
             elevation: 0,
-            child: Icon(Icons.arrow_back, color: colorPeachPink,),
+            child: Icon(
+              Icons.arrow_back,
+              color: colorPeachPink,
+            ),
             onPressed: () {
               Navigator.pop(context);
             },
@@ -514,7 +524,8 @@ class MenuItem extends StatelessWidget {
                                   size: 15.0,
                                   color: Colors.yellow,
                                 ),
-                                Text(rating, style: TextStyle(color: Colors.white))
+                                Text(rating,
+                                    style: TextStyle(color: Colors.white))
                               ],
                             ),
                           ),
