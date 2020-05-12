@@ -115,11 +115,10 @@ class MapsDemoState extends State<MapsDemo> {
                 layers: [
                   new TileLayerOptions(
                       urlTemplate: 
-                      "https://api.mapbox.com/styles/v1/martin9703/ck9v2fnez0l461iqlhw7335fv/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoibWFydGluOTcwMyIsImEiOiJjazl2MmZrNDAwN2dtM2xtbzJneHBlZmd3In0.C2Nr6avH256SVRQ2XH9JKg",
-                          //FlutterConfig.get('MAPBOXAPI_URL'),
+                          FlutterConfig.get('MAPBOXAPI_URL'),
                       additionalOptions: {
-                        'accessToken': 'pk.eyJ1IjoibWFydGluOTcwMyIsImEiOiJjazl2MmZrNDAwN2dtM2xtbzJneHBlZmd3In0.C2Nr6avH256SVRQ2XH9JKg',
-                            //FlutterConfig.get('MAPBOX_ID'),
+                        'accessToken': 
+                            FlutterConfig.get('MAPBOX_ID'),
                         'id': 'mapbox.mapbox-streets-v8'
                       }),
                   MarkerLayerOptions(markers: markers),
