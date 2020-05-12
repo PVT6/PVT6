@@ -138,6 +138,7 @@ public class User {
     this.contactList = contactList;
   }
 
+  @JsonIgnore
   public Set<Dog> getOwnedDog() {
     return ownedDog;
   }
@@ -152,6 +153,12 @@ public class User {
     this.ownedDog.add(ownedDog);
   }
 
+  @JsonIgnore
+  public String getUid() {
+    return this.uid;
+  }
+
+  @JsonIgnore
   public SearchHistory getSearchHistory() {
     return searchHistory;
   }
@@ -160,6 +167,7 @@ public class User {
     this.searchHistory = searchHistory;
   }
 
+  @JsonIgnore
   public Long getCreatedAt() {
     return createdAt;
   }
@@ -168,6 +176,7 @@ public class User {
     this.createdAt = createdAt;
   }
 
+  @JsonIgnore
   public Long getUpdatedAt() {
     return updatedAt;
   }
