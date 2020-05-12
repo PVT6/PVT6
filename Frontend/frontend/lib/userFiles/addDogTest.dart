@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:math' as math;
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 
 const colorPurple = const Color(0xFF82658f);
 const colorPeachPink = const Color(0xFFffdcd2);
@@ -657,19 +660,24 @@ class InputPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Card(
-              margin: EdgeInsets.all(10),
+                margin: EdgeInsets.all(10),
                 elevation: 20,
                 child: Container(width: 420, height: 120, child: NameSelect())),
             Card(
-              margin: EdgeInsets.all(10),
+                margin: EdgeInsets.all(10),
                 elevation: 20,
                 child: Container(width: 420, height: 520, child: BuildCards())),
             // _buildBottom(context),
             Card(
-              margin: EdgeInsets.all(10),
+                margin: EdgeInsets.all(10),
                 elevation: 20,
                 child:
                     Container(width: 420, height: 500, child: SearchBreeds())),
+            Card(
+                margin: EdgeInsets.all(10),
+                elevation: 20,
+                child:
+                    Container(width: 420, height: 400, child: DogPictures())),
           ],
         ),
       ),
@@ -691,8 +699,6 @@ class InputPage extends StatelessWidget {
           ],
         ));
   }
-
-
 
   Widget _tempCard(String label) {
     return Card(
@@ -766,6 +772,93 @@ class BuildCardState extends State<BuildCards> {
                 )
               ],
             )));
+  }
+}
+
+class DogPictures extends StatefulWidget {
+  const DogPictures({Key key}) : super(key: key);
+
+  @override
+  DogPicturesState createState() => DogPicturesState();
+}
+
+class DogPicturesState extends State<DogPictures> {
+  String _path = null;
+
+  void _showPhotoLibrary() async {
+    final file = await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _path = file.path;
+    });
+  }
+
+  void _showOptions(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+              height: 60,
+              child: Column(children: <Widget>[
+                ListTile(
+                  onTap: _showPhotoLibrary,
+                    leading: Icon(Icons.photo_library),
+                    title: Text("Choose from photo library")),
+              ]));
+        });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: Icon(Icons.verified_user),
+        elevation: 0,
+        title: Text('Add Pictures'),
+        backgroundColor: Theme.of(context).accentColor,
+        centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () {},
+          )
+        ],
+      ),
+      body: Column(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Container(
+                width: 80,
+                height: 80,
+                child: Image.asset("logopurplepink.png"),
+              ),
+              FlatButton(
+                child: Text(
+                  "Add a picture of your dog: ",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),
+                ),
+                color: colorPurple,
+                onPressed: () {
+                  _showOptions(context);
+                },
+              ),
+            ],
+          ),
+          Container(
+            color: Colors.black,
+            width: 420,
+            height: 250,
+            child: _path == null
+                ? Icon(Icons.photo, size: 200,)
+                : Image.file(File(_path)),
+          )
+        ],
+      ),
+    );
   }
 }
 
