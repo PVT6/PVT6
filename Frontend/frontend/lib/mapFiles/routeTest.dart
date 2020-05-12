@@ -20,6 +20,8 @@ class _MapPageState extends State<MapPage> {
   var points = <LatLng>[];
   void loadData() async {
     print("Loading geojson data");
+    //  var Km
+    // var Postion
     final data = await http.get("https://api.mapbox.com/directions/v5/mapbox/walking/18.064034,59.338738;18.073411113923477,59.332076081194614;18.071977555134517,59.34721459928733;18.064034,59.338738.json?access_token=pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A&steps=true&overview=full&geometries=geojson&annotations=distance&continue_straight=true");
     var jsonfile = json.decode(data.body);
     var routedata = jsonfile['routes'][0];
@@ -87,7 +89,7 @@ class _MapPageState extends State<MapPage> {
                 new Polyline(
                   points: points,
                   color: Colors.blue,
-                  strokeWidth: 5.0,
+                  strokeWidth: 4.0,
 
                 )
               ]
