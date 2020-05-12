@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:frontend/routePickerMap/testDialog.dart';
 import 'package:geojson/geojson.dart';
 
 import 'package:latlong/latlong.dart';
@@ -11,6 +12,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class _MapPageState extends State<MapPage> {
+  TestDialog testDia = new TestDialog();
   MapController mapController;
   StatefulMapController statefulMapController;
   StreamSubscription<StatefulMapControllerStateChange> sub;
@@ -73,7 +75,8 @@ class _MapPageState extends State<MapPage> {
               new MapOptions(center: LatLng(59.338738, 18.064034), minZoom: 15.0, plugins: [
             // ADD THIS
             UserLocationPlugin(),
-          ]),
+          ],
+          ),
           layers: [
             new TileLayerOptions(
                 urlTemplate: FlutterConfig.get('MAPBOXAPI_URL'),
@@ -94,11 +97,22 @@ class _MapPageState extends State<MapPage> {
                 )
               ]
             ),
+            
             userLocationOptions,
           ],
         ),
+        
         // ...
       ])),
+      floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+                  testDia.test(context);
+                     },
+                  icon: Icon(Icons.router),
+                  label: Text('Go To Routes'),
+                  foregroundColor: Colors.pink,
+                  backgroundColor: Colors.purple
+        ),
     );
   }
 
