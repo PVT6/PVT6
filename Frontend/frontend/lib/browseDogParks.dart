@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/historyPage.dart';
 import 'package:frontend/loginFiles/intro_slider.dart';
 import 'package:frontend/userFiles/dogProfile.dart';
 import 'package:latlong/latlong.dart';
@@ -324,7 +325,13 @@ class FoodListview extends StatelessWidget {
                               'Location',
                               'Brewdog',
                               'Offers dog "Beer", + desc',
-                              () => {},
+                              () => {
+                                Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (context) =>
+                                            RoutePickerTab2()))
+                              },
                               () => {},
                               location = new LatLng(59.336378, 18.034161),
                             )))
