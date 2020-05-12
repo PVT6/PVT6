@@ -169,10 +169,10 @@ class _MySignInPageState extends State<MySignInPage>
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      SizedBox(height: 50.0),
+                      SizedBox(height: 30.0),
                       Row(children: <Widget>[
                         SizedBox(
-                          width: 360,
+                          width: 330,
                           height: 200,
                           child: Image.asset(
                             'assets/logopurplepink.png',
