@@ -105,7 +105,7 @@ class MapsDemoState extends State<MapsDemo> {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: Stack(
           children: <Widget>[
-            FlutterMap(
+            new FlutterMap(
                 mapController: controller,
                 options:
                     new MapOptions(center: LatLng(0, 0), minZoom: 15.0, plugins: [
@@ -115,13 +115,12 @@ class MapsDemoState extends State<MapsDemo> {
                 layers: [
                   new TileLayerOptions(
                       urlTemplate: 
-                      "https://api.mapbox.com/styles/v1/martin9703/ck9v2fnez0l461iqlhw7335fv/wmts?access_token=pk.eyJ1IjoibWFydGluOTcwMyIsImEiOiJjazl2MmZrNDAwN2dtM2xtbzJneHBlZmd3In0.C2Nr6avH256SVRQ2XH9JKg2",
+                      "https://api.mapbox.com/styles/v1/martin9703/ck9v2fnez0l461iqlhw7335fv/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoibWFydGluOTcwMyIsImEiOiJjazl2MmZrNDAwN2dtM2xtbzJneHBlZmd3In0.C2Nr6avH256SVRQ2XH9JKg",
                           //FlutterConfig.get('MAPBOXAPI_URL'),
                       additionalOptions: {
-                        'accessToken':
-                           'pk.eyJ1IjoibWFydGluOTcwMyIsImEiOiJjazl2MmZrNDAwN2dtM2xtbzJneHBlZmd3In0.C2Nr6avH256SVRQ2XH9JKg',
+                        'accessToken': 'pk.eyJ1IjoibWFydGluOTcwMyIsImEiOiJjazl2MmZrNDAwN2dtM2xtbzJneHBlZmd3In0.C2Nr6avH256SVRQ2XH9JKg',
                             //FlutterConfig.get('MAPBOX_ID'),
-                        'id': 'Basic'
+                        'id': 'mapbox.mapbox-streets-v8'
                       }),
                   MarkerLayerOptions(markers: markers),
                   // ADD THIS
