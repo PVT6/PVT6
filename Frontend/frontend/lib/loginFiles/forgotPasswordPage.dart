@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/friendsAndContacts/addContactPage.dart';
 import 'package:frontend/services/auth.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
@@ -20,6 +21,7 @@ class _ForgotPasswordPage extends State<ForgotPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: colorPurple,
           elevation: 0.0,
           title: Text('Forgot Password'),
         ),
@@ -37,7 +39,9 @@ class _ForgotPasswordPage extends State<ForgotPasswordPage> {
                       }),
                   SizedBox(height: 20.0),
                   RaisedButton(
+                    color: colorPurple,
                       child: Text('Reset Password'),
+                      textColor: colorPeachPink,
                       onPressed: () async {
                         if (_formKey.currentState.validate()) {
                           await _auth.sendPasswordResetEmail(email);

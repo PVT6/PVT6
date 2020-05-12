@@ -40,15 +40,15 @@ class SettingsState extends State<Settings> {
         brightness: _getBrightness(),
       ),
       child: Scaffold(
-        backgroundColor: _dark ? null : Colors.blue,
+        backgroundColor: _dark ? null : colorPurple,
         appBar: AppBar(
           elevation: 0,
           brightness: _getBrightness(),
-          iconTheme: IconThemeData(color: _dark ? Colors.white : Colors.black),
+          iconTheme: IconThemeData(color: _dark ? Colors.white : colorPeachPink),
           backgroundColor: Colors.transparent,
           title: Text(
             'Settings',
-            style: TextStyle(color: _dark ? Colors.white : Colors.black),
+            style: TextStyle(color: _dark ? Colors.white : colorPeachPink),
           ),
           actions: <Widget>[
             IconButton(
@@ -66,7 +66,7 @@ class SettingsState extends State<Settings> {
               gradient: LinearGradient(
                   begin: Alignment.topRight,
                   end: Alignment.bottomLeft,
-                  colors: [Colors.blue, Colors.blue.shade200])),
+                  colors: [colorLighterPink, colorPeachPink])),
           child: Stack(
             fit: StackFit.expand,
             children: <Widget>[
@@ -86,7 +86,7 @@ class SettingsState extends State<Settings> {
                       elevation: 8.0,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0)),
-                      color: Colors.blue,
+                      color: Colors.white,
                       child: ListTile(
                         onTap: () {
                           Navigator.push(
@@ -99,7 +99,7 @@ class SettingsState extends State<Settings> {
                         title: Text(
                           userlib.name, //userData
                           style: TextStyle(
-                            color: Colors.white,
+                            color: colorPurple,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -109,7 +109,7 @@ class SettingsState extends State<Settings> {
                         ),
                         trailing: Icon(
                           Icons.edit,
-                          color: Colors.white,
+                          color: colorPurple,
                         ),
                       ),
                     ),
@@ -124,7 +124,7 @@ class SettingsState extends State<Settings> {
                           ListTile(
                             leading: Icon(
                               Icons.lock_outline,
-                              color: Colors.blue,
+                              color: colorPurple,
                             ),
                             title: Text("Privacy Settings"),
                             trailing: Icon(Icons.keyboard_arrow_right),
@@ -136,7 +136,7 @@ class SettingsState extends State<Settings> {
                           ListTile(
                             leading: Icon(
                               FontAwesomeIcons.language,
-                              color: Colors.blue,
+                              color: colorPurple,
                             ),
                             title: Text("Change Language"),
                             trailing: Icon(Icons.keyboard_arrow_right),
@@ -148,7 +148,7 @@ class SettingsState extends State<Settings> {
                           ListTile(
                             leading: Icon(
                               Icons.location_on,
-                              color: Colors.blue,
+                              color: colorPurple,
                             ),
                             title: Text("Map Settings"),
                             trailing: Icon(Icons.keyboard_arrow_right),
@@ -160,7 +160,7 @@ class SettingsState extends State<Settings> {
                           ListTile(
                             leading: Icon(
                               Icons.settings,
-                              color: Colors.blue,
+                              color: colorPurple,
                             ),
                             title: Text("Placeholder"),
                             trailing: Icon(Icons.keyboard_arrow_right),
@@ -172,7 +172,7 @@ class SettingsState extends State<Settings> {
                           ListTile(
                             leading: Icon(
                               Icons.settings,
-                              color: Colors.blue,
+                              color: colorPurple,
                             ),
                             title: Text("Placeholder"),
                             trailing: Icon(Icons.keyboard_arrow_right),
@@ -192,28 +192,28 @@ class SettingsState extends State<Settings> {
                       ),
                     ),
                     SwitchListTile(
-                      activeColor: Colors.blue,
+                      activeColor: colorPurple,
                       contentPadding: const EdgeInsets.all(0),
                       value: true,
                       title: Text("Share Location With Friends"),
                       onChanged: (val) {},
                     ),
                     SwitchListTile(
-                      activeColor: Colors.blue,
+                      activeColor: colorPurple,
                       contentPadding: const EdgeInsets.all(0),
                       value: false,
                       title: Text("See Local User On Map"),
                       onChanged: (val) {},
                     ),
                     SwitchListTile(
-                      activeColor: Colors.blue,
+                      activeColor: colorPurple,
                       contentPadding: const EdgeInsets.all(0),
                       value: true,
                       title: Text("Enable Notifications"),
                       onChanged: (val) {},
                     ),
                     SwitchListTile(
-                      activeColor: Colors.blue,
+                      activeColor: colorPurple,
                       contentPadding: const EdgeInsets.all(0),
                       value: true,
                       title: Text("Fingerprint login"),
@@ -231,7 +231,7 @@ class SettingsState extends State<Settings> {
                   height: 80,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: Colors.red,
+                    color: colorPurple,
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -242,7 +242,7 @@ class SettingsState extends State<Settings> {
                 child: IconButton(
                   icon: Icon(
                     FontAwesomeIcons.powerOff,
-                    color: Colors.white,
+                    color: colorPeachPink,
                   ),
                   onPressed: () async {
                     await _auth.signOut();

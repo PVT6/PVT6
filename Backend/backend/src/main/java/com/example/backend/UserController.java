@@ -65,6 +65,23 @@ public class UserController    {
         return "added new dog";
     }
 
+    @PostMapping(value="/update")
+    public @ResponseBody String update(@RequestParam String uid, String name, String email, String phone){
+        User u = userRepository.findByUid(uid);
+        if(u != null){
+            u.setName(name);
+            u.setEmail(email);
+            u.setPhoneNumber(phone);
+            userRepository.save(u);
+            return "Updated";
+        }
+        else {
+            return "no user found";
+        }
+        
+
+    }
+
      @PostMapping(value="/updatename")
      public @ResponseBody boolean newNameForUser(@RequestBody String uid, String newName) {
             User u = userRepository.findByUid(uid);

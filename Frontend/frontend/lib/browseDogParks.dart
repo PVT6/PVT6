@@ -1,4 +1,6 @@
+import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/friendsAndContacts/addContactPage.dart';
 import 'package:frontend/loginFiles/intro_slider.dart';
 import 'package:frontend/userFiles/dogProfile.dart';
 import 'package:latlong/latlong.dart';
@@ -21,7 +23,7 @@ class BrowseDogParks extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.blue.shade100,
+        backgroundColor: colorLighterPink,
         body: Container(
           child: ListView(
             children: <Widget>[
@@ -50,10 +52,13 @@ class MenuItemsList extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            'Highest rated dogparks',
-            style: TextStyle(fontSize: 22.0, color: Colors.black54),
-          ),
+          BorderedText(
+              strokeWidth: 6.0,
+              strokeColor: colorPurple,
+              child: Text(
+                'Highest rated dogparks',
+                style: TextStyle(fontSize: 22.0, color: Colors.white),
+              )),
           SizedBox(height: 16.0),
           MenuItem(
             "Hundoarna.jpg",
@@ -370,10 +375,10 @@ class MyAppBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           MaterialButton(
-            color: Colors.white,
+            color: colorPurple,
             shape: CircleBorder(),
             elevation: 0,
-            child: Icon(Icons.arrow_back),
+            child: Icon(Icons.arrow_back, color: colorPeachPink,),
             onPressed: () {
               Navigator.pop(context);
             },
@@ -497,7 +502,7 @@ class MenuItem extends StatelessWidget {
                       children: <Widget>[
                         Container(
                           decoration: BoxDecoration(
-                              color: iconYellow,
+                              color: colorPurple,
                               borderRadius: BorderRadius.circular(4.0)),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
@@ -507,8 +512,9 @@ class MenuItem extends StatelessWidget {
                                 Icon(
                                   Icons.star,
                                   size: 15.0,
+                                  color: Colors.yellow,
                                 ),
-                                Text(rating)
+                                Text(rating, style: TextStyle(color: Colors.white))
                               ],
                             ),
                           ),
