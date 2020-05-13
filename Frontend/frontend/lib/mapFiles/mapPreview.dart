@@ -4,7 +4,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:frontend/mapFiles/dialogsForMap.dart';
 import 'package:frontend/routePickerMap/testDialog.dart';
 import 'package:geojson/geojson.dart';
-
+import 'package:location/location.dart';
 import 'package:latlong/latlong.dart';
 import 'package:map_controller/map_controller.dart';
 import 'package:user_location/user_location.dart';
@@ -13,6 +13,9 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class _MapPreviewPageState extends State<MapPreviewPage> {
+  Location location;
+  static LatLng latLng;
+
   DialogForMaps dialogForMap = new DialogForMaps();
   var estimatedTime;
   TestDialog testDia = new TestDialog();
@@ -26,7 +29,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
   void loadData() async {
     print("Loading geojson data");
     var km = widget.km;
-    var Postion;
+    var Postion = location;
     final data = await http.get("https://api.mapbox.com/directions/v5/mapbox/walking/18.064034,59.338738;18.073411113923477,59.332076081194614;18.071977555134517,59.34721459928733;18.064034,59.338738.json?access_token=pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A&steps=true&overview=full&geometries=geojson&annotations=distance&continue_straight=true");
     var jsonfile = json.decode(data.body);
     var routedata = jsonfile['routes'][0];
@@ -51,6 +54,11 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
 
   @override
   void initState() {
+    location = new Location();
+
+    getLocation();
+
+    
     mapController = MapController();
     statefulMapController = StatefulMapController(mapController: mapController);
     statefulMapController.onReady.then((_) => loadData());
@@ -104,7 +112,16 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
             userLocationOptions,
           ],
         ),
-        
+        Positioned(
+          bottom: 1,
+          right: 150,
+        child: Row(
+          children: <Widget>[
+            Text(widget.km.toString() + "km"),
+        Text("    Time:" + estimatedTime.toString()),
+        Text(location.toString()),
+        ],)
+        ),
         // ...
       ])),
       appBar: AppBar(title: const Text('Route Preview'),
@@ -117,7 +134,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          IconButton(icon: Text('Cancel'), onPressed: () {},),
+          IconButton(icon: Text('Cancel'), onPressed: () { Navigator.pop(context);},),
           IconButton(icon: Text('Saved Routes'), onPressed: () {},),
           IconButton(icon: Text('Save Route'), onPressed: () {
             dialogForMap.saveRoute(context);
@@ -127,6 +144,19 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
       ),
     ),
     );
+  }
+
+  getLocation() async {
+    var location = new Location();
+    location.onLocationChanged.listen((currentLocation) {
+      print(currentLocation.latitude);
+      print(currentLocation.longitude);
+      setState(() {
+        latLng = LatLng(currentLocation.latitude, currentLocation.longitude);
+      });
+
+      print("getLocation:$latLng");
+    });
   }
 
   
