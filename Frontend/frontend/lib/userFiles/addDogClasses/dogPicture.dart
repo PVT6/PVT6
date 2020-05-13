@@ -20,6 +20,7 @@ class DogPicturesState extends State<DogPictures> {
     final file = await ImagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
       _path = file.path;
+      dogPicture = file.path;
     });
   }
 

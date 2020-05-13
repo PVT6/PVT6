@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/friendsAndContacts/addContactPage.dart';
 import 'package:frontend/userFiles/addDogClasses/transition.dart';
 import '../addDogTest.dart';
 import 'dart:math' as math;
@@ -63,7 +64,7 @@ class _PacmanSliderState extends State<PacmanSlider>
           builder: (context, child) {
             Decoration decoration = BoxDecoration(
               borderRadius: _bordersAnimation.value,
-              color: Theme.of(context).primaryColor,
+              color: colorPurple,
             );
 
             return Center(

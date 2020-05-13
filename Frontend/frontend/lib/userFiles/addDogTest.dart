@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:frontend/friendsAndContacts/addContactPage.dart';
+import 'package:frontend/friendsAndContacts/friendsPage.dart';
 import 'package:frontend/userFiles/addDogClasses/transition.dart';
 import 'package:frontend/userFiles/addDogClasses/submitSlider.dart';
 import 'package:frontend/userFiles/addDogClasses/weightSlider.dart';
@@ -11,13 +15,13 @@ import 'package:frontend/userFiles/addDogClasses/ageSlider.dart';
 import 'package:frontend/userFiles/addDogClasses/dogPicture.dart';
 import 'package:frontend/userFiles/addDogClasses/searchBreed.dart';
 
-
-
-String dogName= "";
+String dogName = "";
 String finalBreed = "";
 int height = 40;
 int weight = 15;
 int age = 0;
+String dogPicture = "";
+String desc = "";
 Gender gender = Gender.female;
 
 const Color mainBlue = const Color.fromRGBO(77, 123, 243, 1.0);
@@ -79,18 +83,10 @@ class NameSelectState extends State<NameSelect> {
   TextEditingController editingController = TextEditingController();
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
-  bool _isVisible = true;
-
-  void showToast() {
-    setState(() {
-      _isVisible = !_isVisible;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      backgroundColor: colorLighterPink,
+        backgroundColor: colorLighterPink,
         appBar: new AppBar(
           leading: Icon(Icons.verified_user),
           elevation: 0,
@@ -100,32 +96,96 @@ class NameSelectState extends State<NameSelect> {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.arrow_downward),
-              onPressed: showToast,
+              onPressed: () {},
             )
           ],
         ),
-        body: Visibility(
-            visible: _isVisible,
-            child: Column(children: <Widget>[
-              TextFormField(
-                obscureText: false,
-                style: style,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                  hintText: "Dogs Name",
-                  icon: new Icon(
-                    FontAwesomeIcons.dog,
-                    color: colorPurple,
-                  ),
-                ),
-                validator: (value) =>
-                    value.isEmpty ? 'Name can\'t be empty' : null,
-                onChanged: (val) {
-                  setState(() => dogName = val);
-                },
-              )
-            ])));
+        body: TextFormField(
+          inputFormatters: [
+            LengthLimitingTextInputFormatter(15),
+          ],
+          obscureText: false,
+          style: style,
+          keyboardType: TextInputType.emailAddress,
+          decoration: InputDecoration(
+            hintText: 'Name here',
+            filled: true,
+            fillColor: Colors.white,
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              borderSide: BorderSide(color: Colors.grey),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              borderSide: BorderSide(color: Colors.grey),
+            ),
+          ),
+          validator: (value) => value.isEmpty ? 'Name can\'t be empty' : null,
+          onChanged: (val) {
+            setState(() => dogName = val);
+          },
+        ));
+  }
+}
+
+class DescSelect extends StatefulWidget {
+  DescSelect({Key key, this.title}) : super(key: key);
+  final String title;
+
+  @override
+  DescSelectState createState() => new DescSelectState();
+}
+
+class DescSelectState extends State<DescSelect> {
+  TextEditingController editingController = TextEditingController();
+  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      backgroundColor: colorLighterPink,
+      appBar: new AppBar(
+        leading: Icon(Icons.verified_user),
+        elevation: 0,
+        title: Text('Description'),
+        backgroundColor: colorPurple,
+        centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.arrow_downward),
+            onPressed: () {},
+          )
+        ],
+      ),
+      body: TextFormField(
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(120),
+        ],
+        autocorrect: true,
+        obscureText: false,
+        minLines: 4,
+        maxLines: 5,
+        style: style,
+        keyboardType: TextInputType.emailAddress,
+        decoration: InputDecoration(
+          hintText: 'Write a short description of your dog here',
+          filled: true,
+          fillColor: Colors.white,
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            borderSide: BorderSide(color: Colors.grey),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            borderSide: BorderSide(color: Colors.grey),
+          ),
+        ),
+        validator: (value) => value.isEmpty ? 'Name can\'t be empty' : null,
+        onChanged: (val) {
+          setState(() => desc = val);
+        },
+      ),
+    );
   }
 }
 
@@ -162,6 +222,8 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
         dogName: dogName,
         age: age,
         finalBreed: finalBreed,
+        dogPicture: dogPicture,
+        desc: desc,
       ),
     ));
   }
@@ -198,6 +260,11 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
                   margin: EdgeInsets.all(10),
                   elevation: 20,
                   child:
+                      Container(width: 420, height: 180, child: DescSelect())),
+              Card(
+                  margin: EdgeInsets.all(10),
+                  elevation: 20,
+                  child:
                       Container(width: 420, height: 520, child: BuildCards())),
               // _buildBottom(context),
               Card(
@@ -230,11 +297,11 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
         ),
         child: Row(
           children: <Widget>[
-             Container(
-                width: 80,
-                height: 80,
-                child: Image.asset("logopurplepink.png"),
-              ),
+            Container(
+              width: 80,
+              height: 80,
+              child: Image.asset("logopurplepink.png"),
+            ),
             Text(
               "Please fill in the form",
               style: new TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
@@ -280,7 +347,7 @@ class BuildCardState extends State<BuildCards> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: colorLighterPink,
+        backgroundColor: colorLighterPink,
         appBar: AppBar(
           leading: Icon(Icons.verified_user),
           elevation: 0,
@@ -348,9 +415,13 @@ class ResultPage extends StatefulWidget {
   final dogName;
   final age;
   final finalBreed;
+  final dogPicture;
+  final desc;
 
   const ResultPage(
       {Key key,
+      this.desc,
+      this.dogPicture,
       this.weight,
       this.height,
       this.gender,
@@ -367,6 +438,21 @@ class ResultPageState extends State<ResultPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.notifications),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () {},
+          ),
+        ],
+      ),
+      extendBodyBehindAppBar: true,
       backgroundColor: colorLighterPink,
       body: Stack(
         children: <Widget>[
@@ -386,11 +472,12 @@ class ResultPageState extends State<ResultPage> {
             child: Column(
               children: <Widget>[
                 Text(
-                  "New Dog Added!",
+                  "Dog Added!",
                   style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 28,
-                      fontStyle: FontStyle.italic),
+                    fontFamily: 'Hipster Script W00 Regular',
+                    color: Colors.white,
+                    fontSize: 32,
+                  ),
                 ),
                 SizedBox(height: 20.0),
                 Expanded(
@@ -398,12 +485,15 @@ class ResultPageState extends State<ResultPage> {
                     children: <Widget>[
                       Container(
                         height: double.infinity,
+                        width: 380,
                         margin: const EdgeInsets.only(
                             left: 30.0, right: 30.0, top: 10.0),
                         child: ClipRRect(
                             borderRadius: BorderRadius.circular(30.0),
-                            child: Image.asset(
-                              "BrewDog.jpg",
+                            child: Image.file(
+                              File(
+                                dogPicture,
+                              ),
                               fit: BoxFit.cover,
                             )),
                       ),
@@ -428,138 +518,117 @@ class ResultPageState extends State<ResultPage> {
                     Text(
                       widget.dogName,
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 20.0),
-                    ),
-                    Text(
-                      " - ",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 20.0),
-                    ),
-                    Text(
-                      widget.age.toString(),
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 20.0),
-                    ),
-                    Text(
-                      " y.o",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 20.0),
+                          fontWeight: FontWeight.bold, fontSize: 30.0),
                     ),
                   ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  width: 280,
+                  height: 80,
+                  child: Text(desc),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Text(
-                      "Weight: ",
-                      style: TextStyle(color: Colors.grey.shade600),
+                    Column(
+                      children: <Widget>[
+                        Text(
+                          "Weight: ",
+                          style: TextStyle(
+                            color: colorPurple,
+                            fontSize: 20,
+                          ),
+                        ),
+                        Text(
+                          widget.weight.toString() + "kg",
+                          style: TextStyle(color: Colors.grey.shade600),
+                        ),
+                      ],
                     ),
-                    Text(
-                      widget.weight.toString(),
-                      style: TextStyle(color: Colors.grey.shade600),
+                    SizedBox(
+                      width: 25,
                     ),
-                    Text(
-                      " Height: ",
-                      style: TextStyle(color: Colors.grey.shade600),
+                    Column(
+                      children: <Widget>[
+                        Text(
+                          "Height: ",
+                          style: TextStyle(
+                            color: colorPurple,
+                            fontSize: 20,
+                          ),
+                        ),
+                        Text(
+                          widget.height.toString() + "cm",
+                          style: TextStyle(color: Colors.grey.shade600),
+                        ),
+                      ],
                     ),
-                    Text(
-                      widget.height.toString(),
-                      style: TextStyle(color: Colors.grey.shade600),
-                    )
+                    SizedBox(
+                      width: 25,
+                    ),
+                    Column(
+                      children: <Widget>[
+                        Text(
+                          "Age: ",
+                          style: TextStyle(
+                            color: colorPurple,
+                            fontSize: 20,
+                          ),
+                        ),
+                        Text(
+                          widget.age.toString(),
+                          style: TextStyle(color: Colors.grey.shade600),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
                 SizedBox(height: 5.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                SizedBox(height: 10.0),
+                Column(
                   children: <Widget>[
-                    IconButton(
-                      color: Colors.grey,
-                      icon: Icon(FontAwesomeIcons.instagram),
-                      onPressed: () {},
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => FriendsPage()),
+                          );
+                        },
+                        child: Container(
+                            width: 380,
+                            height: 50,
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 16.0),
+                            margin: const EdgeInsets.only(
+                                top: 1, left: 30.0, right: 30.0, bottom: 1),
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [colorPeachPink, colorPurple],
+                                ),
+                                borderRadius: BorderRadius.circular(30.0)),
+                            child: Text(
+                              "Continue",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 25,
+                              ),
+                              textAlign: TextAlign.center,
+                            ))),
+                    SizedBox(
+                      height: 10,
                     ),
-                    IconButton(
-                      color: Colors.grey,
-                      icon: Icon(FontAwesomeIcons.facebookF),
-                      onPressed: () {},
-                    ),
-                    IconButton(
-                      color: Colors.grey.shade600,
-                      icon: Icon(FontAwesomeIcons.twitter),
-                      onPressed: () {},
+                    SizedBox(
+                      height: 10,
                     ),
                   ],
                 ),
-                SizedBox(height: 10.0),
-                Container(
-                  child: Stack(
-                    children: <Widget>[
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 5.0, horizontal: 16.0),
-                        margin: const EdgeInsets.only(
-                            top: 30, left: 20.0, right: 20.0, bottom: 20.0),
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [colorPeachPink, colorPurple],
-                            ),
-                            borderRadius: BorderRadius.circular(30.0)),
-                        child: Row(
-                          children: <Widget>[
-                            IconButton(
-                              color: Colors.white,
-                              icon: Icon(FontAwesomeIcons.user),
-                              onPressed: () {},
-                            ),
-                            IconButton(
-                              color: Colors.white,
-                              icon: Icon(Icons.location_on),
-                              onPressed: () {},
-                            ),
-                            Spacer(),
-                            IconButton(
-                              color: Colors.white,
-                              icon: Icon(Icons.add),
-                              onPressed: () {},
-                            ),
-                            IconButton(
-                              color: Colors.white,
-                              icon: Icon(Icons.message),
-                              onPressed: () {},
-                            ),
-                          ],
-                        ),
-                      ),
-                      Center(
-                        child: FloatingActionButton(
-                          child: Icon(
-                            Icons.favorite,
-                            color: Colors.pink,
-                          ),
-                          backgroundColor: Colors.white,
-                          onPressed: () {},
-                        ),
-                      ),
-                    ],
-                  ),
-                )
               ],
             ),
-          ),
-          AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            actions: <Widget>[
-              IconButton(
-                icon: Icon(Icons.notifications),
-                onPressed: () {},
-              ),
-              IconButton(
-                icon: Icon(Icons.menu),
-                onPressed: () {},
-              ),
-            ],
           ),
         ],
       ),
