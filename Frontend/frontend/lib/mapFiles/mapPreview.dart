@@ -119,7 +119,6 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
           children: <Widget>[
             Text(widget.km.toString() + "km"),
         Text("    Time:" + estimatedTime.toString()),
-        Text(location.toString()),
         ],)
         ),
         // ...
