@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/friendsAndContacts/addContactPage.dart';
 import 'package:frontend/userFiles/addDogTest.dart';
 
 List<User> friends = [
@@ -115,8 +116,11 @@ class _HomePageState extends State<FriendsPage>
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      backgroundColor: colorLighterPink,
       appBar: new AppBar(
-        title: new Text("             Friends Page"),
+        title: new Text("Friends Page"),
+        centerTitle: true,
+        backgroundColor: colorPurple,
         bottom: TabBar(
           unselectedLabelColor: Colors.white,
           labelColor: Colors.amber,
@@ -388,6 +392,7 @@ class _MyHomePageState extends State<SearchUsers> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      backgroundColor: colorLighterPink,
       body: Container(
         child: Column(
           children: <Widget>[

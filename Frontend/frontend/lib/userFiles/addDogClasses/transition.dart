@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:frontend/friendsAndContacts/addContactPage.dart';
 import 'dart:math' as math;
 
 import '../addDogTest.dart';
@@ -133,8 +134,8 @@ class PacmanIcon extends StatelessWidget {
       ),
       child: SvgPicture.asset(
         "assets/Dog.svg",
-        height: screenAwareSize(25.0, context),
-        width: screenAwareSize(21.0, context),
+        height: screenAwareSize(40.0, context),
+        width: screenAwareSize(34.0, context),
       ),
     );
   }
@@ -170,7 +171,7 @@ class TransitionDot extends AnimatedWidget {
     double width = math.min(scaledSize, deviceWidth);
     Decoration decoration = BoxDecoration(
       shape: width < 0.9 * deviceWidth ? BoxShape.circle : BoxShape.rectangle,
-      color: colorPurple,
+      image: DecorationImage(image: AssetImage("assets/logopurplepink.png")),
     );
 
     Widget dot = Container(
@@ -216,6 +217,7 @@ class LoopedSizeAnimation extends Animatable<double> {
     }
   }
 }
+
 class FadeRoute<T> extends MaterialPageRoute<T> {
   FadeRoute({WidgetBuilder builder, RouteSettings settings})
       : super(builder: builder, settings: settings);

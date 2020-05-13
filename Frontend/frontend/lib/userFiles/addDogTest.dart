@@ -1,11 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'dart:math' as math;
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:frontend/friendsAndContacts/addContactPage.dart';
 import 'package:frontend/userFiles/addDogClasses/transition.dart';
 import 'package:frontend/userFiles/addDogClasses/submitSlider.dart';
 import 'package:frontend/userFiles/addDogClasses/weightSlider.dart';
@@ -15,11 +11,10 @@ import 'package:frontend/userFiles/addDogClasses/ageSlider.dart';
 import 'package:frontend/userFiles/addDogClasses/dogPicture.dart';
 import 'package:frontend/userFiles/addDogClasses/searchBreed.dart';
 
-const colorPurple = const Color(0xFF82658f);
-const colorPeachPink = const Color(0xFFffdcd2);
-const colorLighterPink = const Color(0xFFffe9e5);
-String dogName;
-String finalBreed;
+
+
+String dogName= "";
+String finalBreed = "";
 int height = 40;
 int weight = 15;
 int age = 0;
@@ -95,6 +90,7 @@ class NameSelectState extends State<NameSelect> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      backgroundColor: colorLighterPink,
         appBar: new AppBar(
           leading: Icon(Icons.verified_user),
           elevation: 0,
@@ -120,7 +116,7 @@ class NameSelectState extends State<NameSelect> {
                   hintText: "Dogs Name",
                   icon: new Icon(
                     FontAwesomeIcons.dog,
-                    color: Colors.blue,
+                    color: colorPurple,
                   ),
                 ),
                 validator: (value) =>
@@ -192,6 +188,7 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              _buildTitle(context),
               Card(
                   margin: EdgeInsets.all(10),
                   elevation: 20,
@@ -233,9 +230,14 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
         ),
         child: Row(
           children: <Widget>[
+             Container(
+                width: 80,
+                height: 80,
+                child: Image.asset("logopurplepink.png"),
+              ),
             Text(
-              "Add Dog",
-              style: new TextStyle(fontSize: 28.0, fontWeight: FontWeight.bold),
+              "Please fill in the form",
+              style: new TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
             ),
           ],
         ));
@@ -278,6 +280,7 @@ class BuildCardState extends State<BuildCards> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: colorLighterPink,
         appBar: AppBar(
           leading: Icon(Icons.verified_user),
           elevation: 0,
@@ -376,7 +379,7 @@ class ResultPageState extends State<ResultPage> {
                     bottomLeft: Radius.circular(50.0),
                     bottomRight: Radius.circular(50.0)),
                 gradient: LinearGradient(
-                    colors: [color1, color2],
+                    colors: [colorPeachPink, colorPurple],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight)),
           ),

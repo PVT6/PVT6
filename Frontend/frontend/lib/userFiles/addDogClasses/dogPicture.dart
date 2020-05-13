@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:frontend/friendsAndContacts/addContactPage.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../addDogTest.dart';
@@ -40,6 +41,7 @@ class DogPicturesState extends State<DogPictures> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: colorLighterPink,
       appBar: AppBar(
         leading: Icon(Icons.verified_user),
         elevation: 0,
@@ -79,8 +81,8 @@ class DogPicturesState extends State<DogPictures> {
             ],
           ),
           Container(
-            color: Colors.black,
-            width: 420,
+            color: Colors.white,
+            width: 400,
             height: 250,
             child: _path == null
                 ? Icon(
