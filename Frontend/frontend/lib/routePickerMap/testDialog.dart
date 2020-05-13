@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:frontend/browseDogParks.dart';
 import 'package:frontend/loginFiles/MySignInPage.dart';
+import 'package:frontend/mapFiles/mapPreview.dart';
 import 'package:frontend/routePickerMap/routePickerTab1.dart';
 import 'package:flutter/services.dart';
 import 'package:bordered_text/bordered_text.dart';
@@ -10,6 +11,7 @@ import 'package:bordered_text/bordered_text.dart';
 class TestDialog {
   test(BuildContext context) {
     String km = "";
+
     showDialog(
         context: context,
         builder: (context) {
@@ -62,44 +64,44 @@ class TestDialog {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             SizedBox(
-                                height: 60,
-                                width: 145,
-                                child: TextField(
-                                  onChanged: (val) {
-                                    setState(() => km = val);
-                                  },
-                                  decoration: new InputDecoration(
-                                    labelText: "How long in km?",
-                                    labelStyle: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    border: new OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(
-                                          10,
-                                        ),
-                                        borderSide: new BorderSide(
-                                          color: colorPurple,
-                                        )),
+                              height: 60,
+                              width: 145,
+                              child: TextField(
+                                onChanged: (val) {
+                                  setState(() => km = val);
+                                },
+                                decoration: new InputDecoration(
+                                  labelText: "How long in km?",
+                                  labelStyle: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                  keyboardType: TextInputType.number,
-                                  inputFormatters: <TextInputFormatter>[
-                                    WhitelistingTextInputFormatter.digitsOnly
-                                  ],
+                                  border: new OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(
+                                        10,
+                                      ),
+                                      borderSide: new BorderSide(
+                                        color: colorPurple,
+                                      )),
                                 ),
-                                ),
-                                SizedBox(width:10),
-                                  BorderedText(strokeWidth: 6.0,
-                                  strokeColor: colorPurple,
-                                 child: Text(
-                                   'km',
-                                   style: TextStyle(
-                                     color: Colors.white,
-                                     fontWeight: FontWeight.bold,
-                                   ),
-                                 )
-                                
-                      )]),
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  WhitelistingTextInputFormatter.digitsOnly
+                                ],
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            BorderedText(
+                                strokeWidth: 6.0,
+                                strokeColor: colorPurple,
+                                child: Text(
+                                  'km',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ))
+                          ]),
                       SizedBox(
                         height: 10,
                       ),
@@ -134,7 +136,14 @@ class TestDialog {
                               ),
                             ),
                             FlatButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          MapPreviewPage(km: 22)),
+                                );
+                              },
                               color: colorPurple,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10)),
