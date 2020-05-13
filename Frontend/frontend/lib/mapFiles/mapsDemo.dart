@@ -18,6 +18,7 @@ import 'package:http/http.dart' as http;
 import '../dog.dart';
 
 
+
 MapController controller = new MapController();
 
 // Färgschema #1
@@ -115,7 +116,7 @@ class MapsDemoState extends State<MapsDemo> {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: Stack(
           children: <Widget>[
-            FlutterMap(
+            new FlutterMap(
                 mapController: controller,
                 options:
                     new MapOptions(center: LatLng(0, 0), minZoom: 15.0, plugins: [
@@ -124,12 +125,12 @@ class MapsDemoState extends State<MapsDemo> {
                 ]), //ändra detta till coordinate för att komma tillbaka till stockholm
                 layers: [
                   new TileLayerOptions(
-                      urlTemplate:
+                      urlTemplate: 
                           FlutterConfig.get('MAPBOXAPI_URL'),
                       additionalOptions: {
-                        'accessToken':
+                        'accessToken': 
                             FlutterConfig.get('MAPBOX_ID'),
-                        'id': 'Streets-copy'
+                        'id': 'mapbox.mapbox-streets-v8'
                       }),
                   MarkerLayerOptions(markers: markers),
                   // ADD THIS
