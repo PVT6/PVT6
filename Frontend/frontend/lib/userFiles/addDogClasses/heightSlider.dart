@@ -16,6 +16,7 @@ class HeightCard extends StatelessWidget {
       margin: EdgeInsets.only(
         right: screenAwareSize(16.0, context),
         left: screenAwareSize(4.0, context),
+        bottom: screenAwareSize(5.0, context),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

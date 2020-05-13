@@ -52,18 +52,20 @@ class _GenderCardState extends State<GenderCard>
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Padding(
-        padding: EdgeInsets.only(top: screenAwareSize(12.0, context)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            CardTitle("GENDER"),
-            Padding(
-              padding: EdgeInsets.only(top: screenAwareSize(16.0, context)),
-              child: _drawMainStack(),
-            ),
-          ],
-        ),
+      margin: EdgeInsets.only(
+        left: screenAwareSize(5.0, context),
+        right: screenAwareSize(4.0, context),
+        bottom: screenAwareSize(4.0, context),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          CardTitle("GENDER"),
+          Padding(
+            padding: EdgeInsets.only(top: screenAwareSize(16.0, context)),
+            child: _drawMainStack(),
+          ),
+        ],
       ),
     );
   }

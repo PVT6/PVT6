@@ -15,11 +15,8 @@ class WeightCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.only(
-        left: screenAwareSize(16.0, context),
-        right: screenAwareSize(4.0, context),
-        top: screenAwareSize(4.0, context),
-      ),
+        child: Padding(
+      padding: EdgeInsets.only(top: screenAwareSize(32.0, context)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
@@ -35,7 +32,7 @@ class WeightCard extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ));
   }
 
   Widget _drawSlider() {

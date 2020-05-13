@@ -15,12 +15,12 @@ import 'package:frontend/userFiles/addDogClasses/ageSlider.dart';
 import 'package:frontend/userFiles/addDogClasses/dogPicture.dart';
 import 'package:frontend/userFiles/addDogClasses/searchBreed.dart';
 
-String dogName = "";
-String finalBreed = "";
+String dogName;
+String finalBreed;
 int height = 40;
 int weight = 15;
 int age = 0;
-String dogPicture = "";
+String dogPicture;
 String desc = "";
 Gender gender = Gender.female;
 
@@ -213,19 +213,63 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
     });
   }
 
-  _goToResultPage() async {
-    return Navigator.of(context).push(FadeRoute(
-      builder: (context) => ResultPage(
-        weight: weight,
-        height: height,
-        gender: gender,
-        dogName: dogName,
-        age: age,
-        finalBreed: finalBreed,
-        dogPicture: dogPicture,
-        desc: desc,
+  showAlertDialog(BuildContext context) {
+    Widget loginButon = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(30.0),
+      color: colorPurple,
+      child: MaterialButton(
+        minWidth: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () {
+          Navigator.of(context).pop(); // dismiss dialog
+        },
+        child: Text("Ok",
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
       ),
-    ));
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(32.0))),
+      title: Text(
+        "Error",
+        style: TextStyle(color: Colors.red),
+      ),
+      content: Text("Please make sure you added a name and a breed"),
+      actions: [
+        loginButon,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  _goToResultPage() async {
+    if (dogName == null || finalBreed == null) {
+      return showAlertDialog(context);
+    } else {
+      return Navigator.of(context).push(FadeRoute(
+        builder: (context) => ResultPage(
+          weight: weight,
+          height: height,
+          gender: gender,
+          dogName: dogName,
+          age: age,
+          finalBreed: finalBreed,
+          dogPicture: dogPicture,
+          desc: desc,
+        ),
+      ));
+    }
   }
 
   @override
@@ -266,7 +310,6 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
                   elevation: 20,
                   child:
                       Container(width: 420, height: 520, child: BuildCards())),
-              // _buildBottom(context),
               Card(
                   margin: EdgeInsets.all(10),
                   elevation: 20,
@@ -279,6 +322,18 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
                       Container(width: 420, height: 400, child: DogPictures())),
               SizedBox(
                 height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    "Slide to Save",
+                    style: TextStyle(
+                      fontFamily: 'Hipster Script W00 Regular',
+                      fontSize: 32,
+                    ),
+                  ),
+                ],
               ),
               _buildBottom(context),
             ],
@@ -490,12 +545,14 @@ class ResultPageState extends State<ResultPage> {
                             left: 30.0, right: 30.0, top: 10.0),
                         child: ClipRRect(
                             borderRadius: BorderRadius.circular(30.0),
-                            child: Image.file(
-                              File(
-                                dogPicture,
-                              ),
-                              fit: BoxFit.cover,
-                            )),
+                            child: dogPicture == null
+                                ? Image.asset("logopurplepink.png")
+                                : Image.file(
+                                    File(
+                                      dogPicture,
+                                    ),
+                                    fit: BoxFit.cover,
+                                  )),
                       ),
                       Container(
                         alignment: Alignment.topCenter,

@@ -463,17 +463,6 @@ class ProfileInfo extends StatefulWidget {
 class ProfileInfoState extends State<ProfileInfo> {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   showAlertDialog(BuildContext context) {
-    // set up the button
-    Widget okButton = FlatButton(
-      child: Text("OK"),
-      onPressed: () {
-        Navigator.of(context).pop(); // dismiss dialog
-        setState(() {
-          widget.user.friendstatus = false;
-        });
-      },
-    );
-
     Widget loginButon = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
