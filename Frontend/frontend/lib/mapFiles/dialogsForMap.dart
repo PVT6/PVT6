@@ -5,11 +5,10 @@ import 'package:frontend/routePickerMap/routePickerTab1.dart';
 import 'package:flutter/services.dart';
 
 
-class TestDialog {
+class DialogForMaps {
 
-  test(BuildContext context){
-    String km = "";
-
+  saveRoute(BuildContext context){
+    String name = "";
     showDialog(
   context: context,
   builder: (context) {
@@ -17,7 +16,7 @@ class TestDialog {
     return StatefulBuilder(
       builder: (context, setState) {
         return AlertDialog(
-          title: Text("Generate a route"),
+          title: Text("Save Route"),
           content: Row(
             children: <Widget>[
               SizedBox(
@@ -25,8 +24,8 @@ class TestDialog {
                 height: 300.0,
                 child: TextField(
               onChanged: (val) {
-            setState(() => km = val); },
-          decoration: new InputDecoration(labelText: "How long in km?",
+            setState(() => name = val); },
+          decoration: new InputDecoration(labelText: "Input a name",
           border: new OutlineInputBorder(
                     borderSide: new BorderSide(color: Colors.black)),
           ),
@@ -36,21 +35,11 @@ class TestDialog {
             ], // Only numbers c
             ),
               ),
-              SizedBox(
-                width: 60.0,
-                height: 300.0,
-                child: Text('km'),)
             ],),
           actions: <Widget>[
             FlatButton(
               onPressed: () => Navigator.pop(context),
               child: Text("Cancel"),
-            ),
-            FlatButton(
-              onPressed: () {
-              
-              },
-              child: Text("Saved Routes"),
             ),
             FlatButton(
               onPressed: () {

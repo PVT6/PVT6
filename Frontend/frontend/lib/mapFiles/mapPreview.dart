@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:frontend/mapFiles/dialogsForMap.dart';
 import 'package:frontend/routePickerMap/testDialog.dart';
 import 'package:geojson/geojson.dart';
 
@@ -12,6 +13,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class _MapPreviewPageState extends State<MapPreviewPage> {
+  DialogForMaps dialogForMap = new DialogForMaps();
   var estimatedTime;
   TestDialog testDia = new TestDialog();
   MapController mapController;
@@ -117,7 +119,9 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
         children: <Widget>[
           IconButton(icon: Text('Cancel'), onPressed: () {},),
           IconButton(icon: Text('Saved Routes'), onPressed: () {},),
-          IconButton(icon: Text('Save Route'), onPressed: () {},),
+          IconButton(icon: Text('Save Route'), onPressed: () {
+            dialogForMap.saveRoute(context);
+          },),
           IconButton(icon: Text('Start Route'), onPressed: () {},),
         ],
       ),
