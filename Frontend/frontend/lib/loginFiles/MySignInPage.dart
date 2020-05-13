@@ -14,6 +14,11 @@ LatLng basic = new LatLng(59.343431, 18.094141);
 Color darkGreen = Colors.green[900];
 Color lightGreen = Colors.green[100];
 
+// Färgschema #1
+const colorPurple = const Color(0xFF82658f);
+const colorPeachPink = const Color(0xFFffdcd2);
+const colorLighterPink = const Color(0xFFffe9e5);
+
 class MySignInPage extends StatefulWidget {
   MySignInPage({Key key, this.title}) : super(key: key);
   final String title;

@@ -53,6 +53,8 @@ dependencies:
   carousel_pro: ^1.0.0
   map_controller: any
   geojson: any 
+  bordered_text: ^1.0.0
+
   
 dev_dependencies:
   flutter_config: ^1.0.7
@@ -96,6 +98,8 @@ flutter:
    - LeBistro.jpg
    - HimmelskaHundar.jpg
    - DogLogo.png
+   - blind.png
+   - pin.png
 
    
 
