@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/browseDogParks.dart';
+import 'package:frontend/mapFiles/mapPreview.dart';
 import 'package:frontend/routePickerMap/routePickerTab1.dart';
 import 'package:flutter/services.dart';
 
@@ -8,6 +9,8 @@ class TestDialog {
 
   test(BuildContext context){
     String km = "";
+    var tid = 100;
+
     showDialog(
   context: context,
   builder: (context) {
@@ -52,7 +55,11 @@ class TestDialog {
             ),
             FlatButton(
               onPressed: () {
-                
+                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => MapPreviewPage(km: 22, tid: 11)),
+                                  );
               },
               child: Text("Start"),
             ),
