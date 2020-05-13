@@ -170,6 +170,7 @@ class TransitionDot extends AnimatedWidget {
     double height = math.min(scaledSize, deviceHeight);
     double width = math.min(scaledSize, deviceWidth);
     Decoration decoration = BoxDecoration(
+      color: colorLighterPink,
       shape: width < 0.9 * deviceWidth ? BoxShape.circle : BoxShape.rectangle,
       image: DecorationImage(image: AssetImage("assets/logopurplepink.png")),
     );

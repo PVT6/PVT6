@@ -284,7 +284,7 @@ class BuildCardState extends State<BuildCards> {
         appBar: AppBar(
           leading: Icon(Icons.verified_user),
           elevation: 0,
-          title: Text('Measurements'),
+          title: Text('Overall Information'),
           backgroundColor: colorPurple,
           centerTitle: true,
           actions: <Widget>[
@@ -366,10 +366,8 @@ class ResultPage extends StatefulWidget {
 class ResultPageState extends State<ResultPage> {
   @override
   Widget build(BuildContext context) {
-    final Color color1 = Color(0xffFC5CF0);
-    final Color color2 = Color(0xffFE8852);
-
     return Scaffold(
+      backgroundColor: colorLighterPink,
       body: Stack(
         children: <Widget>[
           Container(
@@ -442,6 +440,11 @@ class ResultPageState extends State<ResultPage> {
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 20.0),
                     ),
+                    Text(
+                      " y.o",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 20.0),
+                    ),
                   ],
                 ),
                 Row(
@@ -499,7 +502,7 @@ class ResultPageState extends State<ResultPage> {
                             top: 30, left: 20.0, right: 20.0, bottom: 20.0),
                         decoration: BoxDecoration(
                             gradient: LinearGradient(
-                              colors: [color1, color2],
+                              colors: [colorPeachPink, colorPurple],
                             ),
                             borderRadius: BorderRadius.circular(30.0)),
                         child: Row(
