@@ -12,6 +12,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class _MapPreviewPageState extends State<MapPreviewPage> {
+  var estimatedTime;
   TestDialog testDia = new TestDialog();
   MapController mapController;
   StatefulMapController statefulMapController;
@@ -22,14 +23,14 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
   var points = <LatLng>[];
   void loadData() async {
     print("Loading geojson data");
-    var Km;
+    var km = widget.km;
     var Postion;
     final data = await http.get("https://api.mapbox.com/directions/v5/mapbox/walking/18.064034,59.338738;18.073411113923477,59.332076081194614;18.071977555134517,59.34721459928733;18.064034,59.338738.json?access_token=pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A&steps=true&overview=full&geometries=geojson&annotations=distance&continue_straight=true");
     var jsonfile = json.decode(data.body);
     var routedata = jsonfile['routes'][0];
     var route = routedata["geometry"]["coordinates"];
     var distantsInMeter = routedata["geometry"]["distance"];
-    var estimatedTime = routedata["geometry"]["duration"]; // MAN KAN ÄNDRA GÅNGHASTIGHET FÖR ATT FÅ MER ACCURATE
+    estimatedTime = routedata["geometry"]["duration"]; // MAN KAN ÄNDRA GÅNGHASTIGHET FÖR ATT FÅ MER ACCURATE
     
     for(var i = 0; i < route.length; i++){
         points.add(new LatLng(route[i][1], route[i][0]));
@@ -104,15 +105,23 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
         
         // ...
       ])),
-      floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-                  testDia.test(context);
-                     },
-                  icon: Icon(Icons.router),
-                  label: Text('Go To Routes'),
-                  foregroundColor: Colors.pink,
-                  backgroundColor: Colors.purple
-        ),
+      appBar: AppBar(title: const Text('Route Preview'),
+      actions: <Widget>[
+        Text(widget.km.toString() + "km"),
+        Text("Time:" + estimatedTime.toString()),
+      ],),
+    bottomNavigationBar: BottomAppBar(
+      child: new Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          IconButton(icon: Text('Cancel'), onPressed: () {},),
+          IconButton(icon: Text('Saved Routes'), onPressed: () {},),
+          IconButton(icon: Text('Save Route'), onPressed: () {},),
+          IconButton(icon: Text('Start Route'), onPressed: () {},),
+        ],
+      ),
+    ),
     );
   }
 
@@ -122,7 +131,6 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
 class MapPreviewPage extends StatefulWidget {
   @override
   var km;
-  var tid;
-  MapPreviewPage ({Key key, this.km, this.tid}) : super(key: key);
+  MapPreviewPage ({Key key, this.km}) : super(key: key);
   _MapPreviewPageState createState() => _MapPreviewPageState();
 }

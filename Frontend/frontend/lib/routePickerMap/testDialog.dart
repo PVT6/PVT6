@@ -58,7 +58,7 @@ class TestDialog {
                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => MapPreviewPage(km: 22, tid: 11)),
+                                        builder: (context) => MapPreviewPage(km: 22)),
                                   );
               },
               child: Text("Start"),
