@@ -116,11 +116,12 @@ showSavedRoutes(BuildContext context){
 
 List<String> litems = ["Sveden","Fisken","Be","Lloo"];
   List<int> km = [200, 20 , 23, 12];
+  String selectedRoute;
+  int selectedIndex;
 
     showDialog(
   context: context,
   builder: (context) {
-    String contentText = "Content of Dialog";
     return StatefulBuilder(
       builder: (context, setState) {
         return AlertDialog(
@@ -137,7 +138,8 @@ List<String> litems = ["Sveden","Fisken","Be","Lloo"];
     itemBuilder: (BuildContext context, int index) {
       return GestureDetector(
         onTap: () async {
-        // dialog.confirm(context, '${litems[index]}', '${km[index]} Km');
+          openRoute(context, '${litems[index]}');
+
         } ,
         child: Container(  
         height: 75,
@@ -163,7 +165,7 @@ List<String> litems = ["Sveden","Fisken","Be","Lloo"];
               child: Text("Cancel"),
             ),
              FlatButton(
-              onPressed: () {},
+              onPressed: () {selectedIndex = null;},
               child: Text("delete"),
             ),
             FlatButton(
@@ -181,6 +183,42 @@ List<String> litems = ["Sveden","Fisken","Be","Lloo"];
 
 
 }
+
+
+  openRoute(BuildContext context, String title) {
+    return showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context){
+        return AlertDialog(
+          title: Text(title),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () {},
+              child: Text('Close'),
+            ),
+            FlatButton(
+              onPressed: () {},
+              child: Text('Delete'),
+            ),
+            FlatButton(
+              onPressed: () {},
+              child: Text('Open'),
+            ),
+          ],
+        );
+      }
+
+    );
+
+  }
+
 
 }
 
