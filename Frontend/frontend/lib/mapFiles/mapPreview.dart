@@ -109,6 +109,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
               ]
             ),
             
+            
             userLocationOptions,
           ],
         ),
@@ -134,11 +135,22 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           IconButton(icon: Text('Cancel'), onPressed: () { Navigator.pop(context);},),
-          IconButton(icon: Text('Saved Routes'), onPressed: () {},),
+          IconButton(icon: Text('Saved Routes'), onPressed: () {dialogForMap.showSavedRoutes(context);},),
           IconButton(icon: Text('Save Route'), onPressed: () {
             dialogForMap.saveRoute(context);
           },),
-          IconButton(icon: Text('Start Route'), onPressed: () {},),
+          IconButton(icon: Text('Generate Route'), onPressed : () async {
+            String kmFrom = await dialogForMap.getKm(context); // Funkar inte helt
+            if(kmFrom == "-1" || kmFrom == null){
+              print(kmFrom);
+
+            }else{
+              print(kmFrom);
+
+            }
+            //Ha en metod som skapar nya points här
+          },),
+          IconButton(icon: Text('Start Route'), onPressed: () {  },), //Skickar med rutt datan till en ny karta.
         ],
       ),
     ),
