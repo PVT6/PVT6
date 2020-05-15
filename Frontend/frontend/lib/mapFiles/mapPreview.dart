@@ -141,7 +141,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
           IconButton(icon: Text('Cancel'), onPressed: () { Navigator.pop(context);},),
           IconButton(icon: Text('Saved Routes'), onPressed: () {dialogForMap.showSavedRoutes(context);},),
           IconButton(icon: Text('Save Route'), onPressed: () {
-            dialogForMap.saveRoute(context);
+            saveRoute(context, points);
           },),
           IconButton(icon: Text('Generate Route'), onPressed : () async {
             getKm(context).then((value){
@@ -187,7 +187,8 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
 //Dialoger
 
 
-    saveRoute(BuildContext context){
+    saveRoute(BuildContext context, var points){
+      var savePoints = points;
     String name = "";
     showDialog(
   context: context,
@@ -285,11 +286,27 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
   }
 
 showSavedRoutes(BuildContext context){
-
+TextEditingController editingController = TextEditingController();
 List<String> litems = ["Sveden","Fisken","Be","Lloo"];
   List<int> km = [200, 20 , 23, 12];
-  String selectedRoute;
-  int selectedIndex;
+  var items = List<String>();
+  String selectedRoute = '';
+  String filter;
+
+
+  @override
+  void initState() {
+    litems.forEach((item) {
+      items.add(item);
+    });
+    editingController.addListener(() {
+      setState(() {
+        filter = editingController.text;
+      });
+    });
+
+    super.initState();
+  }
 
     showDialog(
   context: context,
@@ -303,15 +320,17 @@ List<String> litems = ["Sveden","Fisken","Be","Lloo"];
               SizedBox(
                 height: 100,
                 width: 100,
-             child: new ListView.builder
-  (
+             child: new ListView.builder(
     padding: const EdgeInsets.all(8),
     itemCount: litems.length,
     itemBuilder: (BuildContext context, int index) {
+      String c = litems?.elementAt(index);
       return GestureDetector(
         onTap: () async {
           openRoute(context, '${litems[index]}');
-
+          setState() {
+            selectedRoute = c;
+          }
         } ,
         child: Container(  
         height: 75,
@@ -322,6 +341,7 @@ List<String> litems = ["Sveden","Fisken","Be","Lloo"];
           
           
         )
+        
 
 
       ));
