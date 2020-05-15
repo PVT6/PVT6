@@ -8,6 +8,7 @@ import 'package:frontend/friendsAndContacts/friendsPage.dart';
 import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'package:frontend/mapFiles/mapBoxSearch.dart';
 import 'package:frontend/mapFiles/temp.dart';
+import 'package:frontend/mapFiles/temp2.dart';
 import 'package:frontend/services/auth.dart';
 import 'package:frontend/settings.dart';
 import 'package:frontend/userFiles/user.dart' as userlib;
@@ -18,8 +19,7 @@ import 'package:latlong/latlong.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:http/http.dart' as http;
 import '../dog.dart';
-
-
+import 'package:geolocator/geolocator.dart';
 
 // Färgschema #1
 const colorPurple = const Color(0xFF82658f);
@@ -39,6 +39,14 @@ class MapsDemoState extends State<MapsDemo> {
   MapController controller = new MapController();
   final AuthService _auth = AuthService();
   UserLocationOptions userLocationOptions;
+  Position position;
+  int counter = 0;
+
+  void getLocation() async {
+    Position temp = await Geolocator()
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    position = temp;
+  }
 
   List<Marker> markers = [];
 
@@ -234,6 +242,55 @@ class MapsDemoState extends State<MapsDemo> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
+                    Container(
+                        child: Stack(
+                          children: <Widget>[
+                            new FloatingActionButton(
+                              heroTag: _randomString(10),
+                              onPressed: () {
+                                setState(() {
+                                  counter++;
+                                });
+                              },
+                              materialTapTargetSize:
+                                  MaterialTapTargetSize.padded,
+                              backgroundColor: colorPeachPink,
+                              child: Icon(
+                                FontAwesomeIcons.solidBell,
+                                size: 36.0,
+                                color: colorPurple,
+                              ),
+                            ),
+                            counter != 0
+                                ? new Positioned(
+                                    right: 11,
+                                    top: 11,
+                                    child: new Container(
+                                      padding: EdgeInsets.all(2),
+                                      decoration: new BoxDecoration(
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                      constraints: BoxConstraints(
+                                        minWidth: 14,
+                                        minHeight: 14,
+                                      ),
+                                      child: Text(
+                                        '$counter',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 8,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  )
+                                : new Container()
+                          ],
+                        )),
+                    SizedBox(
+                      height: 220,
+                    ),
                     button(_onMapTypeButtonPressed, FontAwesomeIcons.dice),
                     SizedBox(
                       height: 16.0,
@@ -261,7 +318,7 @@ class MapsDemoState extends State<MapsDemo> {
                     IconButton(
                       icon: Icon(
                         Icons.menu,
-                        color: colorPurple,
+                        color: Colors.black,
                         size: 50,
                       ),
                       onPressed: () {
@@ -278,35 +335,97 @@ class MapsDemoState extends State<MapsDemo> {
                 alignment: Alignment.topCenter,
                 child: Column(
                   children: <Widget>[
-                    FlatButton(
-                      child: Row(
-                        children: <Widget>[
-                          
-                          Text(
-                            "Search Around",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
-                            ),
-                          ),
-                          SizedBox(width: 160,),
-                          Icon(Icons.search),
-                        ],
-                      ),
-                      color: Colors.white,
-                      onPressed: () {
-                        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => SearchLocation(controller: controller,),
-            ),
-          );
-                      },
+                    SizedBox(
+                      height: 10,
                     ),
-                    Row(children: <Widget>[
-
-                    ],),
+                    Card(
+                        shape: InputBorder.none,
+                        color: Colors.white,
+                        elevation: 20,
+                        child: FlatButton(
+                          child: Row(
+                            children: <Widget>[
+                              Text(
+                                "Search Around",
+                                style: TextStyle(
+                                  color: Colors.grey.shade500,
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 150,
+                                height: 60,
+                              ),
+                              Icon(
+                                Icons.search,
+                                size: 30,
+                              ),
+                            ],
+                          ),
+                          color: Colors.white,
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SearchLocation(
+                                  controller: controller,
+                                ),
+                              ),
+                            );
+                          },
+                        )),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        FlatButton(
+                          color: colorPeachPink,
+                          onPressed: () {},
+                          child: Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.restaurant,
+                                color: colorPurple,
+                              ),
+                              Text("Restaurant",
+                                  style: TextStyle(fontSize: 11)),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        FlatButton(
+                          color: colorPeachPink,
+                          onPressed: () {},
+                          child: Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.nature,
+                                color: colorPurple,
+                              ),
+                              Text("Parks", style: TextStyle(fontSize: 11)),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        FlatButton(
+                          color: colorPeachPink,
+                          onPressed: () {},
+                          child: Row(
+                            children: <Widget>[
+                              Icon(
+                                FontAwesomeIcons.trash,
+                                color: colorPurple,
+                              ),
+                              Text("Trashcans", style: TextStyle(fontSize: 11)),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -319,9 +438,21 @@ class MapsDemoState extends State<MapsDemo> {
 
   _onMapTypeButtonPressed() {}
 
-  _onAddMarkerButtonPressed() {}
+  _onAddMarkerButtonPressed() {
+    setState(() {
+      getLocation();
+    });
+
+    Navigator.push(
+        context,
+        new MaterialPageRoute(
+            builder: (context) =>
+                Navigation(position.latitude, position.longitude)));
+  }
 
   _goToPosition1() {}
+
+  _openNotifications() {}
 }
 
 class CustomListTile extends StatelessWidget {
@@ -365,4 +496,3 @@ class CustomListTile extends StatelessWidget {
     );
   }
 }
-
