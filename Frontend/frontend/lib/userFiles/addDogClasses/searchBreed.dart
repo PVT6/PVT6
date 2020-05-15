@@ -385,7 +385,6 @@ class SearchBreedState extends State<SearchBreeds> {
   ];
   var items = List<String>();
   String selectedBreed = '';
-  bool _isVisible = true;
 
   @override
   void initState() {
@@ -401,12 +400,6 @@ class SearchBreedState extends State<SearchBreeds> {
     super.initState();
   }
 
-  void showToast() {
-    setState(() {
-      _isVisible = !_isVisible;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -419,118 +412,119 @@ class SearchBreedState extends State<SearchBreeds> {
         centerTitle: true,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.arrow_downward),
-            onPressed: showToast,
+            icon: Icon(Icons.pets),
+            onPressed: () {},
           )
         ],
       ),
-      body: Visibility(
-        visible: _isVisible,
-        child: Column(
-          children: <Widget>[
-            Text(
-              "Select a breed from the list below",
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
+      body: Column(
+        children: <Widget>[
+          Text(
+            "Select a breed from the list below",
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.w500,
+              fontSize: 16,
+            ),
+            textAlign: TextAlign.left,
+          ),
+          Container(
+            width: 400,
+            height: 65,
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: editingController,
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white,
+                  labelText: "Search Breed",
+                  hintText: "ex: Whippet",
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(25.0)))),
+            ),
+          ),
+          Container(
+              color: Colors.grey,
+              width: 420,
+              height: 200,
+              child: Card(
+                child: new ListView.builder(
+                  itemCount: items.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    String c = items?.elementAt(index);
+                    return filter == null || filter == ""
+                        ? new Card(
+                            elevation: 8.0,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0)),
+                            child: ListTile(
+                              onTap: () {
+                                setState(() {
+                                  selectedBreed = c;
+                                  finalBreed = c;
+                                });
+                              },
+                              leading: CircleAvatar(
+                                  child: Icon(FontAwesomeIcons.dog)),
+                              title: Text(items[index] ?? ""),
+                            ),
+                          )
+                        : items[index]
+                                .toLowerCase()
+                                .contains(filter.toLowerCase())
+                            ? new Card(
+                                elevation: 8.0,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0)),
+                                child: ListTile(
+                                  onTap: () {
+                                    setState(() {
+                                      selectedBreed = c;
+                                      finalBreed = c;
+                                    });
+                                  },
+                                  leading: CircleAvatar(
+                                      child: Icon(
+                                    FontAwesomeIcons.dog,
+                                  )),
+                                  title: Text(items[index] ?? ""),
+                                ),
+                              )
+                            : new Container();
+                  },
+                ),
+              )),
+          
+          Row(
+            children: <Widget>[
+              Container(
+                width: 80,
+                height: 80,
+                child: Image.asset("logopurplepink.png"),
               ),
-              textAlign: TextAlign.left,
-            ),
-            Container(
-                color: Colors.grey,
-                width: 420,
-                height: 200,
-                child: Card(
-                  child: new ListView.builder(
-                    itemCount: items.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      String c = items?.elementAt(index);
-                      return filter == null || filter == ""
-                          ? new Card(
-                              elevation: 8.0,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0)),
-                              child: ListTile(
-                                onTap: () {
-                                  setState(() {
-                                    selectedBreed = c;
-                                    finalBreed = c;
-                                  });
-                                },
-                                leading: CircleAvatar(
-                                    child: Icon(FontAwesomeIcons.dog)),
-                                title: Text(items[index] ?? ""),
-                              ),
-                            )
-                          : items[index]
-                                  .toLowerCase()
-                                  .contains(filter.toLowerCase())
-                              ? new Card(
-                                  elevation: 8.0,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(10.0)),
-                                  child: ListTile(
-                                    onTap: () {
-                                      setState(() {
-                                        selectedBreed = c;
-                                        finalBreed = c;
-                                      });
-                                    },
-                                    leading: CircleAvatar(
-                                        child: Icon(FontAwesomeIcons.dog,)),
-                                    title: Text(items[index] ?? ""),
-                                  ),
-                                )
-                              : new Container();
-                    },
-                  ),
-                )),
-            Container(
-              width: 300,
-              height: 65,
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: editingController,
-                decoration: InputDecoration(
-                    labelText: "Search Breed",
-                    hintText: "ex: Whippet",
-                    prefixIcon: Icon(Icons.search),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(25.0)))),
+              Text(
+                "Selected breed: ",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                ),
               ),
-            ),
-            Row(
-              children: <Widget>[
-                Container(
-                  width: 80,
-                  height: 80,
-                  child: Image.asset("logopurplepink.png"),
-                ),
-                Text(
-                  "Selected breed: ",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
-            if (selectedBreed != "")
-              Card(
-                color: colorPurple,
-                elevation: 8.0,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0)),
-                child: ListTile(
-                  leading: CircleAvatar(child: Icon(FontAwesomeIcons.dog)),
-                  title: Text(selectedBreed),
-                ),
-              )
-          ],
-        ),
+            ],
+          ),
+          if (selectedBreed != "")
+            Card(
+              color: colorPurple,
+              elevation: 8.0,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0)),
+              child: ListTile(
+                leading: CircleAvatar(child: Icon(FontAwesomeIcons.dog)),
+                title: Text(selectedBreed),
+              ),
+            )
+        ],
       ),
     );
   }

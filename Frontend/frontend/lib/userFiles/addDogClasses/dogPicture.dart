@@ -46,12 +46,12 @@ class DogPicturesState extends State<DogPictures> {
       appBar: AppBar(
         leading: Icon(Icons.verified_user),
         elevation: 0,
-        title: Text('Add Pictures'),
+        title: Text('Add Picture'),
         backgroundColor: colorPurple,
         centerTitle: true,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.delete),
+            icon: Icon(Icons.pets),
             onPressed: () {},
           )
         ],
@@ -66,13 +66,20 @@ class DogPicturesState extends State<DogPictures> {
                 child: Image.asset("logopurplepink.png"),
               ),
               FlatButton(
-                child: Text(
-                  "Add a picture of your dog: ",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                  ),
+                shape: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(25.0))),
+                child: Row(
+                  children: <Widget>[
+                    Icon(Icons.add_a_photo),
+                    Text(
+                      " Add Picture",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
+                      ),
+                    )
+                  ],
                 ),
                 color: colorPurple,
                 onPressed: () {

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:frontend/friendsAndContacts/addContactPage.dart';
 import 'package:frontend/friendsAndContacts/friendsPage.dart';
 import 'package:frontend/userFiles/addDogClasses/transition.dart';
@@ -95,7 +95,7 @@ class NameSelectState extends State<NameSelect> {
           centerTitle: true,
           actions: <Widget>[
             IconButton(
-              icon: Icon(Icons.arrow_downward),
+              icon: Icon(Icons.pets),
               onPressed: () {},
             )
           ],
@@ -152,14 +152,14 @@ class DescSelectState extends State<DescSelect> {
         centerTitle: true,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.arrow_downward),
+            icon: Icon(Icons.pets),
             onPressed: () {},
           )
         ],
       ),
       body: TextFormField(
         inputFormatters: [
-          LengthLimitingTextInputFormatter(120),
+          LengthLimitingTextInputFormatter(125),
         ],
         autocorrect: true,
         obscureText: false,
@@ -202,6 +202,24 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    //reset variabler start
+    String dogName1;
+    String finalBreed1;
+    int height1 = 40;
+    int weight1 = 15;
+    int age1 = 0;
+    String dogPicture1;
+    String desc1 = "";
+    Gender gender1 = Gender.female;
+    dogName = dogName1;
+    finalBreed = finalBreed1;
+    height = height1;
+    weight = weight1;
+    age = age1;
+    dogPicture = dogPicture1;
+    desc = desc1;
+    gender = gender1;
+    //end
     _submitAnimationController = AnimationController(
       vsync: this,
       duration: Duration(seconds: 2),
@@ -411,7 +429,7 @@ class BuildCardState extends State<BuildCards> {
           centerTitle: true,
           actions: <Widget>[
             IconButton(
-              icon: Icon(Icons.delete),
+              icon: Icon(Icons.pets),
               onPressed: () {},
             )
           ],
@@ -494,6 +512,15 @@ class ResultPageState extends State<ResultPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+          ),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => InputPage()),
+          ),
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: <Widget>[
@@ -531,7 +558,7 @@ class ResultPageState extends State<ResultPage> {
                   style: TextStyle(
                     fontFamily: 'Hipster Script W00 Regular',
                     color: Colors.white,
-                    fontSize: 32,
+                    fontSize: 36,
                   ),
                 ),
                 SizedBox(height: 20.0),
@@ -562,7 +589,7 @@ class ResultPageState extends State<ResultPage> {
                           decoration: BoxDecoration(
                               color: Colors.yellow,
                               borderRadius: BorderRadius.circular(20.0)),
-                          child: Text(widget.finalBreed),
+                          child: Text(widget.finalBreed, style: TextStyle(fontSize: 16,)),
                         ),
                       )
                     ],
@@ -630,14 +657,14 @@ class ResultPageState extends State<ResultPage> {
                     Column(
                       children: <Widget>[
                         Text(
-                          "Age: ",
+                          " Age: ",
                           style: TextStyle(
                             color: colorPurple,
                             fontSize: 20,
                           ),
                         ),
                         Text(
-                          widget.age.toString(),
+                          widget.age.toString() + "y.o",
                           style: TextStyle(color: Colors.grey.shade600),
                         ),
                       ],

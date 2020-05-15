@@ -172,7 +172,7 @@ class _MySignInPageState extends State<MySignInPage>
                       SizedBox(height: 30.0),
                       Row(children: <Widget>[
                         SizedBox(
-                          width: 330,
+                          width: 280,
                           height: 200,
                           child: Image.asset(
                             'assets/logopurplepink.png',
