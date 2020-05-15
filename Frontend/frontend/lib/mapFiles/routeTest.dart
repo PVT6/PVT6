@@ -11,6 +11,8 @@ import 'package:flutter_config/flutter_config.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'mapPreview.dart';
+
 class _MapPageState extends State<MapPage> {
   TestDialog testDia = new TestDialog();
   MapController mapController;
@@ -106,7 +108,11 @@ class _MapPageState extends State<MapPage> {
       ])),
       floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
-                  testDia.test(context);
+                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => MapPreviewPage(),
+                  ));
                      },
                   icon: Icon(Icons.router),
                   label: Text('Go To Routes'),

@@ -13,6 +13,8 @@ import 'package:flutter_config/flutter_config.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'mapWithRoute.dart';
+
 class _MapPreviewPageState extends State<MapPreviewPage> {
   Location location;
   static LatLng latLng = LatLng(18.064034, 18.064034);
@@ -152,7 +154,15 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
 
             } );
           },),
-          IconButton(icon: Text('Start Route'), onPressed: () {  },), //Skickar med rutt datan till en ny karta.
+          IconButton(icon: Text('Start Route'), onPressed: () { 
+
+            Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => MapWithRoute(points: points),
+                  ));
+
+           },), //Skickar med rutt datan till en ny karta.
         ],
       ),
     ),
