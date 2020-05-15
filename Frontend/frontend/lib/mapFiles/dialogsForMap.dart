@@ -164,14 +164,6 @@ List<String> litems = ["Sveden","Fisken","Be","Lloo"];
               onPressed: () => Navigator.pop(context),
               child: Text("Cancel"),
             ),
-             FlatButton(
-              onPressed: () {selectedIndex = null;},
-              child: Text("delete"),
-            ),
-            FlatButton(
-              onPressed: () {},
-              child: Text("Open"),
-            ),
           ],
         );
       },
@@ -200,7 +192,7 @@ List<String> litems = ["Sveden","Fisken","Be","Lloo"];
           ),
           actions: <Widget>[
             FlatButton(
-              onPressed: () {},
+              onPressed: () => Navigator.pop(context),
               child: Text('Close'),
             ),
             FlatButton(

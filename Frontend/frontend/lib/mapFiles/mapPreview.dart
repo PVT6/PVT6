@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:frontend/mapFiles/dialogsForMap.dart';
 import 'package:frontend/routePickerMap/testDialog.dart';
@@ -14,7 +15,8 @@ import 'dart:convert';
 
 class _MapPreviewPageState extends State<MapPreviewPage> {
   Location location;
-  static LatLng latLng;
+  static LatLng latLng = LatLng(18.064034, 18.064034);
+  String kmString = "0";
 
   DialogForMaps dialogForMap = new DialogForMaps();
   var estimatedTime;
@@ -28,8 +30,8 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
   var points = <LatLng>[];
   void loadData() async {
     print("Loading geojson data");
-    var km = widget.km;
-    var Postion = location;
+    var km = int.parse(kmString);
+    var Postion = latLng;
     final data = await http.get("https://api.mapbox.com/directions/v5/mapbox/walking/18.064034,59.338738;18.073411113923477,59.332076081194614;18.071977555134517,59.34721459928733;18.064034,59.338738.json?access_token=pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A&steps=true&overview=full&geometries=geojson&annotations=distance&continue_straight=true");
     var jsonfile = json.decode(data.body);
     var routedata = jsonfile['routes'][0];
@@ -83,7 +85,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
           mapController: mapController,
           options:
           
-              new MapOptions(center: LatLng(59.338738, 18.064034), minZoom: 15.0, plugins: [
+              new MapOptions(center: LatLng(latLng.latitude, latLng.longitude), minZoom: 15.0, plugins: [
             // ADD THIS
             UserLocationPlugin(),
           ],
@@ -140,15 +142,15 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
             dialogForMap.saveRoute(context);
           },),
           IconButton(icon: Text('Generate Route'), onPressed : () async {
-            String kmFrom = await dialogForMap.getKm(context); // Funkar inte helt
-            if(kmFrom == "-1" || kmFrom == null){
-              print(kmFrom);
+            getKm(context).then((value){
+              if(value == "-1"){
 
-            }else{
-              print(kmFrom);
+              }else{
+                kmString = value;
+                //Ha en metod som skapar nya points här
+              }
 
-            }
-            //Ha en metod som skapar nya points här
+            } );
           },),
           IconButton(icon: Text('Start Route'), onPressed: () {  },), //Skickar med rutt datan till en ny karta.
         ],
@@ -171,6 +173,217 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
   }
 
   
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Dialoger
+
+
+    saveRoute(BuildContext context){
+    String name = "";
+    showDialog(
+  context: context,
+  builder: (context) {
+    String contentText = "Content of Dialog";
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return AlertDialog(
+          title: Text("Save Route"),
+          content: Row(
+            children: <Widget>[
+              SizedBox(
+                width: 200.0,
+                height: 300.0,
+                child: TextField(
+              onChanged: (val) {
+            setState(() => name = val); },
+          decoration: new InputDecoration(labelText: "Input a name",
+          border: new OutlineInputBorder(
+                    borderSide: new BorderSide(color: Colors.black)),
+          ),
+            ),
+              ),
+            ],),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: Text("Cancel"),
+            ),
+            FlatButton(
+              onPressed: () {
+                
+              },
+              child: Text("Start"),
+            ),
+          ],
+        );
+      },
+    );
+  },
+);
+   
+
+  }
+
+  Future<String> getKm(BuildContext context){
+    TextEditingController kmController = TextEditingController();
+  
+
+    showDialog(
+  context: context,
+  builder: (context) {
+    String contentText = "Content of Dialog";
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return AlertDialog(
+          title: Text("Generate a route"),
+          content: Row(
+            children: <Widget>[
+              SizedBox(
+                width: 200.0,
+                height: 300.0,
+                child: TextField(
+                  controller: kmController,
+          decoration: new InputDecoration(labelText: "How long?",
+          border: new OutlineInputBorder(
+                    borderSide: new BorderSide(color: Colors.black)),
+          ),
+            keyboardType: TextInputType.number,
+            inputFormatters: <TextInputFormatter>[
+                WhitelistingTextInputFormatter.digitsOnly
+            ], // Only numbers c
+            ),
+              ),
+              SizedBox(
+                width: 60.0,
+                height: 300.0,
+                child: Text('km'),)
+            ],),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () => Navigator.pop(context, "-1"),
+              child: Text("Cancel"),
+            ),
+            FlatButton(
+              onPressed: () => Navigator.pop(context, kmController.text.toString()),
+              child: Text("Generate"),
+            ),
+          ],
+        );
+      },
+    );
+  },
+);
+  }
+
+showSavedRoutes(BuildContext context){
+
+List<String> litems = ["Sveden","Fisken","Be","Lloo"];
+  List<int> km = [200, 20 , 23, 12];
+  String selectedRoute;
+  int selectedIndex;
+
+    showDialog(
+  context: context,
+  builder: (context) {
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return AlertDialog(
+          title: Text("Generate a route"),
+          content: Row(
+            children: <Widget>[
+              SizedBox(
+                height: 100,
+                width: 100,
+             child: new ListView.builder
+  (
+    padding: const EdgeInsets.all(8),
+    itemCount: litems.length,
+    itemBuilder: (BuildContext context, int index) {
+      return GestureDetector(
+        onTap: () async {
+          openRoute(context, '${litems[index]}');
+
+        } ,
+        child: Container(  
+        height: 75,
+        margin: EdgeInsets.all(2),
+        color: Colors.blue,
+        child: Center(
+          child: Text('${litems[index]} ${km[index]} Km'),
+          
+          
+        )
+
+
+      ));
+    }
+    
+  ),
+  ),
+              
+            ],),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("Cancel"),
+            ),
+          ],
+        );
+      },
+    );
+  },
+);
+
+
+
+
+}
+
+
+  openRoute(BuildContext context, String title) {
+    return showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context){
+        return AlertDialog(
+          title: Text(title),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Close'),
+            ),
+            FlatButton(
+              onPressed: () {},
+              child: Text('Delete'),
+            ),
+            FlatButton(
+              onPressed: () {},
+              child: Text('Open'),
+            ),
+          ],
+        );
+      }
+
+    );
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 class MapPreviewPage extends StatefulWidget {
