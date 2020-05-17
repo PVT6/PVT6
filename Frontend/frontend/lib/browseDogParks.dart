@@ -355,6 +355,26 @@ class FoodListview extends StatelessWidget {
                             )))
               },
             ),
+             ItemCard(
+              "LeBistro.jpg",
+              'Jakobs Test Location',
+              'Testar navigation här',
+              () => {
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) => DogPlaceDesc2(
+                              "LeBistro.jpg",
+                              '5',
+                              'Coop Vinsta',
+                              'Vinsta',
+                              'Trött',
+                              () => {},
+                              () => {},
+                              location = new LatLng(59.369411, 17.858453),
+                            )))
+              },
+            ),
           ],
         ),
       ),

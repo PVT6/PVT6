@@ -27,6 +27,7 @@ final MapController controller;
       body: SafeArea(
         bottom: false,
         child: MapBoxPlaceSearchWidget(
+          language: "Swedish",
           popOnSelect: true,
           apiKey: FlutterConfig.get('MAPBOX_ID'),
           searchHint: 'Search around',

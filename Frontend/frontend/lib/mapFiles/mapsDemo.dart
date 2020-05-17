@@ -243,13 +243,15 @@ class MapsDemoState extends State<MapsDemo> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Container(
+                      height: 60,
+                      width: 60,
                         child: Stack(
                           children: <Widget>[
                             new FloatingActionButton(
                               heroTag: _randomString(10),
                               onPressed: () {
                                 setState(() {
-                                  counter++;
+                                  counter++; //denna är för test, counter ska sedan hålla notifications
                                 });
                               },
                               materialTapTargetSize:
@@ -287,7 +289,7 @@ class MapsDemoState extends State<MapsDemo> {
                                   )
                                 : new Container()
                           ],
-                        )),
+                        ),),
                     SizedBox(
                       height: 220,
                     ),
