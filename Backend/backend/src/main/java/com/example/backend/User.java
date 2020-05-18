@@ -37,6 +37,8 @@ public class User {
 
   private String email;
 
+  private Set<Route> savedRoutes;
+
   private String phoneNumber;
 
   @OneToOne(fetch = FetchType.LAZY)
@@ -170,6 +172,13 @@ public class User {
   @JsonIgnore
   public Long getCreatedAt() {
     return createdAt;
+  }
+
+  public Set<Route> getSavedRoutes(){
+    return savedRoutes;
+  }
+  public void addRoutes(Route r){
+    this.savedRoutes.add(r);
   }
 
   public void setCreatedAt(Long createdAt) {
