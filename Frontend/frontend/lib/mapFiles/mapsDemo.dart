@@ -25,6 +25,13 @@ const colorPurple = const Color(0xFF82658f);
 const colorPeachPink = const Color(0xFFffdcd2);
 const colorLighterPink = const Color(0xFFffe9e5);
 
+// Färgschema från prototyp
+const colorBeige = const Color(0xFFF5F3EE);
+const colorDarkBeige = const Color(0xFFc2c0bc);
+const colorPrimaryRed = const Color(0xffEA9999);
+const colorLightRed = const Color(0xFFffcaca);
+const colorDarkRed = const Color(0xffb66a6b);
+
 class MapsDemo extends StatefulWidget {
   MapsDemo() : super();
 
@@ -68,11 +75,11 @@ class MapsDemoState extends State<MapsDemo> {
       heroTag: _randomString(10),
       onPressed: function,
       materialTapTargetSize: MaterialTapTargetSize.padded,
-      backgroundColor: colorPeachPink,
+      backgroundColor: colorBeige,
       child: Icon(
         icon,
         size: 36.0,
-        color: colorPurple,
+        color: colorPrimaryRed,
       ),
     );
   }
@@ -88,27 +95,27 @@ class MapsDemoState extends State<MapsDemo> {
     );
     return new MaterialApp(
       home: Scaffold(
-        backgroundColor: colorPurple,
+        backgroundColor: colorBeige,
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-          backgroundColor: colorPurple,
+          backgroundColor: colorBeige,
           currentIndex: 0, // this will be set when a new tab is tapped
           items: [
             BottomNavigationBarItem(
-              icon: new Icon(Icons.pin_drop, color: colorPeachPink,),
-              title: new Text('Explore', style: TextStyle(color: colorPeachPink)),
+              icon: new Icon(Icons.pin_drop, color: colorPrimaryRed,),
+              title: new Text('Explore', style: TextStyle(color: colorPrimaryRed)),
             ),
             BottomNavigationBarItem(
-              icon: new Icon(Icons.home, color: colorPeachPink,),
-              title: new Text('Commute',style: TextStyle(color: colorPeachPink)),
+              icon: new Icon(Icons.home, color: colorPrimaryRed,),
+              title: new Text('Commute',style: TextStyle(color: colorPrimaryRed)),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.favorite_border, color: colorPeachPink,),
-              title: Text('Feed',style: TextStyle(color: colorPeachPink)),
+              icon: Icon(Icons.favorite_border, color: colorPrimaryRed,),
+              title: Text('Feed',style: TextStyle(color: colorPrimaryRed)),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person, color: colorPeachPink,),
-              title: Text('Profile',style: TextStyle(color: colorPeachPink)),
+              icon: Icon(Icons.person, color: colorPrimaryRed,),
+              title: Text('Profile',style: TextStyle(color: colorPrimaryRed)),
             ),
           ],
         ),
@@ -157,8 +164,9 @@ class MapsDemoState extends State<MapsDemo> {
           ],
         ),
         appBar: AppBar(
-          title: Text("DogWalk", style: TextStyle(color: colorPeachPink)),
-          backgroundColor: colorPurple,
+          title: Text("DogWalk", style: TextStyle(color: colorPrimaryRed)),
+          backgroundColor: colorBeige,
+          iconTheme: IconThemeData(color :colorPrimaryRed),
         ),
         drawer: Drawer(
           child: ListView(
@@ -166,7 +174,7 @@ class MapsDemoState extends State<MapsDemo> {
             children: <Widget>[
               UserAccountsDrawerHeader(
                 decoration: BoxDecoration(
-                  color: colorPurple
+                  color: colorBeige
                 ),
                 accountName: Text(
                   userlib.name, //userData
@@ -182,10 +190,10 @@ class MapsDemoState extends State<MapsDemo> {
                       color: Colors.white, fontSize: 16.0, letterSpacing: 1.1),
                 ),
                 currentAccountPicture: CircleAvatar(
-                  backgroundColor: colorLighterPink,
+                  backgroundColor: colorPrimaryRed,
                   child: Text(
                     "PH", //userData (om vi vill ha profilbild)
-                    style: TextStyle(fontSize: 40.0, color: colorPurple),
+                    style: TextStyle(fontSize: 40.0, color: colorBeige),
                   ),
                 ),
               ),

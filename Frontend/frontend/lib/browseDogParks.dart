@@ -2,10 +2,18 @@ import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/friendsAndContacts/addContactPage.dart';
 import 'package:frontend/loginFiles/intro_slider.dart';
+import 'package:frontend/mapFiles/mapsDemo.dart';
 import 'package:frontend/userFiles/dogProfile.dart';
 import 'package:frontend/userFiles/friendsFeed.dart';
 import 'package:latlong/latlong.dart';
 import 'package:frontend/dogPlaceDesc.dart';
+
+// Färgschema från prototyp
+const colorBeige = const Color(0xFFF5F3EE);
+const colorDarkBeige = const Color(0xFFc2c0bc);
+const colorPrimaryRed = const Color(0xffEA9999);
+const colorLightRed = const Color(0xFFffcaca);
+const colorDarkRed = const Color(0xffb66a6b);
 
 var textYellow = Color(0xFFf6c24d);
 var iconYellow = Color(0xFFf4bf47);
@@ -24,7 +32,7 @@ class BrowseDogParks extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: colorLighterPink,
+        backgroundColor: colorBeige,
         body: Container(
           child: ListView(
             children: <Widget>[
@@ -55,10 +63,10 @@ class MenuItemsList extends StatelessWidget {
         children: <Widget>[
           BorderedText(
               strokeWidth: 6.0,
-              strokeColor: colorPurple,
+              strokeColor: colorPrimaryRed,
               child: Text(
                 'Highest rated dogparks',
-                style: TextStyle(fontSize: 22.0, color: Colors.white),
+                style: TextStyle(fontSize: 22.0, color: colorBeige),
               )),
           SizedBox(height: 16.0),
           MenuItem(
@@ -382,12 +390,12 @@ class MyAppBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           MaterialButton(
-            color: colorPurple,
+            color: colorPrimaryRed,
             shape: CircleBorder(),
             elevation: 0,
             child: Icon(
               Icons.arrow_back,
-              color: colorPeachPink,
+              color: colorBeige,
             ),
             onPressed: () {
               Navigator.pop(context);
@@ -512,7 +520,7 @@ class MenuItem extends StatelessWidget {
                       children: <Widget>[
                         Container(
                           decoration: BoxDecoration(
-                              color: colorPurple,
+                              color: colorPrimaryRed,
                               borderRadius: BorderRadius.circular(4.0)),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
