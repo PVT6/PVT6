@@ -67,6 +67,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
     statefulMapController.onReady.then((_) => loadData());
     
     sub = statefulMapController.changeFeed.listen((change) => setState(() {}));
+    
     super.initState();
   }
 
@@ -167,6 +168,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
       print(currentLocation.longitude);
       setState(() {
         latLng = LatLng(currentLocation.latitude, currentLocation.longitude);
+        mapController.move(LatLng(latLng.latitude, latLng.longitude), 1);
       });
 
       print("getLocation:$latLng");
