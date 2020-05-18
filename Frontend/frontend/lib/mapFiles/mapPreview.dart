@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:frontend/mapFiles/dialogsForMap.dart';
 import 'package:frontend/routePickerMap/testDialog.dart';
 import 'package:geojson/geojson.dart';
 import 'package:location/location.dart';
@@ -20,7 +19,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
   static LatLng latLng = LatLng(18.064034, 18.064034);
   String kmString = "0";
 
-  DialogForMaps dialogForMap = new DialogForMaps();
+  
   var estimatedTime;
   TestDialog testDia = new TestDialog();
   MapController mapController;
@@ -139,20 +138,23 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           IconButton(icon: Text('Cancel'), onPressed: () { Navigator.pop(context);},),
-          IconButton(icon: Text('Saved Routes'), onPressed: () {dialogForMap.showSavedRoutes(context);},),
+          IconButton(icon: Text('Saved Routes'), onPressed: () {showSavedRoutes(context);},),
           IconButton(icon: Text('Save Route'), onPressed: () {
             saveRoute(context, points);
           },),
           IconButton(icon: Text('Generate Route'), onPressed : () async {
-            getKm(context).then((value){
+            /* getKm(context).then((value){
               if(value == "-1"){
 
               }else{
+                print(value);
                 kmString = value;
                 //Ha en metod som skapar nya points här
               }
 
-            } );
+            } ); */
+            getKm(context);
+            print(kmString);
           },),
           IconButton(icon: Text('Start Route'), onPressed: () { 
 
@@ -274,7 +276,11 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
               child: Text("Cancel"),
             ),
             FlatButton(
-              onPressed: () => Navigator.pop(context, kmController.text.toString()),
+            //  onPressed: () => Navigator.pop(context, kmController.text.toString()),
+            onPressed: () {
+              kmString = kmController.text.toString();
+              Navigator.pop(context);
+            },
               child: Text("Generate"),
             ),
           ],
@@ -292,21 +298,6 @@ List<String> litems = ["Sveden","Fisken","Be","Lloo"];
   var items = List<String>();
   String selectedRoute = '';
   String filter;
-
-
-  @override
-  void initState() {
-    litems.forEach((item) {
-      items.add(item);
-    });
-    editingController.addListener(() {
-      setState(() {
-        filter = editingController.text;
-      });
-    });
-
-    super.initState();
-  }
 
     showDialog(
   context: context,
@@ -327,10 +318,47 @@ List<String> litems = ["Sveden","Fisken","Be","Lloo"];
       String c = litems?.elementAt(index);
       return GestureDetector(
         onTap: () async {
-          openRoute(context, '${litems[index]}');
           setState() {
             selectedRoute = c;
           }
+
+          return showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context){
+        return AlertDialog(
+          title: Text('${litems[index]}'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Close'),
+            ),
+            FlatButton(
+              onPressed: () {
+              Navigator.pop(context);
+            },
+              child: Text('Delete'),
+            ),
+            FlatButton(
+              onPressed: () {
+              Navigator.pop(context);
+            },
+              child: Text('Open'),
+            ),
+          ],
+        );
+      }
+
+    );
+
+     //    String returnVal = await openRoute(context, '${litems[index]}');
+     //    print(returnVal);
         } ,
         child: Container(  
         height: 75,
@@ -369,8 +397,8 @@ List<String> litems = ["Sveden","Fisken","Be","Lloo"];
 }
 
 
-  openRoute(BuildContext context, String title) {
-    return showDialog(
+  Future<String> openRoute(BuildContext context, String title) async {
+     return showDialog(
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context){
@@ -384,15 +412,15 @@ List<String> litems = ["Sveden","Fisken","Be","Lloo"];
           ),
           actions: <Widget>[
             FlatButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => Navigator.pop(context, 'Closed'),
               child: Text('Close'),
             ),
             FlatButton(
-              onPressed: () {},
+              onPressed: () => Navigator.pop(context, 'Delete'),
               child: Text('Delete'),
             ),
             FlatButton(
-              onPressed: () {},
+              onPressed: () => Navigator.pop(context, 'Open'),
               child: Text('Open'),
             ),
           ],
