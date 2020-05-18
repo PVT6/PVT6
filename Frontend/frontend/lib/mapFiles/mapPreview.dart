@@ -276,7 +276,6 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
               child: Text("Cancel"),
             ),
             FlatButton(
-            //  onPressed: () => Navigator.pop(context, kmController.text.toString()),
             onPressed: () {
               kmString = kmController.text.toString();
               Navigator.pop(context);
@@ -357,8 +356,6 @@ List<String> litems = ["Sveden","Fisken","Be","Lloo"];
 
     );
 
-     //    String returnVal = await openRoute(context, '${litems[index]}');
-     //    print(returnVal);
         } ,
         child: Container(  
         height: 75,
@@ -397,39 +394,7 @@ List<String> litems = ["Sveden","Fisken","Be","Lloo"];
 }
 
 
-  Future<String> openRoute(BuildContext context, String title) async {
-     return showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context){
-        return AlertDialog(
-          title: Text(title),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              onPressed: () => Navigator.pop(context, 'Closed'),
-              child: Text('Close'),
-            ),
-            FlatButton(
-              onPressed: () => Navigator.pop(context, 'Delete'),
-              child: Text('Delete'),
-            ),
-            FlatButton(
-              onPressed: () => Navigator.pop(context, 'Open'),
-              child: Text('Open'),
-            ),
-          ],
-        );
-      }
-
-    );
-
-  }
+  
 
 
 
