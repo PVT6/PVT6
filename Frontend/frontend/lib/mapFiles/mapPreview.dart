@@ -143,18 +143,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
             saveRoute(context, points);
           },),
           IconButton(icon: Text('Generate Route'), onPressed : () async {
-            /* getKm(context).then((value){
-              if(value == "-1"){
-
-              }else{
-                print(value);
-                kmString = value;
-                //Ha en metod som skapar nya points här
-              }
-
-            } ); */
             getKm(context);
-            print(kmString);
           },),
           IconButton(icon: Text('Start Route'), onPressed: () { 
 
@@ -236,7 +225,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
 
   }
 
-  Future<String> getKm(BuildContext context){
+  getKm(BuildContext context){
     TextEditingController kmController = TextEditingController();
   
 
@@ -309,8 +298,8 @@ List<String> litems = ["Sveden","Fisken","Be","Lloo"];
           content: Row(
             children: <Widget>[
               SizedBox(
-                height: 100,
-                width: 100,
+                height: 400,
+                width: 200,
              child: new ListView.builder(
     padding: const EdgeInsets.all(8),
     itemCount: litems.length,
