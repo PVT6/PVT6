@@ -16,7 +16,7 @@ import 'mapWithRoute.dart';
 
 class _MapPreviewPageState extends State<MapPreviewPage> {
   Location location;
-  static LatLng latLng = LatLng(18.064034, 18.064034);
+  static LatLng latLng = LatLng(59.338738, 18.064034);
   String kmString = "0";
 
   
@@ -87,7 +87,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
           mapController: mapController,
           options:
           
-              new MapOptions(center: LatLng(latLng.latitude, latLng.longitude), minZoom: 15.0, plugins: [
+              new MapOptions(center: LatLng(latLng.latitude, latLng.longitude), minZoom: 14, plugins: [
             // ADD THIS
             UserLocationPlugin(),
           ],
@@ -122,7 +122,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
           right: 150,
         child: Row(
           children: <Widget>[
-            Text(widget.km.toString() + "km"),
+            Text("$kmString" + "km"),
         Text("    Time:" + estimatedTime.toString()),
         ],)
         ),
@@ -130,7 +130,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
       ])),
       appBar: AppBar(title: const Text('Route Preview'),
       actions: <Widget>[
-        Text(widget.km.toString() + "km"),
+        Text("$kmString" + "km"),
         Text("Time:" + estimatedTime.toString()),
       ],),
     bottomNavigationBar: BottomAppBar(
@@ -145,6 +145,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
           },),
           IconButton(icon: Text('Generate Route'), onPressed : () async {
             getKm(context);
+            mapController.move(LatLng(latLng.latitude, latLng.longitude), 1);
           },),
           IconButton(icon: Text('Start Route'), onPressed: () { 
 
@@ -158,6 +159,15 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
         ],
       ),
     ),
+    floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+                  mapController.move(LatLng(latLng.latitude, latLng.longitude), 1);
+                     },
+                  icon: Icon(Icons.router),
+                  label: Text('Show my location'),
+                  foregroundColor: Colors.pink,
+                  backgroundColor: Colors.purple
+        ),
     );
   }
 
@@ -168,7 +178,6 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
       print(currentLocation.longitude);
       setState(() {
         latLng = LatLng(currentLocation.latitude, currentLocation.longitude);
-        mapController.move(LatLng(latLng.latitude, latLng.longitude), 1);
       });
 
       print("getLocation:$latLng");
