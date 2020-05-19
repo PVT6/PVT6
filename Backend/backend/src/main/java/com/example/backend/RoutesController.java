@@ -5,7 +5,9 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,11 +17,28 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller // This means that this class is a Controller
 @RequestMapping(path = "/route")
 public class RoutesController {
+    @Autowired 
+    private UserRepository userRepository;
 
     @GetMapping(path = "/test")
     public @ResponseBody String testRoute() {
         return "go";
     }
+
+    @GetMapping(path = "/getSavedRoutes")
+    public @ResponseBody Set<Route> getSavedRoutes(@RequestParam String uid){
+        User u = userRepository.findByUid(uid);
+        return u.getSavedRoutes();
+    }
+
+    @GetMapping(path = "/saveRoute")
+    public @ResponseBody String saveRoutes(@RequestParam String uid, String name, String route){
+        User u = userRepository.findByUid(uid);
+        Route r = new Route(name, route); 
+        u.addRoutes(r);
+        return "Saved";
+    }
+
     @GetMapping(path = "/new")
     public @ResponseBody String generateRoute(@RequestParam Double posX, Double posY, int distans) {
         String returnvalue = "";
@@ -56,9 +75,9 @@ public class RoutesController {
            
             e1.printStackTrace();
         }
-        //return  returnvalue ;
-        return "https://api.mapbox.com/directions/v5/mapbox/walking/" + latlng1.toString() + ";"
-        + latlng2.toString() + ";" + latlng3.toString() + ";" + latlng1.toString()
-        + ".json?access_token=pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A&steps=true&overview=full&geometries=geojson&annotations=distance&continue_straight=true";
+        return  returnvalue ;
+        // return "https://api.mapbox.com/directions/v5/mapbox/walking/" + latlng1.toString() + ";"
+        // + latlng2.toString() + ";" + latlng3.toString() + ";" + latlng1.toString()
+        // + ".json?access_token=pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A&steps=true&overview=full&geometries=geojson&annotations=distance&continue_straight=true";
     }
 }

@@ -25,12 +25,16 @@ public class ContactRequest {
     @OneToOne(fetch = FetchType.LAZY)
     private User receiver;
     
-    public ContactRequest(User sender, User receiver){
+    public ContactRequest(User sender, User receiver, Status s){
         this.sender = sender;
         this.receiver = receiver;
+        this.status = s;
     } 
     public ContactRequest(){}
     
+    public void setStatus(Status s) {
+        this.status = s;
+    }
     public Status getStatus() {
         return status;
     }
@@ -38,6 +42,6 @@ public class ContactRequest {
         return sender;
       }
     public User getReceiver() {
-        return sender;
+        return receiver;
       }
 }
