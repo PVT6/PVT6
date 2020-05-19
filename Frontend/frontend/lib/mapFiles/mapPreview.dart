@@ -116,10 +116,13 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
         Positioned(
           bottom: 1,
           right: 50,
-          child: SizedBox(
+          child: Container(
             width: 300,
            child: DecoratedBox(
              decoration: BoxDecoration(
+               border: Border.all(),
+               borderRadius: BorderRadius.all(
+        Radius.circular(5.0)),
                color: Colors.white
              ),
              
@@ -153,7 +156,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
             Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => MapWithRoute(points: points),
+                                        builder: (context) => MapWithRoute(points: points, latLng: latLng,),
                   ));
 
            },), //Skickar med rutt datan till en ny karta.
@@ -164,10 +167,10 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
           onPressed: () {
                   mapController.move(LatLng(latLng.latitude, latLng.longitude), 1);
                      },
-                  icon: Icon(Icons.router),
-                  label: Text('Show my location'),
-                  foregroundColor: Colors.pink,
-                  backgroundColor: Colors.purple
+                  icon: Icon(Icons.my_location),
+                  label: Text('My location'),
+                  foregroundColor: Colors.black,
+                  backgroundColor: Colors.lightBlue
         ),
     );
   }
@@ -225,7 +228,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
               onPressed: () {
                 
               },
-              child: Text("Start"),
+              child: Text("Save"),
             ),
           ],
         );
@@ -293,11 +296,9 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
 
 showSavedRoutes(BuildContext context){
 TextEditingController editingController = TextEditingController();
-List<String> litems = ["Sveden","Fisken","Be","Lloo"];
-  List<int> km = [200, 20 , 23, 12];
-  var items = List<String>();
+List<String> litems = ["Sveden","Fisken","Be","Lloo", "Adde"];
+  List<int> km = [200, 20 , 23, 12, 22];
   String selectedRoute = '';
-  String filter;
 
     showDialog(
   context: context,
@@ -305,7 +306,7 @@ List<String> litems = ["Sveden","Fisken","Be","Lloo"];
     return StatefulBuilder(
       builder: (context, setState) {
         return AlertDialog(
-          title: Text("Generate a route"),
+          title: Text("Saved routes"),
           content: Row(
             children: <Widget>[
               SizedBox(
@@ -341,7 +342,11 @@ List<String> litems = ["Sveden","Fisken","Be","Lloo"];
             ),
             FlatButton(
               onPressed: () {
+                litems.removeAt(index);
+                print(litems.length);
               Navigator.pop(context);
+              Navigator.pop(context);
+              showSavedRoutes(context);
             },
               child: Text('Delete'),
             ),
