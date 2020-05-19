@@ -98,7 +98,6 @@ flutter:
    - LeBistro.jpg
    - HimmelskaHundar.jpg
    - DogLogo.png
-<<<<<<< HEAD
    - emailicon40pxl.png
    - facebookicon.png
    - logoproject2.png
@@ -113,11 +112,9 @@ flutter:
    - logogreen.png
    - logopurplepink.png
    - fakefeed.png
-=======
    - blind.png
    - pin.png
 
->>>>>>> routeDisplay
    
 
   # An image asset can refer to one or more resolution-specific "variants", see
