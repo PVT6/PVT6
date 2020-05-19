@@ -37,6 +37,7 @@ public class User {
 
   private String email;
 
+  @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
   private Set<Route> savedRoutes;
 
   private String phoneNumber;
