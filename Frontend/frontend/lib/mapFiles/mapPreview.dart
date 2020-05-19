@@ -115,20 +115,25 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
         ),
         Positioned(
           bottom: 1,
-          right: 150,
-        child: Row(
+          right: 50,
+          child: SizedBox(
+            width: 300,
+           child: DecoratedBox(
+             decoration: BoxDecoration(
+               color: Colors.white
+             ),
+             
+             child: Row(
           children: <Widget>[
-            Text("$kmString" + "km"),
-        Text("    Time:" + "$routeTimeString"),
+            Text("$kmString" + "km", style: new TextStyle(fontSize: 25)),
+        Text("    Time:" + "$routeTimeString", style: new TextStyle(fontSize: 25)),
         ],)
+           ),
+          )
         ),
         // ...
       ])),
-      appBar: AppBar(title: const Text('Route Preview'),
-      actions: <Widget>[
-        Text("$kmString" + "km"),
-        Text("Time:" + "$routeTimeString"),
-      ],),
+      appBar: AppBar(title: const Text('Route Preview')),
     bottomNavigationBar: BottomAppBar(
       child: new Row(
         mainAxisSize: MainAxisSize.max,
