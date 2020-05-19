@@ -124,7 +124,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
         child: Row(
           children: <Widget>[
             Text("$kmString" + "km"),
-        Text("    Time:" + "$routeTimeString",
+        Text("    Time:" + "$routeTimeString"),
         ],)
         ),
         // ...
