@@ -5,7 +5,6 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:frontend/userFiles/addPet.dart';
 
 
-
 class ContactDetailsPage extends StatelessWidget {
   //tycker inte grönt tema passar jättebra på denna klass, prata ihop om ett allmänt tema för appen senare i projektet
   ContactDetailsPage(this._contact);
@@ -16,7 +15,7 @@ class ContactDetailsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(_contact.displayName ?? ""),
-        backgroundColor: Colors.blue,
+        backgroundColor: colorPurple,
         actions: <Widget>[ 
           IconButton(
             icon: Icon(Icons.update),

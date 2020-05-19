@@ -11,6 +11,11 @@ import 'dart:math';
 
 const apiKey = "AIzaSyCDdx8s1gSU908drNXjk-T7JA4ZMTEBOD4";
 
+// Färgschema #1
+const colorPurple = const Color(0xFF82658f);
+const colorPeachPink = const Color(0xFFffdcd2);
+const colorLighterPink = const Color(0xFFffe9e5);
+
 const double CAMERA_ZOOM = 16;
 const double CAMERA_TILT = 80;
 const double CAMERA_BEARING = 30;
@@ -220,7 +225,7 @@ class MapSampleState extends State<MapSample> {
       heroTag: _randomString(10),
       onPressed: function,
       materialTapTargetSize: MaterialTapTargetSize.padded,
-      backgroundColor: Colors.blue,
+      backgroundColor: colorPeachPink,
       child: Icon(
         icon,
         size: 36.0,
@@ -261,6 +266,7 @@ class MapSampleState extends State<MapSample> {
             BottomNavigationBarItem(
               icon: new Icon(Icons.pin_drop),
               title: new Text('Explore'),
+              backgroundColor: colorPurple
             ),
             BottomNavigationBarItem(
               icon: new Icon(Icons.home),
@@ -270,6 +276,10 @@ class MapSampleState extends State<MapSample> {
               icon: Icon(Icons.person),
               title: Text('Profile'),
             ),
+           BottomNavigationBarItem(
+              icon: Icon(Icons.favorite_border),
+              title: Text('Feed'),
+            ), 
           ],
         ),
         body: Stack(
@@ -325,8 +335,8 @@ class MapSampleState extends State<MapSample> {
           ],
         ),
         appBar: AppBar(
-          title: Text("SafeLight Stockholm"),
-          backgroundColor: Colors.blue,
+          title: Text("DogWalk"),
+          backgroundColor: colorPurple,
         ),
         drawer: Drawer(
           child: ListView(

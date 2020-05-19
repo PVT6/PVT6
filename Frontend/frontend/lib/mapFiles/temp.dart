@@ -20,6 +20,7 @@ import 'package:http/http.dart' as http;
 import '../dog.dart';
 
 
+
 MapController controller = new MapController();
 List<Dog> dogs;
 List<Dog> userDogs;
@@ -71,7 +72,7 @@ class _MapBoxState extends State<Mapbox> {
       heroTag: _randomString(10),
       onPressed: function,
       materialTapTargetSize: MaterialTapTargetSize.padded,
-      backgroundColor: Colors.blue,
+      backgroundColor: colorPurple,
       child: Icon(
         icon,
         size: 36.0,
@@ -90,7 +91,8 @@ class _MapBoxState extends State<Mapbox> {
         markers: markers,
         defaultZoom: 30.0);
     return new Scaffold(
-      appBar: new AppBar(title: new Text('Dog App')),
+      appBar: new AppBar(title: new Text('Dog App'),
+      backgroundColor: colorPurple),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -177,6 +179,7 @@ class _MapBoxState extends State<Mapbox> {
       floatingActionButton: FloatingActionButton.extended(
         label: Text('Search'),
         icon: Icon(Icons.search),
+        backgroundColor: colorPurple,
         onPressed: () {
           Navigator.push(
             context,
@@ -213,7 +216,7 @@ class _MapBoxState extends State<Mapbox> {
                     builder: (context) => new Container(
                           child: IconButton(
                             icon: Icon(Icons.pets),
-                            color: Colors.red,
+                            color: colorPurple,
                             iconSize: 45.0,
                             onPressed: () {
                               print('Marker tapped');
@@ -227,7 +230,7 @@ class _MapBoxState extends State<Mapbox> {
                     builder: (context) => new Container(
                           child: IconButton(
                             icon: Icon(Icons.person),
-                            color: Colors.red,
+                            color: colorPurple,
                             iconSize: 45.0,
                             onPressed: () {
                               print('Marker tapped');
@@ -309,7 +312,7 @@ class CustomListTile extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Icon(Icons.arrow_right)
+                    Icon(Icons.arrow_right),
                   ],
                 ))),
       ),

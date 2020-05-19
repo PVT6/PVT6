@@ -53,6 +53,7 @@ dependencies:
   carousel_pro: ^1.0.0
   map_controller: any
   geojson: any 
+  bordered_text: ^1.0.0
   
 dev_dependencies:
   flutter_config: ^1.0.7
@@ -96,7 +97,20 @@ flutter:
    - LeBistro.jpg
    - HimmelskaHundar.jpg
    - DogLogo.png
-
+   - emailicon40pxl.png
+   - facebookicon.png
+   - logoproject2.png
+   - facebookicon40pxl.png
+   - googleicon40pxl.png
+   - logolightpink.png
+   - logocolorpurpleback.png
+   - emailicon100pxl.png
+   - googleicon144pxl.png
+   - facebookicon140pxl.png
+   - logonavy.png
+   - logogreen.png
+   - logopurplepink.png
+   - fakefeed.png
    
 
   # An image asset can refer to one or more resolution-specific "variants", see
