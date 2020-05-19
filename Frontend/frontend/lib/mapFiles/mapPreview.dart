@@ -18,6 +18,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
   Location location;
   static LatLng latLng = LatLng(59.338738, 18.064034);
   String kmString = "0";
+  String routeTimeString = "0";
 
   
   var estimatedTime;
@@ -39,7 +40,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
     var route = routedata["geometry"]["coordinates"];
     var distantsInMeter = routedata["geometry"]["distance"];
     estimatedTime = routedata["geometry"]["duration"]; // MAN KAN ÄNDRA GÅNGHASTIGHET FÖR ATT FÅ MER ACCURATE
-    
+    routeTimeString = estimatedTime.toString();
     for(var i = 0; i < route.length; i++){
         points.add(new LatLng(route[i][1], route[i][0]));
     }
@@ -123,7 +124,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
         child: Row(
           children: <Widget>[
             Text("$kmString" + "km"),
-        Text("    Time:" + estimatedTime.toString()),
+        Text("    Time:" + "$routeTimeString",
         ],)
         ),
         // ...
@@ -131,7 +132,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
       appBar: AppBar(title: const Text('Route Preview'),
       actions: <Widget>[
         Text("$kmString" + "km"),
-        Text("Time:" + estimatedTime.toString()),
+        Text("Time:" + "$routeTimeString"),
       ],),
     bottomNavigationBar: BottomAppBar(
       child: new Row(
