@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:frontend/routePickerMap/testDialog.dart';
 import 'package:geojson/geojson.dart';
 import 'package:location/location.dart';
 import 'package:latlong/latlong.dart';
@@ -19,10 +18,6 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
   static LatLng latLng = LatLng(59.338738, 18.064034);
   String kmString = "0";
   String routeTimeString = "0";
-
-  
-  var estimatedTime;
-  TestDialog testDia = new TestDialog();
   MapController mapController;
   StatefulMapController statefulMapController;
   StreamSubscription<StatefulMapControllerStateChange> sub;
@@ -39,7 +34,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
     var routedata = jsonfile['routes'][0];
     var route = routedata["geometry"]["coordinates"];
     var distantsInMeter = routedata["geometry"]["distance"];
-    estimatedTime = routedata["geometry"]["duration"]; // MAN KAN ÄNDRA GÅNGHASTIGHET FÖR ATT FÅ MER ACCURATE
+    var estimatedTime = routedata["geometry"]["duration"]; // MAN KAN ÄNDRA GÅNGHASTIGHET FÖR ATT FÅ MER ACCURATE
     routeTimeString = estimatedTime.toString();
     for(var i = 0; i < route.length; i++){
         points.add(new LatLng(route[i][1], route[i][0]));
