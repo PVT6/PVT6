@@ -44,8 +44,8 @@ public class RoutesController {
         String returnvalue = "";
         double o = posY * Math.PI / 180;
         double i = posX * Math.PI / 180;
-        double h = 5 * 0.609344;
-        double m = 5 * 0.609344;
+        double h = distans * 0.609344;
+        double m = distans * 0.609344;
         double k = Math.PI / 180 * ((120 - 60) * Math.random() + 60);
         double f = 0.85;
         double p = f * m / (2 + 2 * Math.sin(k / 2));
