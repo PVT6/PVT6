@@ -15,10 +15,7 @@ LatLng basic = new LatLng(59.343431, 18.094141);
 Color darkGreen = Colors.green[900];
 Color lightGreen = Colors.green[100];
 
-// Färgschema #1
-const colorPurple = const Color(0xFF82658f);
-const colorPeachPink = const Color(0xFFffdcd2);
-const colorLighterPink = const Color(0xFFffe9e5);
+
 
 class MySignInPage extends StatefulWidget {
   MySignInPage({Key key, this.title}) : super(key: key);
@@ -82,24 +79,38 @@ class _MySignInPageState extends State<MySignInPage>
       onChanged: (val) {
         setState(() => currentText = val);
       },
-    );
-    final passwordField = TextFormField(
-      obscureText: true,
-      style: style,
-      decoration: InputDecoration(
-        contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        hintText: "Password",
-        icon: new Icon(
-          Icons.lock,
-          color: colorPurple,
-        ),
-      ),
-      validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
-      onSaved: (value) => currentTextPW = value.trim(),
-      onChanged: (val) {
-        setState(() => currentTextPW = val);
-      },
-    );
+    )));});
+    final passwordField = AnimatedBuilder(
+        animation: offsetAnimation,
+        builder: (buildContext, child) {
+          if (offsetAnimation.value < 0.0)
+            print('${offsetAnimation.value + 8.0}');
+          return Container( 
+              padding: EdgeInsets.only(
+                  left: offsetAnimation.value + 24.0,
+                  right: 24.0 - offsetAnimation.value),
+              child: Center(
+                child: TextFormField(
+                  obscureText: true,
+                  style: style,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                    hintText: "Password",
+                    icon: new Icon(
+                      Icons.lock,
+                      color: colorPurple,
+                    ),
+                  ),
+                  validator: (value) =>
+                      value.isEmpty ? 'Password can\'t be empty' : null,
+                  onSaved: (value) => currentTextPW = value.trim(),
+                  onChanged: (val) {
+                    setState(() => currentTextPW = val);
+                  },
+                ),
+              ));
+        });
+    
     final loginButon = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
@@ -145,10 +156,10 @@ class _MySignInPageState extends State<MySignInPage>
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      SizedBox(height: 50.0),
+                      SizedBox(height: 30.0),
                       Row(children: <Widget>[
                         SizedBox(
-                          width: 360,
+                          width: 280,
                           height: 200,
                           child: Image.asset(
                             'assets/logopurplepink.png',

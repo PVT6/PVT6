@@ -53,6 +53,8 @@ dependencies:
   carousel_pro: ^1.0.0
   map_controller: any
   geojson: any 
+  flutter_svg: ^0.17.4
+  image_picker: ^0.6.6+1
   bordered_text: ^1.0.0
 
   
@@ -98,6 +100,13 @@ flutter:
    - LeBistro.jpg
    - HimmelskaHundar.jpg
    - DogLogo.png
+   - gender_arrow.svg
+   - gender_female.svg
+   - gender_male.svg
+   - person.svg
+   - weight_arrow.svg
+   - gender_other.svg
+   - Dog.svg
    - emailicon40pxl.png
    - facebookicon.png
    - logoproject2.png
@@ -132,6 +141,10 @@ flutter:
     - family: Montserrat
       fonts:
         - asset: fonts/Montserrat-Regular.ttf
+
+    - family: Hipster Script W00 Regular
+      fonts:
+        - asset: fonts/FontsFree-Net-Hipster-Script-W00-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/mapFiles/temp.dart';
+import 'package:frontend/userFiles/addDogTest.dart';
 import 'package:frontend/userFiles/addPet.dart';
 import 'package:frontend/userFiles/dogProfile.dart';
 import 'package:flutter/cupertino.dart';
@@ -66,7 +67,7 @@ class ProfileEightPageState extends State<ProfileEightPage> {
                   },
                 ),
                 SizedBox(
-                  width: 230,
+                  width: 180,
                 ),
                 MaterialButton(
                   color: colorPeachPink,
@@ -79,7 +80,7 @@ class ProfileEightPageState extends State<ProfileEightPage> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => AddDog()),
+                      MaterialPageRoute(builder: (context) => InputPage()),
                     );
                   },
                 ),
@@ -121,51 +122,74 @@ class UserInfo extends StatelessWidget {
               )),
           SingleChildScrollView(
               physics: ScrollPhysics(),
-              child: Column(
-                children: <Widget>[
-                  userDogs != null
-                      ? ListView.builder( //https://pusher.com/tutorials/flutter-listviews
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: userDogs?.length ?? 0,
-                          itemBuilder: (BuildContext context, int index) {
-                            Dog c = userDogs?.elementAt(index);
-                            return ListTile(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        DogProfile(c)));
-                              },
-                              leading: (c.name != null && c.name.length > 0)
-                                  ? CircleAvatar(
-                                      child: Text(
-                                          "Bild"), //här kan man lägga bild istället när det ordnats i hundklass
-                                    )
-                                  : CircleAvatar(child: Text(c.name)),
-                              title: Text(c.name + " " + c.breed ?? ""),
-                            );
-                          },
-                        )
-                      : Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                ],
+              child: Container(
+                height: 70,
+                child: userDogs != null
+                    ? ListView.builder(
+                        //https://pusher.com/tutorials/flutter-listviews
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: userDogs?.length ?? 0,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (BuildContext context, int index) {
+                          Dog c = userDogs?.elementAt(index);
+                          return (c.name != null && c.name.length > 0)
+                              ? GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => DogProfile(c)),
+                                    );
+                                  },
+                                  child: Container(
+                                      width: 64.0,
+                                      height: 64.0,
+                                      decoration: new BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          image: new DecorationImage(
+                                              fit: BoxFit.fill,
+                                              image: new AssetImage(
+                                                  'HimmelskaHundar.jpg')))))
+                              : GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => DogProfile(c)),
+                                    );
+                                  },
+                                  child: Container(
+                                      width: 64.0,
+                                      height: 64.0,
+                                      decoration: new BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          image: new DecorationImage(
+                                              fit: BoxFit.fill,
+                                              image: new AssetImage(
+                                                  'HimmelskaHundar.jpg')))));
+                        },
+                      )
+                    : Center(
+                        child: CircularProgressIndicator(),
+                      ),
               )),
           Container(
-            padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
-            alignment: Alignment.topLeft,
-            child: BorderedText(strokeWidth: 6.0,
-            strokeColor: colorPurple,
-            child : Text(
-              "User Information", //userData
-              style: TextStyle(
-                color: colorLighterPink,
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
-              ),
-              textAlign: TextAlign.left,
-            ),
-          )),
+              padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
+              alignment: Alignment.topLeft,
+              child: BorderedText(
+                strokeWidth: 6.0,
+                strokeColor: colorPurple,
+                child: Text(
+                  "User Information", //userData
+                  style: TextStyle(
+                    color: colorLighterPink,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+              )),
           Card(
             child: Container(
               alignment: Alignment.topLeft,
@@ -180,7 +204,8 @@ class UserInfo extends StatelessWidget {
                           ListTile(
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 12, vertical: 4),
-                            leading: Icon(Icons.my_location, color: colorPurple),
+                            leading:
+                                Icon(Icons.my_location, color: colorPurple),
                             title: Text(
                               "Location",
                               style: TextStyle(color: colorPurple),

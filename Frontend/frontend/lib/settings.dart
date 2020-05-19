@@ -7,6 +7,8 @@ import 'package:frontend/services/auth.dart';
 import 'package:frontend/userFiles/editProfile.dart';
 import 'package:frontend/userFiles/user.dart' as userlib;
 
+import 'friendsAndContacts/addContactPage.dart';
+
 
 
 class Settings extends StatefulWidget {

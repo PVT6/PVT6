@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:frontend/friendsAndContacts/addContactPage.dart';
 import 'package:frontend/friendsAndContacts/sentRequest.dart';
+import 'package:frontend/userFiles/addDogTest.dart';
 import 'package:http/http.dart' as http;
 import 'package:frontend/userFiles/user.dart' as userlib;
 
@@ -135,8 +137,11 @@ class _HomePageState extends State<FriendsPage>
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      backgroundColor: colorLighterPink,
       appBar: new AppBar(
-        title: new Text("             Friends Page"),
+        title: new Text("Friends Page"),
+        centerTitle: true,
+        backgroundColor: colorPurple,
         bottom: TabBar(
           unselectedLabelColor: Colors.white,
           labelColor: Colors.amber,
@@ -200,7 +205,11 @@ class _HomePageState extends State<FriendsPage>
                                     color: Colors.black,
                                     size: 37,
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          InputPage()));
+                                  },
                                 ),
                               ));
                         },
@@ -497,6 +506,7 @@ class _MyHomePageState extends State<SearchUsers> {
   Widget build(BuildContext context) {
     String phone;
     return new Scaffold(
+      backgroundColor: colorLighterPink,
       body: Container(
         child: Column(
           children: <Widget>[

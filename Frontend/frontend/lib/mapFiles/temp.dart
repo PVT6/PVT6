@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:frontend/browseDogParks.dart';
 import 'package:frontend/dogsNearMe.dart';
-import 'package:frontend/friendsAndContacts/contacts.dart';
 import 'package:frontend/friendsAndContacts/friendsPage.dart';
+import 'package:frontend/userFiles/user.dart' as userlib;
 import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'package:frontend/services/auth.dart';
 import 'package:frontend/settings.dart';
@@ -19,15 +20,12 @@ import 'package:http/http.dart' as http;
 
 import '../dog.dart';
 
-
-
 MapController controller = new MapController();
 List<Dog> dogs;
 List<Dog> userDogs;
 
-
 //const kApiKey =
-    //'pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A';
+//'pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A';
 
 class Mapbox extends StatefulWidget {
   final LatLng coordinates;
@@ -53,7 +51,8 @@ class _MapBoxState extends State<Mapbox> {
 
     return new String.fromCharCodes(codeUnits);
   }
-    Future<void> getDogs() async {
+
+  Future<void> getDogs() async {
     var uid = userlib.uid;
     var url = 'https://group6-15.pvt.dsv.su.se/user/dogs?uid=${uid}';
     var response = await http.get(Uri.parse(url));
@@ -91,13 +90,16 @@ class _MapBoxState extends State<Mapbox> {
         markers: markers,
         defaultZoom: 30.0);
     return new Scaffold(
-      appBar: new AppBar(title: new Text('Dog App'),
-      backgroundColor: colorPurple),
+      appBar: new AppBar(
+          title: new Text('DogWalk Stockholm'), backgroundColor: colorPurple),
       drawer: Drawer(
-        child: ListView(
+        child: Container(
+          color: colorLighterPink,
+            child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
             UserAccountsDrawerHeader(
+              decoration: BoxDecoration(color: colorPurple),
               accountName: Text(
                 userlib.name, //userData
                 style: TextStyle(
@@ -120,7 +122,7 @@ class _MapBoxState extends State<Mapbox> {
             ),
             CustomListTile(
                 Icons.person,
-                'My Dog Profile',
+                'Profile',
                 () => {
                       Navigator.push(
                           context,
@@ -129,7 +131,7 @@ class _MapBoxState extends State<Mapbox> {
                     }),
             CustomListTile(
                 Icons.contact_phone,
-                'Contacts',
+                'Connections',
                 () => {
                       Navigator.push(
                           context,
@@ -146,35 +148,63 @@ class _MapBoxState extends State<Mapbox> {
                               builder: (context) => Settings()))
                     }),
             CustomListTile(
-                Icons.local_florist,
-                'Browse Dogparks',
+                FontAwesomeIcons.dog,
+                'Browse Dogfriendly Places',
                 () => {
                       Navigator.push(
                           context,
                           new MaterialPageRoute(
                               builder: (context) => BrowseDogParks()))
-                    }),
-            CustomListTile(
-                Icons.pets,
-                'Dogs Near Me',
-                () => {
+                    }), //Tror denna kan behövs senare då logout antagligen är fel implementerad
+            // CustomListTile(
+            //     Icons.lock,
+            //     'Log out',
+            //     () async => {
+            //           await _auth.signOut(),
+            //           Navigator.push(
+            //               context,
+            //               new MaterialPageRoute(
+            //                   builder: (context) => MySignInPage()))
+            //         }),
+            SizedBox(
+              height: 200,
+            ),
+            Row(
+              children: <Widget>[
+                SizedBox(
+                  width: 150,
+                  height: 120,
+                  child: Image.asset(
+                    'assets/logopurplepink.png',
+                  ),
+                ),
+                SizedBox(
+                  width: 30,
+                ),
+                Material(
+                  elevation: 5.0,
+                  color: Colors.red,
+                  child: MaterialButton(
+                    minWidth: 120,
+                    padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                    onPressed: () async {
+                      await _auth.signOut();
                       Navigator.push(
                           context,
                           new MaterialPageRoute(
-                              builder: (context) => DogsNearMe()))
-                    }),
-            CustomListTile(
-                Icons.lock,
-                'Log out',
-                () async => {
-                      await _auth.signOut(),
-                      Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              builder: (context) => MySignInPage()))
-                    }),
+                              builder: (context) =>
+                                  MySignInPage())); // dismiss dialog
+                    },
+                    child: Text("Sign out",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold)),
+                  ),
+                ),
+              ],
+            )
           ],
-        ),
+        )),
       ),
       floatingActionButton: FloatingActionButton.extended(
         label: Text('Search'),
@@ -190,8 +220,7 @@ class _MapBoxState extends State<Mapbox> {
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: Stack(
-        children: [
+      body: Stack(children: [
         FlutterMap(
             mapController: controller,
             options:
@@ -201,11 +230,9 @@ class _MapBoxState extends State<Mapbox> {
             ]), //ändra detta till coordinate för att komma tillbaka till stockholm
             layers: [
               new TileLayerOptions(
-                  urlTemplate:
-                      FlutterConfig.get('MAPBOXAPI_URL'),
+                  urlTemplate: FlutterConfig.get('MAPBOXAPI_URL'),
                   additionalOptions: {
-                    'accessToken':
-                        FlutterConfig.get('MAPBOX_ID'),
+                    'accessToken': FlutterConfig.get('MAPBOX_ID'),
                     'id': 'Streets-copy'
                   }),
               MarkerLayerOptions(markers: [
@@ -241,7 +268,9 @@ class _MapBoxState extends State<Mapbox> {
               // ADD THIS
               userLocationOptions,
             ]),
-            Column(children: <Widget>[],)
+        Column(
+          children: <Widget>[],
+        )
       ]),
     );
   }
