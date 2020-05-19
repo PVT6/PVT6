@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/mapFiles/temp.dart';
+import 'package:frontend/userFiles/addDogTest.dart';
 import 'package:frontend/userFiles/addPet.dart';
 import 'package:frontend/userFiles/dogProfile.dart';
 import 'package:flutter/cupertino.dart';
@@ -79,7 +80,7 @@ class ProfileEightPageState extends State<ProfileEightPage> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => AddDog()),
+                      MaterialPageRoute(builder: (context) => InputPage()),
                     );
                   },
                 ),
