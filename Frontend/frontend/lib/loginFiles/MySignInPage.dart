@@ -19,17 +19,6 @@ Color lightGreen = Colors.green[100];
 const colorPurple = const Color(0xFF82658f);
 const colorPeachPink = const Color(0xFFffdcd2);
 const colorLighterPink = const Color(0xFFffe9e5);
-// Färgschema #2
-const colorNavy = const Color(0xFF4b636e);
-const colorBabyBlue = const Color(0xFFe2f1f8);
-const colorLightNavy = const Color(0xFFa7c0cd);
-const colorNavyContour = const Color(0xFF90a4ae);
-//Färgschema #3
-const colorLightGreen = const Color(0xFFe8f5e9);
-const colorGreenContour = const Color(0xFF97b498);
-const colorLimeGreen = const Color(0xFFb2fab4);
-const colorGreen = const Color(0xFF75a478);
-const colorBrightGreen = const Color(0xFFdefadf);
 
 class MySignInPage extends StatefulWidget {
   MySignInPage({Key key, this.title}) : super(key: key);

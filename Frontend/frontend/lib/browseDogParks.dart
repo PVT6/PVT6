@@ -1,11 +1,15 @@
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/friendsAndContacts/addContactPage.dart';
+import 'package:frontend/routePickerMap/locationPickerPage.dart';
+import 'package:frontend/routePickerMap/routePickerUI.dart';
 import 'package:frontend/loginFiles/intro_slider.dart';
 import 'package:frontend/userFiles/dogProfile.dart';
 import 'package:frontend/userFiles/friendsFeed.dart';
 import 'package:latlong/latlong.dart';
 import 'package:frontend/dogPlaceDesc.dart';
+import 'routePickerMap/locationPickerPage.dart';
+import 'routePickerMap/locationPickerPage.dart';
 
 var textYellow = Color(0xFFf6c24d);
 var iconYellow = Color(0xFFf4bf47);
@@ -106,7 +110,15 @@ class MenuItemsList extends StatelessWidget {
                             'Location',
                             'Orminges hundrastgård',
                             'With an agility track aswell as an abundance of trees, + desc',
-                            () => {},
+                           
+                           
+                            () => {
+                              Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => LocationPickerPage(location: "test")),
+                                  )
+                            }, //Här
                             () => {},
                             location = new LatLng(59.334389, 18.254072),
                           )))
