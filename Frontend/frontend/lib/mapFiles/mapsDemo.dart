@@ -360,7 +360,7 @@ class MapsDemoState extends State<MapsDemo> {
                                 ),
                               ),
                               SizedBox(
-                                width: 150,
+                                width: 200,
                                 height: 60,
                               ),
                               Icon(
@@ -448,20 +448,22 @@ class MapsDemoState extends State<MapsDemo> {
   }
 
   _onAddMarkerButtonPressed() {
-    setState(() {
-      getLocation();
-    });
-
-    Navigator.push(
-        context,
-        new MaterialPageRoute(
-            builder: (context) =>
-                Navigation(position.latitude, position.longitude)));
+    (position == null)
+        ? setState(() {
+            getLocation();
+          })
+        : Navigator.push(
+            context,
+            new MaterialPageRoute(
+                builder: (context) =>
+                    Navigation(position.latitude, position.longitude)));
   }
 
   _goToPosition1() {}
 
   _openNotifications() {}
+
+  
 }
 
 class CustomListTile extends StatelessWidget {

@@ -44,31 +44,45 @@ class ProfileEightPageState extends State<ProfileEightPage> {
     return Scaffold(
       backgroundColor: colorLighterPink,
       extendBody: true,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        leading: //Row med items
+            MaterialButton(
+          shape: CircleBorder(),
+          elevation: 0,
+          child: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MapsDemo()),
+            );
+          },
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             ProfileHeader(
-              avatar: new AssetImage("profilePH.png"), //userData
+              avatar: new AssetImage("LeBistro.jpg"), //userData
               coverImage: new AssetImage("backgroundStockholm.png"), //userData
               title: userlib.name, //userData
               subtitle: "Dog lover",
               actions: <Widget>[
                 //Row med items
-                MaterialButton(
-                  color: colorPeachPink,
-                  shape: CircleBorder(),
-                  elevation: 0,
-                  child: Icon(Icons.arrow_back, color: colorPurple),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MapsDemo()),
-                    );
-                  },
-                ),
-                SizedBox(
-                  width: 180,
-                ),
+                // MaterialButton(
+                //   color: colorPeachPink,
+                //   shape: CircleBorder(),
+                //   elevation: 0,
+                //   child: Icon(Icons.arrow_back, color: colorPurple),
+                //   onPressed: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(builder: (context) => MapsDemo()),
+                //     );
+                //   },
+                // ),
+
                 MaterialButton(
                   color: colorPeachPink,
                   shape: CircleBorder(),
@@ -150,7 +164,7 @@ class UserInfo extends StatelessWidget {
                                           image: new DecorationImage(
                                               fit: BoxFit.fill,
                                               image: new AssetImage(
-                                                  'HimmelskaHundar.jpg')))))
+                                                  'HimmelskaHundar.jpg'))),child: Text(c.name),))
                               : GestureDetector(
                                   onTap: () {
                                     Navigator.push(
