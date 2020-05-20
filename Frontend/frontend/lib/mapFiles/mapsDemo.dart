@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:frontend/friendsAndContacts/friendsPage.dart';
 import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'package:frontend/mapFiles/mapBoxSearch.dart';
+import 'package:frontend/mapFiles/mapPreview.dart';
 import 'package:frontend/mapFiles/temp.dart';
 import 'package:frontend/mapFiles/temp2.dart';
 import 'package:frontend/services/auth.dart';
@@ -22,9 +23,7 @@ import 'package:http/http.dart' as http;
 import '../dog.dart';
 import 'package:geolocator/geolocator.dart';
 
-
 MapController controller = new MapController();
-
 
 // Färgschema #1
 const colorPurple = const Color(0xFF82658f);
@@ -250,51 +249,51 @@ class MapsDemoState extends State<MapsDemo> {
                     Container(
                       height: 60,
                       width: 60,
-                        child: Stack(
-                          children: <Widget>[
-                            new FloatingActionButton(
-                              heroTag: _randomString(10),
-                              onPressed: () {
-                                setState(() {
-                                  counter++; //denna är för test, counter ska sedan hålla notifications
-                                });
-                              },
-                              materialTapTargetSize:
-                                  MaterialTapTargetSize.padded,
-                              backgroundColor: colorPeachPink,
-                              child: Icon(
-                                FontAwesomeIcons.solidBell,
-                                size: 36.0,
-                                color: colorPurple,
-                              ),
+                      child: Stack(
+                        children: <Widget>[
+                          new FloatingActionButton(
+                            heroTag: _randomString(10),
+                            onPressed: () {
+                              setState(() {
+                                counter++; //denna är för test, counter ska sedan hålla notifications
+                              });
+                            },
+                            materialTapTargetSize: MaterialTapTargetSize.padded,
+                            backgroundColor: colorPeachPink,
+                            child: Icon(
+                              FontAwesomeIcons.solidBell,
+                              size: 36.0,
+                              color: colorPurple,
                             ),
-                            counter != 0
-                                ? new Positioned(
-                                    right: 11,
-                                    top: 11,
-                                    child: new Container(
-                                      padding: EdgeInsets.all(2),
-                                      decoration: new BoxDecoration(
-                                        color: Colors.red,
-                                        borderRadius: BorderRadius.circular(6),
-                                      ),
-                                      constraints: BoxConstraints(
-                                        minWidth: 14,
-                                        minHeight: 14,
-                                      ),
-                                      child: Text(
-                                        '$counter',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 8,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),
+                          ),
+                          counter != 0
+                              ? new Positioned(
+                                  right: 11,
+                                  top: 11,
+                                  child: new Container(
+                                    padding: EdgeInsets.all(2),
+                                    decoration: new BoxDecoration(
+                                      color: Colors.red,
+                                      borderRadius: BorderRadius.circular(6),
                                     ),
-                                  )
-                                : new Container()
-                          ],
-                        ),),
+                                    constraints: BoxConstraints(
+                                      minWidth: 14,
+                                      minHeight: 14,
+                                    ),
+                                    child: Text(
+                                      '$counter',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 8,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                )
+                              : new Container()
+                        ],
+                      ),
+                    ),
                     SizedBox(
                       height: 220,
                     ),
@@ -443,7 +442,10 @@ class MapsDemoState extends State<MapsDemo> {
     );
   }
 
-  _onMapTypeButtonPressed() {}
+  _onMapTypeButtonPressed() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => MapPreviewPage()));
+  }
 
   _onAddMarkerButtonPressed() {
     setState(() {

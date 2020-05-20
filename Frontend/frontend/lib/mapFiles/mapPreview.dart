@@ -2,19 +2,23 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:frontend/friendsAndContacts/addContactPage.dart';
 import 'package:geojson/geojson.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart';
 import 'package:latlong/latlong.dart';
 import 'package:map_controller/map_controller.dart';
 import 'package:user_location/user_location.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:http/http.dart' as http;
+import 'package:frontend/userFiles/user.dart' as userlib;
 import 'dart:convert';
 
 import 'mapWithRoute.dart';
 
 class _MapPreviewPageState extends State<MapPreviewPage> {
   Location location;
+  LatLng userLocation;
   static LatLng latLng = LatLng(59.338738, 18.064034);
   String kmString = "0";
   String routeTimeString = "0";
@@ -24,25 +28,27 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
   UserLocationOptions userLocationOptions;
   List<Marker> markers = [];
 
+  String routesData = "";
+
   var points = <LatLng>[];
   void loadData() async {
-    print("Loading geojson data");
-    var km = int.parse(kmString);
-    var Postion = latLng;
-    //
-    final data = await http.get(
-        "https://api.mapbox.com/directions/v5/mapbox/walking/18.064034,59.338738;18.073411113923477,59.332076081194614;18.071977555134517,59.34721459928733;18.064034,59.338738.json?access_token=pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A&steps=true&overview=full&geometries=geojson&annotations=distance&continue_straight=true");
-    var jsonfile = json.decode(data.body);
-    var routedata = jsonfile['routes'][0];
-    var route = routedata["geometry"]["coordinates"];
-    var distantsInMeter = routedata["geometry"]["distance"];
-    var estimatedTime = routedata["geometry"]
-        ["duration"]; // MAN KAN ÄNDRA GÅNGHASTIGHET FÖR ATT FÅ MER ACCURATE
-    routeTimeString = estimatedTime.toString();
-    for (var i = 0; i < route.length; i++) {
-      points.add(new LatLng(route[i][1], route[i][0]));
-    }
-    print(points);
+    // print("Loading geojson data");
+    // var km = int.parse(kmString);
+    // var Postion = latLng;
+    // //
+    // final data = await http.get(
+    //     "https://api.mapbox.com/directions/v5/mapbox/walking/18.064034,59.338738;18.073411113923477,59.332076081194614;18.071977555134517,59.34721459928733;18.064034,59.338738.json?access_token=pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A&steps=true&overview=full&geometries=geojson&annotations=distance&continue_straight=true");
+    // var jsonfile = json.decode(data.body);
+    // var routedata = jsonfile['routes'][0];
+    // var route = routedata["geometry"]["coordinates"];
+    // var distantsInMeter = routedata["geometry"]["distance"];
+    // var estimatedTime = routedata["geometry"]
+    //     ["duration"]; // MAN KAN ÄNDRA GÅNGHASTIGHET FÖR ATT FÅ MER ACCURATE
+    // routeTimeString = estimatedTime.toString();
+    // for (var i = 0; i < route.length; i++) {
+    //   points.add(new LatLng(route[i][1], route[i][0]));
+    // }
+    // print(points);
     // Set<String> set = Set.from(route);
     // set.forEach((e) {
     //   print(e.runtimeType);
@@ -74,121 +80,125 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
       context: context,
       mapController: mapController,
       markers: markers,
+      onLocationUpdate: (LatLng pos) => userLocation = pos,
       updateMapLocationOnPositionChange: false,
     );
 
     return Scaffold(
-      body: SafeArea(
-          child: Stack(children: <Widget>[
-        FlutterMap(
-          mapController: mapController,
-          options: new MapOptions(
-            center: LatLng(latLng.latitude, latLng.longitude),
-            minZoom: 14,
-            plugins: [
+        body: SafeArea(
+            child: Stack(children: <Widget>[
+          FlutterMap(
+            mapController: mapController,
+            options: new MapOptions(
+              center: LatLng(latLng.latitude, latLng.longitude),
+              minZoom: 14,
+              plugins: [
+                // ADD THIS
+                UserLocationPlugin(),
+              ],
+            ),
+            layers: [
+              new TileLayerOptions(
+                  urlTemplate: FlutterConfig.get('MAPBOXAPI_URL'),
+                  additionalOptions: {
+                    'accessToken': FlutterConfig.get('MAPBOX_ID'),
+                    'id': 'Streets-copy'
+                  }),
+
               // ADD THIS
-              UserLocationPlugin(),
+
+              new PolylineLayerOptions(polylines: [
+                new Polyline(
+                  points: points,
+                  color: Colors.blue,
+                  strokeWidth: 4.0,
+                )
+              ]),
+
+              userLocationOptions,
             ],
           ),
-          layers: [
-            new TileLayerOptions(
-                urlTemplate: FlutterConfig.get('MAPBOXAPI_URL'),
-                additionalOptions: {
-                  'accessToken': FlutterConfig.get('MAPBOX_ID'),
-                  'id': 'Streets-copy'
-                }),
-
-            // ADD THIS
-
-            new PolylineLayerOptions(polylines: [
-              new Polyline(
-                points: points,
-                color: Colors.blue,
-                strokeWidth: 4.0,
-              )
-            ]),
-
-            userLocationOptions,
-          ],
+          Positioned(
+              bottom: 1,
+              right: 50,
+              child: Container(
+                width: 300,
+                child: DecoratedBox(
+                    decoration: BoxDecoration(
+                        border: Border.all(),
+                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                        color: Colors.white),
+                    child: Row(
+                      children: <Widget>[
+                        Text("$kmString" + "km",
+                            style: new TextStyle(fontSize: 25)),
+                        Text("    Time:" + "$routeTimeString",
+                            style: new TextStyle(fontSize: 25)),
+                      ],
+                    )),
+              )),
+          // ...
+        ])),
+        appBar: AppBar(title: const Text('Route Preview')),
+        bottomNavigationBar: BottomAppBar(
+          child: new Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              IconButton(
+                icon: Text('Cancel'),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              IconButton(
+                icon: Text('Saved Routes'),
+                onPressed: () {
+                  showSavedRoutes(context);
+                },
+              ),
+              IconButton(
+                icon: Text('Save Route'),
+                onPressed: () {
+                  saveRoute(context, points);
+                },
+              ),
+              IconButton(
+                icon: Text('Generate Route'),
+                onPressed: () async {
+                  getKm(context);
+                  mapController.move(
+                      LatLng(latLng.latitude, latLng.longitude), 1);
+                },
+              ),
+              IconButton(
+                icon: Text('Start Route'),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MapWithRoute(
+                          points: points,
+                          latLng: latLng,
+                        ),
+                      ));
+                },
+              ), //Skickar med rutt datan till en ny karta.
+            ],
+          ),
         ),
-        Positioned(
-            bottom: 1,
-            right: 50,
-            child: Container(
-              width: 300,
-              child: DecoratedBox(
-                  decoration: BoxDecoration(
-                      border: Border.all(),
-                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                      color: Colors.white),
-                  child: Row(
-                    children: <Widget>[
-                      Text("$kmString" + "km",
-                          style: new TextStyle(fontSize: 25)),
-                      Text("    Time:" + "$routeTimeString",
-                          style: new TextStyle(fontSize: 25)),
-                    ],
-                  )),
-            )),
-        // ...
-      ])),
-      appBar: AppBar(title: const Text('Route Preview')),
-      bottomNavigationBar: BottomAppBar(
-        child: new Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            IconButton(
-              icon: Text('Cancel'),
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(bottom: 50.0),
+          child: FloatingActionButton.extended(
               onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            IconButton(
-              icon: Text('Saved Routes'),
-              onPressed: () {
-                showSavedRoutes(context);
-              },
-            ),
-            IconButton(
-              icon: Text('Save Route'),
-              onPressed: () {
-                saveRoute(context, points);
-              },
-            ),
-            IconButton(
-              icon: Text('Generate Route'),
-              onPressed: () async {
-                getKm(context);
                 mapController.move(
                     LatLng(latLng.latitude, latLng.longitude), 1);
               },
-            ),
-            IconButton(
-              icon: Text('Start Route'),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MapWithRoute(
-                        points: points,
-                        latLng: latLng,
-                      ),
-                    ));
-              },
-            ), //Skickar med rutt datan till en ny karta.
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            mapController.move(LatLng(latLng.latitude, latLng.longitude), 1);
-          },
-          icon: Icon(Icons.my_location),
-          label: Text('My location'),
-          foregroundColor: Colors.black,
-          backgroundColor: Colors.lightBlue),
-    );
+              icon: Icon(Icons.my_location),
+              label: Text('My location'),
+              foregroundColor: Colors.black,
+              backgroundColor: Colors.lightBlue),
+        ));
   }
 
   getLocation() async {
@@ -242,7 +252,23 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                   child: Text("Cancel"),
                 ),
                 FlatButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    if (routesData != "") {
+                      final response = await http.post(
+                          Uri.parse(
+                              "https://group6-15.pvt.dsv.su.se/route/saveRoute"),
+                          body: {
+                            'name': name,
+                            'route': routesData,
+                            'uid': userlib.uid
+                          });
+                           if (response.statusCode == 200) {
+                             showSaveAlertDialog(context);
+                           }
+                    } else {
+                      showFailAlertDialog(context);
+                    }
+                  },
                   child: Text("Save"),
                 ),
               ],
@@ -401,22 +427,81 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
     );
   }
 
+  showFailAlertDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("No Route"),
+      content: Text("This is my message."),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+  showSaveAlertDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Saved"),
+      content: Text("Your Route was saved"),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   void generateRoute(LatLng pos) async {
     print("GENERATING ROUTE");
     var km = int.parse(kmString);
+    points.clear();
     var Postion = latLng;
     final data = await http.get(
-        "https://group6-15.pvt.dsv.su.se/new?posX=${pos.longitude}&posY=${pos.latitude}&distans=${km}");
+        "https://group6-15.pvt.dsv.su.se/route/new?posX=${pos.latitude}&posY=${pos.longitude}&distans=${km}");
+
+    routesData = data.body;
     var jsonfile = json.decode(data.body);
+
     var routedata = jsonfile['routes'][0];
     var route = routedata["geometry"]["coordinates"];
-    var distantsInMeter = routedata["geometry"]["distance"];
-    var estimatedTime = routedata["geometry"]
-        ["duration"]; // MAN KAN ÄNDRA GÅNGHASTIGHET FÖR ATT FÅ MER ACCURATE
-    routeTimeString = estimatedTime.toString();
+    kmString = (routedata["distance"] / 1000).toStringAsFixed(2);
+    var estimatedTime = (routedata["duration"] / 3600)
+        .toStringAsFixed(2)
+        .toString(); // MAN KAN ÄNDRA GÅNGHASTIGHET FÖR ATT FÅ MER ACCURATE
+    routeTimeString = estimatedTime;
     for (var i = 0; i < route.length; i++) {
       points.add(new LatLng(route[i][1], route[i][0]));
     }
+    print(points);
   }
 }
 
