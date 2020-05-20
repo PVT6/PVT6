@@ -189,6 +189,9 @@ public class User {
   public void cleanRoutes(){
     this.savedRoutes.clear();
   }
+  public void removeRoute(Route r){
+    this.savedRoutes.remove(r);
+  }
 
   @JsonIgnore
   public Long getUpdatedAt() {

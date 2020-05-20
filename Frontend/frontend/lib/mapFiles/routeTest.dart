@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:frontend/routePickerMap/testDialog.dart';
 import 'package:geojson/geojson.dart';
 
 import 'package:latlong/latlong.dart';
@@ -14,7 +13,6 @@ import 'dart:convert';
 import 'mapPreview.dart';
 
 class _MapPageState extends State<MapPage> {
-  TestDialog testDia = new TestDialog();
   MapController mapController;
   StatefulMapController statefulMapController;
   StreamSubscription<StatefulMapControllerStateChange> sub;
