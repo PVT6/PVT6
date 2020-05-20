@@ -262,8 +262,11 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                             'route': routesData,
                             'uid': userlib.uid
                           });
+                          print(response.body);
                            if (response.statusCode == 200) {
                              showSaveAlertDialog(context);
+                             //Navigator.pop(context);
+                            
                            }
                     } else {
                       showFailAlertDialog(context);
@@ -458,6 +461,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
     Widget okButton = FlatButton(
       child: Text("OK"),
       onPressed: () {
+        Navigator.pop(context);
         Navigator.pop(context);
       },
     );

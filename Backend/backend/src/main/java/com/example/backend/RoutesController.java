@@ -37,6 +37,7 @@ public class RoutesController {
         User u = userRepository.findByUid(uid);
         Route r = new Route(name, route); 
         u.addRoutes(r);
+        userRepository.save(u);
         return "Saved";
     }
 
