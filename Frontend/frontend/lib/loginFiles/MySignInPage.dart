@@ -153,16 +153,18 @@ class _MySignInPageState extends State<MySignInPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
                             FlatButton(
-                              child: BorderedText(strokeWidth: 3.0,
-                              strokeColor: colorPurple,
-                              child: Text(
-                                "Forgot Password?",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.bold,
+                              child: BorderedText(
+                                strokeWidth: 3.0,
+                                strokeColor: colorPurple,
+                                child: Text(
+                                  "Forgot Password?",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),),
+                              ),
                               onPressed: () {
                                 //borde skapa egen sida för detta, om det inte görs med firebase?
                                 Navigator.push(
@@ -174,33 +176,32 @@ class _MySignInPageState extends State<MySignInPage> {
                               },
                             ),
                             FlatButton(
-                              child: BorderedText(strokeWidth: 3.0,
-                              strokeColor: colorPurple,
-                              child: Text(
-                                "New user? Sign up",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.bold,
+                              child: BorderedText(
+                                strokeWidth: 3.0,
+                                strokeColor: colorPurple,
+                                child: Text(
+                                  "New user? Sign up",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),),
+                              ),
                               onPressed: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => SecondRouteState()),
                                 );
-                              },),
+                              },
+                            ),
                           ]),
                       Text(
                         'OR',
                         textAlign: TextAlign.center,
                       ),
-                      Row(
-                        children: <Widget>[
-                          SizedBox(height: 20.0)
-                        ]
-                      ),
+                      Row(children: <Widget>[SizedBox(height: 20.0)]),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
@@ -232,7 +233,6 @@ class _MySignInPageState extends State<MySignInPage> {
                               ),
                             ),
                           )),
-      
                           SizedBox(
                               child: InkWell(
                             onTap: () async {
@@ -280,7 +280,7 @@ class _MySignInPageState extends State<MySignInPage> {
                             },
                             child: Container(
                               child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20.0),                              
+                                borderRadius: BorderRadius.circular(20.0),
                                 child: Image.asset(
                                   'emailicon100pxl.png',
                                   height: 50,
