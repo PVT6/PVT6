@@ -21,7 +21,7 @@ public class Route {
 
   private String name;
 
-  @Column(length = 65535, columnDefinition = "text")
+  @Lob
   private String pos;
  
 
