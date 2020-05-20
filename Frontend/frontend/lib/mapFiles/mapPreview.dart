@@ -17,13 +17,13 @@ import 'package:frontend/userFiles/user.dart' as userlib;
 import 'dart:convert';
 
 import 'mapWithRoute.dart';
-  List<SavedRoute> savedRoutes = [];
+
+List<SavedRoute> savedRoutes = [];
 
 class _MapPreviewPageState extends State<MapPreviewPage> {
   Location location;
   LatLng userLocation;
-   
-  
+
   static LatLng latLng = LatLng(59.338738, 18.064034);
   String kmString = "0";
   String routeTimeString = "0";
@@ -33,10 +33,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
   UserLocationOptions userLocationOptions;
   List<Marker> markers = [];
 
-
-
   String routesData = "";
- 
 
   var points = <LatLng>[];
   void loadData() async {}
@@ -46,7 +43,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
     location = new Location();
 
     getLocation();
-     getSavedRoutes();
+    getSavedRoutes();
 
     mapController = MapController();
     statefulMapController = StatefulMapController(mapController: mapController);
@@ -112,7 +109,6 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                 SizedBox(
                   height: 10,
                 ),
-                
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -125,7 +121,8 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                             FontAwesomeIcons.dice,
                             color: colorPurple,
                           ),
-                          Text("Generate Route", style: TextStyle(fontSize: 11)),
+                          Text("Generate Route",
+                              style: TextStyle(fontSize: 11)),
                         ],
                       ),
                     ),
@@ -163,27 +160,45 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                     ),
                   ],
                 ),
-
               ],
             ),
           ),
         ),
         Positioned(
-            child: Container(
-                width: 300,
-                child: Card(
-                  elevation: 20,
+            child: Card(
+               shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(15.0),
+  ),
+                elevation: 20,
+                child: Container(
+                  width: 205,
+                  height: 45,
                   child: DecoratedBox(
                       decoration: BoxDecoration(
                           border: Border.all(),
                           borderRadius: BorderRadius.all(Radius.circular(5.0)),
                           color: Colors.white),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text("$kmString" + "km",
-                              style: new TextStyle(fontSize: 25)),
-                          Text("    Time:" + "$routeTimeString",
-                              style: new TextStyle(fontSize: 25)),
+                          Column(
+                            children: <Widget>[
+                              Text("Distance",
+                                  style:
+                                      TextStyle(color: Colors.grey.shade500)),
+                              Text(" $kmString" + "km",
+                                  style: new TextStyle(fontSize: 20)),
+                            ],
+                          ),
+                          Column(
+                            children: <Widget>[
+                              Text("Estimated Time ",
+                                  style:
+                                      TextStyle(color: Colors.grey.shade500)),
+                              Text("$routeTimeString",
+                                  style: new TextStyle(fontSize: 20)),
+                            ],
+                          ),
                         ],
                       )),
                 ))),
@@ -564,16 +579,15 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
 }
 
 void getSavedRoutes() async {
-  final response =
-      await http.get("https://group6-15.pvt.dsv.su.se/route/getSavedRoutes?uid=${userlib.uid}");
-      if (response.statusCode == 200) {
-      savedRoutes = (json.decode(response.body) as List)
-          .map((i) => SavedRoute.fromJson(i))
-          .toList();
-      
-    } else {
-      // ERROR HÄR
-    }
+  final response = await http.get(
+      "https://group6-15.pvt.dsv.su.se/route/getSavedRoutes?uid=${userlib.uid}");
+  if (response.statusCode == 200) {
+    savedRoutes = (json.decode(response.body) as List)
+        .map((i) => SavedRoute.fromJson(i))
+        .toList();
+  } else {
+    // ERROR HÄR
+  }
 }
 
 class MapPreviewPage extends StatefulWidget {
