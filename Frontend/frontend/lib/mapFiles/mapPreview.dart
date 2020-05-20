@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:frontend/friendsAndContacts/addContactPage.dart';
 import 'package:frontend/routePickerMap/Route.dart';
 import 'package:geojson/geojson.dart';
@@ -64,125 +65,185 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
     );
 
     return Scaffold(
-        body: SafeArea(
-            child: Stack(children: <Widget>[
-          FlutterMap(
-            mapController: mapController,
-            options: new MapOptions(
-              center: LatLng(latLng.latitude, latLng.longitude),
-              minZoom: 14,
-              plugins: [
-                // ADD THIS
-                UserLocationPlugin(),
+      extendBodyBehindAppBar: true,
+      body: SafeArea(
+          child: Stack(children: <Widget>[
+        FlutterMap(
+          mapController: mapController,
+          options: new MapOptions(
+            center: LatLng(latLng.latitude, latLng.longitude),
+            minZoom: 14,
+            plugins: [
+              // ADD THIS
+              UserLocationPlugin(),
+            ],
+          ),
+          layers: [
+            new TileLayerOptions(
+                urlTemplate: FlutterConfig.get('MAPBOXAPI_URL'),
+                additionalOptions: {
+                  'accessToken': FlutterConfig.get('MAPBOX_ID'),
+                  'id': 'Streets-copy'
+                }),
+            MarkerLayerOptions(markers: markers),
+            // ADD THIS
+
+            new PolylineLayerOptions(polylines: [
+              new Polyline(
+                points: points,
+                color: Colors.blue,
+                strokeWidth: 4.0,
+              )
+            ]),
+
+            userLocationOptions,
+          ],
+        ),
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Align(
+            alignment: Alignment.bottomLeft,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                SizedBox(
+                  height: 10,
+                ),
+                
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    FlatButton(
+                      color: colorPeachPink,
+                      onPressed: () {},
+                      child: Row(
+                        children: <Widget>[
+                          Icon(
+                            FontAwesomeIcons.dice,
+                            color: colorPurple,
+                          ),
+                          Text("Generate Route", style: TextStyle(fontSize: 11)),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    FlatButton(
+                      color: colorPeachPink,
+                      onPressed: () {},
+                      child: Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.save,
+                            color: colorPurple,
+                          ),
+                          Text("Save", style: TextStyle(fontSize: 11)),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    FlatButton(
+                      color: colorPeachPink,
+                      onPressed: () {},
+                      child: Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.play_arrow,
+                            color: colorPurple,
+                          ),
+                          Text("Start route", style: TextStyle(fontSize: 11)),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+
               ],
             ),
-            layers: [
-              new TileLayerOptions(
-                  urlTemplate: FlutterConfig.get('MAPBOXAPI_URL'),
-                  additionalOptions: {
-                    'accessToken': FlutterConfig.get('MAPBOX_ID'),
-                    'id': 'Streets-copy'
-                  }),
-
-              // ADD THIS
-
-              new PolylineLayerOptions(polylines: [
-                new Polyline(
-                  points: points,
-                  color: Colors.blue,
-                  strokeWidth: 4.0,
-                )
-              ]),
-
-              userLocationOptions,
-            ],
-          ),
-          Positioned(
-              bottom: 1,
-              right: 50,
-              child: Container(
-                width: 300,
-                child: DecoratedBox(
-                    decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                        color: Colors.white),
-                    child: Row(
-                      children: <Widget>[
-                        Text("$kmString" + "km",
-                            style: new TextStyle(fontSize: 25)),
-                        Text("    Time:" + "$routeTimeString",
-                            style: new TextStyle(fontSize: 25)),
-                      ],
-                    )),
-              )),
-          // ...
-        ])),
-        appBar: AppBar(title: const Text('Route Preview')),
-        bottomNavigationBar: BottomAppBar(
-          child: new Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              IconButton(
-                icon: Text('Cancel'),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-              IconButton(
-                icon: Text('Saved Routes'),
-                onPressed: () {
-                  showSavedRoutes(context);
-                },
-              ),
-              IconButton(
-                icon: Text('Save Route'),
-                onPressed: () {
-                  saveRoute(context, points);
-                },
-              ),
-              IconButton(
-                icon: Text('Generate Route'),
-                onPressed: () async {
-                  getKm(context);
-                  mapController.move(
-                      LatLng(latLng.latitude, latLng.longitude), 1);
-                },
-              ),
-              IconButton(
-                icon: Text('Start Route'),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MapWithRoute(
-                          points: points,
-                          latLng: latLng,
-                        ),
-                      ));
-                },
-              ), //Skickar med rutt datan till en ny karta.
-            ],
           ),
         ),
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.only(bottom: 50.0),
-          child: FloatingActionButton.extended(
+        Positioned(
+            child: Container(
+                width: 300,
+                child: Card(
+                  elevation: 20,
+                  child: DecoratedBox(
+                      decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                          color: Colors.white),
+                      child: Row(
+                        children: <Widget>[
+                          Text("$kmString" + "km",
+                              style: new TextStyle(fontSize: 25)),
+                          Text("    Time:" + "$routeTimeString",
+                              style: new TextStyle(fontSize: 25)),
+                        ],
+                      )),
+                ))),
+        // ...
+      ])),
+      appBar: AppBar(
+        title: const Text('Route Preview'),
+        backgroundColor: colorPurple,
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: new Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            IconButton(
+              icon: Text('Cancel'),
               onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            IconButton(
+              icon: Text('Saved Routes'),
+              onPressed: () {
+                showSavedRoutes(context);
+              },
+            ),
+            IconButton(
+              icon: Text('Save Route'),
+              onPressed: () {
+                saveRoute(context, points);
+              },
+            ),
+            IconButton(
+              icon: Text('Generate Route'),
+              onPressed: () async {
+                //sätt error dialog här om inget har sätts in i route
+                getKm(context);
                 mapController.move(
                     LatLng(latLng.latitude, latLng.longitude), 1);
               },
-              icon: Icon(Icons.my_location),
-              label: Text('My location'),
-              foregroundColor: Colors.black,
-              backgroundColor: Colors.lightBlue),
-        ));
+            ),
+            IconButton(
+              icon: Text('Start Route'),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MapWithRoute(
+                        points: points,
+                        latLng: latLng,
+                      ),
+                    ));
+              },
+            ), //Skickar med rutt datan till en ny karta.
+          ],
+        ),
+      ),
+    );
   }
 
   getLocation() async {
     var location = new Location();
-    location.onLocationChanged.listen((currentLocation) {
+    location.onLocationChanged().listen((currentLocation) {
       print(currentLocation.latitude);
       print(currentLocation.longitude);
       setState(() {
