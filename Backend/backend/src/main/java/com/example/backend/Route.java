@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
+import org.hibernate.annotations.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
@@ -16,6 +17,8 @@ public class Route {
   private Long id;
 
   private String name;
+
+  @Type(type="text")
   private String pos;
  
 
@@ -36,6 +39,10 @@ public class Route {
   
   void setName(String name) {
     this.name = name;
+  }
+
+  String getPos(){
+    return this.pos;
   }
 
   // String getRoutes(){
