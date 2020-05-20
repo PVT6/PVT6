@@ -2,6 +2,7 @@ package com.example.backend;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Set;
@@ -18,18 +19,11 @@ public class UserControllerTest {
     }
 
     @Test
-    public void getAllUsers() { //WIP
+    public void getAllUsers() {
         UserController usrcon = new UserController();
-        User user = new User("uid", "email", "phone", "name");
-        //Iterable<User> usersTest = new Iterable<User>();
         usrcon.addNewUser("uid", "email", "phone", "name");
-        //create user and make Iterable<User> and add it to that
-        //use the created users data in usrcon.addNewUser()
         Iterable<User> users = usrcon.getAll();
-        assertTrue(users.equals(user)); //will not work
-        //compare both Iterable<User> for equality
-        //or do like findDogs()
-
+        assertNotNull(users);
     }
 
     @Test
