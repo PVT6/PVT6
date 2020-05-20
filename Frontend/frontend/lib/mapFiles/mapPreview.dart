@@ -35,6 +35,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
 
 
   String routesData = "";
+ 
 
   var points = <LatLng>[];
   void loadData() async {}
@@ -44,6 +45,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
     location = new Location();
 
     getLocation();
+     getSavedRoutes();
 
     mapController = MapController();
     statefulMapController = StatefulMapController(mapController: mapController);
@@ -325,7 +327,8 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
 
   showSavedRoutes(BuildContext context) {
     TextEditingController editingController = TextEditingController();
-    List<String> litems = ["Sveden", "Fisken", "Be", "Lloo", "Adde"];
+    print(savedRoutes[1].id);
+    List<String> litems = [savedRoutes[0].name, "Fisken", "Be", "Lloo", "Adde"];
     List<int> km = [200, 20, 23, 12, 22];
     String selectedRoute = '';
 

@@ -186,6 +186,10 @@ public class User {
     this.createdAt = createdAt;
   }
 
+  public void cleanRoutes(){
+    this.savedRoutes.clear();
+  }
+
   @JsonIgnore
   public Long getUpdatedAt() {
     return updatedAt;
