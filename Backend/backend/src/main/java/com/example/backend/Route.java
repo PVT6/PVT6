@@ -20,7 +20,7 @@ public class Route {
 
   private String name;
 
-  @Column(columnDefinition="TEXT")
+  @Column(name = "pos", columnDefinition = "NVARCHAR(MAX)")
   private String pos;
  
 
