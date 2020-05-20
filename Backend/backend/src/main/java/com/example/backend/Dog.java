@@ -20,16 +20,24 @@ public class Dog {
     private String name;
     private String breed;
     private String age;
+    private String height;
     private String weight;
+    private String description;
+    private String dogpicture;
+    private String gender;
     
 
 
 
-    public Dog(String name, String breed, String age, String weight){
+    public Dog(String name, String breed, String age, String height, String weight, String dogpicture, String description, String gender){
         this.name = name;
         this.breed = breed;
         this.age = age;
+        this.height = height;
         this.weight = weight;
+        this.description = description;
+        this.dogpicture = dogpicture;
+        this.gender = gender;
       
     }
     public Dog(){
@@ -66,12 +74,44 @@ public class Dog {
         this.breed = race;
     }
 
+    public String getHeight(){
+        return height;
+    }
+
+    public void setHeight(String newHeight){
+        this.height = newHeight;
+    }
+
     public String getWeight() {
         return weight;
     }
 
     public void setWeight(String weight) {
         this.weight = weight;
+    }
+
+    public String getDescription(){
+        return description;
+    }
+
+    public void setDescription(String newDescription){
+        this.description = newDescription;
+    }
+
+    public String getImage(){
+        return dogpicture;
+    }
+
+    public void setImage(String newImage){
+        this.dogpicture = newImage;
+    }
+
+    public String getGender(){
+        return gender;
+    }
+
+    public void setGender(String newGender){
+        this.gender = newGender;
     }
 
 }
