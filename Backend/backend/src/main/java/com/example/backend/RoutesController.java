@@ -55,6 +55,17 @@ public class RoutesController {
         return "done";
     }
 
+    @PostMapping(path = "/delete")
+    public @ResponseBody String remove(@RequestParam String uid, Long id) {
+        User u = userRepository.findByUid(uid);
+        Route r = routeRepo.findById(id).get();
+
+        u.removeRoute(r);
+        userRepository.save(u);
+        routeRepo.delete(r);
+        return "done";
+    }
+
 
     @PostMapping(path = "/saveRoute")
     public @ResponseBody String saveRoutes(@RequestParam String uid, String name, String route, String distans){

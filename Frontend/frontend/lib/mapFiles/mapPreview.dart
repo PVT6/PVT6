@@ -16,13 +16,13 @@ import 'package:frontend/userFiles/user.dart' as userlib;
 import 'dart:convert';
 
 import 'mapWithRoute.dart';
-  List<SavedRoute> savedRoutes = [];
+
+List<SavedRoute> savedRoutes = [];
 
 class _MapPreviewPageState extends State<MapPreviewPage> {
   Location location;
   LatLng userLocation;
-   
-  
+
   static LatLng latLng = LatLng(59.338738, 18.064034);
   String kmString = "0";
   String routeTimeString = "0";
@@ -32,10 +32,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
   UserLocationOptions userLocationOptions;
   List<Marker> markers = [];
 
-
-
   String routesData = "";
- 
 
   var points = <LatLng>[];
   void loadData() async {}
@@ -45,7 +42,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
     location = new Location();
 
     getLocation();
-     getSavedRoutes();
+    getSavedRoutes();
 
     mapController = MapController();
     statefulMapController = StatefulMapController(mapController: mapController);
@@ -250,6 +247,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                           });
                       print(response.body);
                       if (response.statusCode == 200) {
+                        getSavedRoutes();
                         showSaveAlertDialog(context);
                         //Navigator.pop(context);
 
@@ -327,10 +325,6 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
 
   showSavedRoutes(BuildContext context) {
     TextEditingController editingController = TextEditingController();
-    print(savedRoutes[1].id);
-    List<String> litems = [savedRoutes[0].name, "Fisken", "Be", "Lloo", "Adde"];
-    List<int> km = [200, 20, 23, 12, 22];
-    String selectedRoute = '';
 
     showDialog(
       context: context,
@@ -346,21 +340,18 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                     width: 200,
                     child: new ListView.builder(
                         padding: const EdgeInsets.all(8),
-                        itemCount: litems.length,
+                        itemCount: savedRoutes.length,
                         itemBuilder: (BuildContext context, int index) {
-                          String c = litems?.elementAt(index);
+                          SavedRoute c = savedRoutes?.elementAt(index);
                           return GestureDetector(
                               onTap: () async {
-                                setState() {
-                                  selectedRoute = c;
-                                }
-
                                 return showDialog(
                                     context: context,
                                     barrierDismissible: true,
                                     builder: (BuildContext context) {
                                       return AlertDialog(
-                                        title: Text('${litems[index]}'),
+                                        title:
+                                            Text('${savedRoutes[index].name}'),
                                         content: SingleChildScrollView(
                                           child: ListBody(
                                             children: <Widget>[],
@@ -374,16 +365,20 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                                           ),
                                           FlatButton(
                                             onPressed: () {
-                                              litems.removeAt(index);
-                                              print(litems.length);
+                                              deleteSavedRoutes(
+                                                  savedRoutes[index]
+                                                      .id
+                                                      .toString());
                                               Navigator.pop(context);
-                                              Navigator.pop(context);
-                                              showSavedRoutes(context);
                                             },
                                             child: Text('Delete'),
                                           ),
                                           FlatButton(
                                             onPressed: () {
+                                              openSavedRoutes(savedRoutes[index]
+                                                  .id
+                                                  .toString());
+                                              Navigator.pop(context);
                                               Navigator.pop(context);
                                             },
                                             child: Text('Open'),
@@ -398,7 +393,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                                   color: Colors.blue,
                                   child: Center(
                                     child: Text(
-                                        '${litems[index]} ${km[index]} Km'),
+                                        '${savedRoutes[index].name} ${savedRoutes[index].distans} Km'),
                                   )));
                         }),
                   ),
@@ -472,6 +467,30 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
     );
   }
 
+  void openSavedRoutes(String id) async {
+    final data = await http
+        .get("https://group6-15.pvt.dsv.su.se/route/getRoute?id=${id}");
+    print(data.body);
+    if (data.statusCode == 200) {
+      points.clear();
+
+      var jsonfile = json.decode(data.body);
+
+      var routedata = jsonfile['routes'][0];
+      var route = routedata["geometry"]["coordinates"];
+      kmString = (routedata["distance"] / 1000).toStringAsFixed(2);
+      var estimatedTime = (routedata["duration"] / 3600)
+          .toStringAsFixed(2)
+          .toString(); // MAN KAN ÄNDRA GÅNGHASTIGHET FÖR ATT FÅ MER ACCURATE
+      routeTimeString = estimatedTime;
+      for (var i = 0; i < route.length; i++) {
+        points.add(new LatLng(route[i][1], route[i][0]));
+      }
+    } else {
+      // ERROR HÄR
+    }
+  }
+
   void generateRoute(LatLng pos) async {
     print("GENERATING ROUTE");
     var km = int.parse(kmString);
@@ -500,19 +519,36 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
     }
     print(points);
   }
+
+  void deleteSavedRoutes(String id) async {
+    final response = await http.post(
+                          Uri.parse(
+                              "https://group6-15.pvt.dsv.su.se/route/delete"),
+                          encoding: Encoding.getByName("utf-8"),
+                          body: {
+                            'id': id,
+                            'uid': userlib.uid,
+                          });
+                      print(response.body);
+                      if (response.statusCode == 200) {
+                        getSavedRoutes();
+                        Navigator.pop(context);
+
+                      }
+  }
 }
 
 void getSavedRoutes() async {
-  final response =
-      await http.get("https://group6-15.pvt.dsv.su.se/route/getSavedRoutes?uid=${userlib.uid}");
-      if (response.statusCode == 200) {
-      savedRoutes = (json.decode(response.body) as List)
-          .map((i) => SavedRoute.fromJson(i))
-          .toList();
-      
-    } else {
-      // ERROR HÄR
-    }
+  savedRoutes.clear();
+  final response = await http.get(
+      "https://group6-15.pvt.dsv.su.se/route/getSavedRoutes?uid=${userlib.uid}");
+  if (response.statusCode == 200) {
+    savedRoutes = (json.decode(response.body) as List)
+        .map((i) => SavedRoute.fromJson(i))
+        .toList();
+  } else {
+    // ERROR HÄR
+  }
 }
 
 class MapPreviewPage extends StatefulWidget {
