@@ -5,6 +5,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller // This means that this class is a Controller
 @RequestMapping(path = "/route")
+
 public class RoutesController {
-    @Autowired 
+    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RouteRepository routeRepo;
 
     @GetMapping(path = "/test")
     public @ResponseBody String testRoute() {
@@ -27,16 +32,45 @@ public class RoutesController {
     }
 
     @GetMapping(path = "/getSavedRoutes")
-    public @ResponseBody Set<Route> getSavedRoutes(@RequestParam String uid){
+    public @ResponseBody Set<Route> getSavedRoutes(@RequestParam String uid) {
         User u = userRepository.findByUid(uid);
         return u.getSavedRoutes();
     }
 
-    @PostMapping(path = "/saveRoute")
-    public @ResponseBody String saveRoutes(@RequestParam String uid, String name, String route){
+    @GetMapping(path = "/getRoute")
+    public @ResponseBody String getRoute(@RequestParam Long id) {
+        Route u = routeRepo.findById(id).get();
+        if( u != null) {
+            return u.getRoutes();
+        }
+        return "none";
+    }
+
+
+    @GetMapping(path = "/clean")
+    public @ResponseBody String clean(@RequestParam String uid) {
         User u = userRepository.findByUid(uid);
-        Route r = new Route(name, route); 
+        u.cleanRoutes();
+        userRepository.save(u);
+        return "done";
+    }
+
+
+    @PostMapping(path = "/saveRoute")
+    public @ResponseBody String saveRoutes(@RequestParam String uid, String name, String route, String distans){
+        User u = userRepository.findByUid(uid);
+        
+        String[] pos = route.split("/");
+    
+        // Extremet fullt men funkar
+        Position latlng1 = new Position(Double.parseDouble((pos[0].split(",")[1])), Double.parseDouble((pos[0].split(",")[0])));
+        Position latlng2 = new Position(Double.parseDouble((pos[1].split(",")[1])), Double.parseDouble((pos[1].split(",")[0])));
+        Position latlng3 = new Position(Double.parseDouble((pos[2].split(",")[1])), Double.parseDouble((pos[2].split(",")[0])));
+
+        Route r = new Route(name, latlng1, latlng2, latlng3, distans); 
         u.addRoutes(r);
+        routeRepo.save(r);
+
         userRepository.save(u);
         return "Saved";
     }

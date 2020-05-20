@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:frontend/friendsAndContacts/addContactPage.dart';
+import 'package:frontend/routePickerMap/Route.dart';
 import 'package:geojson/geojson.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart';
@@ -16,10 +17,13 @@ import 'package:frontend/userFiles/user.dart' as userlib;
 import 'dart:convert';
 
 import 'mapWithRoute.dart';
+  List<SavedRoute> savedRoutes = [];
 
 class _MapPreviewPageState extends State<MapPreviewPage> {
   Location location;
   LatLng userLocation;
+   
+  
   static LatLng latLng = LatLng(59.338738, 18.064034);
   String kmString = "0";
   String routeTimeString = "0";
@@ -29,7 +33,10 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
   UserLocationOptions userLocationOptions;
   List<Marker> markers = [];
 
-  String routesData = "1r";
+
+
+  String routesData = "";
+ 
 
   var points = <LatLng>[];
   void loadData() async {}
@@ -39,6 +46,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
     location = new Location();
 
     getLocation();
+     getSavedRoutes();
 
     mapController = MapController();
     statefulMapController = StatefulMapController(mapController: mapController);
@@ -289,13 +297,17 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                 FlatButton(
                   onPressed: () async {
                     if (routesData != "") {
+                      print(routesData);
+
                       final response = await http.post(
                           Uri.parse(
                               "https://group6-15.pvt.dsv.su.se/route/saveRoute"),
+                          encoding: Encoding.getByName("utf-8"),
                           body: {
                             'name': name,
-                            'route': routesData.toString(),
-                            'uid': userlib.uid
+                            'route': routesData,
+                            'uid': userlib.uid,
+                            'distans': kmString.toString()
                           });
                       print(response.body);
                       if (response.statusCode == 200) {
@@ -376,7 +388,8 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
 
   showSavedRoutes(BuildContext context) {
     TextEditingController editingController = TextEditingController();
-    List<String> litems = ["Sveden", "Fisken", "Be", "Lloo", "Adde"];
+    print(savedRoutes[1].id);
+    List<String> litems = [savedRoutes[0].name, "Fisken", "Be", "Lloo", "Adde"];
     List<int> km = [200, 20, 23, 12, 22];
     String selectedRoute = '';
 
@@ -528,9 +541,14 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
     final data = await http.get(
         "https://group6-15.pvt.dsv.su.se/route/new?posX=${pos.latitude}&posY=${pos.longitude}&distans=${km}");
 
-    routesData = data.body;
     var jsonfile = json.decode(data.body);
+    routesData = "";
 
+    routesData += jsonfile["waypoints"][0]["location"].join(', ') + "/";
+    routesData += jsonfile["waypoints"][1]["location"].join(', ') + "/";
+    routesData += jsonfile["waypoints"][2]["location"].join(', ') + "";
+
+    print(routesData);
     var routedata = jsonfile['routes'][0];
     var route = routedata["geometry"]["coordinates"];
     kmString = (routedata["distance"] / 1000).toStringAsFixed(2);
@@ -543,6 +561,19 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
     }
     print(points);
   }
+}
+
+void getSavedRoutes() async {
+  final response =
+      await http.get("https://group6-15.pvt.dsv.su.se/route/getSavedRoutes?uid=${userlib.uid}");
+      if (response.statusCode == 200) {
+      savedRoutes = (json.decode(response.body) as List)
+          .map((i) => SavedRoute.fromJson(i))
+          .toList();
+      
+    } else {
+      // ERROR HÄR
+    }
 }
 
 class MapPreviewPage extends StatefulWidget {
