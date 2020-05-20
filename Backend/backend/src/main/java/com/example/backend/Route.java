@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
+import org.dom4j.Text;
 import org.hibernate.annotations.Columns;
 import org.hibernate.annotations.Type;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class Route {
 
   private String name;
 
-  @Column(name = "pos", columnDefinition = "NVARCHAR(MAX)")
+  @Column(length = 65535, columnDefinition = "text")
   private String pos;
  
 

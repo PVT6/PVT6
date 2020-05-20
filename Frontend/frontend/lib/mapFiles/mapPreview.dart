@@ -235,7 +235,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                               "https://group6-15.pvt.dsv.su.se/route/saveRoute"),
                           body: {
                             'name': name,
-                            'route': routesData,
+                            'route': routesData.toString(),
                             'uid': userlib.uid
                           });
                           print(response.body);
