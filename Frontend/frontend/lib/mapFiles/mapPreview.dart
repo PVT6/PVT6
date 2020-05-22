@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:frontend/friendsAndContacts/addContactPage.dart';
+
+import 'package:frontend/friendsAndContacts/friendsPage.dart';
 import 'package:frontend/routePickerMap/Route.dart';
 import 'package:geojson/geojson.dart';
 import 'package:geolocator/geolocator.dart';
@@ -99,6 +100,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
             userLocationOptions,
           ],
         ),
+
         Padding(
           padding: EdgeInsets.all(16.0),
           child: Align(
@@ -106,23 +108,42 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                SizedBox(
-                  height: 10,
-                ),
+                Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Align(
+                        alignment: Alignment.bottomRight,
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              FloatingActionButton(
+                                onPressed: () {},
+                                materialTapTargetSize:
+                                    MaterialTapTargetSize.padded,
+                                backgroundColor: colorPeachPink,
+                                child: Icon(
+                                  Icons.play_circle_filled,
+                                  size: 36.0,
+                                  color: colorPurple,
+                                ),
+                              )
+                            ]))),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     FlatButton(
                       color: colorPeachPink,
-                      onPressed: () {},
+                      onPressed: () {
+                        getKm(context);
+                        mapController.move(
+                            LatLng(latLng.latitude, latLng.longitude), 1);
+                      },
                       child: Row(
                         children: <Widget>[
                           Icon(
                             FontAwesomeIcons.dice,
                             color: colorPurple,
                           ),
-                          Text("Generate Route",
-                              style: TextStyle(fontSize: 11)),
+                          Text("Random Route", style: TextStyle(fontSize: 11)),
                         ],
                       ),
                     ),
@@ -131,7 +152,9 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                     ),
                     FlatButton(
                       color: colorPeachPink,
-                      onPressed: () {},
+                      onPressed: () {
+                        saveRoute(context, points);
+                      },
                       child: Row(
                         children: <Widget>[
                           Icon(
@@ -147,14 +170,16 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                     ),
                     FlatButton(
                       color: colorPeachPink,
-                      onPressed: () {},
+                      onPressed: () {
+                        showSavedRoutes(context);
+                      },
                       child: Row(
                         children: <Widget>[
                           Icon(
-                            Icons.play_arrow,
+                            Icons.folder,
                             color: colorPurple,
                           ),
-                          Text("Start route", style: TextStyle(fontSize: 11)),
+                          Text("Saved", style: TextStyle(fontSize: 11)),
                         ],
                       ),
                     ),
@@ -166,9 +191,9 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
         ),
         Positioned(
             child: Card(
-               shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(15.0),
-  ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
                 elevation: 20,
                 child: Container(
                   width: 205,
@@ -207,54 +232,6 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
       appBar: AppBar(
         title: const Text('Route Preview'),
         backgroundColor: colorPurple,
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: new Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            IconButton(
-              icon: Text('Cancel'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            IconButton(
-              icon: Text('Saved Routes'),
-              onPressed: () {
-                showSavedRoutes(context);
-              },
-            ),
-            IconButton(
-              icon: Text('Save Route'),
-              onPressed: () {
-                saveRoute(context, points);
-              },
-            ),
-            IconButton(
-              icon: Text('Generate Route'),
-              onPressed: () async {
-                //sätt error dialog här om inget har sätts in i route
-                getKm(context);
-                mapController.move(
-                    LatLng(latLng.latitude, latLng.longitude), 1);
-              },
-            ),
-            IconButton(
-              icon: Text('Start Route'),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MapWithRoute(
-                        points: points,
-                        latLng: latLng,
-                      ),
-                    ));
-              },
-            ), //Skickar med rutt datan till en ny karta.
-          ],
-        ),
       ),
     );
   }
@@ -355,7 +332,8 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: Text("Generate a route"),
+              backgroundColor: colorPeachPink,
+              title: Text("Generate a route", style: TextStyle(fontFamily: 'Hipster Script W00 Regular', fontSize: 28,),),
               content: Row(
                 children: <Widget>[
                   SizedBox(
@@ -383,10 +361,12 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
               ),
               actions: <Widget>[
                 FlatButton(
+                  color: Colors.red,
                   onPressed: () => Navigator.pop(context, "-1"),
                   child: Text("Cancel"),
                 ),
                 FlatButton(
+                  color: Colors.green,
                   onPressed: () {
                     kmString = kmController.text.toString();
                     Navigator.pop(context);
@@ -411,10 +391,11 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: Text("Saved routes"),
+              backgroundColor: colorPeachPink,
+              title: Text("Saved routes", style: TextStyle(fontFamily: 'Hipster Script W00 Regular', fontSize: 28,),),
               content: Row(
                 children: <Widget>[
-                  SizedBox(
+                  Container(
                     height: 400,
                     width: 200,
                     child: new ListView.builder(
@@ -423,63 +404,79 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                         itemBuilder: (BuildContext context, int index) {
                           SavedRoute c = savedRoutes?.elementAt(index);
                           return GestureDetector(
-                              onTap: () async {
-                                return showDialog(
-                                    context: context,
-                                    barrierDismissible: true,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title:
-                                            Text('${savedRoutes[index].name}'),
-                                        content: SingleChildScrollView(
-                                          child: ListBody(
-                                            children: <Widget>[],
-                                          ),
+                            child: Container(
+                                height: 75,
+                                margin: EdgeInsets.all(2),
+                                decoration: BoxDecoration(
+                                  border: Border.all(width: 3.0),
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(
+                                          20.0) //         <--- border radius here
+                                      ),
+                                  image: DecorationImage(
+                                    image: AssetImage("routeBackground.jpg"),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                child: Center(
+                                    child: Card(
+                                  child: Text(
+                                    '${savedRoutes[index].name} ${savedRoutes[index].distans} Km',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ))),
+                            onTap: () async {
+                              return showDialog(
+                                  context: context,
+                                  barrierDismissible: true,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text('${savedRoutes[index].name}'),
+                                      content: SingleChildScrollView(
+                                        child: ListBody(
+                                          children: <Widget>[],
                                         ),
-                                        actions: <Widget>[
-                                          FlatButton(
-                                            onPressed: () =>
-                                                Navigator.pop(context),
-                                            child: Text('Close'),
-                                          ),
-                                          FlatButton(
-                                            onPressed: () {
-                                              deleteSavedRoutes(
-                                                  savedRoutes[index]
-                                                      .id
-                                                      .toString());
-                                              Navigator.pop(context);
-                                            },
-                                            child: Text('Delete'),
-                                          ),
-                                          FlatButton(
-                                            onPressed: () {
-                                              openSavedRoutes(savedRoutes[index]
-                                                  .id
-                                                  .toString());
-                                              Navigator.pop(context);
-                                              Navigator.pop(context);
-                                            },
-                                            child: Text('Open'),
-                                          ),
-                                        ],
-                                      );
-                                    });
-                              },
-                              child: Container(
-                                  height: 75,
-                                  margin: EdgeInsets.all(2),
-                                  color: Colors.blue,
-                                  child: Center(
-                                    child: Text(
-                                        '${savedRoutes[index].name} ${savedRoutes[index].distans} Km'),
-                                  )));
+                                      ),
+                                      actions: <Widget>[
+                                        FlatButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          child: Text('Close'),
+                                        ),
+                                        FlatButton(
+                                          onPressed: () {
+                                            deleteSavedRoutes(savedRoutes[index]
+                                                .id
+                                                .toString());
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('Delete'),
+                                        ),
+                                        FlatButton(
+                                          onPressed: () {
+                                            openSavedRoutes(savedRoutes[index]
+                                                .id
+                                                .toString());
+                                            Navigator.pop(context);
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('Open'),
+                                        ),
+                                      ],
+                                    );
+                                  });
+                            },
+                          );
                         }),
                   ),
                 ],
               ),
               actions: <Widget>[
                 FlatButton(
+                  color: Colors.red,
                   onPressed: () => Navigator.pop(context),
                   child: Text("Cancel"),
                 ),
@@ -601,27 +598,21 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
 
   void deleteSavedRoutes(String id) async {
     final response = await http.post(
-                          Uri.parse(
-                              "https://group6-15.pvt.dsv.su.se/route/delete"),
-                          encoding: Encoding.getByName("utf-8"),
-                          body: {
-                            'id': id,
-                            'uid': userlib.uid,
-                          });
-                      print(response.body);
-                      if (response.statusCode == 200) {
-                        getSavedRoutes();
-                        Navigator.pop(context);
-
-                      }
+        Uri.parse("https://group6-15.pvt.dsv.su.se/route/delete"),
+        encoding: Encoding.getByName("utf-8"),
+        body: {
+          'id': id,
+          'uid': userlib.uid,
+        });
+    print(response.body);
+    if (response.statusCode == 200) {
+      getSavedRoutes();
+      Navigator.pop(context);
+    }
   }
 }
 
 void getSavedRoutes() async {
-<<<<<<< HEAD
-=======
-  savedRoutes.clear();
->>>>>>> 58169b9e52bb7a1e274b92438531fadd9ea50991
   final response = await http.get(
       "https://group6-15.pvt.dsv.su.se/route/getSavedRoutes?uid=${userlib.uid}");
   if (response.statusCode == 200) {

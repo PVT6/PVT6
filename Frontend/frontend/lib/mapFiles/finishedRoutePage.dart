@@ -1,32 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:carousel_pro/carousel_pro.dart';
+
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:frontend/friendsAndContacts/friendsPage.dart';
 import 'package:frontend/userFiles/profile.dart';
-import '../dog.dart';
-import 'user.dart' as userlib;
-import 'addPet.dart';
 
-class DogProfile extends StatefulWidget {
-  Dog dog;
 
-  DogProfile(Dog dog) : super() {
-    this.dog = dog;
-  }
+
+class FinishedRoutePage extends StatefulWidget {
+  
+
+  FinishedRoutePage() : super() ;
 
   final String title = "Maps Demo";
 
 //String name, String age, String weight, String breed
   @override
-  DogProfileState createState() => DogProfileState(this.dog);
+  FinishedRoutePageState createState() => FinishedRoutePageState();
 }
 
-class DogProfileState extends State<DogProfile> {
-  Dog dog;
-
-  DogProfileState(Dog dog) {
-    this.dog = dog;
-  }
+class FinishedRoutePageState extends State<FinishedRoutePage> {
+  
 
   @override
   Widget build(BuildContext context) {
@@ -95,20 +88,7 @@ class DogProfileState extends State<DogProfile> {
                             //         fit: BoxFit.cover,
                             //       )),
                           )),
-                      Container(
-                        alignment: Alignment.topCenter,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10.0, vertical: 5.0),
-                          decoration: BoxDecoration(
-                              color: Colors.yellow,
-                              borderRadius: BorderRadius.circular(20.0)),
-                          child: Text(widget.dog.breed,
-                              style: TextStyle(
-                                fontSize: 16,
-                              )),
-                        ),
-                      )
+                      
                     ],
                   ),
                 ),
@@ -117,7 +97,7 @@ class DogProfileState extends State<DogProfile> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      widget.dog.name,
+                      "Hej",
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 30.0),
                     ),
@@ -126,69 +106,8 @@ class DogProfileState extends State<DogProfile> {
                 SizedBox(
                   height: 10,
                 ),
-                Container(
-                  width: 280,
-                  height: 80,
-                  child: Text(
-                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        Text(
-                          "Weight: ",
-                          style: TextStyle(
-                            color: colorPurple,
-                            fontSize: 20,
-                          ),
-                        ),
-                        Text(
-                          widget.dog.weight + "kg",
-                          style: TextStyle(color: Colors.grey.shade600),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      width: 25,
-                    ),
-                    Column(
-                      children: <Widget>[
-                        Text(
-                          "Height: ",
-                          style: TextStyle(
-                            color: colorPurple,
-                            fontSize: 20,
-                          ),
-                        ),
-                        Text(
-                          "50" + "cm",
-                          style: TextStyle(color: Colors.grey.shade600),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      width: 25,
-                    ),
-                    Column(
-                      children: <Widget>[
-                        Text(
-                          " Age: ",
-                          style: TextStyle(
-                            color: colorPurple,
-                            fontSize: 20,
-                          ),
-                        ),
-                        Text(
-                          widget.dog.age + "y.o",
-                          style: TextStyle(color: Colors.grey.shade600),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                
+                
                 SizedBox(height: 5.0),
                 SizedBox(height: 10.0),
                 Column(

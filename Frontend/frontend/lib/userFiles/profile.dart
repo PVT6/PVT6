@@ -63,43 +63,128 @@ class ProfileEightPageState extends State<ProfileEightPage> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            ProfileHeader(
-              avatar: new AssetImage("LeBistro.jpg"), //userData
-              coverImage: new AssetImage("backgroundStockholm.png"), //userData
-              title: userlib.name, //userData
-              subtitle: "Dog lover",
-              actions: <Widget>[
-                //Row med items
-                // MaterialButton(
-                //   color: colorPeachPink,
-                //   shape: CircleBorder(),
-                //   elevation: 0,
-                //   child: Icon(Icons.arrow_back, color: colorPurple),
-                //   onPressed: () {
-                //     Navigator.push(
-                //       context,
-                //       MaterialPageRoute(builder: (context) => MapsDemo()),
-                //     );
-                //   },
-                // ),
-
-                MaterialButton(
-                  color: colorPeachPink,
-                  shape: CircleBorder(),
-                  elevation: 0,
-                  child: Icon(
-                    Icons.pets,
-                    color: colorPurple,
+            Stack(
+              children: <Widget>[
+                Container(
+                  transform: Matrix4.translationValues(0.0, -50.0, 0.0),
+                  child: Hero(
+                    tag: "BrewDog.jpg",
+                    child: ClipShadowPath(
+                      clipper: CircularClipper(),
+                      shadow: Shadow(blurRadius: 20.0),
+                      child: Image(
+                        height: 400.0,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                        image: AssetImage("BrewDog.jpg"),
+                      ),
+                    ),
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => InputPage()),
-                    );
-                  },
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    IconButton(
+                      padding: EdgeInsets.only(left: 30.0),
+                      onPressed: () => Navigator.pop(context),
+                      icon: Icon(Icons.arrow_back),
+                      iconSize: 30.0,
+                      color: Colors.black,
+                    ),
+                    IconButton(
+                      padding: EdgeInsets.only(left: 30.0),
+                      onPressed: () => print('Add to Favorites'),
+                      icon: Icon(Icons.favorite_border),
+                      iconSize: 30.0,
+                      color: Colors.black,
+                    ),
+                  ],
+                ),
+                Positioned.fill(
+                  bottom: 10.0,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Avatar(
+                      image: AssetImage("LeBistro.jpg"),
+                      radius: 90,
+                      backgroundColor: Colors.transparent,
+                      borderColor: Colors.grey.shade300,
+                      borderWidth: 1.0,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: 0.0,
+                  left: 20.0,
+                  child: MaterialButton(
+                    color: colorPeachPink,
+                    shape: CircleBorder(),
+                    elevation: 0,
+                    child: Icon(
+                      Icons.edit,
+                      color: colorPurple,
+                    ),
+                    onPressed: () {},
+                  ),
+                ),
+                Positioned(
+                  bottom: 0.0,
+                  right: 25.0,
+                  child: MaterialButton(
+                    color: colorPeachPink,
+                    shape: CircleBorder(),
+                    elevation: 0,
+                    child: Icon(
+                      Icons.pets,
+                      color: colorPurple,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => InputPage()),
+                      );
+                    },
+                  ),
                 ),
               ],
             ),
+            // ProfileHeader(
+            //   avatar: new AssetImage("LeBistro.jpg"), //userData
+            //   coverImage: new AssetImage("backgroundStockholm.png"), //userData
+            //   title: userlib.name, //userData
+            //   subtitle: "Dog lover",
+            //   actions: <Widget>[
+            //     //Row med items
+            //     // MaterialButton(
+            //     //   color: colorPeachPink,
+            //     //   shape: CircleBorder(),
+            //     //   elevation: 0,
+            //     //   child: Icon(Icons.arrow_back, color: colorPurple),
+            //     //   onPressed: () {
+            //     //     Navigator.push(
+            //     //       context,
+            //     //       MaterialPageRoute(builder: (context) => MapsDemo()),
+            //     //     );
+            //     //   },
+            //     // ),
+
+            //     MaterialButton(
+            //       color: colorPeachPink,
+            //       shape: CircleBorder(),
+            //       elevation: 0,
+            //       child: Icon(
+            //         Icons.pets,
+            //         color: colorPurple,
+            //       ),
+            //       onPressed: () {
+            //         Navigator.push(
+            //           context,
+            //           MaterialPageRoute(builder: (context) => InputPage()),
+            //         );
+            //       },
+            //     ),
+            //   ],
+            // ),
             const SizedBox(height: 10.0),
             UserInfo(),
           ],
@@ -141,14 +226,15 @@ class UserInfo extends StatelessWidget {
                 child: userDogs != null
                     ? ListView.builder(
                         //https://pusher.com/tutorials/flutter-listviews
-                        physics: NeverScrollableScrollPhysics(),
+                        
                         shrinkWrap: true,
                         itemCount: userDogs?.length ?? 0,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (BuildContext context, int index) {
                           Dog c = userDogs?.elementAt(index);
                           return (c.name != null && c.name.length > 0)
-                              ? GestureDetector(
+                              ? SizedBox(
+                                  child: InkWell(
                                   onTap: () {
                                     Navigator.push(
                                       context,
@@ -157,15 +243,18 @@ class UserInfo extends StatelessWidget {
                                     );
                                   },
                                   child: Container(
-                                      width: 64.0,
-                                      height: 64.0,
-                                      decoration: new BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          image: new DecorationImage(
-                                              fit: BoxFit.fill,
-                                              image: new AssetImage(
-                                                  'HimmelskaHundar.jpg'))),child: Text(c.name),))
-                              : GestureDetector(
+                                    width: 75,
+                                    height: 75,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      child: Image.asset(
+                                        'BrewDog.jpg',
+                                      ),
+                                    ),
+                                  ),
+                                ))
+                              : SizedBox(
+                                  child: InkWell(
                                   onTap: () {
                                     Navigator.push(
                                       context,
@@ -174,14 +263,16 @@ class UserInfo extends StatelessWidget {
                                     );
                                   },
                                   child: Container(
-                                      width: 64.0,
-                                      height: 64.0,
-                                      decoration: new BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          image: new DecorationImage(
-                                              fit: BoxFit.fill,
-                                              image: new AssetImage(
-                                                  'HimmelskaHundar.jpg')))));
+                                    width: 75,
+                                    height: 75,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      child: Image.asset(
+                                        'BrewDog.jpg',
+                                      ),
+                                    ),
+                                  ),
+                                ));
                         },
                       )
                     : Center(
@@ -381,5 +472,74 @@ class Avatar extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class CircularClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var path = Path();
+    path.lineTo(0.0, size.height - 50);
+    path.quadraticBezierTo(
+      size.width / 4,
+      size.height,
+      size.width / 2,
+      size.height,
+    );
+    path.quadraticBezierTo(
+      size.width - size.width / 4,
+      size.height,
+      size.width,
+      size.height - 50,
+    );
+    path.lineTo(size.width, 0.0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+}
+
+@immutable
+class ClipShadowPath extends StatelessWidget {
+  final Shadow shadow;
+  final CustomClipper<Path> clipper;
+  final Widget child;
+
+  ClipShadowPath({
+    @required this.shadow,
+    @required this.clipper,
+    @required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      painter: _ClipShadowShadowPainter(
+        clipper: this.clipper,
+        shadow: this.shadow,
+      ),
+      child: ClipPath(child: child, clipper: this.clipper),
+    );
+  }
+}
+
+class _ClipShadowShadowPainter extends CustomPainter {
+  final Shadow shadow;
+  final CustomClipper<Path> clipper;
+
+  _ClipShadowShadowPainter({@required this.shadow, @required this.clipper});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    var paint = shadow.toPaint();
+    var clipPath = clipper.getClip(size).shift(shadow.offset);
+    canvas.drawPath(clipPath, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return true;
   }
 }

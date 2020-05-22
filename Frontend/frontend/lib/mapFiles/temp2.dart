@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-
+import 'package:frontend/mapFiles/finishedRoutePage.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mapbox_navigation/flutter_mapbox_navigation.dart';
 
@@ -16,11 +16,12 @@ class _MyAppState extends State<Navigation> {
   String _platformVersion = 'Android';
   static double userLat = 0;
   static double userLng = 0;
+  bool nextPoint = false;
 
   Location _origin =
-      Location(name: "City Hall", latitude: userLat, longitude: userLng);
+      Location(name: "My Location", latitude: userLat, longitude: userLng);
   Location _destination =
-      Location(name: "Downtown Buffalo", latitude: 59.3693, longitude: 17.8634);
+      Location(name: "Lumaparken", latitude: 59.303985, longitude: 18.097073);
 
   MapboxNavigation _directions;
   bool _arrived = false;
@@ -47,6 +48,10 @@ class _MyAppState extends State<Navigation> {
       if (arrived) {
         await Future.delayed(Duration(seconds: 3));
         await _directions.finishNavigation();
+        // setState(() {
+        //   Navigator.push(context,
+        //       MaterialPageRoute(builder: (context) => FinishedRoutePage()));
+        // });
       }
     });
 
@@ -92,7 +97,7 @@ class _MyAppState extends State<Navigation> {
                     origin: _origin,
                     destination: _destination,
                     mode: NavigationMode.walking,
-                    simulateRoute: false,
+                    simulateRoute: true,
                     language: "English",
                     units: VoiceUnits.metric);
               },

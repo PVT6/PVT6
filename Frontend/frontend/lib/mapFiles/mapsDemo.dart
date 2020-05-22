@@ -345,11 +345,14 @@ class MapsDemoState extends State<MapsDemo> {
                       height: 10,
                     ),
                     Card(
-                        shape: InputBorder.none,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
                         color: Colors.white,
                         elevation: 20,
                         child: FlatButton(
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text(
                                 "Search Around",
@@ -359,12 +362,8 @@ class MapsDemoState extends State<MapsDemo> {
                                   fontSize: 16,
                                 ),
                               ),
-                              SizedBox(
-                                width: 200,
-                                height: 60,
-                              ),
                               Icon(
-                                Icons.search,
+                                Icons.mic,
                                 size: 30,
                               ),
                             ],
@@ -462,8 +461,6 @@ class MapsDemoState extends State<MapsDemo> {
   _goToPosition1() {}
 
   _openNotifications() {}
-
-  
 }
 
 class CustomListTile extends StatelessWidget {
