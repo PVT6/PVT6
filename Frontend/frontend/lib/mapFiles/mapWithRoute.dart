@@ -42,6 +42,7 @@ class _MapWithRoute extends State<MapWithRoute> {
       context: context,
       mapController: mapController,
       markers: markers,
+      onLocationUpdate: (LatLng pos) => usersCurrentPos = pos,
       updateMapLocationOnPositionChange: false,
     );
     
