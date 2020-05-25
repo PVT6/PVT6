@@ -107,30 +107,57 @@ class MapsDemoState extends State<MapsDemo> {
             child: ListView(
               padding: EdgeInsets.zero,
               children: <Widget>[
-                UserAccountsDrawerHeader(
-                  decoration: BoxDecoration(color: colorPurple),
-                  accountName: Text(
-                    userlib.name, //userData
-                    style: TextStyle(
-                        color: textYellow,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24.0,
-                        letterSpacing: 1.1),
-                  ),
-                  accountEmail: Text(
-                    userlib.email, //userData
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16.0,
-                        letterSpacing: 1.1),
-                  ),
-                  currentAccountPicture: CircleAvatar(
-                    child: Text(
-                      "PH", //userData
-                      style: TextStyle(fontSize: 40.0),
+                DrawerHeader(
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            colors: <Color>[colorPurple, colorPeachPink])),
+                    child: Container(
+                      child: Column(
+                        children: <Widget>[
+                          Material(
+                            color: Colors.transparent,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(50.0)),
+                            child: Image.asset(
+                              "logopurplepink.png",
+                              width: 100,
+                              height: 100,
+                            ),
+                          ),
+                          Text(
+                            userlib.name, //userData
+                            style: TextStyle(
+                                color: textYellow,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Hipster Script W00 Regular',
+                                fontSize: 18.0,
+                                letterSpacing: 1.1),
+                          ),
+                        ],
+                      ),
+                    )
+                    // accountName: Text(
+                    //   userlib.name, //userData
+                    //   style: TextStyle(
+                    //       color: textYellow,
+                    //       fontWeight: FontWeight.bold,
+                    //       fontSize: 24.0,
+                    //       letterSpacing: 1.1),
+                    // ),
+                    // accountEmail: Text(
+                    //   userlib.email, //userData
+                    //   style: TextStyle(
+                    //       color: Colors.white,
+                    //       fontSize: 16.0,
+                    //       letterSpacing: 1.1),
+                    // ),
+                    // currentAccountPicture: CircleAvatar(
+                    //   child: Text(
+                    //     "PH", //userData
+                    //     style: TextStyle(fontSize: 40.0),
+                    //   ),
+                    // ),
                     ),
-                  ),
-                ),
                 CustomListTile(
                     Icons.person,
                     'Profile',
@@ -178,20 +205,11 @@ class MapsDemoState extends State<MapsDemo> {
                 //                   builder: (context) => MySignInPage()))
                 //         }),
                 SizedBox(
-                  height: 220,
+                  height: 240,
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    SizedBox(
-                      width: 150,
-                      height: 120,
-                      child: Image.asset(
-                        'assets/logopurplepink.png',
-                      ),
-                    ),
-                    SizedBox(
-                      width: 30,
-                    ),
                     Material(
                       elevation: 5.0,
                       color: Colors.red,
@@ -383,52 +401,61 @@ class MapsDemoState extends State<MapsDemo> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        FlatButton(
-                          color: colorPeachPink,
-                          onPressed: () {},
-                          child: Row(
-                            children: <Widget>[
-                              Icon(
-                                Icons.restaurant,
-                                color: colorPurple,
-                              ),
-                              Text("Restaurant",
-                                  style: TextStyle(fontSize: 11)),
-                            ],
+                        Container(
+                          width: 110,
+                          child: FlatButton(
+                            color: colorPeachPink,
+                            onPressed: () {},
+                            child: Row(
+                              children: <Widget>[
+                                Icon(
+                                  Icons.restaurant,
+                                  color: colorPurple,
+                                ),
+                                Text("Restaurant",
+                                    style: TextStyle(fontSize: 11)),
+                              ],
+                            ),
                           ),
                         ),
                         SizedBox(
                           width: 10,
                         ),
-                        FlatButton(
-                          color: colorPeachPink,
-                          onPressed: () {},
-                          child: Row(
-                            children: <Widget>[
-                              Icon(
-                                Icons.nature,
-                                color: colorPurple,
-                              ),
-                              Text("Parks", style: TextStyle(fontSize: 11)),
-                            ],
+                        Container(
+                          width: 90,
+                          child: FlatButton(
+                            color: colorPeachPink,
+                            onPressed: () {},
+                            child: Row(
+                              children: <Widget>[
+                                Icon(
+                                  Icons.nature,
+                                  color: colorPurple,
+                                ),
+                                Text("Parks", style: TextStyle(fontSize: 11)),
+                              ],
+                            ),
                           ),
                         ),
                         SizedBox(
                           width: 10,
                         ),
-                        FlatButton(
-                          color: colorPeachPink,
-                          onPressed: () {},
-                          child: Row(
-                            children: <Widget>[
-                              Icon(
-                                FontAwesomeIcons.trash,
-                                color: colorPurple,
+                        Container(
+                            width: 110,
+                            child: FlatButton(
+                              color: colorPeachPink,
+                              onPressed: () {},
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(
+                                    FontAwesomeIcons.trash,
+                                    color: colorPurple,
+                                  ),
+                                  Text("Trashcans",
+                                      style: TextStyle(fontSize: 11)),
+                                ],
                               ),
-                              Text("Trashcans", style: TextStyle(fontSize: 11)),
-                            ],
-                          ),
-                        ),
+                            )),
                       ],
                     ),
                   ],

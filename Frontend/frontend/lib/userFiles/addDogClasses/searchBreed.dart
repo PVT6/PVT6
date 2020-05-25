@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:frontend/friendsAndContacts/addContactPage.dart';
 
+import '../../customAppBar.dart';
 import '../addDogTest.dart';
 
 class SearchBreeds extends StatefulWidget {
@@ -404,20 +405,9 @@ class SearchBreedState extends State<SearchBreeds> {
   Widget build(BuildContext context) {
     return new Scaffold(
       backgroundColor: colorLighterPink,
-      appBar: new AppBar(
-        leading: Icon(Icons.verified_user),
-        elevation: 0,
-        title: Text('Breed'),
-        backgroundColor: colorPurple,
-        centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.pets),
-            onPressed: () {},
-          )
-        ],
-      ),
-      body: Column(
+      
+      body: Column(children: <Widget>[
+          GradientAppBar("Breed", ),Column(
         children: <Widget>[
           Text(
             "Select a breed from the list below",
@@ -526,6 +516,6 @@ class SearchBreedState extends State<SearchBreeds> {
             )
         ],
       ),
-    );
+      ]));
   }
 }

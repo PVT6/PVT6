@@ -73,12 +73,12 @@ class _HomePageState extends State<FriendsPage>
 
   Future<void> getInfo() async {
     //contacts
-    var url = 'https://group6-15.pvt.dsv.su.se/contacts/sentRequests?uid=${userlib.uid}';
+    var url =
+        'https://group6-15.pvt.dsv.su.se/contacts/sentRequests?uid=${userlib.uid}';
     var response = await http.get(Uri.parse(url));
     List<SentRequest> sentRequest = (json.decode(response.body) as List)
-          .map((i) => SentRequest.fromJson(i))
-          .toList();
- 
+        .map((i) => SentRequest.fromJson(i))
+        .toList();
   }
 
   @override
@@ -206,9 +206,10 @@ class _HomePageState extends State<FriendsPage>
                                     size: 37,
                                   ),
                                   onPressed: () {
-                                    Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          InputPage()));
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                InputPage()));
                                   },
                                 ),
                               ));
@@ -535,16 +536,21 @@ class _MyHomePageState extends State<SearchUsers> {
                       RaisedButton(
                           child: Text('Search User'),
                           onPressed: () async {
-                            var url =
-                                'https://group6-15.pvt.dsv.su.se/contacts/new';
+                            if (phone != null) {
+                              var url =
+                                  'https://group6-15.pvt.dsv.su.se/contacts/new';
 
-                            var response = await http.post(Uri.parse(url),
-                                body: {'sendUid': userlib.uid, 'phone': phone});
-                            if (response.statusCode == 200) {
-                              if (response.body == "Sent friend request") {
-                                showAlertDialogApproved(context);
-                              } else {
-                                showAlertDialogDeclined(context);
+                              var response = await http.post(Uri.parse(url),
+                                  body: {
+                                    'sendUid': userlib.uid,
+                                    'phone': phone
+                                  });
+                              if (response.statusCode == 200) {
+                                if (response.body == "Sent friend request") {
+                                  showAlertDialogApproved(context);
+                                } else {
+                                  showAlertDialogDeclined(context);
+                                }
                               }
                             }
                           })

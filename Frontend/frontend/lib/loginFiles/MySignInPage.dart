@@ -6,6 +6,7 @@ import 'package:frontend/mapFiles/mapsDemo.dart';
 import 'package:frontend/mapFiles/temp.dart';
 import 'package:frontend/mapFiles/routeTest.dart';
 import 'package:frontend/services/auth.dart';
+import '../fadeRoute.dart';
 import 'secondRoute.dart';
 import 'package:latlong/latlong.dart';
 import 'package:bordered_text/bordered_text.dart';
@@ -14,8 +15,6 @@ LatLng basic = new LatLng(59.343431, 18.094141);
 
 Color darkGreen = Colors.green[900];
 Color lightGreen = Colors.green[100];
-
-
 
 class MySignInPage extends StatefulWidget {
   MySignInPage({Key key, this.title}) : super(key: key);
@@ -57,35 +56,37 @@ class _MySignInPageState extends State<MySignInPage>
         builder: (buildContext, child) {
           if (offsetAnimation.value < 0.0)
             print('${offsetAnimation.value + 8.0}');
-          return Container( 
+          return Container(
               padding: EdgeInsets.only(
                   left: offsetAnimation.value + 24.0,
                   right: 24.0 - offsetAnimation.value),
               child: Center(
-                child: TextFormField(
-      obscureText: false,
-      style: style,
-      keyboardType: TextInputType.emailAddress,
-      decoration: InputDecoration(
-        contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        hintText: "Username",
-        icon: new Icon(
-          Icons.mail,
-          color: colorPurple,
-        ),
-      ),
-      validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
-      onSaved: (value) => currentText = value.trim(),
-      onChanged: (val) {
-        setState(() => currentText = val);
-      },
-    )));});
+                  child: TextFormField(
+                obscureText: false,
+                style: style,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                  hintText: "Username",
+                  icon: new Icon(
+                    Icons.mail,
+                    color: colorPurple,
+                  ),
+                ),
+                validator: (value) =>
+                    value.isEmpty ? 'Email can\'t be empty' : null,
+                onSaved: (value) => currentText = value.trim(),
+                onChanged: (val) {
+                  setState(() => currentText = val);
+                },
+              )));
+        });
     final passwordField = AnimatedBuilder(
         animation: offsetAnimation,
         builder: (buildContext, child) {
           if (offsetAnimation.value < 0.0)
             print('${offsetAnimation.value + 8.0}');
-          return Container( 
+          return Container(
               padding: EdgeInsets.only(
                   left: offsetAnimation.value + 24.0,
                   right: 24.0 - offsetAnimation.value),
@@ -110,7 +111,7 @@ class _MySignInPageState extends State<MySignInPage>
                 ),
               ));
         });
-    
+
     final loginButon = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
@@ -126,10 +127,7 @@ class _MySignInPageState extends State<MySignInPage>
             if (result == null) {
               controller.forward(from: 0.0);
             } else {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MapsDemo()),
-              );
+              Navigator.push(context, FadeRoute(page: MapsDemo()));
             }
           }
         },
@@ -157,15 +155,13 @@ class _MySignInPageState extends State<MySignInPage>
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       SizedBox(height: 30.0),
-                      Row(children: <Widget>[
-                        SizedBox(
-                          width: 280,
-                          height: 200,
-                          child: Image.asset(
-                            'assets/logopurplepink.png',
-                          ),
+                      SizedBox(
+                        width: 280,
+                        height: 200,
+                        child: Image.asset(
+                          'assets/logopurplepink.png',
                         ),
-                      ]),
+                      ),
                       SizedBox(height: 20.0),
                       emailField,
                       SizedBox(height: 20.0),

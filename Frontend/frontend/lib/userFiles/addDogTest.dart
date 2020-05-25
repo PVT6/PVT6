@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
-
 import 'package:frontend/friendsAndContacts/friendsPage.dart';
 import 'package:frontend/userFiles/addDogClasses/transition.dart';
 import 'package:frontend/userFiles/addDogClasses/submitSlider.dart';
@@ -14,6 +13,10 @@ import 'package:frontend/userFiles/addDogClasses/heightSlider.dart';
 import 'package:frontend/userFiles/addDogClasses/ageSlider.dart';
 import 'package:frontend/userFiles/addDogClasses/dogPicture.dart';
 import 'package:frontend/userFiles/addDogClasses/searchBreed.dart';
+import 'package:http/http.dart' as http;
+import '../customAppBar.dart';
+import 'user.dart' as userlib;
+import '../dog.dart';
 
 String dogName;
 String finalBreed;
@@ -87,43 +90,36 @@ class NameSelectState extends State<NameSelect> {
   Widget build(BuildContext context) {
     return new Scaffold(
         backgroundColor: colorLighterPink,
-        appBar: new AppBar(
-          leading: Icon(Icons.verified_user),
-          elevation: 0,
-          title: Text('Name'),
-          backgroundColor: colorPurple,
-          centerTitle: true,
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.pets),
-              onPressed: () {},
+        body: Column(
+          children: <Widget>[
+            GradientAppBar("Name"),
+            TextFormField(
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(15),
+              ],
+              obscureText: false,
+              style: style,
+              keyboardType: TextInputType.emailAddress,
+              decoration: InputDecoration(
+                hintText: 'Name here',
+                filled: true,
+                fillColor: Colors.white,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+              ),
+              validator: (value) =>
+                  value.isEmpty ? 'Name can\'t be empty' : null,
+              onChanged: (val) {
+                setState(() => dogName = val);
+              },
             )
           ],
-        ),
-        body: TextFormField(
-          inputFormatters: [
-            LengthLimitingTextInputFormatter(15),
-          ],
-          obscureText: false,
-          style: style,
-          keyboardType: TextInputType.emailAddress,
-          decoration: InputDecoration(
-            hintText: 'Name here',
-            filled: true,
-            fillColor: Colors.white,
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-              borderSide: BorderSide(color: Colors.grey),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-              borderSide: BorderSide(color: Colors.grey),
-            ),
-          ),
-          validator: (value) => value.isEmpty ? 'Name can\'t be empty' : null,
-          onChanged: (val) {
-            setState(() => dogName = val);
-          },
         ));
   }
 }
@@ -143,49 +139,40 @@ class DescSelectState extends State<DescSelect> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      backgroundColor: colorLighterPink,
-      appBar: new AppBar(
-        leading: Icon(Icons.verified_user),
-        elevation: 0,
-        title: Text('Description'),
-        backgroundColor: colorPurple,
-        centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.pets),
-            onPressed: () {},
-          )
-        ],
-      ),
-      body: TextFormField(
-        inputFormatters: [
-          LengthLimitingTextInputFormatter(125),
-        ],
-        autocorrect: true,
-        obscureText: false,
-        minLines: 4,
-        maxLines: 5,
-        style: style,
-        keyboardType: TextInputType.emailAddress,
-        decoration: InputDecoration(
-          hintText: 'Write a short description of your dog here',
-          filled: true,
-          fillColor: Colors.white,
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            borderSide: BorderSide(color: Colors.grey),
+        backgroundColor: colorLighterPink,
+        body: Column(children: <Widget>[
+          GradientAppBar(
+            "Description",
           ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            borderSide: BorderSide(color: Colors.grey),
+          TextFormField(
+            inputFormatters: [
+              LengthLimitingTextInputFormatter(125),
+            ],
+            autocorrect: true,
+            obscureText: false,
+            minLines: 4,
+            maxLines: 5,
+            style: style,
+            keyboardType: TextInputType.emailAddress,
+            decoration: InputDecoration(
+              hintText: 'Write a short description of your dog here',
+              filled: true,
+              fillColor: Colors.white,
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                borderSide: BorderSide(color: Colors.grey),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                borderSide: BorderSide(color: Colors.grey),
+              ),
+            ),
+            validator: (value) => value.isEmpty ? 'Name can\'t be empty' : null,
+            onChanged: (val) {
+              setState(() => desc = val);
+            },
           ),
-        ),
-        validator: (value) => value.isEmpty ? 'Name can\'t be empty' : null,
-        onChanged: (val) {
-          setState(() => desc = val);
-        },
-      ),
-    );
+        ]));
   }
 }
 
@@ -275,18 +262,30 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
     if (dogName == null || finalBreed == null) {
       return showAlertDialog(context);
     } else {
-      return Navigator.of(context).push(FadeRoute(
-        builder: (context) => ResultPage(
-          weight: weight,
-          height: height,
-          gender: gender,
-          dogName: dogName,
-          age: age,
-          finalBreed: finalBreed,
-          dogPicture: dogPicture,
-          desc: desc,
-        ),
-      ));
+      var url = 'https://group6-15.pvt.dsv.su.se/user/newdog';
+      var response = await http.post(Uri.parse(url), body: {
+        'name': dogName,
+        'breed': finalBreed,
+        'age': age.toString(),
+        'weight': weight.toString(),
+        'uid': userlib.uid
+      });
+      if (response.statusCode == 200) {
+        return Navigator.of(context).push(FadeRoute(
+          builder: (context) => ResultPage(
+            weight: weight,
+            height: height,
+            gender: gender,
+            dogName: dogName,
+            age: age,
+            finalBreed: finalBreed,
+            dogPicture: dogPicture,
+            desc: desc,
+          ),
+        ));
+      } else {
+        // ERROR MEDELANDE HÄR
+      }
     }
   }
 
@@ -322,7 +321,7 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
                   margin: EdgeInsets.all(10),
                   elevation: 20,
                   child:
-                      Container(width: 420, height: 180, child: DescSelect())),
+                      Container(width: 420, height: 186, child: DescSelect())),
               Card(
                   margin: EdgeInsets.all(10),
                   elevation: 20,
@@ -383,16 +382,6 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
         ));
   }
 
-  Widget _tempCard(String label) {
-    return Card(
-      child: Container(
-        width: double.infinity,
-        height: double.infinity,
-        child: Text(label),
-      ),
-    );
-  }
-
   Widget _buildBottom(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
@@ -421,63 +410,58 @@ class BuildCardState extends State<BuildCards> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: colorLighterPink,
-        appBar: AppBar(
-          leading: Icon(Icons.verified_user),
-          elevation: 0,
-          title: Text('Overall Information'),
-          backgroundColor: colorPurple,
-          centerTitle: true,
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.pets),
-              onPressed: () {},
-            )
-          ],
-        ),
-        body: Container(
-            padding: EdgeInsets.only(
-              left: 10.0,
-              right: 10.0,
-              top: screenAwareSize(32.0, context),
-            ),
-            child: Column(
-              children: <Widget>[
-                Expanded(
-                  child: Row(
+        body: Column(children: <Widget>[
+          GradientAppBar(
+            "Description",
+          ),
+          Expanded(
+              child: Container(
+                  padding: EdgeInsets.only(
+                    left: 10.0,
+                    right: 10.0,
+                    top: screenAwareSize(32.0, context),
+                  ),
+                  child: Column(
                     children: <Widget>[
                       Expanded(
-                        child: Column(
+                        child: Row(
                           children: <Widget>[
                             Expanded(
-                                child: GenderCard(
-                              gender: gender,
-                              onChanged: (val) => setState(() => gender = val),
-                            )),
-                            Expanded(
-                                child: AgeCard(
-                              age: age,
-                              onChanged: (val) => setState(() => age = val),
-                            )),
-                            Expanded(
-                              child: WeightCard(
-                                weight: weight,
-                                onChanged: (val) =>
-                                    setState(() => weight = val),
+                              child: Column(
+                                children: <Widget>[
+                                  Expanded(
+                                      child: GenderCard(
+                                    gender: gender,
+                                    onChanged: (val) =>
+                                        setState(() => gender = val),
+                                  )),
+                                  Expanded(
+                                      child: AgeCard(
+                                    age: age,
+                                    onChanged: (val) =>
+                                        setState(() => age = val),
+                                  )),
+                                  Expanded(
+                                    child: WeightCard(
+                                      weight: weight,
+                                      onChanged: (val) =>
+                                          setState(() => weight = val),
+                                    ),
+                                  )
+                                ],
                               ),
-                            )
+                            ),
+                            Expanded(
+                                child: HeightCard(
+                              height: height,
+                              onChanged: (val) => setState(() => height = val),
+                            ))
                           ],
                         ),
-                      ),
-                      Expanded(
-                          child: HeightCard(
-                        height: height,
-                        onChanged: (val) => setState(() => height = val),
-                      ))
+                      )
                     ],
-                  ),
-                )
-              ],
-            )));
+                  )))
+        ]));
   }
 }
 
@@ -589,7 +573,10 @@ class ResultPageState extends State<ResultPage> {
                           decoration: BoxDecoration(
                               color: Colors.yellow,
                               borderRadius: BorderRadius.circular(20.0)),
-                          child: Text(widget.finalBreed, style: TextStyle(fontSize: 16,)),
+                          child: Text(widget.finalBreed,
+                              style: TextStyle(
+                                fontSize: 16,
+                              )),
                         ),
                       )
                     ],

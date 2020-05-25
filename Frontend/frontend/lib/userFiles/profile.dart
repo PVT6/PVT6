@@ -2,11 +2,13 @@ import 'dart:convert';
 
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:frontend/mapFiles/temp.dart';
 import 'package:frontend/userFiles/addDogTest.dart';
 import 'package:frontend/userFiles/addPet.dart';
 import 'package:frontend/userFiles/dogProfile.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:frontend/userFiles/editProfile.dart';
 import 'user.dart' as userlib;
 import 'package:frontend/mapFiles/mapsDemo.dart';
 import 'package:http/http.dart' as http;
@@ -100,19 +102,7 @@ class ProfileEightPageState extends State<ProfileEightPage> {
                     ),
                   ],
                 ),
-                Positioned.fill(
-                  bottom: 10.0,
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Avatar(
-                      image: AssetImage("LeBistro.jpg"),
-                      radius: 90,
-                      backgroundColor: Colors.transparent,
-                      borderColor: Colors.grey.shade300,
-                      borderWidth: 1.0,
-                    ),
-                  ),
-                ),
+                
                 Positioned(
                   bottom: 0.0,
                   left: 20.0,
@@ -124,7 +114,12 @@ class ProfileEightPageState extends State<ProfileEightPage> {
                       Icons.edit,
                       color: colorPurple,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => EditProfile()),
+                      );
+                    },
                   ),
                 ),
                 Positioned(
@@ -148,43 +143,6 @@ class ProfileEightPageState extends State<ProfileEightPage> {
                 ),
               ],
             ),
-            // ProfileHeader(
-            //   avatar: new AssetImage("LeBistro.jpg"), //userData
-            //   coverImage: new AssetImage("backgroundStockholm.png"), //userData
-            //   title: userlib.name, //userData
-            //   subtitle: "Dog lover",
-            //   actions: <Widget>[
-            //     //Row med items
-            //     // MaterialButton(
-            //     //   color: colorPeachPink,
-            //     //   shape: CircleBorder(),
-            //     //   elevation: 0,
-            //     //   child: Icon(Icons.arrow_back, color: colorPurple),
-            //     //   onPressed: () {
-            //     //     Navigator.push(
-            //     //       context,
-            //     //       MaterialPageRoute(builder: (context) => MapsDemo()),
-            //     //     );
-            //     //   },
-            //     // ),
-
-            //     MaterialButton(
-            //       color: colorPeachPink,
-            //       shape: CircleBorder(),
-            //       elevation: 0,
-            //       child: Icon(
-            //         Icons.pets,
-            //         color: colorPurple,
-            //       ),
-            //       onPressed: () {
-            //         Navigator.push(
-            //           context,
-            //           MaterialPageRoute(builder: (context) => InputPage()),
-            //         );
-            //       },
-            //     ),
-            //   ],
-            // ),
             const SizedBox(height: 10.0),
             UserInfo(),
           ],
@@ -197,8 +155,6 @@ class ProfileEightPageState extends State<ProfileEightPage> {
 class UserInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // SKRIVA IN SÅ ATT LISTAN ANVÄNDS
-
     return Container(
       padding: EdgeInsets.all(10),
       child: Column(
@@ -310,13 +266,13 @@ class UserInfo extends StatelessWidget {
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 12, vertical: 4),
                             leading:
-                                Icon(Icons.my_location, color: colorPurple),
+                                Icon(FontAwesomeIcons.user, color: colorPurple),
                             title: Text(
-                              "Location",
+                              "Username",
                               style: TextStyle(color: colorPurple),
                             ),
                             subtitle: Text(
-                              "Stockholm",
+                              userlib.name,
                               style: TextStyle(color: colorPurple),
                             ),
                           ),
@@ -342,17 +298,17 @@ class UserInfo extends StatelessWidget {
                               style: TextStyle(color: colorPurple),
                             ),
                           ),
-                          ListTile(
-                            leading: Icon(Icons.person, color: colorPurple),
-                            title: Text(
-                              "About Me",
-                              style: TextStyle(color: colorPurple),
-                            ),
-                            subtitle: Text(
-                              "I love big fluffy dogs. Proud owner of a Bernese Mountain Dog",
-                              style: TextStyle(color: colorPurple),
-                            ),
-                          ),
+                          // ListTile(
+                          //   leading: Icon(Icons.person, color: colorPurple),
+                          //   title: Text(
+                          //     "About Me",
+                          //     style: TextStyle(color: colorPurple),
+                          //   ),
+                          //   subtitle: Text(
+                          //     "I love big fluffy dogs. Proud owner of a Bernese Mountain Dog",
+                          //     style: TextStyle(color: colorPurple),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ],

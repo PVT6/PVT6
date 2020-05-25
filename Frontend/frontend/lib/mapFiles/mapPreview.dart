@@ -6,8 +6,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:frontend/friendsAndContacts/friendsPage.dart';
 import 'package:frontend/routePickerMap/Route.dart';
-import 'package:geojson/geojson.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart';
 import 'package:latlong/latlong.dart';
 import 'package:map_controller/map_controller.dart';
@@ -16,8 +14,6 @@ import 'package:flutter_config/flutter_config.dart';
 import 'package:http/http.dart' as http;
 import 'package:frontend/userFiles/user.dart' as userlib;
 import 'dart:convert';
-
-import 'mapWithRoute.dart';
 
 List<SavedRoute> savedRoutes = [];
 
@@ -258,11 +254,17 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
     showDialog(
       context: context,
       builder: (context) {
-        String contentText = "Content of Dialog";
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: Text("Save Route"),
+              backgroundColor: colorPeachPink,
+              title: Text(
+                "Save Route",
+                style: TextStyle(
+                  fontFamily: 'Hipster Script W00 Regular',
+                  fontSize: 28,
+                ),
+              ),
               content: Row(
                 children: <Widget>[
                   SizedBox(
@@ -283,10 +285,12 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
               ),
               actions: <Widget>[
                 FlatButton(
+                  color: Colors.red,
                   onPressed: () => Navigator.pop(context, false),
                   child: Text("Cancel"),
                 ),
                 FlatButton(
+                  color: Colors.green,
                   onPressed: () async {
                     if (routesData != "") {
                       print(routesData);
@@ -328,12 +332,17 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
     showDialog(
       context: context,
       builder: (context) {
-        String contentText = "Content of Dialog";
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
               backgroundColor: colorPeachPink,
-              title: Text("Generate a route", style: TextStyle(fontFamily: 'Hipster Script W00 Regular', fontSize: 28,),),
+              title: Text(
+                "Generate a route",
+                style: TextStyle(
+                  fontFamily: 'Hipster Script W00 Regular',
+                  fontSize: 28,
+                ),
+              ),
               content: Row(
                 children: <Widget>[
                   SizedBox(
@@ -342,7 +351,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                     child: TextField(
                       controller: kmController,
                       decoration: new InputDecoration(
-                        labelText: "How long?",
+                        labelText: "How long? (In Km)",
                         border: new OutlineInputBorder(
                             borderSide: new BorderSide(color: Colors.black)),
                       ),
@@ -352,11 +361,6 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                       ], // Only numbers c
                     ),
                   ),
-                  SizedBox(
-                    width: 60.0,
-                    height: 300.0,
-                    child: Text('km'),
-                  )
                 ],
               ),
               actions: <Widget>[
@@ -383,8 +387,6 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
   }
 
   showSavedRoutes(BuildContext context) {
-    TextEditingController editingController = TextEditingController();
-
     showDialog(
       context: context,
       builder: (context) {
@@ -392,7 +394,13 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
           builder: (context, setState) {
             return AlertDialog(
               backgroundColor: colorPeachPink,
-              title: Text("Saved routes", style: TextStyle(fontFamily: 'Hipster Script W00 Regular', fontSize: 28,),),
+              title: Text(
+                "Saved routes",
+                style: TextStyle(
+                  fontFamily: 'Hipster Script W00 Regular',
+                  fontSize: 28,
+                ),
+              ),
               content: Row(
                 children: <Widget>[
                   Container(
@@ -434,28 +442,37 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                                   barrierDismissible: true,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
-                                      title: Text('${savedRoutes[index].name}'),
-                                      content: SingleChildScrollView(
-                                        child: ListBody(
-                                          children: <Widget>[],
+                                      backgroundColor: colorPeachPink,
+                                      title: Text(
+                                        '${savedRoutes[index].name}',
+                                        style: TextStyle(
+                                          fontFamily:
+                                              'Hipster Script W00 Regular',
+                                          fontSize: 28,
                                         ),
                                       ),
+                                      content: Text(
+                                          '${savedRoutes[index].distans}km'),
                                       actions: <Widget>[
                                         FlatButton(
                                           onPressed: () =>
                                               Navigator.pop(context),
                                           child: Text('Close'),
                                         ),
-                                        FlatButton(
+                                        IconButton(
+                                          icon: Icon(
+                                            FontAwesomeIcons.trash,
+                                            color: Colors.red,
+                                          ),
                                           onPressed: () {
                                             deleteSavedRoutes(savedRoutes[index]
                                                 .id
                                                 .toString());
                                             Navigator.pop(context);
                                           },
-                                          child: Text('Delete'),
                                         ),
                                         FlatButton(
+                                          color: Colors.green,
                                           onPressed: () {
                                             openSavedRoutes(savedRoutes[index]
                                                 .id
@@ -499,8 +516,12 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("No Route"),
-      content: Text("This is my message."),
+      backgroundColor: colorPeachPink,
+      title: Text(
+        "Error (No Route)",
+        style: TextStyle(color: Colors.red),
+      ),
+      content: Text("Please make sure a route is present on the map!"),
       actions: [
         okButton,
       ],
