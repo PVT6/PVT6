@@ -1,13 +1,14 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:location/location.dart';
 import 'package:latlong/latlong.dart';
 import 'package:map_controller/map_controller.dart';
 import 'package:user_location/user_location.dart';
 import 'package:flutter_config/flutter_config.dart';
 
 
-import 'mapPreview.dart';
+
 
 class MapWithRoute extends StatefulWidget {
   @override
@@ -18,6 +19,7 @@ class MapWithRoute extends StatefulWidget {
 }
 
 class _MapWithRoute extends State<MapWithRoute> {
+  LatLng usersCurrentPos;
   MapController mapController;
   StatefulMapController statefulMapController;
   StreamSubscription<StatefulMapControllerStateChange> sub;
@@ -27,8 +29,6 @@ class _MapWithRoute extends State<MapWithRoute> {
   void initState() {
     mapController = MapController();
     statefulMapController = StatefulMapController(mapController: mapController);
-    
-    
     sub = statefulMapController.changeFeed.listen((change) => setState(() {}));
     super.initState();
   }
@@ -37,6 +37,7 @@ class _MapWithRoute extends State<MapWithRoute> {
   Widget build(BuildContext context) {
     var points = widget.pointsImport;
     LatLng latLng = widget.latLngImport;
+    usersCurrentPos = latLng;
     userLocationOptions = UserLocationOptions(
       context: context,
       mapController: mapController,
@@ -83,20 +84,24 @@ class _MapWithRoute extends State<MapWithRoute> {
         
         // ...
       ])),
-      floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => MapPreviewPage(),
-                  ));
-                     },
-                  icon: Icon(Icons.router),
-                  label: Text('Go To Routes'),
-                  foregroundColor: Colors.pink,
-                  backgroundColor: Colors.purple
-        ),
+        appBar: AppBar(
+        title: const Text('Route Walker'),
+      ),
     );
   }
+
+  getLocation() async {
+    var location = new Location();
+    location.onLocationChanged.listen((currentLocation) {
+      print(currentLocation.latitude);
+      print(currentLocation.longitude);
+      setState(() {
+        usersCurrentPos = LatLng(currentLocation.latitude, currentLocation.longitude);
+      });
+
+      print("getLocation:$usersCurrentPos");
+    });
   
+}
+
 }
