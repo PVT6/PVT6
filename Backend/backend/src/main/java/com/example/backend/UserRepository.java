@@ -12,4 +12,7 @@ import com.example.backend.*;
 public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("FROM User WHERE uid = ?1")
     User findByUid(String uid);
+
+    @Query("FROM User WHERE phoneNumber = ?1")
+    User findByPhone(String phoneNumber);
 }

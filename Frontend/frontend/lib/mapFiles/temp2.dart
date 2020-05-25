@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-
+import 'package:frontend/mapFiles/finishedRoutePage.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mapbox_navigation/flutter_mapbox_navigation.dart';
 
-
 class Navigation extends StatefulWidget {
+  final double userLat;
+  final double userLng;
+  Navigation(this.userLat, this.userLng);
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<Navigation> {
   String _platformVersion = 'Android';
-  final _origin =
-      Location(name: "City Hall", latitude: 42.886448, longitude: -78.878372);
-  final _destination = Location(
-      name: "Downtown Buffalo", latitude: 42.8866177, longitude: -78.8814924);
+  static double userLat = 0;
+  static double userLng = 0;
+  bool nextPoint = false;
+
+  Location _origin =
+      Location(name: "My Location", latitude: userLat, longitude: userLng);
+  Location _destination =
+      Location(name: "Lumaparken", latitude: 59.303985, longitude: 18.097073);
 
   MapboxNavigation _directions;
   bool _arrived = false;
@@ -24,9 +30,10 @@ class _MyAppState extends State<Navigation> {
   @override
   void initState() {
     super.initState();
+    userLat = widget.userLat;
+    userLng = widget.userLng;
     initPlatformState();
   }
-
 
   Future<void> initPlatformState() async {
     if (!mounted) return;
@@ -38,11 +45,14 @@ class _MyAppState extends State<Navigation> {
       setState(() {
         _arrived = arrived;
       });
-      if (arrived)
-        {
-          await Future.delayed(Duration(seconds: 3));
-          await _directions.finishNavigation();
-        }
+      if (arrived) {
+        await Future.delayed(Duration(seconds: 3));
+        await _directions.finishNavigation();
+        // setState(() {
+        //   Navigator.push(context,
+        //       MaterialPageRoute(builder: (context) => FinishedRoutePage()));
+        // });
+      }
     });
 
     String platformVersion;
@@ -62,14 +72,21 @@ class _MyAppState extends State<Navigation> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Plugin example app'),
+          title: const Text('Navigation'),
         ),
         body: Center(
           child: Column(children: <Widget>[
             SizedBox(
               height: 30,
             ),
-            Text('Running on: $_platformVersion\n'),
+            //Text('Running on: $_platformVersion\n'),
+            SizedBox(
+              width: 150,
+              height: 120,
+              child: Image.asset(
+                'assets/logopurplepink.png',
+              ),
+            ),
             SizedBox(
               height: 60,
             ),
@@ -79,38 +96,16 @@ class _MyAppState extends State<Navigation> {
                 await _directions.startNavigation(
                     origin: _origin,
                     destination: _destination,
-                    mode: NavigationMode.drivingWithTraffic,
-                    simulateRoute: true, language: "German", units: VoiceUnits.metric);
+                    mode: NavigationMode.walking,
+                    simulateRoute: true,
+                    language: "English",
+                    units: VoiceUnits.metric);
               },
             ),
             SizedBox(
               height: 60,
             ),
-            Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Text("Distance Remaining: "),
-                      Text(_distanceRemaining != null
-                          ? "${(_distanceRemaining * 0.000621371).toStringAsFixed(1)} miles"
-                          : "---")
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Text("Duration Remaining: "),
-                      Text(_durationRemaining != null
-                          ? "${(_durationRemaining / 60).toStringAsFixed(0)} minutes"
-                          : "---")
-                    ],
-                  )
-                ],
-              ),
-            ),
-
+            Text("Preview karta här nedan")
           ]),
         ),
       ),
