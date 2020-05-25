@@ -102,7 +102,6 @@ class ProfileEightPageState extends State<ProfileEightPage> {
                     ),
                   ],
                 ),
-                
                 Positioned(
                   bottom: 0.0,
                   left: 20.0,
@@ -182,7 +181,7 @@ class UserInfo extends StatelessWidget {
                 child: userDogs != null
                     ? ListView.builder(
                         //https://pusher.com/tutorials/flutter-listviews
-                        
+
                         shrinkWrap: true,
                         itemCount: userDogs?.length ?? 0,
                         scrollDirection: Axis.horizontal,

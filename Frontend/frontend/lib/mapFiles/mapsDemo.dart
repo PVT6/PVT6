@@ -398,66 +398,106 @@ class MapsDemoState extends State<MapsDemo> {
                             );
                           },
                         )),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          width: 110,
-                          child: FlatButton(
-                            color: colorPeachPink,
-                            onPressed: () {},
-                            child: Row(
-                              children: <Widget>[
-                                Icon(
-                                  Icons.restaurant,
-                                  color: colorPurple,
-                                ),
-                                Text("Restaurant",
-                                    style: TextStyle(fontSize: 11)),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Container(
-                          width: 90,
-                          child: FlatButton(
-                            color: colorPeachPink,
-                            onPressed: () {},
-                            child: Row(
-                              children: <Widget>[
-                                Icon(
-                                  Icons.nature,
-                                  color: colorPurple,
-                                ),
-                                Text("Parks", style: TextStyle(fontSize: 11)),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Container(
-                            width: 110,
-                            child: FlatButton(
-                              color: colorPeachPink,
-                              onPressed: () {},
-                              child: Row(
-                                children: <Widget>[
-                                  Icon(
-                                    FontAwesomeIcons.trash,
-                                    color: colorPurple,
+                    SingleChildScrollView(
+                        physics: ScrollPhysics(),
+                        child: Container(
+                          height: 30,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            children: <Widget>[
+                              Container(
+                                width: 110,
+                                child: FlatButton(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(18.0),
+                                      side: BorderSide(color: Colors.transparent)),
+                                  color: colorPeachPink,
+                                  onPressed: () {},
+                                  child: Row(
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.restaurant,
+                                        color: colorPurple,
+                                      ),
+                                      Text("Restaurant",
+                                          style: TextStyle(fontSize: 11)),
+                                    ],
                                   ),
-                                  Text("Trashcans",
-                                      style: TextStyle(fontSize: 11)),
-                                ],
+                                ),
                               ),
-                            )),
-                      ],
-                    ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Container(
+                                width: 90,
+                                child: FlatButton(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(18.0),
+                                      side: BorderSide(color: Colors.transparent)),
+                                  color: colorPeachPink,
+                                  onPressed: () {},
+                                  child: Row(
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.nature,
+                                        color: colorPurple,
+                                      ),
+                                      Text("Parks",
+                                          style: TextStyle(fontSize: 11)),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Container(
+                                  width: 110,
+                                  child: FlatButton(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(18.0),
+                                        side: BorderSide(color: Colors.transparent)),
+                                    color: colorPeachPink,
+                                    onPressed: () {},
+                                    child: Row(
+                                      children: <Widget>[
+                                        Icon(
+                                          FontAwesomeIcons.trash,
+                                          color: colorPurple,
+                                        ),
+                                        Text("Trashcans",
+                                            style: TextStyle(fontSize: 11)),
+                                      ],
+                                    ),
+                                  )),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Container(
+                                width: 122,
+                                child: FlatButton(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(18.0),
+                                      side: BorderSide(color: Colors.transparent)),
+                                  color: colorPeachPink,
+                                  onPressed: () {},
+                                  child: Row(
+                                    children: <Widget>[
+                                      Icon(
+                                        FontAwesomeIcons.lightbulb,
+                                        color: colorPurple,
+                                      ),
+                                      Text("Street Lamps",
+                                          style: TextStyle(fontSize: 11)),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ))
                   ],
                 ),
               ),
