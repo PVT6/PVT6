@@ -38,7 +38,7 @@ class Mapbox extends StatefulWidget {
 class _MapBoxState extends State<Mapbox> {
   final AuthService _auth = AuthService();
   LatLng userLocation;
-
+  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   UserLocationOptions userLocationOptions;
 
   List<Marker> markers = [];
@@ -91,15 +91,15 @@ class _MapBoxState extends State<Mapbox> {
         defaultZoom: 30.0);
     return new Scaffold(
       appBar: new AppBar(
-          title: new Text('DogWalk Stockholm'), backgroundColor: colorPurple),
+          title: new Text('DogWalk', style: style,), backgroundColor: colorDarkBeige),
       drawer: Drawer(
         child: Container(
-          color: colorLighterPink,
+          color: colorBeige,
             child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
             UserAccountsDrawerHeader(
-              decoration: BoxDecoration(color: colorPurple),
+              decoration: BoxDecoration(color: colorBeige),
               accountName: Text(
                 userlib.name, //userData
                 style: TextStyle(

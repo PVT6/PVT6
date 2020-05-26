@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:frontend/friendsAndContacts/addContactPage.dart';
 import 'package:frontend/friendsAndContacts/sentRequest.dart';
+import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'package:frontend/userFiles/addDogTest.dart';
 import 'package:http/http.dart' as http;
 import 'package:frontend/userFiles/user.dart' as userlib;
@@ -137,14 +138,18 @@ class _HomePageState extends State<FriendsPage>
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      backgroundColor: colorLighterPink,
+      backgroundColor: colorBeige,
       appBar: new AppBar(
-        title: new Text("Friends Page"),
+        iconTheme: IconThemeData(color: Colors.white),
+        title: new Text(
+          "Friends Page",
+          style: style.copyWith(color: Colors.white),
+        ),
         centerTitle: true,
-        backgroundColor: colorPurple,
+        backgroundColor: colorDarkBeige,
         bottom: TabBar(
-          unselectedLabelColor: Colors.white,
-          labelColor: Colors.amber,
+          unselectedLabelColor: colorPrimaryRed,
+          labelColor: colorDarkRed,
           tabs: [
             new Tab(icon: new Icon(Icons.person)),
             new Tab(
@@ -155,7 +160,7 @@ class _HomePageState extends State<FriendsPage>
             )
           ],
           controller: _tabController,
-          indicatorColor: Colors.white,
+          indicatorColor: colorDarkRed,
           indicatorSize: TabBarIndicatorSize.tab,
         ),
         bottomOpacity: 1,
@@ -196,9 +201,21 @@ class _HomePageState extends State<FriendsPage>
                                       builder: (BuildContext context) =>
                                           ProfileInfo(c)));
                                 },
-                                leading: CircleAvatar(child: Text("PH")),
-                                title: Text(c.name ?? ""),
-                                subtitle: Text("Stockholm, Vällingby . 53 min"),
+                                leading: CircleAvatar(
+                                  child: Text(
+                                    "PH",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  backgroundColor: colorDarkRed,
+                                ),
+                                title: Text(
+                                  c.name ?? "",
+                                  style: style.copyWith(fontSize: 18.0),
+                                ),
+                                subtitle: Text(
+                                  "Stockholm, Vällingby . 53 min",
+                                  style: style.copyWith(fontSize: 15.0),
+                                ),
                                 trailing: IconButton(
                                   icon: Icon(
                                     Icons.person_pin,
@@ -236,11 +253,12 @@ class _HomePageState extends State<FriendsPage>
                 ),
                 Column(
                   children: <Widget>[
+                    SizedBox(height: 10),
                     Text(
                       "Friend requests",
-                      style: TextStyle(
+                      style: style.copyWith(
                         color: Colors.black,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
                       textAlign: TextAlign.left,
@@ -265,9 +283,19 @@ class _HomePageState extends State<FriendsPage>
                                               builder: (BuildContext context) =>
                                                   ProfileInfo(c)));
                                     },
-                                    leading: CircleAvatar(child: Text("PH")),
-                                    title: Text(c.name ?? ""),
-                                    subtitle: Text(c.email ?? ""),
+                                    leading: CircleAvatar(
+                                      child: Text(
+                                        "PH",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      backgroundColor: colorDarkRed,
+                                    ),
+                                    title: Text(
+                                      c.name ?? "",
+                                      style: style.copyWith(fontSize: 18),
+                                    ),
+                                    subtitle: Text(c.email ?? "",
+                                        style: style.copyWith(fontSize: 15)),
                                     trailing: IconButton(
                                       icon: Icon(
                                         Icons.person_add,
@@ -284,11 +312,12 @@ class _HomePageState extends State<FriendsPage>
                         : Center(
                             child: CircularProgressIndicator(),
                           ),
+                    SizedBox(height: 20),
                     Text(
                       "Pending Requests",
-                      style: TextStyle(
+                      style: style.copyWith(
                         color: Colors.black,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
                       textAlign: TextAlign.left,
@@ -313,9 +342,19 @@ class _HomePageState extends State<FriendsPage>
                                               builder: (BuildContext context) =>
                                                   ProfileInfo(c)));
                                     },
-                                    leading: CircleAvatar(child: Text("PH")),
-                                    title: Text(c.name ?? ""),
-                                    subtitle: Text(c.email ?? ""),
+                                    leading: CircleAvatar(
+                                      child: Text(
+                                        "PH",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      backgroundColor: colorDarkRed,
+                                    ),
+                                    title: Text(
+                                      c.name ?? "",
+                                      style: style.copyWith(fontSize: 18),
+                                    ),
+                                    subtitle: Text(c.email ?? "",
+                                        style: style.copyWith(fontSize: 15)),
                                     trailing: Icon(
                                       Icons.hourglass_empty,
                                       color: Colors.yellow,
@@ -507,7 +546,7 @@ class _MyHomePageState extends State<SearchUsers> {
   Widget build(BuildContext context) {
     String phone;
     return new Scaffold(
-      backgroundColor: colorLighterPink,
+      backgroundColor: colorBeige,
       body: Container(
         child: Column(
           children: <Widget>[
@@ -519,14 +558,14 @@ class _MyHomePageState extends State<SearchUsers> {
                       SizedBox(height: 20.0),
                       TextFormField(
                         decoration: InputDecoration(
-                            labelText: "Add By Number",
+                            labelText: "Add by number", labelStyle: style.copyWith(fontSize :18),
                             hintText: "ex:0701112233",
                             prefixIcon: Icon(Icons.search),
                             border: OutlineInputBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(25.0)))),
                         validator: (val) =>
-                            val.isEmpty ? 'Enter a phonenumber.' : null,
+                            val.isEmpty ? 'Enter a phone number.' : null,
                         onChanged: (val) {
                           phone = val;
                           //setState(() => email = val);
@@ -534,7 +573,11 @@ class _MyHomePageState extends State<SearchUsers> {
                       ),
                       SizedBox(height: 20.0),
                       RaisedButton(
-                          child: Text('Search User'),
+                        color: colorDarkRed,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0)
+                        ),
+                          child: Text('  Search User  ', style: style.copyWith(fontWeight: FontWeight.bold)),
                           onPressed: () async {
                             if (phone != null) {
                               var url =

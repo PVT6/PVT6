@@ -29,6 +29,7 @@ MapController controller = new MapController();
 const colorPurple = const Color(0xFF82658f);
 const colorPeachPink = const Color(0xFFffdcd2);
 const colorLighterPink = const Color(0xFFffe9e5);
+TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
 class MapsDemo extends StatefulWidget {
   MapsDemo() : super();
@@ -82,11 +83,11 @@ class MapsDemoState extends State<MapsDemo> {
       heroTag: _randomString(10),
       onPressed: function,
       materialTapTargetSize: MaterialTapTargetSize.padded,
-      backgroundColor: colorPeachPink,
+      backgroundColor: colorBeige,
       child: Icon(
         icon,
         size: 36.0,
-        color: colorPurple,
+        color: colorDarkRed,
       ),
     );
   }
@@ -103,14 +104,17 @@ class MapsDemoState extends State<MapsDemo> {
     return Scaffold(
       drawer: Drawer(
         child: Container(
-            color: colorLighterPink,
+            color: colorBeige,
             child: ListView(
               padding: EdgeInsets.zero,
               children: <Widget>[
                 DrawerHeader(
                     decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            colors: <Color>[colorPurple, colorPeachPink])),
+                        gradient: LinearGradient(colors: <Color>[
+                      colorPrimaryRed,
+                      colorBeige,
+                      colorPrimaryRed
+                    ])),
                     child: Container(
                       child: Column(
                         children: <Widget>[
@@ -119,7 +123,7 @@ class MapsDemoState extends State<MapsDemo> {
                             borderRadius:
                                 BorderRadius.all(Radius.circular(50.0)),
                             child: Image.asset(
-                              "logopurplepink.png",
+                              "logoprototype.png",
                               width: 100,
                               height: 100,
                             ),
@@ -205,16 +209,15 @@ class MapsDemoState extends State<MapsDemo> {
                 //                   builder: (context) => MySignInPage()))
                 //         }),
                 SizedBox(
-                  height: 240,
+                  height: 350,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Material(
                       elevation: 5.0,
-                      color: Colors.red,
+                      color: colorDarkRed,
                       child: MaterialButton(
-                        minWidth: 120,
                         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                         onPressed: () async {
                           await _auth.signOut();
@@ -226,7 +229,7 @@ class MapsDemoState extends State<MapsDemo> {
                         },
                         child: Text("Sign out",
                             textAlign: TextAlign.center,
-                            style: TextStyle(
+                            style: style.copyWith(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold)),
                       ),
@@ -277,11 +280,11 @@ class MapsDemoState extends State<MapsDemo> {
                               });
                             },
                             materialTapTargetSize: MaterialTapTargetSize.padded,
-                            backgroundColor: colorPeachPink,
+                            backgroundColor: colorBeige,
                             child: Icon(
                               FontAwesomeIcons.solidBell,
                               size: 36.0,
-                              color: colorPurple,
+                              color: colorDarkRed,
                             ),
                           ),
                           counter != 0
@@ -342,7 +345,7 @@ class MapsDemoState extends State<MapsDemo> {
                     IconButton(
                       icon: Icon(
                         Icons.menu,
-                        color: Colors.black,
+                        color: colorDarkRed,
                         size: 50,
                       ),
                       onPressed: () {
@@ -374,7 +377,7 @@ class MapsDemoState extends State<MapsDemo> {
                             children: <Widget>[
                               Text(
                                 "Search Around",
-                                style: TextStyle(
+                                style: style.copyWith(
                                   color: Colors.grey.shade500,
                                   fontWeight: FontWeight.w300,
                                   fontSize: 16,
@@ -401,27 +404,28 @@ class MapsDemoState extends State<MapsDemo> {
                     SingleChildScrollView(
                         physics: ScrollPhysics(),
                         child: Container(
-                          height: 30,
+                          height: 33,
                           child: ListView(
                             scrollDirection: Axis.horizontal,
                             shrinkWrap: true,
                             children: <Widget>[
                               Container(
-                                width: 110,
+                                width: 125,
                                 child: FlatButton(
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(18.0),
-                                      side: BorderSide(color: Colors.transparent)),
-                                  color: colorPeachPink,
+                                      side: BorderSide(
+                                          color: Colors.transparent)),
+                                  color: colorBeige,
                                   onPressed: () {},
                                   child: Row(
                                     children: <Widget>[
                                       Icon(
                                         Icons.restaurant,
-                                        color: colorPurple,
+                                        color: colorDarkRed,
                                       ),
                                       Text("Restaurant",
-                                          style: TextStyle(fontSize: 11)),
+                                          style: style.copyWith(fontSize: 12)),
                                     ],
                                   ),
                                 ),
@@ -434,17 +438,18 @@ class MapsDemoState extends State<MapsDemo> {
                                 child: FlatButton(
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(18.0),
-                                      side: BorderSide(color: Colors.transparent)),
-                                  color: colorPeachPink,
+                                      side: BorderSide(
+                                          color: Colors.transparent)),
+                                  color: colorBeige,
                                   onPressed: () {},
                                   child: Row(
                                     children: <Widget>[
                                       Icon(
                                         Icons.nature,
-                                        color: colorPurple,
+                                        color: colorDarkRed,
                                       ),
                                       Text("Parks",
-                                          style: TextStyle(fontSize: 11)),
+                                          style: style.copyWith(fontSize: 12)),
                                     ],
                                   ),
                                 ),
@@ -453,22 +458,23 @@ class MapsDemoState extends State<MapsDemo> {
                                 width: 10,
                               ),
                               Container(
-                                  width: 110,
+                                  width: 120,
                                   child: FlatButton(
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(18.0),
-                                        side: BorderSide(color: Colors.transparent)),
-                                    color: colorPeachPink,
+                                        side: BorderSide(
+                                            color: Colors.transparent)),
+                                    color: colorBeige,
                                     onPressed: () {},
                                     child: Row(
                                       children: <Widget>[
                                         Icon(
                                           FontAwesomeIcons.trash,
-                                          color: colorPurple,
+                                          color: colorDarkRed,
                                         ),
                                         Text("Trashcans",
-                                            style: TextStyle(fontSize: 11)),
+                                            style: style.copyWith(fontSize: 12)),
                                       ],
                                     ),
                                   )),
@@ -476,21 +482,22 @@ class MapsDemoState extends State<MapsDemo> {
                                 width: 10,
                               ),
                               Container(
-                                width: 122,
+                                width: 140,
                                 child: FlatButton(
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(18.0),
-                                      side: BorderSide(color: Colors.transparent)),
-                                  color: colorPeachPink,
+                                      side: BorderSide(
+                                          color: Colors.transparent)),
+                                  color: colorBeige,
                                   onPressed: () {},
                                   child: Row(
                                     children: <Widget>[
                                       Icon(
                                         FontAwesomeIcons.lightbulb,
-                                        color: colorPurple,
+                                        color: colorDarkRed,
                                       ),
                                       Text("Street Lamps",
-                                          style: TextStyle(fontSize: 11)),
+                                          style: style.copyWith(fontSize: 12)),
                                     ],
                                   ),
                                 ),

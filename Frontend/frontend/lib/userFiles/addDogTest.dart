@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
 import 'package:frontend/friendsAndContacts/friendsPage.dart';
+import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'package:frontend/userFiles/addDogClasses/transition.dart';
 import 'package:frontend/userFiles/addDogClasses/submitSlider.dart';
 import 'package:frontend/userFiles/addDogClasses/weightSlider.dart';
@@ -29,6 +30,7 @@ Gender gender = Gender.female;
 
 const Color mainBlue = const Color.fromRGBO(77, 123, 243, 1.0);
 const double baseHeight = 850.0;
+TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
 double screenAwareSize(double size, BuildContext context) {
   return size * MediaQuery.of(context).size.height / baseHeight;
@@ -89,7 +91,6 @@ class NameSelectState extends State<NameSelect> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        backgroundColor: colorLighterPink,
         body: Column(
           children: <Widget>[
             GradientAppBar("Name"),
@@ -105,11 +106,9 @@ class NameSelectState extends State<NameSelect> {
                 filled: true,
                 fillColor: Colors.white,
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
                   borderSide: BorderSide(color: Colors.grey),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
                   borderSide: BorderSide(color: Colors.grey),
                 ),
               ),
@@ -139,7 +138,7 @@ class DescSelectState extends State<DescSelect> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        backgroundColor: colorLighterPink,
+        backgroundColor: colorBeige,
         body: Column(children: <Widget>[
           GradientAppBar(
             "Description",
@@ -159,11 +158,9 @@ class DescSelectState extends State<DescSelect> {
               filled: true,
               fillColor: Colors.white,
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10.0)),
                 borderSide: BorderSide(color: Colors.grey),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10.0)),
                 borderSide: BorderSide(color: Colors.grey),
               ),
             ),
@@ -222,7 +219,7 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
     Widget loginButon = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
-      color: colorPurple,
+      color: colorDarkRed,
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -303,8 +300,15 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
     return Stack(children: <Widget>[
       Scaffold(
         appBar: new AppBar(
-          title: new Text("Add Dog"),
-          backgroundColor: colorPurple,
+          iconTheme: IconThemeData(color: Colors.white),
+          title: new Text(
+            "Add Dog",
+            style: style.copyWith(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+          backgroundColor: colorDarkBeige,
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -362,21 +366,27 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
   }
 
   Widget _buildTitle(BuildContext context) {
-    return Padding(
+    return Container(
+      color: colorBeige,
         padding: EdgeInsets.only(
           left: 24.0,
           top: screenAwareSize(56.0, context),
         ),
         child: Row(
           children: <Widget>[
+            SizedBox(width: 10),
             Container(
-              width: 80,
-              height: 80,
-              child: Image.asset("logopurplepink.png"),
+              width: 90,
+              height: 90,
+              child: Image.asset("logoprototype.png"),
             ),
+            SizedBox(width: 10),
             Text(
               "Please fill in the form",
-              style: new TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
+              style: style.copyWith(
+                  fontSize: 22.0,
+                  fontWeight: FontWeight.bold,
+                  color: colorDarkRed),
             ),
           ],
         ));
@@ -409,7 +419,7 @@ class BuildCardState extends State<BuildCards> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: colorLighterPink,
+        backgroundColor: colorBeige,
         body: Column(children: <Widget>[
           GradientAppBar(
             "Description",
@@ -519,7 +529,7 @@ class ResultPageState extends State<ResultPage> {
         ],
       ),
       extendBodyBehindAppBar: true,
-      backgroundColor: colorLighterPink,
+      backgroundColor: colorBeige,
       body: Stack(
         children: <Widget>[
           Container(
@@ -529,7 +539,7 @@ class ResultPageState extends State<ResultPage> {
                     bottomLeft: Radius.circular(50.0),
                     bottomRight: Radius.circular(50.0)),
                 gradient: LinearGradient(
-                    colors: [colorPeachPink, colorPurple],
+                    colors: [colorDarkRed, colorLightRed, colorDarkRed],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight)),
           ),
@@ -557,7 +567,7 @@ class ResultPageState extends State<ResultPage> {
                         child: ClipRRect(
                             borderRadius: BorderRadius.circular(30.0),
                             child: dogPicture == null
-                                ? Image.asset("logopurplepink.png")
+                                ? Image.asset("logoprototype.png")
                                 : Image.file(
                                     File(
                                       dogPicture,
@@ -609,8 +619,8 @@ class ResultPageState extends State<ResultPage> {
                       children: <Widget>[
                         Text(
                           "Weight: ",
-                          style: TextStyle(
-                            color: colorPurple,
+                          style: style.copyWith(
+                            color: colorDarkRed,
                             fontSize: 20,
                           ),
                         ),
@@ -628,7 +638,7 @@ class ResultPageState extends State<ResultPage> {
                         Text(
                           "Height: ",
                           style: TextStyle(
-                            color: colorPurple,
+                            color: colorDarkRed,
                             fontSize: 20,
                           ),
                         ),
@@ -646,7 +656,7 @@ class ResultPageState extends State<ResultPage> {
                         Text(
                           " Age: ",
                           style: TextStyle(
-                            color: colorPurple,
+                            color: colorDarkRed,
                             fontSize: 20,
                           ),
                         ),
@@ -679,7 +689,10 @@ class ResultPageState extends State<ResultPage> {
                                 top: 1, left: 30.0, right: 30.0, bottom: 1),
                             decoration: BoxDecoration(
                                 gradient: LinearGradient(
-                                  colors: [colorPeachPink, colorPurple],
+                                  colors: [
+                                    colorLightRed,
+                                    colorDarkRed,
+                                  ],
                                 ),
                                 borderRadius: BorderRadius.circular(30.0)),
                             child: Text(

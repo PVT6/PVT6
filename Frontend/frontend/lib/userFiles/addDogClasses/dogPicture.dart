@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:frontend/friendsAndContacts/addContactPage.dart';
+import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../customAppBar.dart';
@@ -43,7 +44,7 @@ class DogPicturesState extends State<DogPictures> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: colorLighterPink,
+        backgroundColor: colorBeige,
         body: Column(children: <Widget>[
           GradientAppBar(
             "Dog Picture",
@@ -55,25 +56,27 @@ class DogPicturesState extends State<DogPictures> {
                   Container(
                     width: 80,
                     height: 80,
-                    child: Image.asset("logopurplepink.png"),
+                    child: Image.asset("logoprototype.png"),
                   ),
-                  FlatButton(
+                  SizedBox(width: 20),
+                  RaisedButton(
+                    elevation: 6.0,
                     shape: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(25.0))),
                     child: Row(
                       children: <Widget>[
-                        Icon(Icons.add_a_photo),
+                        Icon(Icons.add_a_photo, color: colorDarkRed,),
                         Text(
-                          " Add Picture",
-                          style: TextStyle(
+                          "     Add Picture       ",
+                          style: style.copyWith(
                             color: Colors.black,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
                         )
                       ],
                     ),
-                    color: colorPurple,
+                    color: colorLightRed,
                     onPressed: () {
                       _showOptions(context);
                     },
@@ -88,7 +91,7 @@ class DogPicturesState extends State<DogPictures> {
                     ? Icon(
                         Icons.photo,
                         size: 200,
-                        color: colorPurple,
+                        color: colorDarkRed,
                       )
                     : Image.file(File(_path)),
               )

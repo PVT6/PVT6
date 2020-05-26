@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'dart:math' as math;
 import '../addDogTest.dart';
 
@@ -228,7 +229,7 @@ class SliderLabel extends StatelessWidget {
         "$height",
         style: TextStyle(
           fontSize: selectedLabelFontSize,
-          color: Theme.of(context).primaryColor,
+          color: colorDarkRed,
           fontWeight: FontWeight.w600,
         ),
       ),
@@ -249,7 +250,7 @@ class SliderLine extends StatelessWidget {
                   height: 2.0,
                   decoration: BoxDecoration(
                       color: i.isEven
-                          ? Theme.of(context).primaryColor
+                          ? colorDarkRed
                           : Colors.white),
                 ),
               )),
@@ -264,7 +265,7 @@ class SliderCircle extends StatelessWidget {
       width: circleSizeAdapted(context),
       height: circleSizeAdapted(context),
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
+        color: colorDarkRed,
         shape: BoxShape.circle,
       ),
       child: Icon(
