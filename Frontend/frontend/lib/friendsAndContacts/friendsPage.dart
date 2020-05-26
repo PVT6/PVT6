@@ -117,10 +117,8 @@ class _HomePageState extends State<FriendsPage>
                                     'uid': userlib.uid,
                                     'phone': phone
                                   });
-          sentRequest = (json.decode(response.body) as List)
-              .map((i) => SentRequest.fromJson(i))
-              .toList();
-          print(response.statusCode); // dismiss dialog
+         print(response.statusCode);
+         getInfo();
         },
         child: Text("Yes",
             textAlign: TextAlign.center,
