@@ -14,8 +14,8 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 public class ContactRequest {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @GenericGenerator(name = "generator", strategy = "increment")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USERS_SEQ")
+    @SequenceGenerator(name = "USERS_SEQ", sequenceName = "SEQUENCE_USERS")
     private Long id;
 
     @Enumerated(EnumType.STRING)
