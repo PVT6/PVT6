@@ -53,7 +53,7 @@ class _MapWithRoute extends State<MapWithRoute> {
       mapController: mapController,
       markers: markers,
       onLocationUpdate: (LatLng pos) => usersCurrentPos = pos,
-      updateMapLocationOnPositionChange: false,
+      updateMapLocationOnPositionChange: true,
     );
     
     return Scaffold(
@@ -75,20 +75,17 @@ class _MapWithRoute extends State<MapWithRoute> {
                   'accessToken': FlutterConfig.get('MAPBOX_ID'),
                   'id': 'Streets-copy'
                 }),
-
+            MarkerLayerOptions(markers: markers),
             // ADD THIS
-            
-            new PolylineLayerOptions(
-              polylines:[
-                new Polyline(
-                  points: points,
-                  color: Colors.blue,
-                  strokeWidth: 4.0,
 
-                )
-              ]
-            ),
-            
+            new PolylineLayerOptions(polylines: [
+              new Polyline(
+                points: points,
+                color: Colors.blue,
+                strokeWidth: 4.0,
+              )
+            ]),
+
             userLocationOptions,
           ],
         ),
