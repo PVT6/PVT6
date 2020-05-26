@@ -1,6 +1,8 @@
 package com.example.backend;
 
 import java.beans.Transient;
+import java.text.BreakIterator;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -23,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "User")
 public class User {
-  @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+  @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USERS_SEQ")
   @SequenceGenerator(name = "USERS_SEQ", sequenceName = "SEQUENCE_USERS")
@@ -32,12 +34,11 @@ public class User {
   @Column(name = "UID", unique = true, nullable = false)
   private String uid;
 
-
   private String name;
 
   private String email;
 
-  @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+  @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
   private Set<Route> savedRoutes;
 
   private String phoneNumber;
@@ -45,46 +46,47 @@ public class User {
   @OneToOne(fetch = FetchType.LAZY)
   private Position position;
 
-  //fingerprint
+  // fingerprint
 
-  //password
+  // password
 
-  @OneToOne(fetch = FetchType.LAZY)
+  @OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.ALL})
   private ContactList contactList;
 
-  //route
+  // route
 
-  @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+  @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
   private Set<Dog> ownedDog;
 
-
-  @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+  @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
   private Set<ContactRequest> contactRequests;
 
   @OneToOne(fetch = FetchType.LAZY)
-  private SearchHistory searchHistory; //unsure
+  private SearchHistory searchHistory; // unsure
 
-  //instagram
+  // instagram
 
-  //facebook
+  // facebook
 
-  //google
+  // google
 
   private Long createdAt;
-  //YYYYMMDDHHMM (temporary)                           
+  // YYYYMMDDHHMM (temporary)
   private Long updatedAt;
- 
-  public User(String uid){
+
+  public User(String uid) {
     this.uid = uid;
   }
-  public User(String uid,  String email, String phone, String name){
+
+  public User(String uid, String email, String phone, String name) {
     this.uid = uid;
     this.email = email;
     this.phoneNumber = phone;
     this.name = name;
   }
-  public User(){
-  
+
+  public User() {
+
   }
 
   public Long getId() {
@@ -146,11 +148,24 @@ public class User {
     return ownedDog;
   }
 
-  
   public void setContactRequest(ContactRequest r) {
     this.contactRequests.add(r);
   }
 
+  public ContactRequest findUserFromContactRequests(ContactRequest c) {
+
+    ContactRequest found = null;
+
+   
+    for(ContactRequest n : this.contactRequests){
+      if (c.getReceiver() == n.getReceiver() && c.getSender() == n.getSender()) {
+        found = n;
+      }
+    }
+
+    return found;
+
+  }
 
   public void setOwnedDog(Dog ownedDog) {
     this.ownedDog.add(ownedDog);
@@ -175,10 +190,12 @@ public class User {
     return createdAt;
   }
 
-  public Set<Route> getSavedRoutes(){
+  @JsonIgnore
+  public Set<Route> getSavedRoutes() {
     return savedRoutes;
   }
-  public void addRoutes(Route r){
+
+  public void addRoutes(Route r) {
     this.savedRoutes.add(r);
   }
 
@@ -186,10 +203,11 @@ public class User {
     this.createdAt = createdAt;
   }
 
-  public void cleanRoutes(){
+  public void cleanRoutes() {
     this.savedRoutes.clear();
   }
-  public void removeRoute(Route r){
+
+  public void removeRoute(Route r) {
     this.savedRoutes.remove(r);
   }
 

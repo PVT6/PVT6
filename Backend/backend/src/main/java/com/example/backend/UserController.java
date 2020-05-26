@@ -39,7 +39,6 @@ public class UserController    {
     @GetMapping(path = "/all")
     public @ResponseBody Iterable<User> getAll(){
         Iterable<User>  u = userRepository.findAll();
-        System.out.println(".");
         return u;
     }
 

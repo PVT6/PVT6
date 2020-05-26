@@ -3,6 +3,7 @@ package com.example.backend;
 import java.util.Set;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -18,9 +19,13 @@ public class ContactList {
     @SequenceGenerator(name = "USERS_SEQ", sequenceName = "SEQUENCE_USERS")
     private Long id;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private Set<User> user;
+    @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+    private Set<User> users;
     
+    public ContactList(){
+
+    }
+
     public Long getId() {
         return id;
     }
@@ -30,10 +35,12 @@ public class ContactList {
     }
 
     public Set<User> getUser() {
-        return user;
+        return users;
     }
+   
 
-    public void setUser(User user) {
-        this.user.add(user);
+
+    public void addUser(User user) {
+        this.users.add(user);
     }
 }
