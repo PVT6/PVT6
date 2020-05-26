@@ -151,9 +151,9 @@ public class ContactRequestController {
             }
         });
         Set<ContactRequest> contactRequests2 = receiver.getContactRequest();
-        contactRequests.forEach((e) -> {
+        contactRequests2.forEach((e) -> {
             if(e.getSender() == sender){
-                contactRequests.remove(e);
+                contactRequests2.remove(e);
                 userRepository.saveAndFlush(receiver);
             }
         });
