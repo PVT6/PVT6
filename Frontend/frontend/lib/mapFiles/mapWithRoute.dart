@@ -63,7 +63,7 @@ class _MapWithRoute extends State<MapWithRoute> {
           mapController: mapController,
           options:
           
-              new MapOptions(center: LatLng(latLng.latitude, latLng.longitude), minZoom: 15.0, plugins: [
+              new MapOptions(center: LatLng(latLng.latitude, latLng.longitude), minZoom: 17.0, plugins: [
             // ADD THIS
             UserLocationPlugin(),
           ],
