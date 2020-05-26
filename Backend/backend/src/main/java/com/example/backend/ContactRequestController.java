@@ -167,7 +167,7 @@ public class ContactRequestController {
 
         toRemove.forEach((e) -> {
             contactRequests2.remove(e);
-                userRepository.saveAndFlush(receiver);
+            userRepository.saveAndFlush(receiver);
         });
 
         return "true";
