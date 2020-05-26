@@ -1,5 +1,6 @@
 package com.example.backend;
 
+import java.beans.Transient;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -16,9 +17,13 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "User")
 public class User {
+  @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USERS_SEQ")
   @SequenceGenerator(name = "USERS_SEQ", sequenceName = "SEQUENCE_USERS")
@@ -31,6 +36,9 @@ public class User {
   private String name;
 
   private String email;
+
+  @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+  private Set<Route> savedRoutes;
 
   private String phoneNumber;
 
@@ -48,6 +56,10 @@ public class User {
 
   @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
   private Set<Dog> ownedDog;
+
+
+  @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+  private Set<ContactRequest> contactRequests;
 
   @OneToOne(fetch = FetchType.LAZY)
   private SearchHistory searchHistory; //unsure
@@ -115,22 +127,41 @@ public class User {
     this.position = position;
   }
 
+  @JsonIgnore
   public ContactList getContactList() {
     return contactList;
+  }
+
+  @JsonIgnore
+  public Set<ContactRequest> getContactRequest() {
+    return contactRequests;
   }
 
   public void setContactList(ContactList contactList) {
     this.contactList = contactList;
   }
 
+  @JsonIgnore
   public Set<Dog> getOwnedDog() {
     return ownedDog;
   }
+
+  
+  public void setContactRequest(ContactRequest r) {
+    this.contactRequests.add(r);
+  }
+
 
   public void setOwnedDog(Dog ownedDog) {
     this.ownedDog.add(ownedDog);
   }
 
+  @JsonIgnore
+  public String getUid() {
+    return this.uid;
+  }
+
+  @JsonIgnore
   public SearchHistory getSearchHistory() {
     return searchHistory;
   }
@@ -139,14 +170,30 @@ public class User {
     this.searchHistory = searchHistory;
   }
 
+  @JsonIgnore
   public Long getCreatedAt() {
     return createdAt;
+  }
+
+  public Set<Route> getSavedRoutes(){
+    return savedRoutes;
+  }
+  public void addRoutes(Route r){
+    this.savedRoutes.add(r);
   }
 
   public void setCreatedAt(Long createdAt) {
     this.createdAt = createdAt;
   }
 
+  public void cleanRoutes(){
+    this.savedRoutes.clear();
+  }
+  public void removeRoute(Route r){
+    this.savedRoutes.remove(r);
+  }
+
+  @JsonIgnore
   public Long getUpdatedAt() {
     return updatedAt;
   }

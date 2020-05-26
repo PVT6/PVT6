@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:frontend/friendsAndContacts/friendsPage.dart';
 import 'package:frontend/userFiles/profile.dart';
 import '../dog.dart';
 import 'user.dart' as userlib;
 import 'addPet.dart';
-
 
 class DogProfile extends StatefulWidget {
   Dog dog;
@@ -21,7 +22,6 @@ class DogProfile extends StatefulWidget {
 }
 
 class DogProfileState extends State<DogProfile> {
- 
   Dog dog;
 
   DogProfileState(Dog dog) {
@@ -31,193 +31,224 @@ class DogProfileState extends State<DogProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Stack(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+          ),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ProfileEightPage()),
+          ),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.notifications),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () {},
+          ),
+        ],
+      ),
+      extendBodyBehindAppBar: true,
+      backgroundColor: colorLighterPink,
+      body: Stack(
+        children: <Widget>[
+          Container(
+            height: 360,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(50.0),
+                    bottomRight: Radius.circular(50.0)),
+                gradient: LinearGradient(
+                    colors: [colorPeachPink, colorPurple],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight)),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 80),
+            child: Column(
               children: <Widget>[
+                SizedBox(height: 20.0),
+                Expanded(
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                          height: double.infinity,
+                          width: 380,
+                          margin: const EdgeInsets.only(
+                              left: 30.0, right: 30.0, top: 10.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(30.0),
+                            child:
+                                Image.asset("BrewDog.jpg", fit: BoxFit.cover),
+                            // child: dogPicture == null
+                            //     ? Image.asset("logopurplepink.png")
+                            //     : Image.file(
+                            //         File(
+                            //           dogPicture,
+                            //         ),
+                            //         fit: BoxFit.cover,
+                            //       )),
+                          )),
+                      Container(
+                        alignment: Alignment.topCenter,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0, vertical: 5.0),
+                          decoration: BoxDecoration(
+                              color: Colors.yellow,
+                              borderRadius: BorderRadius.circular(20.0)),
+                          child: Text(widget.dog.breed,
+                              style: TextStyle(
+                                fontSize: 16,
+                              )),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(height: 10.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      widget.dog.name,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 30.0),
+                    ),
+                  ],
+                ),
                 SizedBox(
-                    height: 300.0,
-                    child: Carousel(
-                      boxFit: BoxFit.cover,
-                      autoplay: false,
-                      animationCurve: Curves.fastOutSlowIn,
-                      animationDuration: Duration(milliseconds: 1000),
-                      dotSize: 6.0,
-                      dotIncreasedColor: Color(0xFFFF335C),
-                      dotBgColor: Colors.transparent,
-                      dotPosition: DotPosition.topRight,
-                      dotVerticalPadding: 10.0,
-                      showIndicator: true,
-                      indicatorBgPadding: 7.0,
-                      images: [
-                        Image.asset("BrewDog.jpg"),
-                        Image.asset("ormingesHundrastgard.jpg"),
-                        Image.asset("HimmelskaHundar.jpg"),
-                        Image.asset("LeBistro.jpg"),
+                  height: 10,
+                ),
+                Container(
+                  width: 280,
+                  height: 80,
+                  child: Text(
+                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        Text(
+                          "Weight: ",
+                          style: TextStyle(
+                            color: colorPurple,
+                            fontSize: 20,
+                          ),
+                        ),
+                        Text(
+                          widget.dog.weight + "kg",
+                          style: TextStyle(color: Colors.grey.shade600),
+                        ),
                       ],
-                    )),
-                Positioned(
-                  bottom: 20.0,
-                  left: 20.0,
-                  right: 20.0,
-                  child: Row(
-                    children: <Widget>[
-                      SizedBox(
-                        width: 280,
-                      ),
-                      MaterialButton(
-                        color: Colors.white,
-                        shape: CircleBorder(),
-                        elevation: 0,
-                        child: Icon(Icons.edit),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => AddDog()),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-            Divider(),
-            Padding(
-              padding:
-                  const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Text(
-                        dog.name,
-                        style: Theme.of(context).textTheme.title,
-                      ),
-                      SizedBox(
-                        width: 200,
-                      ),
-                      Icon(
-                        Icons.pets,
-                        color: Colors.blue,
-                      ),
-                      Text(
-                        dog.breed,
-                        style: TextStyle(color: Colors.blue),
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.pin_drop,
-                        color: Colors.blue,
-                      ),
-                      SizedBox(
-                        width: 4,
-                      ),
-                      Text(
-                        "Vällingby, Stockholm",
-                        style: TextStyle(color: Colors.grey, fontSize: 12),
-                      )
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      SizedBox(
-                        width: 36,
-                      ),
-                      Text(
-                        dog.age,
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        width: 105.0,
-                      ),
-                      Text(
-                        dog.weight,
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        width: 105.0,
-                      ),
-                      Text(
-                        "51cm",
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      SizedBox(
-                        width: 25,
-                      ),
-                      Text(
-                        "Age",
-                        style: TextStyle(color: Colors.grey, fontSize: 18),
-                      ),
-                      SizedBox(
-                        width: 90.0,
-                      ),
-                      Text(
-                        "Weight",
-                        style: TextStyle(color: Colors.grey, fontSize: 18),
-                      ),
-                      SizedBox(
-                        width: 90.0,
-                      ),
-                      Text(
-                        "Height",
-                        style: TextStyle(color: Colors.grey, fontSize: 18),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  Text(
-                    "Ella is a 4 year old pitbull born and raised in Stockholm. She is currently looking for other medium sized dogs who are interested in a playdate.",
-                    textAlign: TextAlign.justify,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      ButtonBar(
-                        children: <Widget>[
-                          FlatButton(
-                            child: Text('Owners Profile'),
-                            color: Colors.blue,
-                            onPressed: () {
-                              Navigator.push(
+                    ),
+                    SizedBox(
+                      width: 25,
+                    ),
+                    Column(
+                      children: <Widget>[
+                        Text(
+                          "Height: ",
+                          style: TextStyle(
+                            color: colorPurple,
+                            fontSize: 20,
+                          ),
+                        ),
+                        Text(
+                          "50" + "cm",
+                          style: TextStyle(color: Colors.grey.shade600),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      width: 25,
+                    ),
+                    Column(
+                      children: <Widget>[
+                        Text(
+                          " Age: ",
+                          style: TextStyle(
+                            color: colorPurple,
+                            fontSize: 20,
+                          ),
+                        ),
+                        Text(
+                          widget.dog.age + "y.o",
+                          style: TextStyle(color: Colors.grey.shade600),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(height: 5.0),
+                SizedBox(height: 10.0),
+                Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        FlatButton(
+                          color: colorPeachPink,
+                          onPressed: () {},
+                          child: Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.person,
+                                color: colorPurple,
+                              ),
+                              Text("Owners Profile",
+                                  style: TextStyle(fontSize: 11)),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        FlatButton(
+                          color: colorPeachPink,
+                          onPressed: () {
+                            Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => ProfileEightPage()),
-                              );
-                            },
+                                    builder: (context) => ProfileEightPage()));
+                          },
+                          child: Row(
+                            children: <Widget>[
+                              Icon(
+                                FontAwesomeIcons.cross,
+                                color: colorPurple,
+                              ),
+                              Text("Remove Dog",
+                                  style: TextStyle(fontSize: 11)),
+                            ],
                           ),
-                          FlatButton(
-                            child: Text('Remove dog'),
-                            color: Colors.blue,
-                            onPressed: () {
-                              //vill ta bort object från lista här
-                            },
-                          ),
-                        ],
-                      )
-                    ],
-                  )
-                ],
-              ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
