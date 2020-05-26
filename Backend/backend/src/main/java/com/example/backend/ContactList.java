@@ -23,7 +23,8 @@ public class ContactList {
     @SequenceGenerator(name = "USERS_SEQ", sequenceName = "SEQUENCE_USERS")
     private Long id;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL }, mappedBy="id")
+    @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+    
     private Set<User> users;
     
     public ContactList(){

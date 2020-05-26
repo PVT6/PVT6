@@ -77,10 +77,11 @@ public class ContactRequestController {
                         // ADD TO FRIENDS
                         if (u.getContactList() == null) {
                             u.setContactList(new ContactList());
-                            
+                            userRepository.save(u);
                         }
                         if (u2.getContactList() == null) {
                             u2.setContactList(new ContactList());
+                            userRepository.save(u2);
                          
                         }
 
