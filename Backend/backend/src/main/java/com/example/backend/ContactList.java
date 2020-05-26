@@ -12,6 +12,10 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 public class ContactList {
     @Id
@@ -19,13 +23,14 @@ public class ContactList {
     @SequenceGenerator(name = "USERS_SEQ", sequenceName = "SEQUENCE_USERS")
     private Long id;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+    @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL }, mappedBy="id")
     private Set<User> users;
     
     public ContactList(){
 
     }
-
+    
+    @JsonIgnore
     public Long getId() {
         return id;
     }

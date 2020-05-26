@@ -2,58 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:frontend/friendsAndContacts/addContactPage.dart';
+import 'package:frontend/friendsAndContacts/contactsModel.dart';
 import 'package:frontend/friendsAndContacts/sentRequest.dart';
 import 'package:frontend/userFiles/addDogTest.dart';
 import 'package:http/http.dart' as http;
 import 'package:frontend/userFiles/user.dart' as userlib;
 
-List<User> friends = [
-  User('Lina', "123@gmail.com", '456', false),
-  User('Karl', "123@gmail.com", '789', true),
-  User('Ella', "123@gmail.com", '123', true),
-  User('Marika', "123@gmail.com", '456', false),
-];
-List<User> users = [
-  User('Jakob', "123@gmail.com", '123', true),
-  User('Sharon', "123@gmail.com", '123', false),
-  User('Erik', "123@gmail.com", '123', true)
-];
-
-List<User> databaseUser = [
-  User('Jakob', "123@gmail.com", '123', true),
-  User('Sharon', "123@gmail.com", '456', false),
-  User('Erik', "123@gmail.com", '789', true),
-  User('Johan', "123@gmail.com", '123', true),
-  User('Lina', "123@gmail.com", '456', false),
-  User('Karl', "123@gmail.com", '789', true),
-  User('Ella', "123@gmail.com", '123', true),
-  User('Marika', "123@gmail.com", '456', false),
-  User('Pär', "123@gmail.com", '789', true),
-  User('Mattias', "123@gmail.com", '123', true),
-  User('Viktor', "123@gmail.com", '456', false),
-  User('Emma', "123@gmail.com", '789', true),
-  User('Daniel', "123@gmail.com", '123', true),
-  User('Johanna', "123@gmail.com", '456', false),
-  User('Kevin', "123@gmail.com", '789', true),
-  User('Elsa', "123@gmail.com", '123', true),
-  User('Sara', "123@gmail.com", '456', false),
-  User('Emil', "123@gmail.com", '789', true),
-  User('Joel', "123@gmail.com", '123', true),
-  User('Siri', "123@gmail.com", '456', false),
-  User('Eskil', "123@gmail.com", '789', true),
-  User('Simon', "123@gmail.com", '123', true),
-  User('Linn', "123@gmail.com", '456', false),
-  User('Linda', "123@gmail.com", '789', true),
-  User('Habib', "123@gmail.com", '123', true),
-  User('Ashraf', "123@gmail.com", '456', false),
-  User('Lukas', "123@gmail.com", '789', true),
-  User('John', "123@gmail.com", '123', true),
-  User('Daniella', "123@gmail.com", '456', false),
-  User('Trött', "123@gmail.com", '789', true),
-  User('På', "123@gmail.com", '123', true),
-  User('Namn', "123@gmail.com", '456', false),
-  User('Nu', "123@gmail.com", '789', true),
-];
+List<User> friends = [];
 
 const colorPurple = const Color(0xFF82658f);
 const colorPeachPink = const Color(0xFFffdcd2);
@@ -79,6 +34,21 @@ Future<void> getInfo() async {
       .map((i) => SentRequest.fromJson(i))
       .toList();
   print(response.statusCode);
+
+  url = 'https://group6-15.pvt.dsv.su.se/contacts/all?uid=${userlib.uid}';
+  response = await http.get(Uri.parse(url));
+  if (response.body != "") {
+    final body = json.decode(response.body);
+
+    print("LOAD FRIENDS");
+    friends = (json.decode(jsonEncode(body["user"])) as List)
+        .map((i) => User.fromJson(i))
+        .toList();
+    print(response.statusCode);
+  } else {
+    print("NO FRIENDS");
+    friends.clear();
+  }
 }
 
 class FriendsPage extends StatefulWidget {
@@ -160,8 +130,8 @@ class _HomePageState extends State<FriendsPage>
       onPressed: () async {
         var url = 'https://group6-15.pvt.dsv.su.se/contacts/answer';
 
-        var response = await http
-            .post(Uri.parse(url), body: {'uid': userlib.uid, 'phone': phone, 'e': 'rejcet'});
+        var response = await http.post(Uri.parse(url),
+            body: {'uid': userlib.uid, 'phone': phone, 'e': 'rejcet'});
         print(response.statusCode);
         getInfo();
 
@@ -177,12 +147,12 @@ class _HomePageState extends State<FriendsPage>
         minWidth: 100,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () async {
-        var url = 'https://group6-15.pvt.dsv.su.se/contacts/answer';
-        var response = await http
-            .post(Uri.parse(url), body: {'uid': userlib.uid, 'phone': phone, 'e': 'accept'});
-        print(response.statusCode);
-        getInfo();
-        Navigator.of(context).pop(); // dismiss dialog
+          var url = 'https://group6-15.pvt.dsv.su.se/contacts/answer';
+          var response = await http.post(Uri.parse(url),
+              body: {'uid': userlib.uid, 'phone': phone, 'e': 'accept'});
+          print(response.statusCode);
+          getInfo();
+          Navigator.of(context).pop(); // dismiss dialog
         },
         child: Text("Accept",
             textAlign: TextAlign.center,
@@ -345,7 +315,7 @@ class _HomePageState extends State<FriendsPage>
                                     },
                                     leading: CircleAvatar(child: Text("PH")),
                                     title: Text(c.sender.name ?? ""),
-                                    subtitle: Text(c.sender.email ?? ""),
+                                    subtitle: Text(c.sender.phoneNumber ?? ""),
                                     trailing: IconButton(
                                       icon: Icon(
                                         Icons.person_add,
@@ -353,7 +323,8 @@ class _HomePageState extends State<FriendsPage>
                                         size: 37,
                                       ),
                                       onPressed: () {
-                                        showAlertDialog(context, c.sender.phoneNumber);
+                                        showAlertDialog(
+                                            context, c.sender.phoneNumber);
                                       },
                                     ), //onPressed Lägger till i vänner och tar bort från lista
                                   ));
@@ -423,15 +394,6 @@ class _HomePageState extends State<FriendsPage>
   }
 }
 
-class User {
-  final String name;
-  final String email;
-  final String phone;
-  bool friendstatus;
-
-  User(this.name, this.email, this.phone, this.friendstatus);
-}
-
 class SearchUsers extends StatefulWidget {
   SearchUsers({Key key, this.title}) : super(key: key);
   final String title;
@@ -446,71 +408,7 @@ class _MyHomePageState extends State<SearchUsers> {
   final _formKey = GlobalKey<FormState>();
   bool userExists = true;
 
-  final duplicateItems = [
-    User('Jakob', "123@gmail.com", '0763085859', true),
-    User('Sharon', "123@gmail.com", '456', false),
-    User('Erik', "123@gmail.com", '0763085858', true),
-    User('Johan', "123@gmail.com", '123', true),
-    User('Lina', "123@gmail.com", '456', false),
-    User('Karl', "123@gmail.com", '789', true),
-    User('Ella', "123@gmail.com", '123', true),
-    User('Marika', "123@gmail.com", '456', false),
-    User('Pär', "123@gmail.com", '789', true),
-    User('Mattias', "123@gmail.com", '123', true),
-    User('Viktor', "123@gmail.com", '456', false),
-    User('Emma', "123@gmail.com", '789', true),
-    User('Daniel', "123@gmail.com", '123', true),
-    User('Johanna', "123@gmail.com", '456', false),
-    User('Kevin', "123@gmail.com", '789', true),
-    User('Elsa', "123@gmail.com", '123', true),
-    User('Sara', "123@gmail.com", '456', false),
-    User('Emil', "123@gmail.com", '789', true),
-    User('Joel', "123@gmail.com", '123', true),
-    User('Siri', "123@gmail.com", '456', false),
-    User('Eskil', "123@gmail.com", '789', true),
-    User('Simon', "123@gmail.com", '123', true),
-    User('Linn', "123@gmail.com", '456', false),
-    User('Linda', "123@gmail.com", '789', true),
-    User('Habib', "123@gmail.com", '123', true),
-    User('Ashraf', "123@gmail.com", '456', false),
-    User('Lukas', "123@gmail.com", '789', true),
-    User('John', "123@gmail.com", '123', true),
-    User('Daniella', "123@gmail.com", '456', false),
-    User('Trött', "123@gmail.com", '789', true),
-    User('På', "123@gmail.com", '123', true),
-    User('Namn', "123@gmail.com", '456', false),
-    User('Nu', "123@gmail.com", '789', true),
-  ];
   var items = List<User>();
-
-  @override
-  void initState() {
-    items.addAll(duplicateItems);
-    super.initState();
-  }
-
-  void filterSearchResults(String query) {
-    List<User> dummySearchList = List<User>();
-    dummySearchList.addAll(duplicateItems);
-    if (query.isNotEmpty) {
-      List<User> dummyListData = List<User>();
-      dummySearchList.forEach((item) {
-        if (item.phone.contains(query)) {
-          dummyListData.add(item);
-        }
-      });
-      setState(() {
-        items.clear();
-        items.addAll(dummyListData);
-      });
-      return;
-    } else {
-      setState(() {
-        items.clear();
-        items.addAll(duplicateItems);
-      });
-    }
-  }
 
   showAlertDialogApproved(BuildContext context) {
     // set up the buttons

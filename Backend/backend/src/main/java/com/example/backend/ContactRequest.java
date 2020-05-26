@@ -9,11 +9,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+
+import org.hibernate.annotations.GenericGenerator;
 @Entity
 public class ContactRequest {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USERS_SEQ")
-    @SequenceGenerator(name = "USERS_SEQ", sequenceName = "SEQUENCE_USERS")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GenericGenerator(name = "generator", strategy = "increment")
     private Long id;
 
     @Enumerated(EnumType.STRING)

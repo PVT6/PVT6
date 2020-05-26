@@ -1,10 +1,10 @@
-class contactsModel {
+class ContactsModel {
   int id;
   List<User> user;
 
-  contactsModel({this.id, this.user});
+  ContactsModel({this.id, this.user});
 
-  contactsModel.fromJson(Map<String, dynamic> json) {
+  ContactsModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     if (json['user'] != null) {
       user = new List<User>();
@@ -42,7 +42,8 @@ class User {
       this.position,
       this.ownedDog});
 
-  User.fromJson(Map<String, dynamic> json) {
+ User.fromJson(Map<String, dynamic> json) {
+   print(json.runtimeType);
     id = json['id'];
     name = json['name'];
     email = json['email'];
@@ -61,6 +62,7 @@ class User {
       });
     }
   }
+
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
