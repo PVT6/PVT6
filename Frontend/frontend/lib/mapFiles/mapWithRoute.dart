@@ -1,11 +1,21 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import 'package:frontend/friendsAndContacts/friendsPage.dart';
+import 'package:frontend/routePickerMap/Route.dart';
 import 'package:location/location.dart';
 import 'package:latlong/latlong.dart';
 import 'package:map_controller/map_controller.dart';
 import 'package:user_location/user_location.dart';
 import 'package:flutter_config/flutter_config.dart';
+import 'package:http/http.dart' as http;
+import 'package:frontend/userFiles/user.dart' as userlib;
+import 'dart:convert';
+
+
 
 
 
@@ -82,12 +92,34 @@ class _MapWithRoute extends State<MapWithRoute> {
             userLocationOptions,
           ],
         ),
+
         
         // ...
       ])),
         appBar: AppBar(
         title: const Text('Route Walker'),
+        backgroundColor: colorPurple,
       ),
+        
+
+
+
+
+                              floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+                  Navigator.pop(context);
+                     },
+                  icon: Icon(FontAwesomeIcons.flagCheckered,
+                            color: colorPurple,),
+                  label: Text("Finish", style: TextStyle(fontSize: 11, color: colorPurple), ),
+                  backgroundColor: colorPeachPink,
+        ),
+
+
+
+
+
+                              floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
@@ -104,5 +136,7 @@ class _MapWithRoute extends State<MapWithRoute> {
     });
   
 }
+
+
 
 }

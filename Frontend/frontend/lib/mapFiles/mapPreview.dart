@@ -115,7 +115,6 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                             children: <Widget>[
                               FloatingActionButton(
                                 onPressed: () {
-                                  Navigator.pop(context);
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
