@@ -3,10 +3,11 @@ import 'dart:async';
 import 'package:frontend/mapFiles/finishedRoutePage.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mapbox_navigation/flutter_mapbox_navigation.dart';
+import 'package:geolocator/geolocator.dart' as geo;
 
 class Navigation extends StatefulWidget {
   final double userLat;
-  final double userLng;
+  final double userLng; //
   Navigation(this.userLat, this.userLng);
   @override
   _MyAppState createState() => _MyAppState();
@@ -17,9 +18,9 @@ class _MyAppState extends State<Navigation> {
   static double userLat = 0;
   static double userLng = 0;
   bool nextPoint = false;
+  static geo.Position position;
 
-  Location _origin =
-      Location(name: "My Location", latitude: userLat, longitude: userLng);
+  Location _origin = Location(name: "My Location", latitude: 0, longitude: 0);
   Location _destination =
       Location(name: "Lumaparken", latitude: 59.303985, longitude: 18.097073);
 
@@ -30,9 +31,42 @@ class _MyAppState extends State<Navigation> {
   @override
   void initState() {
     super.initState();
-    userLat = widget.userLat;
-    userLng = widget.userLng;
+    getLocation();
+    // userLat = widget.userLat;
+    // userLng = widget.userLng;
+    getDestination();
     initPlatformState();
+  }
+
+  Future<void> getLocation() async {
+    geo.Position temp = await geo.Geolocator()
+        .getCurrentPosition(desiredAccuracy: geo.LocationAccuracy.high);
+    setState(() {
+      position = temp;
+    });
+    setLocation();
+  }
+
+  Future<void> setLocation() async {
+    Location _origin1 = Location(
+        name: "My Location",
+        latitude: position.latitude,
+        longitude: position.longitude);
+    _origin = _origin1;
+  }
+
+  Future<void> getDestination() async {
+    setState(() {
+      userLat = widget.userLat;
+      userLng = widget.userLng;
+    });
+    setDestination();
+  }
+
+  Future<void> setDestination() async {
+    Location _destination1 =
+        Location(name: "My Location", latitude: userLat, longitude: userLng);
+    _destination = _destination1;
   }
 
   Future<void> initPlatformState() async {

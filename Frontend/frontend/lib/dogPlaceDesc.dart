@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/friendsAndContacts/addContactPage.dart';
 import 'package:frontend/mapFiles/temp.dart';
+import 'package:frontend/mapFiles/temp2.dart';
 import 'package:latlong/latlong.dart';
 
 
@@ -122,7 +123,13 @@ class DogPlaceDesc2 extends StatelessWidget {
                           FlatButton(
                             child: Text('Directions'),
                             color: colorPurple,
-                            onPressed: directions,
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Navigation(coordinates.latitude, coordinates.longitude)),
+                              );
+                            },
                           ),
                           FlatButton(
                             child: Text('Common routes'),

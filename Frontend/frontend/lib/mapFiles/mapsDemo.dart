@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:core';
 import 'dart:math';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:frontend/browseDogParks.dart';
@@ -22,6 +23,9 @@ import 'package:flutter_config/flutter_config.dart';
 import 'package:http/http.dart' as http;
 import '../dog.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:frontend/cameraScreen.dart';
+
+import '../temp4.dart';
 
 MapController controller = new MapController();
 
@@ -45,14 +49,63 @@ class MapsDemoState extends State<MapsDemo> {
   UserLocationOptions userLocationOptions;
   Position position;
   int counter = 0;
+  List<CameraDescription> cameras;
+  bool cameraState = false;
+  List<Marker> markers = [];
+  //Location(name: "Lumaparken", latitude: 59.303985, longitude: 18.097073);
+  double userLat = 59.303985;
+  double userLng = 18.097073;
 
-  void getLocation() async {
+  void initState() {
+    super.initState();
+    getCameras();
+    getLocation();
+  }
+
+  Future<Null> getCameras() async {
+    setState(() async {
+      WidgetsFlutterBinding.ensureInitialized();
+      cameras = await availableCameras();
+    });
+  }
+
+  Future<void> getLocation() async {
     Position temp = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     position = temp;
   }
 
-  List<Marker> markers = [];
+  showCameraFailAlertDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      backgroundColor: colorPeachPink,
+      title: Text(
+        "Error (Camera Open)",
+        style: TextStyle(color: Colors.red),
+      ),
+      content: Text(
+          "To search for a location please make sure you are on the map view!"),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 
   String _randomString(int length) {
     var rand = new Random();
@@ -101,6 +154,20 @@ class MapsDemoState extends State<MapsDemo> {
       updateMapLocationOnPositionChange: false,
     );
     return Scaffold(
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // floatingActionButton: FloatingActionButton(
+      //         onPressed: () {
+      //           setState(() {
+
+      //           });
+      //         },
+      //         tooltip: "Centre FAB",
+      //         child: Container(
+      //           margin: EdgeInsets.all(15.0),
+      //           child: Icon(Icons.camera_alt),
+      //         ),
+      //         elevation: 4.0,
+      //       ),
       drawer: Drawer(
         child: Container(
             color: colorLighterPink,
@@ -135,29 +202,7 @@ class MapsDemoState extends State<MapsDemo> {
                           ),
                         ],
                       ),
-                    )
-                    // accountName: Text(
-                    //   userlib.name, //userData
-                    //   style: TextStyle(
-                    //       color: textYellow,
-                    //       fontWeight: FontWeight.bold,
-                    //       fontSize: 24.0,
-                    //       letterSpacing: 1.1),
-                    // ),
-                    // accountEmail: Text(
-                    //   userlib.email, //userData
-                    //   style: TextStyle(
-                    //       color: Colors.white,
-                    //       fontSize: 16.0,
-                    //       letterSpacing: 1.1),
-                    // ),
-                    // currentAccountPicture: CircleAvatar(
-                    //   child: Text(
-                    //     "PH", //userData
-                    //     style: TextStyle(fontSize: 40.0),
-                    //   ),
-                    // ),
-                    ),
+                    )),
                 CustomListTile(
                     Icons.person,
                     'Profile',
@@ -239,24 +284,28 @@ class MapsDemoState extends State<MapsDemo> {
       body: Builder(builder: (BuildContext context) {
         return Stack(
           children: <Widget>[
-            new FlutterMap(
-                mapController: controller,
-                options:
-                    new MapOptions(center: LatLng(0, 0), minZoom: 15.0, plugins: [
-                  // ADD THIS
-                  UserLocationPlugin(),
-                ]), //ändra detta till coordinate för att komma tillbaka till stockholm
-                layers: [
-                  new TileLayerOptions(
-                      urlTemplate: FlutterConfig.get('MAPBOXAPI_URL'),
-                      additionalOptions: {
-                        'accessToken': FlutterConfig.get('MAPBOX_ID'),
-                        'id': 'mapbox.mapbox-streets-v8'
-                      }),
-                  MarkerLayerOptions(markers: markers),
-                  // ADD THIS
-                  userLocationOptions,
-                ]),
+            !cameraState == true
+                ? FlutterMap(
+                    mapController: controller,
+                    options: new MapOptions(
+                        center: LatLng(0, 0),
+                        minZoom: 15.0,
+                        plugins: [
+                          // ADD THIS
+                          UserLocationPlugin(),
+                        ]), //ändra detta till coordinate för att komma tillbaka till stockholm
+                    layers: [
+                        new TileLayerOptions(
+                            urlTemplate: FlutterConfig.get('MAPBOXAPI_URL'),
+                            additionalOptions: {
+                              'accessToken': FlutterConfig.get('MAPBOX_ID'),
+                              'id': 'mapbox.mapbox-streets-v8'
+                            }),
+                        MarkerLayerOptions(markers: markers),
+                        // ADD THIS
+                        userLocationOptions,
+                      ])
+                : CameraScreen(cameras),
             Padding(
               padding: EdgeInsets.all(16.0),
               child: Align(
@@ -388,14 +437,16 @@ class MapsDemoState extends State<MapsDemo> {
                           ),
                           color: Colors.white,
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SearchLocation(
-                                  controller: controller,
-                                ),
-                              ),
-                            );
+                            !cameraState == true
+                                ? Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SearchLocation(
+                                        controller: controller,
+                                      ),
+                                    ),
+                                  )
+                                : showCameraFailAlertDialog(context);
                           },
                         )),
                     SingleChildScrollView(
@@ -411,7 +462,8 @@ class MapsDemoState extends State<MapsDemo> {
                                 child: FlatButton(
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(18.0),
-                                      side: BorderSide(color: Colors.transparent)),
+                                      side: BorderSide(
+                                          color: Colors.transparent)),
                                   color: colorPeachPink,
                                   onPressed: () {},
                                   child: Row(
@@ -434,7 +486,8 @@ class MapsDemoState extends State<MapsDemo> {
                                 child: FlatButton(
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(18.0),
-                                      side: BorderSide(color: Colors.transparent)),
+                                      side: BorderSide(
+                                          color: Colors.transparent)),
                                   color: colorPeachPink,
                                   onPressed: () {},
                                   child: Row(
@@ -458,7 +511,8 @@ class MapsDemoState extends State<MapsDemo> {
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(18.0),
-                                        side: BorderSide(color: Colors.transparent)),
+                                        side: BorderSide(
+                                            color: Colors.transparent)),
                                     color: colorPeachPink,
                                     onPressed: () {},
                                     child: Row(
@@ -480,7 +534,8 @@ class MapsDemoState extends State<MapsDemo> {
                                 child: FlatButton(
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(18.0),
-                                      side: BorderSide(color: Colors.transparent)),
+                                      side: BorderSide(
+                                          color: Colors.transparent)),
                                   color: colorPeachPink,
                                   onPressed: () {},
                                   child: Row(
@@ -514,20 +569,27 @@ class MapsDemoState extends State<MapsDemo> {
   }
 
   _onAddMarkerButtonPressed() {
-    (position == null)
-        ? setState(() {
-            getLocation();
-          })
-        : Navigator.push(
-            context,
-            new MaterialPageRoute(
-                builder: (context) =>
-                    Navigation(position.latitude, position.longitude)));
+    // (position == null)
+    //     ? setState(() {
+    //         getLocation();
+    //       }):
+    Navigator.push(
+        context,
+        new MaterialPageRoute(
+            builder: (context) => Navigation(userLat, userLng)));
   }
 
-  _goToPosition1() {}
+  _goToPosition1() {
+    setState(() {
+      if (cameraState == false) {
+        cameraState = true;
+      } else {
+        cameraState = false;
+      }
+    });
+  }
 
-  _openNotifications() {}
+  //_openNotifications() {}
 }
 
 class CustomListTile extends StatelessWidget {
