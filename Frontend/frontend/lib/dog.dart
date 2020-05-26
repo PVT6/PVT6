@@ -5,7 +5,7 @@ class Dog {
   String weight;
   String breed;
 
-  Dog({this.id, this.name, this.age, this.weight, this.breed});
+  Dog(int i, {this.id, this.name, this.age, this.weight, this.breed});
 
   Dog.fromJson(Map<String, dynamic> json) {
     id = json['id'];

@@ -7,6 +7,7 @@ import 'package:frontend/userFiles/friendsFeed.dart';
 import 'package:latlong/latlong.dart';
 import 'package:frontend/dogPlaceDesc.dart';
 
+
 var textYellow = Color(0xFFf6c24d);
 var iconYellow = Color(0xFFf4bf47);
 
@@ -106,7 +107,12 @@ class MenuItemsList extends StatelessWidget {
                             'Location',
                             'Orminges hundrastgård',
                             'With an agility track aswell as an abundance of trees, + desc',
-                            () => {},
+                           
+                           
+                            () => {
+                              
+                                  
+                            }, //Här
                             () => {},
                             location = new LatLng(59.334389, 18.254072),
                           )))
@@ -359,6 +365,26 @@ class FoodListview extends StatelessWidget {
                               () => {},
                               () => {},
                               location = new LatLng(59.340565, 18.040249),
+                            )))
+              },
+            ),
+             ItemCard(
+              "LeBistro.jpg",
+              'Jakobs Test Location',
+              'Testar navigation här',
+              () => {
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) => DogPlaceDesc2(
+                              "LeBistro.jpg",
+                              '5',
+                              'Coop Vinsta',
+                              'Vinsta',
+                              'Trött',
+                              () => {},
+                              () => {},
+                              location = new LatLng(59.369411, 17.858453),
                             )))
               },
             ),

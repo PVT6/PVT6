@@ -2,6 +2,7 @@
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/browseDogParks.dart';
+import 'package:frontend/friendsAndContacts/addContactPage.dart';
 import 'package:frontend/friendsAndContacts/contacts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:frontend/loginFiles/MySignInPage.dart';

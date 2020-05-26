@@ -5,9 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'package:frontend/services/auth.dart';
 import 'package:frontend/userFiles/editProfile.dart';
+import 'package:frontend/userFiles/profile.dart';
 import 'package:frontend/userFiles/user.dart' as userlib;
 
-
+import 'friendsAndContacts/addContactPage.dart';
 
 class Settings extends StatefulWidget {
   Settings() : super();
@@ -20,46 +21,27 @@ class Settings extends StatefulWidget {
 
 class SettingsState extends State<Settings> {
   final AuthService _auth = AuthService();
-  bool _dark;
 
   @override
   void initState() {
     super.initState();
-    _dark = false;
-  }
-
-  Brightness _getBrightness() {
-    return _dark ? Brightness.dark : Brightness.light;
   }
 
   @override
   Widget build(BuildContext context) {
     return Theme(
       isMaterialAppTheme: true,
-      data: ThemeData(
-        brightness: _getBrightness(),
-      ),
+      data: ThemeData(),
       child: Scaffold(
-        backgroundColor: _dark ? null : colorPurple,
+        backgroundColor: colorPurple,
         appBar: AppBar(
           elevation: 0,
-          brightness: _getBrightness(),
-          iconTheme: IconThemeData(color: _dark ? Colors.white : colorPeachPink),
+          iconTheme: IconThemeData(color: colorPeachPink),
           backgroundColor: Colors.transparent,
           title: Text(
             'Settings',
-            style: TextStyle(color: _dark ? Colors.white : colorPeachPink),
+            style: TextStyle(color: colorPeachPink),
           ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(FontAwesomeIcons.moon),
-              onPressed: () {
-                setState(() {
-                  _dark = !_dark;
-                });
-              },
-            ),
-          ],
         ),
         body: Container(
           decoration: BoxDecoration(
@@ -88,30 +70,37 @@ class SettingsState extends State<Settings> {
                           borderRadius: BorderRadius.circular(10.0)),
                       color: Colors.white,
                       child: ListTile(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => EditProfile()),
-                          );
-                        
-                        },
-                        title: Text(
-                          userlib.name, //userData
-                          style: TextStyle(
-                            color: colorPurple,
-                            fontWeight: FontWeight.w500,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ProfileEightPage()),
+                            );
+                          },
+                          title: Text(
+                            userlib.name, //userData
+                            style: TextStyle(
+                              color: colorPurple,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
-                        ),
-                        leading: CircleAvatar(
-                          backgroundImage:
-                              new AssetImage('assets/profilePH.png'),
-                        ),
-                        trailing: Icon(
-                          Icons.edit,
-                          color: colorPurple,
-                        ),
-                      ),
+                          leading: CircleAvatar(
+                            backgroundImage:
+                                new AssetImage('assets/BrewDog.jpg'),
+                          ),
+                          trailing: IconButton(
+                            icon: Icon(
+                              Icons.edit,
+                              color: colorPurple,
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => EditProfile()),
+                              );
+                            },
+                          )),
                     ),
                     const SizedBox(height: 10.0),
                     Card(
@@ -156,30 +145,6 @@ class SettingsState extends State<Settings> {
                               //open change location
                             },
                           ),
-                          _buildDivider(),
-                          ListTile(
-                            leading: Icon(
-                              Icons.settings,
-                              color: colorPurple,
-                            ),
-                            title: Text("Placeholder"),
-                            trailing: Icon(Icons.keyboard_arrow_right),
-                            onTap: () {
-                              //open change location
-                            },
-                          ),
-                          _buildDivider(),
-                          ListTile(
-                            leading: Icon(
-                              Icons.settings,
-                              color: colorPurple,
-                            ),
-                            title: Text("Placeholder"),
-                            trailing: Icon(Icons.keyboard_arrow_right),
-                            onTap: () {
-                              //open change location
-                            },
-                          ),
                         ],
                       ),
                     ),
@@ -198,13 +163,7 @@ class SettingsState extends State<Settings> {
                       title: Text("Share Location With Friends"),
                       onChanged: (val) {},
                     ),
-                    SwitchListTile(
-                      activeColor: colorPurple,
-                      contentPadding: const EdgeInsets.all(0),
-                      value: false,
-                      title: Text("See Local User On Map"),
-                      onChanged: (val) {},
-                    ),
+                    
                     SwitchListTile(
                       activeColor: colorPurple,
                       contentPadding: const EdgeInsets.all(0),
@@ -223,36 +182,7 @@ class SettingsState extends State<Settings> {
                   ],
                 ),
               ),
-              Positioned(
-                bottom: -20,
-                left: -20,
-                child: Container(
-                  width: 80,
-                  height: 80,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: colorPurple,
-                    shape: BoxShape.circle,
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: 00,
-                left: 00,
-                child: IconButton(
-                  icon: Icon(
-                    FontAwesomeIcons.powerOff,
-                    color: colorPeachPink,
-                  ),
-                  onPressed: () async {
-                    await _auth.signOut();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MySignInPage()),
-                    );
-                  },
-                ),
-              )
+             
             ],
           ),
         ),
@@ -271,5 +201,3 @@ class SettingsState extends State<Settings> {
     );
   }
 }
-
-

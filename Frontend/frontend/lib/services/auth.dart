@@ -28,6 +28,7 @@ Future registerWithEmailAndPassword(String email, String password, String phone,
 try {
   AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
   FirebaseUser user = result.user;
+  await user.sendEmailVerification();
   
 
   var url = 'https://group6-15.pvt.dsv.su.se/user/new';
