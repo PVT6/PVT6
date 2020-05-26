@@ -1,12 +1,16 @@
 import 'dart:convert';
 
+import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/friendsAndContacts/addContactPage.dart';
 import 'package:frontend/friendsAndContacts/contactsModel.dart';
 import 'package:frontend/friendsAndContacts/sentRequest.dart';
 import 'package:frontend/userFiles/addDogTest.dart';
+import 'package:frontend/userFiles/dogProfile.dart';
 import 'package:http/http.dart' as http;
 import 'package:frontend/userFiles/user.dart' as userlib;
+
+import '../dog.dart';
 
 List<User> friends = [];
 
@@ -242,7 +246,7 @@ class _HomePageState extends State<FriendsPage>
                                 onTap: () {
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (BuildContext context) =>
-                                          ProfileInfo(null)));
+                                          ProfileInfo(c)));
                                 },
                                 leading: CircleAvatar(child: Text("PH")),
                                 title: Text(c.name ?? ""),
@@ -307,27 +311,62 @@ class _HomePageState extends State<FriendsPage>
                                       borderRadius:
                                           BorderRadius.circular(10.0)),
                                   child: ListTile(
-                                    onTap: () {
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) =>
-                                                  ProfileInfo(null)));
-                                    },
-                                    leading: CircleAvatar(child: Text("PH")),
-                                    title: Text(c.sender.name ?? ""),
-                                    subtitle: Text(c.sender.phoneNumber ?? ""),
-                                    trailing: IconButton(
-                                      icon: Icon(
-                                        Icons.person_add,
-                                        color: Colors.green,
-                                        size: 37,
-                                      ),
-                                      onPressed: () {
-                                        showAlertDialog(
-                                            context, c.sender.phoneNumber);
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        ProfileInfo(c.sender)));
                                       },
-                                    ), //onPressed Lägger till i vänner och tar bort från lista
-                                  ));
+                                      leading: CircleAvatar(child: Text("PH")),
+                                      title: Text(c.sender.name ?? ""),
+                                      subtitle:
+                                          Text(c.sender.phoneNumber ?? ""),
+                                      trailing: (() {
+                                       IconButton b;
+
+                                        // HÄR BEHÖVS ICONER FÖR WAITING REJECTED OCH ACCEPTED
+                                        if(c.status == "WAITING"){
+                                        b = IconButton(
+                                          icon: Icon(
+                                            Icons.person_add,
+                                            color: Colors.green,
+                                            size: 37,
+                                          ),
+                                          onPressed: () {
+                                            showAlertDialog(
+                                                context, c.sender.phoneNumber);
+                                          },
+                                        );
+                                        }
+                                        else if(c.status == "ACCEPTED") {
+                                       b =  IconButton(
+                                          icon: Icon(
+                                            Icons.done,
+                                            color: Colors.green,
+                                            size: 37,
+                                          ),
+                                          onPressed: () {
+                                            
+                                          },
+                                        );
+                                        }
+                                         else  {
+                                       b =  IconButton(
+                                          icon: Icon(
+                                            Icons.clear,
+                                            color: Colors.red,
+                                            size: 37,
+                                          ),
+                                          onPressed: () {
+                                            
+                                          },
+                                        );
+                                        }
+                                        return b;
+                                      }())
+                                      //onPressed Lägger till i vänner och tar bort från lista
+                                      ));
                             },
                           )
                         : Center(
@@ -548,7 +587,7 @@ class _MyHomePageState extends State<SearchUsers> {
 }
 
 class ProfileInfo extends StatefulWidget {
-  final Receiver user;
+  final User user;
 
   ProfileInfo(this.user);
 
@@ -566,11 +605,14 @@ class ProfileInfoState extends State<ProfileInfo> {
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {
+        onPressed: () async {
           Navigator.of(context).pop(); // dismiss dialog
-          setState(() {
-            //widget.user.friendstatus = false;
-          });
+           var url = 'https://group6-15.pvt.dsv.su.se/contacts/remove';
+
+          var response = await http
+              .post(Uri.parse(url), body: {'uid': userlib.uid, 'phone': widget.user.phoneNumber});
+          print(response.statusCode);
+          getInfo();
         },
         child: Text("Ok",
             textAlign: TextAlign.center,
@@ -583,8 +625,8 @@ class ProfileInfoState extends State<ProfileInfo> {
     AlertDialog alert = AlertDialog(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(32.0))),
-      title: Text("UserName"),
-      content: Text("Friend request sent"),
+      title: Text("Remove as friend"),
+      content: Text("You are no longer friends"),
       actions: [
         okButton,
       ],
@@ -652,55 +694,82 @@ class ProfileInfoState extends State<ProfileInfo> {
               padding: EdgeInsets.all(10),
               child: Column(
                 children: <Widget>[
-                  Container(
-                    padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      "My Dogs",
-                      style: TextStyle(
-                        color: Colors.black87,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
+                   Container(
+              padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
+              alignment: Alignment.topLeft,
+              child: BorderedText(
+                strokeWidth: 5.0,
+                strokeColor: colorPurple,
+                child: Text(
+                  "My Dogs",
+                  style: TextStyle(
+                    color: colorLighterPink,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
                   ),
-                  Row(
-                    //user hundlista här
-                    children: <Widget>[
-                      SizedBox(
-                          child: InkWell(
-                        onTap: () {},
-                        child: Container(
-                          width: 100,
-                          height: 100,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20.0),
-                            child: Image.asset(
-                              'BrewDog.jpg',
-                            ),
-                          ),
-                        ),
-                      )),
-                      SizedBox(
-                        width: 10,
+                  textAlign: TextAlign.left,
+                ),
+              )),
+          SingleChildScrollView(
+              physics: ScrollPhysics(),
+              child: Container(
+                height: 70,
+                child: widget.user.ownedDog != null
+                    ? ListView.builder(
+                        //https://pusher.com/tutorials/flutter-listviews
+
+                        shrinkWrap: true,
+                        itemCount: widget.user.ownedDog?.length ?? 0,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (BuildContext context, int index) {
+                          Dog c = widget.user.ownedDog?.elementAt(index);
+                          return (c.name != null && c.name.length > 0)
+                              ? SizedBox(
+                                  child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => DogProfile(c)),
+                                    );
+                                  },
+                                  child: Container(
+                                    width: 75,
+                                    height: 75,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      child: Image.asset(
+                                        'BrewDog.jpg',
+                                      ),
+                                    ),
+                                  ),
+                                ))
+                              : SizedBox(
+                                  child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => DogProfile(c)),
+                                    );
+                                  },
+                                  child: Container(
+                                    width: 75,
+                                    height: 75,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      child: Image.asset(
+                                        'BrewDog.jpg',
+                                      ),
+                                    ),
+                                  ),
+                                ));
+                        },
+                      )
+                    : Center(
+                        child: CircularProgressIndicator(),
                       ),
-                      SizedBox(
-                          child: InkWell(
-                        onTap: () {},
-                        child: Container(
-                          width: 100,
-                          height: 100,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20.0),
-                            child: Image.asset(
-                              'LeBistro.jpg',
-                            ),
-                          ),
-                        ),
-                      )),
-                    ],
-                  ),
+              )),
                   Container(
                     padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
                     alignment: Alignment.topLeft,

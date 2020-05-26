@@ -1,3 +1,5 @@
+import '../dog.dart';
+
 class ContactsModel {
   int id;
   List<User> user;
@@ -31,7 +33,7 @@ class User {
   List<SavedRoutes> savedRoutes;
   String phoneNumber;
   Null position;
-  List<OwnedDog> ownedDog;
+  List<Dog> ownedDog;
 
   User(Set set, 
       {this.id,
@@ -56,9 +58,9 @@ class User {
     phoneNumber = json['phoneNumber'];
     position = json['position'];
     if (json['ownedDog'] != null) {
-      ownedDog = new List<OwnedDog>();
+      ownedDog = new List<Dog>();
       json['ownedDog'].forEach((v) {
-        ownedDog.add(new OwnedDog.fromJson(v));
+        ownedDog.add(new Dog.fromJson(v));
       });
     }
   }
@@ -103,30 +105,3 @@ class SavedRoutes {
   }
 }
 
-class OwnedDog {
-  int id;
-  String name;
-  String age;
-  String weight;
-  String race;
-
-  OwnedDog({this.id, this.name, this.age, this.weight, this.race});
-
-  OwnedDog.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    age = json['age'];
-    weight = json['weight'];
-    race = json['race'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['age'] = this.age;
-    data['weight'] = this.weight;
-    data['race'] = this.race;
-    return data;
-  }
-}

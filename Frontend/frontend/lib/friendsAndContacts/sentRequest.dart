@@ -30,17 +30,13 @@ class SentRequest {
 }
 
 class Sender extends User {
-
-   Sender({id, name, email, savedRoutes, phoneNumber, position, ownedDog})
+  Sender({id, name, email, savedRoutes, phoneNumber, position, ownedDog})
       : super({id, name, email, savedRoutes, phoneNumber, position, ownedDog});
-  Sender.fromJson(json) : super.fromJson(Map<String, dynamic>.from(json)) {
-  
-  
-  }
+
+  Sender.fromJson(json) : super.fromJson(Map<String, dynamic>.from(json));
 }
 
 class Receiver extends User {
-
   Receiver({id, name, email, savedRoutes, phoneNumber, position, ownedDog})
       : super({id, name, email, savedRoutes, phoneNumber, position, ownedDog});
 
