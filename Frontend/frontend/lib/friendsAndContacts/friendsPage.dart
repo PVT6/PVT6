@@ -59,6 +59,7 @@ const colorPurple = const Color(0xFF82658f);
 const colorPeachPink = const Color(0xFFffdcd2);
 const colorLighterPink = const Color(0xFFffe9e5);
 List<SentRequest> sentRequest = [];
+List<SentRequest> waitingRequest = [];
 
 Future<void> getInfo() async {
   //sentRequests
@@ -67,6 +68,14 @@ Future<void> getInfo() async {
       'https://group6-15.pvt.dsv.su.se/contacts/sentRequests?uid=${userlib.uid}';
   var response = await http.get(Uri.parse(url));
   sentRequest = (json.decode(response.body) as List)
+      .map((i) => SentRequest.fromJson(i))
+      .toList();
+  print(response.statusCode);
+
+  url =
+      'https://group6-15.pvt.dsv.su.se/contacts/waitingRequests?uid=${userlib.uid}';
+  response = await http.get(Uri.parse(url));
+  waitingRequest = (json.decode(response.body) as List)
       .map((i) => SentRequest.fromJson(i))
       .toList();
   print(response.statusCode);
@@ -109,16 +118,12 @@ class _HomePageState extends State<FriendsPage>
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () async {
           Navigator.of(context).pop();
-          var url =
-              'https://group6-15.pvt.dsv.su.se/contacts/cancleRequests';
+          var url = 'https://group6-15.pvt.dsv.su.se/contacts/cancleRequests';
 
-          var response = await http.post(Uri.parse(url),
-                                  body: {
-                                    'uid': userlib.uid,
-                                    'phone': phone
-                                  });
-         print(response.statusCode);
-         getInfo();
+          var response = await http
+              .post(Uri.parse(url), body: {'uid': userlib.uid, 'phone': phone});
+          print(response.statusCode);
+          getInfo();
         },
         child: Text("Yes",
             textAlign: TextAlign.center,
@@ -148,11 +153,18 @@ class _HomePageState extends State<FriendsPage>
     );
   }
 
-  showAlertDialog(BuildContext context) {
+  showAlertDialog(BuildContext context, phone) {
     // set up the buttons
     Widget cancelButton = FlatButton(
       child: Text("Decline"),
-      onPressed: () {
+      onPressed: () async {
+        var url = 'https://group6-15.pvt.dsv.su.se/contacts/answer';
+
+        var response = await http
+            .post(Uri.parse(url), body: {'uid': userlib.uid, 'phone': phone, 'e': 'rejcet'});
+        print(response.statusCode);
+        getInfo();
+
         Navigator.of(context).pop(); // dismiss dialog
       },
     );
@@ -164,8 +176,13 @@ class _HomePageState extends State<FriendsPage>
       child: MaterialButton(
         minWidth: 100,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {
-          Navigator.of(context).pop(); // dismiss dialog
+        onPressed: () async {
+        var url = 'https://group6-15.pvt.dsv.su.se/contacts/answer';
+        var response = await http
+            .post(Uri.parse(url), body: {'uid': userlib.uid, 'phone': phone, 'e': 'accept'});
+        print(response.statusCode);
+        getInfo();
+        Navigator.of(context).pop(); // dismiss dialog
         },
         child: Text("Accept",
             textAlign: TextAlign.center,
@@ -306,14 +323,14 @@ class _HomePageState extends State<FriendsPage>
                       ),
                       textAlign: TextAlign.left,
                     ),
-                    users != null
+                    waitingRequest != null
                         ? ListView.builder(
                             physics: NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
-                            itemCount: users?.length ??
+                            itemCount: waitingRequest?.length ??
                                 0, //lägga till vår egen lista på denna bör funka
                             itemBuilder: (BuildContext context, int index) {
-                              User c = users?.elementAt(index);
+                              SentRequest c = waitingRequest?.elementAt(index);
                               return Card(
                                   elevation: 8.0,
                                   shape: RoundedRectangleBorder(
@@ -327,8 +344,8 @@ class _HomePageState extends State<FriendsPage>
                                                   ProfileInfo(null)));
                                     },
                                     leading: CircleAvatar(child: Text("PH")),
-                                    title: Text(c.name ?? ""),
-                                    subtitle: Text(c.email ?? ""),
+                                    title: Text(c.sender.name ?? ""),
+                                    subtitle: Text(c.sender.email ?? ""),
                                     trailing: IconButton(
                                       icon: Icon(
                                         Icons.person_add,
@@ -336,7 +353,7 @@ class _HomePageState extends State<FriendsPage>
                                         size: 37,
                                       ),
                                       onPressed: () {
-                                        showAlertDialog(context);
+                                        showAlertDialog(context, c.sender.phoneNumber);
                                       },
                                     ), //onPressed Lägger till i vänner och tar bort från lista
                                   ));
@@ -385,7 +402,8 @@ class _HomePageState extends State<FriendsPage>
                                         size: 37,
                                       ),
                                       onPressed: () {
-                                        cancleRequestAlert(context, c.receiver.phoneNumber);
+                                        cancleRequestAlert(
+                                            context, c.receiver.phoneNumber);
                                       },
                                     ),
                                   ));

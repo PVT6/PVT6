@@ -92,7 +92,7 @@ public class ContactRequestController {
                         break;
                     case "rejcet":
                         element.setStatus(Status.REJECTRED);
-                        u2.findUserFromContactRequests(element).setStatus(Status.ACCEPTED);
+                        u2.findUserFromContactRequests(element).setStatus(Status.REJECTRED);
                         userRepository.save(u);
                         userRepository.save(u2);
                         break;

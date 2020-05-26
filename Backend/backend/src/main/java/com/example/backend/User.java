@@ -143,7 +143,7 @@ public class User {
     this.contactList = contactList;
   }
 
-  @JsonIgnore
+  
   public Set<Dog> getOwnedDog() {
     return ownedDog;
   }
@@ -190,7 +190,7 @@ public class User {
     return createdAt;
   }
 
-  @JsonIgnore
+  
   public Set<Route> getSavedRoutes() {
     return savedRoutes;
   }
