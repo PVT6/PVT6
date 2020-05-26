@@ -7,6 +7,10 @@ import 'package:gallery_saver/gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
+const colorPurple = const Color(0xFF82658f);
+const colorPeachPink = const Color(0xFFffdcd2);
+const colorLighterPink = const Color(0xFFffe9e5);
+
 class CameraScreen extends StatefulWidget {
   final List<CameraDescription> cameras;
 
@@ -57,13 +61,14 @@ class CameraScreenState extends State<CameraScreen> {
         setState(() {
           imagePath = filePath;
         });
-        if (filePath != null) print('Picture saved to $filePath');
+        if (filePath != null) _takePhoto();
       }
     });
   }
 
-  void _takePhoto() async {
+  Future<void> _takePhoto() async {
     GallerySaver.saveImage(imagePath);
+    showPhotoTakenDialog(context);
   }
 
   @override
@@ -84,6 +89,51 @@ class CameraScreenState extends State<CameraScreen> {
     super.dispose();
   }
 
+  showPhotoTakenDialog(BuildContext context) {
+    AlertDialog alert = AlertDialog(
+      backgroundColor: colorPeachPink,
+      title: Text(
+        "Picture Saved",
+        style: TextStyle(
+          fontFamily: 'Hipster Script W00 Regular',
+          fontSize: 28,
+        ),
+      ),
+      content: Container(
+        width: 200,
+        height: 230,
+        child: Column(
+          children: <Widget>[
+            SizedBox(
+                width: 200,
+                height: 160,
+                child: Image.file(
+                  File(imagePath),
+                  fit: BoxFit.cover,
+                )),
+            Text(
+                "You can add this new Photo to your own profile or one of your dogs!"),
+          ],
+        ),
+      ),
+      actions: [
+        FlatButton(
+          color: Colors.green,
+          onPressed: () => Navigator.pop(context),
+          child: Text("Ok"),
+        ),
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -102,9 +152,9 @@ class CameraScreenState extends State<CameraScreen> {
                 // if (imagePath != null) {
                 //   _takePhoto();
                 // }
-                setState(() {
-                  _takePhoto();
-                });
+                // setState(() {
+                //   _takePhoto();
+                // });
               },
               tooltip: "Centre FAB",
               child: Container(
