@@ -58,6 +58,19 @@ List<User> databaseUser = [
 const colorPurple = const Color(0xFF82658f);
 const colorPeachPink = const Color(0xFFffdcd2);
 const colorLighterPink = const Color(0xFFffe9e5);
+List<SentRequest> sentRequest = [];
+
+Future<void> getInfo() async {
+  //sentRequests
+
+  var url =
+      'https://group6-15.pvt.dsv.su.se/contacts/sentRequests?uid=${userlib.uid}';
+  var response = await http.get(Uri.parse(url));
+  sentRequest = (json.decode(response.body) as List)
+      .map((i) => SentRequest.fromJson(i))
+      .toList();
+  print(response.statusCode);
+}
 
 class FriendsPage extends StatefulWidget {
   @override
@@ -68,23 +81,73 @@ class _HomePageState extends State<FriendsPage>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
-  List<SentRequest> sentRequest = [];
-  List<SentRequest> receivingRequests = [];
 
-  Future<void> getInfo() async {
-    //contacts
-    var url =
-        'https://group6-15.pvt.dsv.su.se/contacts/sentRequests?uid=${userlib.uid}';
-    var response = await http.get(Uri.parse(url));
-    List<SentRequest> sentRequest = (json.decode(response.body) as List)
-        .map((i) => SentRequest.fromJson(i))
-        .toList();
-  }
+  List<SentRequest> receivingRequests = [];
 
   @override
   void initState() {
+    getInfo();
     _tabController = new TabController(length: 3, vsync: this);
     super.initState();
+  }
+
+  cancleRequestAlert(BuildContext context, phone) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop(); // dismiss dialog
+      },
+    );
+
+    Widget acceptButton = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(30.0),
+      color: Colors.green,
+      child: MaterialButton(
+        minWidth: 100,
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () async {
+          Navigator.of(context).pop();
+          var url =
+              'https://group6-15.pvt.dsv.su.se/contacts/cancleRequests';
+
+          var response = await http.post(Uri.parse(url),
+                                  body: {
+                                    'uid': userlib.uid,
+                                    'phone': phone
+                                  });
+          sentRequest = (json.decode(response.body) as List)
+              .map((i) => SentRequest.fromJson(i))
+              .toList();
+          print(response.statusCode); // dismiss dialog
+        },
+        child: Text("Yes",
+            textAlign: TextAlign.center,
+            style: style.copyWith(
+                color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(32.0))),
+      title: Text("Friend Request"),
+      content: Text("Do you really want to cancle this friend request"),
+      actions: [
+        cancelButton,
+        acceptButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   showAlertDialog(BuildContext context) {
@@ -194,7 +257,7 @@ class _HomePageState extends State<FriendsPage>
                                 onTap: () {
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (BuildContext context) =>
-                                          ProfileInfo(c)));
+                                          ProfileInfo(null)));
                                 },
                                 leading: CircleAvatar(child: Text("PH")),
                                 title: Text(c.name ?? ""),
@@ -263,7 +326,7 @@ class _HomePageState extends State<FriendsPage>
                                       Navigator.of(context).push(
                                           MaterialPageRoute(
                                               builder: (BuildContext context) =>
-                                                  ProfileInfo(c)));
+                                                  ProfileInfo(null)));
                                     },
                                     leading: CircleAvatar(child: Text("PH")),
                                     title: Text(c.name ?? ""),
@@ -293,14 +356,14 @@ class _HomePageState extends State<FriendsPage>
                       ),
                       textAlign: TextAlign.left,
                     ),
-                    users != null
+                    sentRequest != null
                         ? ListView.builder(
                             physics: NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
-                            itemCount: users?.length ??
+                            itemCount: sentRequest?.length ??
                                 0, //lägga till vår egen lista på denna bör funka
                             itemBuilder: (BuildContext context, int index) {
-                              User c = users?.elementAt(index);
+                              SentRequest c = sentRequest?.elementAt(index);
                               return Card(
                                   elevation: 8.0,
                                   shape: RoundedRectangleBorder(
@@ -311,15 +374,21 @@ class _HomePageState extends State<FriendsPage>
                                       Navigator.of(context).push(
                                           MaterialPageRoute(
                                               builder: (BuildContext context) =>
-                                                  ProfileInfo(c)));
+                                                  ProfileInfo(c.receiver)));
                                     },
                                     leading: CircleAvatar(child: Text("PH")),
-                                    title: Text(c.name ?? ""),
-                                    subtitle: Text(c.email ?? ""),
-                                    trailing: Icon(
-                                      Icons.hourglass_empty,
-                                      color: Colors.yellow,
-                                      size: 37,
+                                    title: Text(c.receiver.name ?? ""),
+                                    subtitle:
+                                        Text(c.receiver.phoneNumber ?? ""),
+                                    trailing: IconButton(
+                                      icon: Icon(
+                                        Icons.hourglass_empty,
+                                        color: Colors.yellow,
+                                        size: 37,
+                                      ),
+                                      onPressed: () {
+                                        cancleRequestAlert(context, c.receiver.phoneNumber);
+                                      },
                                     ),
                                   ));
                             },
@@ -429,6 +498,7 @@ class _MyHomePageState extends State<SearchUsers> {
 
   showAlertDialogApproved(BuildContext context) {
     // set up the buttons
+    getInfo();
     Widget okButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
@@ -466,6 +536,7 @@ class _MyHomePageState extends State<SearchUsers> {
   }
 
   showAlertDialogDeclined(BuildContext context) {
+    getInfo();
     // set up the buttons
     Widget okButton = Material(
       elevation: 5.0,
@@ -534,7 +605,7 @@ class _MyHomePageState extends State<SearchUsers> {
                       ),
                       SizedBox(height: 20.0),
                       RaisedButton(
-                          child: Text('Search User'),
+                          child: Text('add User'),
                           onPressed: () async {
                             if (phone != null) {
                               var url =
@@ -563,7 +634,7 @@ class _MyHomePageState extends State<SearchUsers> {
 }
 
 class ProfileInfo extends StatefulWidget {
-  final User user;
+  final Receiver user;
 
   ProfileInfo(this.user);
 
@@ -584,7 +655,7 @@ class ProfileInfoState extends State<ProfileInfo> {
         onPressed: () {
           Navigator.of(context).pop(); // dismiss dialog
           setState(() {
-            widget.user.friendstatus = false;
+            //widget.user.friendstatus = false;
           });
         },
         child: Text("Ok",
@@ -638,7 +709,8 @@ class ProfileInfoState extends State<ProfileInfo> {
                 SizedBox(
                   width: 230,
                 ),
-                widget.user.friendstatus != false
+                true
+                    // CONTACTS
                     ? MaterialButton(
                         color: Colors.green,
                         shape: BeveledRectangleBorder(),
@@ -655,7 +727,7 @@ class ProfileInfoState extends State<ProfileInfo> {
                         child: Icon(Icons.remove_circle),
                         onPressed: () {
                           setState(() {
-                            widget.user.friendstatus = true;
+                            //widget.user.friendstatus = true;
                           });
                         },
                       ),
@@ -777,7 +849,7 @@ class ProfileInfoState extends State<ProfileInfo> {
                                           color: Colors.blue.shade300),
                                     ),
                                     subtitle: Text(
-                                      widget.user.phone,
+                                      widget.user.phoneNumber,
                                       style: TextStyle(
                                           color: Colors.blue.shade300),
                                     ),

@@ -138,5 +138,27 @@ public class ContactRequestController {
         } else
             return "No user found";
     }
+    @PostMapping(value = "/cancleRequests")
+    public @ResponseBody String cancleRequests(@RequestParam String uid, String phone){
+        User sender = userRepository.findByUid(uid);
+        User receiver = userRepository.findByPhone(phone);
+
+        Set<ContactRequest> contactRequests = sender.getContactRequest();
+        contactRequests.forEach((e) -> {
+            if(e.getReceiver() == receiver){
+                contactRequests.remove(e);
+                userRepository.saveAndFlush(sender);
+            }
+        });
+        Set<ContactRequest> contactRequests2 = receiver.getContactRequest();
+        contactRequests.forEach((e) -> {
+            if(e.getSender() == sender){
+                contactRequests.remove(e);
+                userRepository.saveAndFlush(sender);
+            }
+        });
+
+        return "true";
+        }
 
 }
