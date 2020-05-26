@@ -154,7 +154,7 @@ public class ContactRequestController {
         contactRequests.forEach((e) -> {
             if(e.getSender() == sender){
                 contactRequests.remove(e);
-                userRepository.saveAndFlush(sender);
+                userRepository.saveAndFlush(receiver);
             }
         });
 
