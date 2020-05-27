@@ -198,7 +198,12 @@ class DogProfileState extends State<DogProfile> {
                       children: <Widget>[
                         FlatButton(
                           color: colorPeachPink,
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ProfileEightPage()));
+                          },
                           child: Row(
                             children: <Widget>[
                               Icon(
@@ -218,12 +223,7 @@ class DogProfileState extends State<DogProfile> {
                         ),
                         FlatButton(
                           color: colorPeachPink,
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ProfileEightPage()));
-                          },
+                          onPressed: () {},
                           child: Row(
                             children: <Widget>[
                               Icon(

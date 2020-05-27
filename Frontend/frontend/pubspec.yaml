@@ -59,6 +59,13 @@ dependencies:
   firebase_messaging: ^6.0.15
   cron: any
   intl: ^0.16.1
+  camera: ^0.5.8+2
+  path_provider: any
+  path: any
+  video_player: ^0.10.11+1
+  gallery_saver: ^2.0.1
+
+
 
   
 dev_dependencies:
