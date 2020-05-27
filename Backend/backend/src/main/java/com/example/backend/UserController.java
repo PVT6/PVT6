@@ -52,6 +52,7 @@ public class UserController    {
     public @ResponseBody String updatePos(@RequestParam Double lat, Double log, String uid){
         User u = userRepository.findByUid(uid);
         u.setPosition(new Position((log), (lat)));
+        userRepository.save(u);
         return "true";
     }
 
