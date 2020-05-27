@@ -4,8 +4,10 @@ import 'package:frontend/mapFiles/mapsDemo.dart';
 import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'package:frontend/services/auth.dart';
 import 'package:provider/provider.dart';
+import 'package:frontend/userFiles/user.dart' as userlib;
 
 class Wrapper extends StatelessWidget {
+  
   @override
   Widget build(BuildContext context) {
 
@@ -22,9 +24,8 @@ class Wrapper extends StatelessWidget {
       return MySignInPage();
     } else {
       _auth.connectLoggedInUser(user);
-      //Byt ut "Authenticate" till våran hem skärm.
+      print(userlib.name);
       return MapsDemo(); // ska skicka användaren till hem skärmen
     }
-    
   }
 }
