@@ -250,7 +250,7 @@ class _HomePageState extends State<FriendsPage>
                                 },
                                 leading: CircleAvatar(child: Text("PH")),
                                 title: Text(c.name ?? ""),
-                                subtitle: Text("Stockholm, Vällingby . 53 min"),
+                                subtitle: Text(c.position.x.toString()),
                                 trailing: IconButton(
                                   icon: Icon(
                                     Icons.person_pin,
