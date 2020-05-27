@@ -29,7 +29,7 @@ public class ImageSaveDB {
          dog.setName("Java - The Complete Reference");
          session.doWork(conn->{
             byte[] byteData = dog.getByteImage();
-            dog.setImage(BlobProxy.generateProxy(getImage()));
+            dog.setBlobImage(BlobProxy.generateProxy(getImage()));
          });
          session.save(dog);
          transaction.commit();

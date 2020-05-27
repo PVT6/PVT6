@@ -29,7 +29,8 @@ public class Dog {
     private String description;
     private String dogpicture;
     private String gender;
-    private byte[] dogpictureBlob;
+    private byte[] dogpictureByte;
+    private Blob blobPicture;
     
 
 
@@ -108,13 +109,20 @@ public class Dog {
     }
 
     public byte[] getByteImage(){
-        return dogpictureBlob;
+        return dogpictureByte;
     }
 
     public void setImage(String newImage){
         byte[] byteData = newImage.getBytes();
-        this.dogpictureBlob = byteData;
+        this.dogpictureByte = byteData;
         this.dogpicture = newImage;
+    }
+    public void setBlobImage(Blob blobImage){
+        this.blobPicture = blobImage;
+    }
+    
+    public Blob getBlobImage(){
+        return blobPicture;
     }
 
     public String getGender(){

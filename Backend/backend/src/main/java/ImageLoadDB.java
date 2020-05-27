@@ -26,9 +26,9 @@ public class ImageLoadDB {
          transaction.begin();
 
          Dog dog = session.get(Dog.class, 4L);
-         System.out.println("Dog Name: "+Dog.getName());
+         System.out.println("Dog Name: "+dog.getName());
          
-         InputStream imgStream = Dog.getImage().getBinaryStream();
+         InputStream imgStream = dog.getBlobImage().getBinaryStream();
          saveImage(imgStream);
 
          transaction.commit();
