@@ -81,11 +81,12 @@ public class User {
     this.uid = uid;
   }
 
-  public User(String uid, String email, String phone, String name) {
+  public User(String uid, String email, String phone, String name, ContactList c) {
     this.uid = uid;
     this.email = email;
     this.phoneNumber = phone;
     this.name = name;
+    this.contactList = c;
   }
 
   public User() {

@@ -32,7 +32,7 @@ public class UserController    {
 
     @PostMapping(path = "/new") // Map ONLY POST Requests
     public @ResponseBody String addNewUser(@RequestParam String uid, String email, String phone, String name) {
-        User n = new User(uid, email, phone, name);
+        User n = new User(uid, email, phone, name, new ContactList());
         userRepository.save(n);
         return "Saved";
     }
