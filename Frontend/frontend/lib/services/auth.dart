@@ -43,7 +43,7 @@ try {
     userlib.setEmail(email);
     userlib.setUid(user.uid);
     userlib.setLogin(true);
-    sharePos();
+    initState();
   }
   else {
     throw("FAILED TO CONNECT TO DB");
@@ -69,7 +69,7 @@ try {
       userlib.setEmail(users['email']);
       userlib.setUid(user.uid);
       userlib.setLogin(true);
-      sharePos();
+      initState();
   }
   else {
     throw("FAILED TO CONNECT TO DB or Non user found");

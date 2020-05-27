@@ -32,7 +32,7 @@ class User {
   String email;
   List<SavedRoutes> savedRoutes;
   String phoneNumber;
-  Null position;
+  Position position;
   List<Dog> ownedDog;
 
   User(Set set, 
@@ -56,7 +56,9 @@ class User {
       });
     }
     phoneNumber = json['phoneNumber'];
-    position = json['position'];
+      position = json['position'] != null
+        ? new Position.fromJson(json['position'])
+        : null;
     if (json['ownedDog'] != null) {
       ownedDog = new List<Dog>();
       json['ownedDog'].forEach((v) {
@@ -75,7 +77,9 @@ class User {
       data['savedRoutes'] = this.savedRoutes.map((v) => v.toJson()).toList();
     }
     data['phoneNumber'] = this.phoneNumber;
-    data['position'] = this.position;
+    if (this.position != null) {
+      data['position'] = this.position.toJson();
+    }
     if (this.ownedDog != null) {
       data['ownedDog'] = this.ownedDog.map((v) => v.toJson()).toList();
     }
@@ -104,4 +108,21 @@ class SavedRoutes {
     return data;
   }
 }
+class Position {
+  double x;
+  double y;
 
+  Position({this.x, this.y});
+
+  Position.fromJson(Map<String, dynamic> json) {
+    x = json['x'];
+    y = json['y'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['x'] = this.x;
+    data['y'] = this.y;
+    return data;
+  }
+}
