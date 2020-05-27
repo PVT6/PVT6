@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/friendsAndContacts/addContactPage.dart';
 import 'package:frontend/friendsAndContacts/contactsModel.dart';
 import 'package:frontend/friendsAndContacts/sentRequest.dart';
 import 'package:frontend/userFiles/addDogTest.dart';
@@ -69,9 +68,13 @@ class _HomePageState extends State<FriendsPage>
 
   @override
   void initState() {
-    getInfo();
+    setInfo();
     _tabController = new TabController(length: 3, vsync: this);
     super.initState();
+  }
+
+  Future<void> setInfo() async {
+    getInfo();
   }
 
   cancleRequestAlert(BuildContext context, phone) {
@@ -257,12 +260,7 @@ class _HomePageState extends State<FriendsPage>
                                     color: Colors.black,
                                     size: 37,
                                   ),
-                                  onPressed: () {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                InputPage()));
-                                  },
+                                  onPressed: () {},
                                 ),
                               ));
                         },
@@ -323,45 +321,39 @@ class _HomePageState extends State<FriendsPage>
                                       subtitle:
                                           Text(c.sender.phoneNumber ?? ""),
                                       trailing: (() {
-                                       IconButton b;
+                                        IconButton b;
 
                                         // HÄR BEHÖVS ICONER FÖR WAITING REJECTED OCH ACCEPTED
-                                        if(c.status == "WAITING"){
-                                        b = IconButton(
-                                          icon: Icon(
-                                            Icons.person_add,
-                                            color: Colors.green,
-                                            size: 37,
-                                          ),
-                                          onPressed: () {
-                                            showAlertDialog(
-                                                context, c.sender.phoneNumber);
-                                          },
-                                        );
-                                        }
-                                        else if(c.status == "ACCEPTED") {
-                                       b =  IconButton(
-                                          icon: Icon(
-                                            Icons.done,
-                                            color: Colors.green,
-                                            size: 37,
-                                          ),
-                                          onPressed: () {
-                                            
-                                          },
-                                        );
-                                        }
-                                         else  {
-                                       b =  IconButton(
-                                          icon: Icon(
-                                            Icons.clear,
-                                            color: Colors.red,
-                                            size: 37,
-                                          ),
-                                          onPressed: () {
-                                            
-                                          },
-                                        );
+                                        if (c.status == "WAITING") {
+                                          b = IconButton(
+                                            icon: Icon(
+                                              Icons.person_add,
+                                              color: Colors.green,
+                                              size: 37,
+                                            ),
+                                            onPressed: () {
+                                              showAlertDialog(context,
+                                                  c.sender.phoneNumber);
+                                            },
+                                          );
+                                        } else if (c.status == "ACCEPTED") {
+                                          b = IconButton(
+                                            icon: Icon(
+                                              Icons.done,
+                                              color: Colors.green,
+                                              size: 37,
+                                            ),
+                                            onPressed: () {},
+                                          );
+                                        } else {
+                                          b = IconButton(
+                                            icon: Icon(
+                                              Icons.clear,
+                                              color: Colors.red,
+                                              size: 37,
+                                            ),
+                                            onPressed: () {},
+                                          );
                                         }
                                         return b;
                                       }())
@@ -607,10 +599,10 @@ class ProfileInfoState extends State<ProfileInfo> {
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () async {
           Navigator.of(context).pop(); // dismiss dialog
-           var url = 'https://group6-15.pvt.dsv.su.se/contacts/remove';
+          var url = 'https://group6-15.pvt.dsv.su.se/contacts/remove';
 
-          var response = await http
-              .post(Uri.parse(url), body: {'uid': userlib.uid, 'phone': widget.user.phoneNumber});
+          var response = await http.post(Uri.parse(url),
+              body: {'uid': userlib.uid, 'phone': widget.user.phoneNumber});
           print(response.statusCode);
           getInfo();
         },
@@ -694,82 +686,87 @@ class ProfileInfoState extends State<ProfileInfo> {
               padding: EdgeInsets.all(10),
               child: Column(
                 children: <Widget>[
-                   Container(
-              padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
-              alignment: Alignment.topLeft,
-              child: BorderedText(
-                strokeWidth: 5.0,
-                strokeColor: colorPurple,
-                child: Text(
-                  "My Dogs",
-                  style: TextStyle(
-                    color: colorLighterPink,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                  ),
-                  textAlign: TextAlign.left,
-                ),
-              )),
-          SingleChildScrollView(
-              physics: ScrollPhysics(),
-              child: Container(
-                height: 70,
-                child: widget.user.ownedDog != null
-                    ? ListView.builder(
-                        //https://pusher.com/tutorials/flutter-listviews
+                  Container(
+                      padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
+                      alignment: Alignment.topLeft,
+                      child: BorderedText(
+                        strokeWidth: 5.0,
+                        strokeColor: colorPurple,
+                        child: Text(
+                          "My Dogs",
+                          style: TextStyle(
+                            color: colorLighterPink,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                      )),
+                  SingleChildScrollView(
+                      physics: ScrollPhysics(),
+                      child: Container(
+                        height: 70,
+                        child: widget.user.ownedDog != null
+                            ? ListView.builder(
+                                //https://pusher.com/tutorials/flutter-listviews
 
-                        shrinkWrap: true,
-                        itemCount: widget.user.ownedDog?.length ?? 0,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (BuildContext context, int index) {
-                          Dog c = widget.user.ownedDog?.elementAt(index);
-                          return (c.name != null && c.name.length > 0)
-                              ? SizedBox(
-                                  child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => DogProfile(c)),
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 75,
-                                    height: 75,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      child: Image.asset(
-                                        'BrewDog.jpg',
-                                      ),
-                                    ),
-                                  ),
-                                ))
-                              : SizedBox(
-                                  child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => DogProfile(c)),
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 75,
-                                    height: 75,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      child: Image.asset(
-                                        'BrewDog.jpg',
-                                      ),
-                                    ),
-                                  ),
-                                ));
-                        },
-                      )
-                    : Center(
-                        child: CircularProgressIndicator(),
-                      ),
-              )),
+                                shrinkWrap: true,
+                                itemCount: widget.user.ownedDog?.length ?? 0,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (BuildContext context, int index) {
+                                  Dog c =
+                                      widget.user.ownedDog?.elementAt(index);
+                                  return (c.name != null && c.name.length > 0)
+                                      ? SizedBox(
+                                          child: InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      DogProfile(c)),
+                                            );
+                                          },
+                                          child: Container(
+                                            width: 75,
+                                            height: 75,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(20.0),
+                                              child: Image.asset(
+                                                'BrewDog.jpg',
+                                              ),
+                                            ),
+                                          ),
+                                        ))
+                                      : SizedBox(
+                                          child: InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      DogProfile(c)),
+                                            );
+                                          },
+                                          child: Container(
+                                            width: 75,
+                                            height: 75,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(20.0),
+                                              child: Image.asset(
+                                                'BrewDog.jpg',
+                                              ),
+                                            ),
+                                          ),
+                                        ));
+                                },
+                              )
+                            : Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                      )),
                   Container(
                     padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
                     alignment: Alignment.topLeft,

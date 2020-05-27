@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -6,6 +8,7 @@ import 'package:frontend/userFiles/profile.dart';
 import '../dog.dart';
 import 'user.dart' as userlib;
 import 'addPet.dart';
+import 'package:http/http.dart' as http;
 
 class DogProfile extends StatefulWidget {
   Dog dog;
@@ -27,6 +30,7 @@ class DogProfileState extends State<DogProfile> {
   DogProfileState(Dog dog) {
     this.dog = dog;
   }
+
 
   @override
   Widget build(BuildContext context) {
