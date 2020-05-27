@@ -12,14 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
-<<<<<<< HEAD
-import org.hibernate.annotations.GenericGenerator;
-=======
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javassist.bytecode.ByteArray;
->>>>>>> MartinImageDB
 
 @Entity
 @Table(name = "Dog")
@@ -127,9 +122,7 @@ public class Dog {
         this.blobPicture = blobImage;
     }
 
-    public Blob getBlobImage() {
-        return blobPicture;
-    }
+
 
     public String getGender() {
         return gender;
