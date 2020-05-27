@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/friendsAndContacts/contactsModel.dart';
 import 'package:frontend/friendsAndContacts/sentRequest.dart';
 import 'package:frontend/userFiles/dogProfile.dart';
+import 'package:geocoder/geocoder.dart';
 import 'package:http/http.dart' as http;
 import 'package:frontend/userFiles/user.dart' as userlib;
 
@@ -17,6 +18,40 @@ const colorPeachPink = const Color(0xFFffdcd2);
 const colorLighterPink = const Color(0xFFffe9e5);
 List<SentRequest> sentRequest = [];
 List<SentRequest> waitingRequest = [];
+Future<void> getInfo() async {
+  //sentRequests
+
+  var url =
+      'https://group6-15.pvt.dsv.su.se/contacts/sentRequests?uid=${userlib.uid}';
+  var response = await http.get(Uri.parse(url));
+  sentRequest = (json.decode(response.body) as List)
+      .map((i) => SentRequest.fromJson(i))
+      .toList();
+  print(response.statusCode);
+
+  url =
+      'https://group6-15.pvt.dsv.su.se/contacts/waitingRequests?uid=${userlib.uid}';
+  response = await http.get(Uri.parse(url));
+  waitingRequest = (json.decode(response.body) as List)
+      .map((i) => SentRequest.fromJson(i))
+      .toList();
+  print(response.statusCode);
+
+  url = 'https://group6-15.pvt.dsv.su.se/contacts/all?uid=${userlib.uid}';
+  response = await http.get(Uri.parse(url));
+  if (response.body != "") {
+    final body = json.decode(response.body);
+
+    print("LOAD FRIENDS");
+    friends = (json.decode(jsonEncode(body["user"])) as List)
+        .map((i) => User.fromJson(i))
+        .toList();
+    print(response.statusCode);
+  } else {
+    print("NO FRIENDS");
+    friends.clear();
+  }
+}
 
 class FriendsPage extends StatefulWidget {
   @override
@@ -194,6 +229,17 @@ class _HomePageState extends State<FriendsPage>
     );
   }
 
+  getFriendPos(User c) async {
+    if (c.position.x != null) {
+      final coordinates = new Coordinates(c.position.y, c.position.x);
+      var addresses =
+          await Geocoder.local.findAddressesFromCoordinates(coordinates);
+      var first = addresses.first;
+      return addresses.first.addressLine;
+    }
+    return "unavailable";
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -258,7 +304,18 @@ class _HomePageState extends State<FriendsPage>
                                 },
                                 leading: CircleAvatar(child: Text("PH")),
                                 title: Text(c.name ?? ""),
-                                subtitle: Text("Stockholm, Vällingby . 53 min"),
+                                subtitle: FutureBuilder<dynamic>(
+                                  future: getFriendPos(c),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<dynamic> snapshot) {
+                                         if (snapshot.hasData) {
+                                          return Text(snapshot.data);
+                                          }
+                                          else{
+                                            return Text("Loading");
+                                          }
+                                      },
+                                ),
                                 trailing: IconButton(
                                   icon: Icon(
                                     Icons.person_pin,
@@ -415,6 +472,8 @@ class _HomePageState extends State<FriendsPage>
       ),
     );
   }
+
+  _getFriendPos() {}
 }
 
 class SearchUsers extends StatefulWidget {
