@@ -89,6 +89,7 @@ public class ContactRequestController {
                         u2.getContactList().addUser(u);
                         userRepository.save(u);
                         userRepository.save(u2);
+                        // DELETE REQEST?
 
                         break;
                     case "rejcet":
@@ -96,6 +97,7 @@ public class ContactRequestController {
                         u2.findUserFromContactRequests(element).setStatus(Status.REJECTRED);
                         userRepository.save(u);
                         userRepository.save(u2);
+                          // DELETE REQEST?
                         break;
                 }
 

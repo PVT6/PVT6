@@ -48,6 +48,12 @@ public class UserController    {
         return u.getOwnedDog();    
     }
 
+    @PostMapping(path = "/location")
+    public @ResponseBody String updatePos(@RequestParam Double lat, Double log, String uid){
+        User u = userRepository.findByUid(uid);
+        u.setPosition(new Position((log), (lat)));
+        return "true";
+    }
 
     @GetMapping(path = "/find")
     public @ResponseBody User findUser(@RequestParam String uid){

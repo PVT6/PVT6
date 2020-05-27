@@ -52,7 +52,7 @@ public class UserControllerTest {
     @Test
     public void findUser() {
         UserController usrcon = new UserController();
-        User user = new User("uid", "email", "phone", "name");
+        User user = new User("uid", "email", "phone", "name", new ContactList());
         
         usrcon.addNewUser("uid", "email", "phone", "name");
 

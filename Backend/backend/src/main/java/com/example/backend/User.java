@@ -46,7 +46,7 @@ public class User {
 
   private String phoneNumber;
 
-  @OneToOne(fetch = FetchType.LAZY)
+  @OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.ALL})
   private Position position;
 
   // fingerprint
