@@ -54,6 +54,30 @@ public class DogController {
         }
      }
 
+     @PostMapping(value="/updatedogheight")
+     public @ResponseBody boolean newHeightForDog(@RequestBody int id, String newHeight) {
+        Dog d = dogRepository.findById(id).get();
+        if(d != null){
+            d.setHeight(newHeight);
+            return true;
+        }else{
+            return false;
+        }
+     }
+
+     @PostMapping(value="/updatedogdescription")
+     public @ResponseBody boolean newDescriptionForDog(@RequestBody int id, String newDescription) {
+        Dog d = dogRepository.findById(id).get();
+        if(d != null){
+            d.setDescription(newDescription);
+            return true;
+        }else{
+            return false;
+        }
+     }
+
+     
+
      @PostMapping(value="/updatedogage")
      public @ResponseBody boolean newAgeForDog(@RequestBody int id, String newAge) {
         Dog d = dogRepository.findById(id).get();

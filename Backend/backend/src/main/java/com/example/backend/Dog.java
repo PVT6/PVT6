@@ -1,5 +1,7 @@
 package com.example.backend;
 
+import java.sql.Blob;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -8,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import javassist.bytecode.ByteArray;
 
 @Entity
 @Table(name = "Dog")
@@ -25,6 +29,7 @@ public class Dog {
     private String description;
     private String dogpicture;
     private String gender;
+    private byte[] dogpictureBlob;
     
 
 
@@ -102,7 +107,13 @@ public class Dog {
         return dogpicture;
     }
 
+    public byte[] getByteImage(){
+        return dogpictureBlob;
+    }
+
     public void setImage(String newImage){
+        byte[] byteData = newImage.getBytes();
+        this.dogpictureBlob = byteData;
         this.dogpicture = newImage;
     }
 

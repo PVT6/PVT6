@@ -28,6 +28,7 @@ public class ImageSaveDB {
          Dog dog=new Dog();
          dog.setName("Java - The Complete Reference");
          session.doWork(conn->{
+            byte[] byteData = dog.getByteImage();
             dog.setImage(BlobProxy.generateProxy(getImage()));
          });
          session.save(dog);

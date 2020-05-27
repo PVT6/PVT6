@@ -17,7 +17,7 @@ import com.example.backend.HibernateUtil;
  * @author imssbora
  */
 public class ImageLoadDB {
-   public static void main(String[] args) {
+   public void main(String[] args) {
       Session session = null;
       Transaction transaction = null;
       try {
