@@ -64,7 +64,7 @@ dependencies:
   path: any
   video_player: ^0.10.11+1
   gallery_saver: ^2.0.1
-
+  geocoder: any
 
 
   

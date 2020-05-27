@@ -7,6 +7,7 @@ import 'package:frontend/friendsAndContacts/contactsModel.dart';
 import 'package:frontend/friendsAndContacts/sentRequest.dart';
 import 'package:frontend/userFiles/addDogTest.dart';
 import 'package:frontend/userFiles/dogProfile.dart';
+import 'package:geocoder/geocoder.dart';
 import 'package:http/http.dart' as http;
 import 'package:frontend/userFiles/user.dart' as userlib;
 
@@ -19,7 +20,6 @@ const colorPeachPink = const Color(0xFFffdcd2);
 const colorLighterPink = const Color(0xFFffe9e5);
 List<SentRequest> sentRequest = [];
 List<SentRequest> waitingRequest = [];
-
 Future<void> getInfo() async {
   //sentRequests
 
@@ -186,6 +186,17 @@ class _HomePageState extends State<FriendsPage>
     );
   }
 
+  getFriendPos(User c) async {
+    if (c.position.x != null) {
+      final coordinates = new Coordinates(c.position.y, c.position.x);
+      var addresses =
+          await Geocoder.local.findAddressesFromCoordinates(coordinates);
+      var first = addresses.first;
+      return addresses.first.addressLine;
+    }
+    return "unavailable";
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -250,7 +261,18 @@ class _HomePageState extends State<FriendsPage>
                                 },
                                 leading: CircleAvatar(child: Text("PH")),
                                 title: Text(c.name ?? ""),
-                                subtitle: Text(c.position.x.toString()),
+                                subtitle: FutureBuilder<dynamic>(
+                                  future: getFriendPos(c),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<dynamic> snapshot) {
+                                         if (snapshot.hasData) {
+                                          return Text(snapshot.data);
+                                          }
+                                          else{
+                                            return Text("Loading");
+                                          }
+                                      },
+                                ),
                                 trailing: IconButton(
                                   icon: Icon(
                                     Icons.person_pin,
@@ -323,45 +345,39 @@ class _HomePageState extends State<FriendsPage>
                                       subtitle:
                                           Text(c.sender.phoneNumber ?? ""),
                                       trailing: (() {
-                                       IconButton b;
+                                        IconButton b;
 
                                         // HÄR BEHÖVS ICONER FÖR WAITING REJECTED OCH ACCEPTED
-                                        if(c.status == "WAITING"){
-                                        b = IconButton(
-                                          icon: Icon(
-                                            Icons.person_add,
-                                            color: Colors.green,
-                                            size: 37,
-                                          ),
-                                          onPressed: () {
-                                            showAlertDialog(
-                                                context, c.sender.phoneNumber);
-                                          },
-                                        );
-                                        }
-                                        else if(c.status == "ACCEPTED") {
-                                       b =  IconButton(
-                                          icon: Icon(
-                                            Icons.done,
-                                            color: Colors.green,
-                                            size: 37,
-                                          ),
-                                          onPressed: () {
-                                            
-                                          },
-                                        );
-                                        }
-                                         else  {
-                                       b =  IconButton(
-                                          icon: Icon(
-                                            Icons.clear,
-                                            color: Colors.red,
-                                            size: 37,
-                                          ),
-                                          onPressed: () {
-                                            
-                                          },
-                                        );
+                                        if (c.status == "WAITING") {
+                                          b = IconButton(
+                                            icon: Icon(
+                                              Icons.person_add,
+                                              color: Colors.green,
+                                              size: 37,
+                                            ),
+                                            onPressed: () {
+                                              showAlertDialog(context,
+                                                  c.sender.phoneNumber);
+                                            },
+                                          );
+                                        } else if (c.status == "ACCEPTED") {
+                                          b = IconButton(
+                                            icon: Icon(
+                                              Icons.done,
+                                              color: Colors.green,
+                                              size: 37,
+                                            ),
+                                            onPressed: () {},
+                                          );
+                                        } else {
+                                          b = IconButton(
+                                            icon: Icon(
+                                              Icons.clear,
+                                              color: Colors.red,
+                                              size: 37,
+                                            ),
+                                            onPressed: () {},
+                                          );
                                         }
                                         return b;
                                       }())
@@ -431,6 +447,8 @@ class _HomePageState extends State<FriendsPage>
       ),
     );
   }
+
+  _getFriendPos() {}
 }
 
 class SearchUsers extends StatefulWidget {
@@ -607,10 +625,10 @@ class ProfileInfoState extends State<ProfileInfo> {
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () async {
           Navigator.of(context).pop(); // dismiss dialog
-           var url = 'https://group6-15.pvt.dsv.su.se/contacts/remove';
+          var url = 'https://group6-15.pvt.dsv.su.se/contacts/remove';
 
-          var response = await http
-              .post(Uri.parse(url), body: {'uid': userlib.uid, 'phone': widget.user.phoneNumber});
+          var response = await http.post(Uri.parse(url),
+              body: {'uid': userlib.uid, 'phone': widget.user.phoneNumber});
           print(response.statusCode);
           getInfo();
         },
@@ -694,82 +712,87 @@ class ProfileInfoState extends State<ProfileInfo> {
               padding: EdgeInsets.all(10),
               child: Column(
                 children: <Widget>[
-                   Container(
-              padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
-              alignment: Alignment.topLeft,
-              child: BorderedText(
-                strokeWidth: 5.0,
-                strokeColor: colorPurple,
-                child: Text(
-                  "My Dogs",
-                  style: TextStyle(
-                    color: colorLighterPink,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                  ),
-                  textAlign: TextAlign.left,
-                ),
-              )),
-          SingleChildScrollView(
-              physics: ScrollPhysics(),
-              child: Container(
-                height: 70,
-                child: widget.user.ownedDog != null
-                    ? ListView.builder(
-                        //https://pusher.com/tutorials/flutter-listviews
+                  Container(
+                      padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
+                      alignment: Alignment.topLeft,
+                      child: BorderedText(
+                        strokeWidth: 5.0,
+                        strokeColor: colorPurple,
+                        child: Text(
+                          "My Dogs",
+                          style: TextStyle(
+                            color: colorLighterPink,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                      )),
+                  SingleChildScrollView(
+                      physics: ScrollPhysics(),
+                      child: Container(
+                        height: 70,
+                        child: widget.user.ownedDog != null
+                            ? ListView.builder(
+                                //https://pusher.com/tutorials/flutter-listviews
 
-                        shrinkWrap: true,
-                        itemCount: widget.user.ownedDog?.length ?? 0,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (BuildContext context, int index) {
-                          Dog c = widget.user.ownedDog?.elementAt(index);
-                          return (c.name != null && c.name.length > 0)
-                              ? SizedBox(
-                                  child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => DogProfile(c)),
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 75,
-                                    height: 75,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      child: Image.asset(
-                                        'BrewDog.jpg',
-                                      ),
-                                    ),
-                                  ),
-                                ))
-                              : SizedBox(
-                                  child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => DogProfile(c)),
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 75,
-                                    height: 75,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      child: Image.asset(
-                                        'BrewDog.jpg',
-                                      ),
-                                    ),
-                                  ),
-                                ));
-                        },
-                      )
-                    : Center(
-                        child: CircularProgressIndicator(),
-                      ),
-              )),
+                                shrinkWrap: true,
+                                itemCount: widget.user.ownedDog?.length ?? 0,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (BuildContext context, int index) {
+                                  Dog c =
+                                      widget.user.ownedDog?.elementAt(index);
+                                  return (c.name != null && c.name.length > 0)
+                                      ? SizedBox(
+                                          child: InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      DogProfile(c)),
+                                            );
+                                          },
+                                          child: Container(
+                                            width: 75,
+                                            height: 75,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(20.0),
+                                              child: Image.asset(
+                                                'BrewDog.jpg',
+                                              ),
+                                            ),
+                                          ),
+                                        ))
+                                      : SizedBox(
+                                          child: InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      DogProfile(c)),
+                                            );
+                                          },
+                                          child: Container(
+                                            width: 75,
+                                            height: 75,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(20.0),
+                                              child: Image.asset(
+                                                'BrewDog.jpg',
+                                              ),
+                                            ),
+                                          ),
+                                        ));
+                                },
+                              )
+                            : Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                      )),
                   Container(
                     padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
                     alignment: Alignment.topLeft,
