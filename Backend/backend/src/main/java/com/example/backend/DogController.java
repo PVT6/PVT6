@@ -39,13 +39,13 @@ public class DogController {
     }
 
     @GetMapping(path = "/findDog")
-    public @ResponseBody Dog findUser(@RequestParam int id) {
+    public @ResponseBody Dog findUser(@RequestParam long id) {
         Dog d = dogRepository.findById(id).get();
         return d;
     }
 
     @PostMapping(value = "/updatedogname")
-    public @ResponseBody boolean newNameForDog(@RequestBody int id, String newName) {
+    public @ResponseBody boolean newNameForDog(@RequestBody long id, String newName) {
         Dog d = dogRepository.findById(id).get();
         if (d != null) {
             d.setName(newName);
@@ -56,7 +56,7 @@ public class DogController {
     }
 
     @PostMapping(value = "/updatedogweight")
-    public @ResponseBody boolean newWeightForDog(@RequestBody int id, String newWeight) {
+    public @ResponseBody boolean newWeightForDog(@RequestBody long id, String newWeight) {
         Dog d = dogRepository.findById(id).get();
         if (d != null) {
             d.setWeight(newWeight);
@@ -67,7 +67,7 @@ public class DogController {
     }
 
     @PostMapping(value = "/updatedogheight")
-    public @ResponseBody boolean newHeightForDog(@RequestBody int id, String newHeight) {
+    public @ResponseBody boolean newHeightForDog(@RequestBody long id, String newHeight) {
         Dog d = dogRepository.findById(id).get();
         if (d != null) {
             d.setHeight(newHeight);
@@ -78,7 +78,7 @@ public class DogController {
     }
 
     @PostMapping(value = "/updatedogdescription")
-    public @ResponseBody boolean newDescriptionForDog(@RequestBody int id, String newDescription) {
+    public @ResponseBody boolean newDescriptionForDog(@RequestBody long id, String newDescription) {
         Dog d = dogRepository.findById(id).get();
         if (d != null) {
             d.setDescription(newDescription);
@@ -89,7 +89,7 @@ public class DogController {
     }
 
     @PostMapping(value = "/updatedogage")
-    public @ResponseBody boolean newAgeForDog(@RequestBody int id, String newAge) {
+    public @ResponseBody boolean newAgeForDog(@RequestBody long id, String newAge) {
         Dog d = dogRepository.findById(id).get();
         if (d != null) {
             d.setAge(newAge);
@@ -100,9 +100,8 @@ public class DogController {
     }
 
     @PostMapping(value = "/setPicture")
-    public @ResponseBody String setPicture(@RequestParam int id, String base64) {
-        String base64Image = URLEncoder.encode(base64, StandardCharsets.ISO_8859_1);
-        byte[] decodedByte = Base64.getDecoder().decode(base64Image);
+    public @ResponseBody String setPicture(@RequestParam long id, String base64) {
+        byte[] decodedByte = Base64.getMimeDecoder().decode(base64);
         try {
             Blob blob = new SerialBlob(decodedByte);
             Dog d = dogRepository.findById(id).get();
@@ -113,38 +112,41 @@ public class DogController {
         
             e.printStackTrace();
         } catch (SQLException e) {
-    
+
             e.printStackTrace();
         }
 
         return "";
-        
-     }
 
-
-     @DeleteMapping(value = "/deletedog")
-     public @ResponseBody boolean deleteDog(@RequestBody int id) {
-            Optional<Dog> optinalEntity = dogRepository.findById(id);
-            Dog d = optinalEntity.get();
-            if(d != null){
-                dogRepository.delete(d);
-                return true;
-            }else{
-                return false;
-            }
+    }
+    @GetMapping(value = "/getPicture")
+    public @ResponseBody String getPic(@RequestParam long id){
+        Dog d = dogRepository.findById(id).get();
+        return d.getImage();
     }
 
+    @DeleteMapping(value = "/deletedog")
+    public @ResponseBody boolean deleteDog(@RequestBody long id) {
+        Optional<Dog> optinalEntity = dogRepository.findById(id);
+        Dog d = optinalEntity.get();
+        if (d != null) {
+            dogRepository.delete(d);
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public static byte[] getImage() {
-        File file =new File("Java.png");
-        if(file.exists()){
-           try {
-              BufferedImage bufferedImage=ImageIO.read(file);
-              ByteArrayOutputStream byteOutStream=new ByteArrayOutputStream();
-              ImageIO.write(bufferedImage, "png", byteOutStream);
-              return byteOutStream.toByteArray();
-           } catch (IOException e) {
-              e.printStackTrace();
+        File file = new File("Java.png");
+        if (file.exists()) {
+            try {
+                BufferedImage bufferedImage = ImageIO.read(file);
+                ByteArrayOutputStream byteOutStream = new ByteArrayOutputStream();
+                ImageIO.write(bufferedImage, "png", byteOutStream);
+                return byteOutStream.toByteArray();
+            } catch (IOException e) {
+                e.printStackTrace();
            }
         }
         return null;
