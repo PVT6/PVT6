@@ -106,7 +106,7 @@ public class Dog {
     public void setDescription(String newDescription) {
         this.description = newDescription;
     }
-
+    @JsonIgnore
     public String getImage() {
         try {
             byte[] pic = blobPicture.getBytes(1, (int) blobPicture.length());
