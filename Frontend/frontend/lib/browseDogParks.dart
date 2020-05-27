@@ -341,7 +341,9 @@ class FoodListview extends StatelessWidget {
                               'Location',
                               'Brewdog',
                               'Offers dog "Beer", + desc',
-                              () => {},
+                              () => {
+                                Navigator.push(context, new MaterialPageRoute(builder: (context) => IntroScreen()))
+                              },
                               () => {},
                               location = new LatLng(59.336378, 18.034161),
                             )))
