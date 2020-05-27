@@ -22,7 +22,6 @@ import '../dog.dart';
 
 MapController controller = new MapController();
 List<Dog> dogs;
-List<Dog> userDogs;
 
 //const kApiKey =
 //'pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A';
@@ -50,20 +49,6 @@ class _MapBoxState extends State<Mapbox> {
     });
 
     return new String.fromCharCodes(codeUnits);
-  }
-
-  Future<void> getDogs() async {
-    var uid = userlib.uid;
-    var url = 'https://group6-15.pvt.dsv.su.se/user/dogs?uid=${uid}';
-    var response = await http.get(Uri.parse(url));
-    if (response.statusCode == 200) {
-      dogs = (json.decode(response.body) as List)
-          .map((i) => Dog.fromJson(i))
-          .toList();
-      userDogs = dogs;
-    } else {
-      // ERROR HÄR
-    }
   }
 
   Widget button(Function function, IconData icon) {
@@ -94,117 +79,120 @@ class _MapBoxState extends State<Mapbox> {
           title: new Text('DogWalk Stockholm'), backgroundColor: colorPurple),
       drawer: Drawer(
         child: Container(
-          color: colorLighterPink,
+            color: colorLighterPink,
             child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            UserAccountsDrawerHeader(
-              decoration: BoxDecoration(color: colorPurple),
-              accountName: Text(
-                userlib.name, //userData
-                style: TextStyle(
-                    color: textYellow,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24.0,
-                    letterSpacing: 1.1),
-              ),
-              accountEmail: Text(
-                userlib.email, //userData
-                style: TextStyle(
-                    color: Colors.white, fontSize: 16.0, letterSpacing: 1.1),
-              ),
-              currentAccountPicture: CircleAvatar(
-                child: Text(
-                  "PH", //userData
-                  style: TextStyle(fontSize: 40.0),
-                ),
-              ),
-            ),
-            CustomListTile(
-                Icons.person,
-                'Profile',
-                () => {
-                      Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              builder: (context) => ProfileEightPage()))
-                    }),
-            CustomListTile(
-                Icons.contact_phone,
-                'Connections',
-                () => {
-                      Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              builder: (context) => FriendsPage()))
-                    }),
-            CustomListTile(
-                Icons.settings,
-                'Settings',
-                () => {
-                      Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              builder: (context) => Settings()))
-                    }),
-            CustomListTile(
-                FontAwesomeIcons.dog,
-                'Browse Dogfriendly Places',
-                () => {
-                      Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              builder: (context) => BrowseDogParks()))
-                    }), //Tror denna kan behövs senare då logout antagligen är fel implementerad
-            // CustomListTile(
-            //     Icons.lock,
-            //     'Log out',
-            //     () async => {
-            //           await _auth.signOut(),
-            //           Navigator.push(
-            //               context,
-            //               new MaterialPageRoute(
-            //                   builder: (context) => MySignInPage()))
-            //         }),
-            SizedBox(
-              height: 200,
-            ),
-            Row(
+              padding: EdgeInsets.zero,
               children: <Widget>[
-                SizedBox(
-                  width: 150,
-                  height: 120,
-                  child: Image.asset(
-                    'assets/logopurplepink.png',
+                UserAccountsDrawerHeader(
+                  decoration: BoxDecoration(color: colorPurple),
+                  accountName: Text(
+                    userlib.name, //userData
+                    style: TextStyle(
+                        color: textYellow,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24.0,
+                        letterSpacing: 1.1),
+                  ),
+                  accountEmail: Text(
+                    userlib.email, //userData
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16.0,
+                        letterSpacing: 1.1),
+                  ),
+                  currentAccountPicture: CircleAvatar(
+                    child: Text(
+                      "PH", //userData
+                      style: TextStyle(fontSize: 40.0),
+                    ),
                   ),
                 ),
+                CustomListTile(
+                    Icons.person,
+                    'Profile',
+                    () => {
+                          Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                  builder: (context) => ProfileEightPage()))
+                        }),
+                CustomListTile(
+                    Icons.contact_phone,
+                    'Connections',
+                    () => {
+                          Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                  builder: (context) => FriendsPage()))
+                        }),
+                CustomListTile(
+                    Icons.settings,
+                    'Settings',
+                    () => {
+                          Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                  builder: (context) => Settings()))
+                        }),
+                CustomListTile(
+                    FontAwesomeIcons.dog,
+                    'Browse Dogfriendly Places',
+                    () => {
+                          Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                  builder: (context) => BrowseDogParks()))
+                        }), //Tror denna kan behövs senare då logout antagligen är fel implementerad
+                // CustomListTile(
+                //     Icons.lock,
+                //     'Log out',
+                //     () async => {
+                //           await _auth.signOut(),
+                //           Navigator.push(
+                //               context,
+                //               new MaterialPageRoute(
+                //                   builder: (context) => MySignInPage()))
+                //         }),
                 SizedBox(
-                  width: 30,
+                  height: 200,
                 ),
-                Material(
-                  elevation: 5.0,
-                  color: Colors.red,
-                  child: MaterialButton(
-                    minWidth: 120,
-                    padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                    onPressed: () async {
-                      await _auth.signOut();
-                      Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              builder: (context) =>
-                                  MySignInPage())); // dismiss dialog
-                    },
-                    child: Text("Sign out",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold)),
-                  ),
-                ),
+                Row(
+                  children: <Widget>[
+                    SizedBox(
+                      width: 150,
+                      height: 120,
+                      child: Image.asset(
+                        'assets/logopurplepink.png',
+                      ),
+                    ),
+                    SizedBox(
+                      width: 30,
+                    ),
+                    Material(
+                      elevation: 5.0,
+                      color: Colors.red,
+                      child: MaterialButton(
+                        minWidth: 120,
+                        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                        onPressed: () async {
+                          await _auth.signOut();
+                          Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                  builder: (context) =>
+                                      MySignInPage())); // dismiss dialog
+                        },
+                        child: Text("Sign out",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold)),
+                      ),
+                    ),
+                  ],
+                )
               ],
-            )
-          ],
-        )),
+            )),
       ),
       floatingActionButton: FloatingActionButton.extended(
         label: Text('Search'),

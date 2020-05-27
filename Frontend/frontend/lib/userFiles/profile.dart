@@ -14,6 +14,8 @@ import 'package:frontend/mapFiles/mapsDemo.dart';
 import 'package:http/http.dart' as http;
 import '../dog.dart';
 
+List<Dog> userDogs;
+
 class ProfileEightPage extends StatefulWidget {
   ProfileEightPage() : super();
 
@@ -25,6 +27,7 @@ class ProfileEightPageState extends State<ProfileEightPage> {
   @override
   void initState() {
     super.initState();
+    setDogs();
   }
 
   Future<void> getDogs() async {
@@ -35,10 +38,16 @@ class ProfileEightPageState extends State<ProfileEightPage> {
       dogs = (json.decode(response.body) as List)
           .map((i) => Dog.fromJson(i))
           .toList();
-      userDogs = dogs;
+      setState(() {
+        userDogs = dogs;
+      });
     } else {
       // ERROR HÄR
     }
+  }
+
+  Future<void> setDogs() async {
+    getDogs();
   }
 
   @override
