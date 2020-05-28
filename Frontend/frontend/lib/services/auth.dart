@@ -87,6 +87,7 @@ Future signOut() async {
   try {
     await _googleSignIn.signOut();
     await fbLogin.logOut();
+    dispose();
     return await _auth.signOut();
   } catch(e){
     print(e.toString());
