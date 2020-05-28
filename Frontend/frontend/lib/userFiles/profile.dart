@@ -5,14 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:frontend/mapFiles/temp.dart';
 import 'package:frontend/userFiles/addDogTest.dart';
-import 'package:frontend/userFiles/addPet.dart';
 import 'package:frontend/userFiles/dogProfile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:frontend/userFiles/editProfile.dart';
+
 import 'user.dart' as userlib;
 import 'package:frontend/mapFiles/mapsDemo.dart';
 import 'package:http/http.dart' as http;
 import '../dog.dart';
+import 'package:latlong/latlong.dart' as latlng;
 
 List<Dog> userDogs;
 
@@ -24,6 +25,7 @@ class ProfileEightPage extends StatefulWidget {
 }
 
 class ProfileEightPageState extends State<ProfileEightPage> {
+  latlng.LatLng setter = latlng.LatLng(0,0);
   @override
   void initState() {
     super.initState();
@@ -66,7 +68,7 @@ class ProfileEightPageState extends State<ProfileEightPage> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => MapsDemo()),
+              MaterialPageRoute(builder: (context) => MapsDemo(setter)),
             );
           },
         ),

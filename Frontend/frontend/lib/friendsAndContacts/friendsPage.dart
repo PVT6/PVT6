@@ -4,6 +4,7 @@ import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/friendsAndContacts/contactsModel.dart';
 import 'package:frontend/friendsAndContacts/sentRequest.dart';
+import 'package:frontend/mapFiles/mapsDemo.dart';
 import 'package:frontend/userFiles/dogProfile.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:http/http.dart' as http;
@@ -231,7 +232,7 @@ class _HomePageState extends State<FriendsPage>
   }
 
   getFriendPos(User c) async {
-    if (c.position.x != null) {
+    if (c.position.x != null ) {
       final coordinates = new Coordinates(c.position.y, c.position.x);
       var addresses =
           await Geocoder.local.findAddressesFromCoordinates(coordinates);
@@ -243,7 +244,6 @@ class _HomePageState extends State<FriendsPage>
 
   @override
   Widget build(BuildContext context) {
-    
     return new Scaffold(
       backgroundColor: colorLighterPink,
       appBar: new AppBar(
@@ -310,13 +310,12 @@ class _HomePageState extends State<FriendsPage>
                                   future: getFriendPos(c),
                                   builder: (BuildContext context,
                                       AsyncSnapshot<dynamic> snapshot) {
-                                         if (snapshot.hasData) {
-                                          return Text(snapshot.data);
-                                          }
-                                          else{
-                                            return Text("Loading");
-                                          }
-                                      },
+                                    if (snapshot.hasData) {
+                                      return Text(snapshot.data);
+                                    } else {
+                                      return Text("Loading");
+                                    }
+                                  },
                                 ),
                                 trailing: IconButton(
                                   icon: Icon(
@@ -325,10 +324,12 @@ class _HomePageState extends State<FriendsPage>
                                     size: 37,
                                   ),
                                   onPressed: () {
-                                    latlng.LatLng coordinates = latlng.LatLng(c.position.y, c.position.x);
-                                    Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          Mapbox(coordinates)));
+                                    latlng.LatLng coordinates = latlng.LatLng(
+                                        c.position.y, c.position.x);
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                MapsDemo(coordinates)));
                                   },
                                 ),
                               ));
@@ -688,38 +689,36 @@ class ProfileInfo extends StatefulWidget {
 
 class ProfileInfoState extends State<ProfileInfo> {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+
   showAlertDialog(BuildContext context) {
-    Widget okButton = Material(
-      elevation: 5.0,
-      borderRadius: BorderRadius.circular(30.0),
-      color: Colors.green,
-      child: MaterialButton(
-        minWidth: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () async {
-          Navigator.of(context).pop(); // dismiss dialog
-          var url = 'https://group6-15.pvt.dsv.su.se/contacts/remove';
-
-          var response = await http.post(Uri.parse(url),
-              body: {'uid': userlib.uid, 'phone': widget.user.phoneNumber});
-          print(response.statusCode);
-          getInfo();
-        },
-        child: Text("Ok",
-            textAlign: TextAlign.center,
-            style: style.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold)),
-      ),
-    );
-
-    // set up the AlertDialog
     AlertDialog alert = AlertDialog(
+      backgroundColor: colorPeachPink,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(32.0))),
-      title: Text("Remove as friend"),
-      content: Text("You are no longer friends"),
+      title: Text("Remove as friend?"),
+      content:
+          Text("Are you sure you want to remove user from your friendslist?"),
       actions: [
-        okButton,
+        FlatButton(
+          color: Colors.red,
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text("No"),
+        ),
+        FlatButton(
+          color: Colors.green,
+          onPressed: () async {
+            Navigator.of(context).pop(); // dismiss dialog
+            var url = 'https://group6-15.pvt.dsv.su.se/contacts/remove';
+
+            var response = await http.post(Uri.parse(url),
+                body: {'uid': userlib.uid, 'phone': widget.user.phoneNumber});
+            print(response.statusCode);
+            getInfo();
+          },
+          child: Text("Yes"),
+        ),
       ],
     );
 
@@ -771,6 +770,17 @@ class ProfileInfoState extends State<ProfileInfo> {
       print("NO FRIENDS");
       friends.clear();
     }
+  }
+
+  getFriendPos(User c) async {
+    if (c.position.x != null) {
+      final coordinates = new Coordinates(c.position.y, c.position.x);
+      var addresses =
+          await Geocoder.local.findAddressesFromCoordinates(coordinates);
+      var first = addresses.first;
+      return addresses.first.addressLine;
+    }
+    return "unavailable";
   }
 
   @override
@@ -836,19 +846,19 @@ class ProfileInfoState extends State<ProfileInfo> {
                 child: //               true // är alltid true här
                     true
                         ? MaterialButton(
-                            color: Colors.green,
+                            color: Colors.red,
                             shape: BeveledRectangleBorder(),
                             elevation: 0,
-                            child: Icon(Icons.person_add),
+                            child: Icon(Icons.remove_circle),
                             onPressed: () {
                               showAlertDialog(context);
                             },
                           )
                         : MaterialButton(
-                            color: Colors.red,
+                            color: Colors.green,
                             shape: BeveledRectangleBorder(),
                             elevation: 0,
-                            child: Icon(Icons.remove_circle),
+                            child: Icon(Icons.person_add),
                             onPressed: () {
                               setState(() {
                                 //widget.user.friendstatus = true;
@@ -978,10 +988,24 @@ class ProfileInfoState extends State<ProfileInfo> {
                                     style:
                                         TextStyle(color: Colors.blue.shade300),
                                   ),
-                                  subtitle: Text(
-                                    "Stockholm",
-                                    style:
-                                        TextStyle(color: Colors.blue.shade300),
+                                  subtitle: FutureBuilder<dynamic>(
+                                    future: getFriendPos(widget.user),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<dynamic> snapshot) {
+                                      if (snapshot.hasData) {
+                                        return Text(
+                                          snapshot.data,
+                                          style: TextStyle(
+                                              color: Colors.blue.shade300),
+                                        );
+                                      } else {
+                                        return Text(
+                                          "Loading",
+                                          style: TextStyle(
+                                              color: Colors.blue.shade300),
+                                        );
+                                      }
+                                    },
                                   ),
                                 ),
                                 ListTile(

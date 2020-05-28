@@ -177,15 +177,26 @@ Future userExistsOrNot(FirebaseUser user) async {
   return true;
 
   }
-
-
-
-
-
-
-  
-
 }
+
+Future connectLoggedInUser(FirebaseUser user) async {
+
+   var url = 'https://group6-15.pvt.dsv.su.se/user/find?uid=${user.uid}';
+
+   var response = await http.get(Uri.parse(url));
+    if (response.body != ""){
+      var users = await json.decode(response.body);
+      await userlib.setName(users['name']);
+      userlib.setPhone(users['phoneNumber']);
+      userlib.setEmail(users['email']);
+      userlib.setUid(user.uid);
+      userlib.setLogin(true);
+      return "ok";
+  } else {
+    throw("FAILED TO CONNECT TO DB or Non user found");
+  }
+
+  }
 
 
 }

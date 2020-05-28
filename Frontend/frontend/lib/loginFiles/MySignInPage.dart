@@ -10,6 +10,7 @@ import '../fadeRoute.dart';
 import 'secondRoute.dart';
 import 'package:latlong/latlong.dart';
 import 'package:bordered_text/bordered_text.dart';
+import 'package:latlong/latlong.dart' as latlng;
 
 LatLng basic = new LatLng(59.343431, 18.094141);
 
@@ -26,6 +27,7 @@ class MySignInPage extends StatefulWidget {
 class _MySignInPageState extends State<MySignInPage>
     with SingleTickerProviderStateMixin {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+  latlng.LatLng setter = latlng.LatLng(0,0);
 
   bool hasError = false;
   String currentText = "";
@@ -127,7 +129,7 @@ class _MySignInPageState extends State<MySignInPage>
             if (result == null) {
               controller.forward(from: 0.0);
             } else {
-              Navigator.push(context, FadeRoute(page: MapsDemo()));
+              Navigator.push(context, FadeRoute(page: MapsDemo(setter)));
             }
           }
         },
@@ -242,7 +244,7 @@ class _MySignInPageState extends State<MySignInPage>
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => MapsDemo()),
+                                      builder: (context) => MapsDemo(setter)),
                                 );
                               }
                             },
@@ -270,7 +272,7 @@ class _MySignInPageState extends State<MySignInPage>
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => MapsDemo()),
+                                      builder: (context) => MapsDemo(setter)),
                                 );
                               }
                             },
@@ -298,7 +300,7 @@ class _MySignInPageState extends State<MySignInPage>
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => MapsDemo()),
+                                      builder: (context) => MapsDemo(setter)),
                                 );
                               }
                             },

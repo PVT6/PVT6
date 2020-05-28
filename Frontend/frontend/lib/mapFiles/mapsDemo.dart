@@ -1,4 +1,4 @@
-import 'dart:convert';
+
 import 'dart:core';
 import 'dart:math';
 import 'package:camera/camera.dart';
@@ -33,7 +33,8 @@ const colorPeachPink = const Color(0xFFffdcd2);
 const colorLighterPink = const Color(0xFFffe9e5);
 
 class MapsDemo extends StatefulWidget {
-  MapsDemo() : super();
+  LatLng coordinates;
+  MapsDemo(this.coordinates) : super();
 
   final String title = "Maps Demo";
 
@@ -153,20 +154,6 @@ class MapsDemoState extends State<MapsDemo> {
       updateMapLocationOnPositionChange: false,
     );
     return Scaffold(
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      // floatingActionButton: FloatingActionButton(
-      //         onPressed: () {
-      //           setState(() {
-
-      //           });
-      //         },
-      //         tooltip: "Centre FAB",
-      //         child: Container(
-      //           margin: EdgeInsets.all(15.0),
-      //           child: Icon(Icons.camera_alt),
-      //         ),
-      //         elevation: 4.0,
-      //       ),
       drawer: Drawer(
         child: Container(
             color: colorLighterPink,
@@ -287,8 +274,12 @@ class MapsDemoState extends State<MapsDemo> {
                 ? FlutterMap(
                     mapController: controller,
                     options: new MapOptions(
-                        center: LatLng(0, 0),
-                        minZoom: 15.0,
+                        //center: LatLng(position.latitude, position.longitude),
+                        center: widget.coordinates.latitude == 0 &&
+                                widget.coordinates.longitude == 0
+                            ? LatLng(59.303985, 18.097073)
+                            : widget.coordinates,
+                        minZoom: 17.0,
                         plugins: [
                           // ADD THIS
                           UserLocationPlugin(),
@@ -583,10 +574,6 @@ class MapsDemoState extends State<MapsDemo> {
   }
 
   _onAddMarkerButtonPressed() {
-    // (position == null)
-    //     ? setState(() {
-    //         getLocation();
-    //       }):
     Navigator.push(
         context,
         new MaterialPageRoute(
