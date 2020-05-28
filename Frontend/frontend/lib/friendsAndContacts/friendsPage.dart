@@ -8,8 +8,9 @@ import 'package:frontend/userFiles/dogProfile.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:http/http.dart' as http;
 import 'package:frontend/userFiles/user.dart' as userlib;
-
+import 'package:frontend/mapFiles/temp.dart';
 import '../dog.dart';
+import 'package:latlong/latlong.dart' as latlng;
 
 List<User> friends = [];
 
@@ -242,6 +243,7 @@ class _HomePageState extends State<FriendsPage>
 
   @override
   Widget build(BuildContext context) {
+    
     return new Scaffold(
       backgroundColor: colorLighterPink,
       appBar: new AppBar(
@@ -322,7 +324,12 @@ class _HomePageState extends State<FriendsPage>
                                     color: Colors.black,
                                     size: 37,
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    latlng.LatLng coordinates = latlng.LatLng(c.position.y, c.position.x);
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          Mapbox(coordinates)));
+                                  },
                                 ),
                               ));
                         },
@@ -779,7 +786,9 @@ class ProfileInfoState extends State<ProfileInfo> {
             shape: CircleBorder(),
             elevation: 0,
             child: Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
         ),
         body: SingleChildScrollView(
