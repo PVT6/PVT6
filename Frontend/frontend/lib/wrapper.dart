@@ -22,7 +22,7 @@ class Wrapper extends StatelessWidget {
     if (user == null) {
       return MySignInPage();
     } else {
-      return LoadingScreen(user: user);
+      return LoadingScreen(user);
     }
     
   }

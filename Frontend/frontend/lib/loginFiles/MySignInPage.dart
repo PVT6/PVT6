@@ -128,11 +128,14 @@ class _MySignInPageState extends State<MySignInPage>
             dynamic result = await _auth.signInWithEmailAndPassword(
                 currentText, currentTextPW);
             print(result);
-            FirebaseUser logInUser = result;
+             
             if (result == null) {
-              controller.forward(from: 0.0);
+              controller.forward(from: 0.0); 
             } else {
-              Navigator.push(context, FadeRoute(page: LoadingScreen(user: logInUser)));
+              Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                  builder: (context) => LoadingScreen(result)));
             }
           }
         },
@@ -248,7 +251,7 @@ class _MySignInPageState extends State<MySignInPage>
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => LoadingScreen(user: logInUser)),
+                                      builder: (context) => LoadingScreen(logInUser)),
                                 );
                               }
                             },
@@ -277,7 +280,7 @@ class _MySignInPageState extends State<MySignInPage>
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => LoadingScreen(user: logInUser)),
+                                      builder: (context) => LoadingScreen(logInUser)),
                                 );
                               }
                             },
@@ -306,7 +309,7 @@ class _MySignInPageState extends State<MySignInPage>
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => LoadingScreen(user: logInUser)),
+                                      builder: (context) => LoadingScreen(logInUser)),
                                 );
                               }
                             },

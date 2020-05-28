@@ -20,7 +20,7 @@ const colorDarkRed = const Color(0xffb66a6b);
 
 class LoadingScreen extends StatefulWidget {
   FirebaseUser user;
-  LoadingScreen({Key key, this.user}) : super(key: key);
+  LoadingScreen(this.user) : super();
 
   @override
   _LoadingScreenState createState() => _LoadingScreenState();
@@ -89,7 +89,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
 
 
-  loaddUsersData() async{
+  Future<void> loaddUsersData() async{
         FirebaseUser user = widget.user;
         await _auth.connectLoggedInUser(user);
         await getLocation();
@@ -98,21 +98,23 @@ class _LoadingScreenState extends State<LoadingScreen> {
                               context,
                               new MaterialPageRoute(
                                   builder: (context) => MapsDemo(userlib.usersCurrentLocation)));
+                                  
       }
 
 
 
-       getLocation() async {
-    var location = new Location();
-    location.onLocationChanged.listen((currentLocation) {
-      print(currentLocation.latitude);
-      print(currentLocation.longitude);
-      setState(() {
+       Future getLocation() async {
+       var location = new Location();
+       location.onLocationChanged.listen((currentLocation) {
+       print(currentLocation.latitude);
+       print(currentLocation.longitude);
+       setState(() {
         userLocation = LatLng(currentLocation.latitude, currentLocation.longitude);
         userlib.setUserLocation(userLocation);
       });
 
       print("getLocation:$userLocation");
+      return "ok";
     });
   }
 
