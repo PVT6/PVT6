@@ -15,6 +15,8 @@ import 'package:http/http.dart' as http;
 import 'package:frontend/userFiles/user.dart' as userlib;
 import 'dart:convert';
 
+import 'mapWithRoute.dart';
+
 List<SavedRoute> savedRoutes = [];
 
 class _MapPreviewPageState extends State<MapPreviewPage> {
@@ -112,7 +114,13 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: <Widget>[
                               FloatingActionButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => MapWithRoute(pointsImport: points, latLngImport: latLng)),
+                                  );
+                                },
                                 materialTapTargetSize:
                                     MaterialTapTargetSize.padded,
                                 backgroundColor: colorPeachPink,
@@ -234,7 +242,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
 
   getLocation() async {
     var location = new Location();
-    location.onLocationChanged.listen((currentLocation) {
+    location.onLocationChanged().listen((currentLocation) {
       print(currentLocation.latitude);
       print(currentLocation.longitude);
       setState(() {
