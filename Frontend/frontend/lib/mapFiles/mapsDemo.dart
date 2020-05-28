@@ -277,7 +277,7 @@ class MapsDemoState extends State<MapsDemo> {
                                 widget.coordinates.longitude == 0
                             ? LatLng(59.303985, 18.097073)
                             : widget.coordinates,
-                        minZoom: 15.0,
+                        minZoom: 17.0,
                         plugins: [
                           // ADD THIS
                           UserLocationPlugin(),
