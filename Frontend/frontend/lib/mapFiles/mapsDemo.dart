@@ -138,20 +138,6 @@ class MapsDemoState extends State<MapsDemo> {
       updateMapLocationOnPositionChange: false,
     );
     return Scaffold(
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      // floatingActionButton: FloatingActionButton(
-      //         onPressed: () {
-      //           setState(() {
-
-      //           });
-      //         },
-      //         tooltip: "Centre FAB",
-      //         child: Container(
-      //           margin: EdgeInsets.all(15.0),
-      //           child: Icon(Icons.camera_alt),
-      //         ),
-      //         elevation: 4.0,
-      //       ),
       drawer: Drawer(
         child: Container(
             color: colorLighterPink,
@@ -557,10 +543,6 @@ class MapsDemoState extends State<MapsDemo> {
   }
 
   _onAddMarkerButtonPressed() {
-    // (position == null)
-    //     ? setState(() {
-    //         getLocation();
-    //       }):
     Navigator.push(
         context,
         new MaterialPageRoute(
