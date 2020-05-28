@@ -16,6 +16,7 @@ const colorDarkBeige = const Color(0xFFc2c0bc);
 const colorPrimaryRed = const Color(0xffEA9999);
 const colorLightRed = const Color(0xFFffcaca);
 const colorDarkRed = const Color(0xffb66a6b);
+  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
 class LoadingScreen extends StatefulWidget {
 
@@ -44,7 +45,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
         fit: StackFit.expand,
         children: <Widget>[
           Container(
-            decoration: BoxDecoration(color: colorDarkBeige,),
+            decoration: BoxDecoration(color: colorBeige,),
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -54,19 +55,22 @@ class _LoadingScreenState extends State<LoadingScreen> {
                 child: Container(
                   child:Column(
             mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+              SizedBox(height: 170),
               SizedBox(
                         width: 280,
                         height: 200,
                         child: Image.asset(
-                          'assets/logopurplepink.png',
+                          'assets/logoprotonotext.png',
                         ),
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 10.0),
                         ),
-                        Text("Dog Walk",
-                        style: TextStyle(color: colorLightRed),)
+                        Text("Hang in there, more dog-fun will soon be available!",
+                        style: style.copyWith(color: colorDarkRed, fontSize: 15.0,fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,)
 
             ])
                 ),
@@ -75,9 +79,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  CircularProgressIndicator(),
+                  CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(colorDarkRed),),
                   Padding(padding: EdgeInsets.only(top: 20.0),),
-                  Text("Loading Data...", style: TextStyle(color: colorLightRed),)
+                  Text("Loading data...", style: style.copyWith(color: colorDarkRed, fontWeight: FontWeight.bold),),
+                  SizedBox(height: 120,)
                 ],
                 ),
                 )
@@ -107,7 +112,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
        getLocation() async {
     var location = new Location();
-    location.onLocationChanged.listen((currentLocation) {
+    location.onLocationChanged().listen((currentLocation) {
       print(currentLocation.latitude);
       print(currentLocation.longitude);
       setState(() {
