@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:frontend/loadingScreen.dart';
 import 'package:frontend/loginFiles/forgotPasswordPage.dart';
 import 'package:frontend/mapFiles/mapsDemo.dart';
 import 'package:frontend/mapFiles/temp.dart';
@@ -126,10 +128,11 @@ class _MySignInPageState extends State<MySignInPage>
             dynamic result = await _auth.signInWithEmailAndPassword(
                 currentText, currentTextPW);
             print(result);
+            FirebaseUser logInUser = result;
             if (result == null) {
               controller.forward(from: 0.0);
             } else {
-              Navigator.push(context, FadeRoute(page: MapsDemo(setter)));
+              Navigator.push(context, FadeRoute(page: LoadingScreen(user: logInUser)));
             }
           }
         },
@@ -241,10 +244,11 @@ class _MySignInPageState extends State<MySignInPage>
                                   hasError = true;
                                 });
                               } else {
+                                FirebaseUser logInUser = result;
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => MapsDemo(setter)),
+                                      builder: (context) => LoadingScreen(user: logInUser)),
                                 );
                               }
                             },
@@ -269,10 +273,11 @@ class _MySignInPageState extends State<MySignInPage>
                                   hasError = true;
                                 });
                               } else {
+                                FirebaseUser logInUser = result;
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => MapsDemo(setter)),
+                                      builder: (context) => LoadingScreen(user: logInUser)),
                                 );
                               }
                             },
@@ -297,10 +302,11 @@ class _MySignInPageState extends State<MySignInPage>
                                   hasError = true;
                                 });
                               } else {
+                                FirebaseUser logInUser = result;
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => MapsDemo(setter)),
+                                      builder: (context) => LoadingScreen(user: logInUser)),
                                 );
                               }
                             },
