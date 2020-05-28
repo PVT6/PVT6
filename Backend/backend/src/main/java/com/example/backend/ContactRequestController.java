@@ -2,6 +2,7 @@ package com.example.backend;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -66,8 +67,9 @@ public class ContactRequestController {
     public @ResponseBody String answerRequest(@RequestParam String e, String phone, String uid) {
         User u = userRepository.findByUid(uid);
         User u2 = userRepository.findByPhone(phone);
-
+        AtomicBoolean remove = new AtomicBoolean();
         Set<ContactRequest> contactRequests = u.getContactRequest();
+        
         contactRequests.forEach((element) -> {
             if (element.getSender() == u2) {
                 switch (e) {
@@ -89,7 +91,8 @@ public class ContactRequestController {
                         u2.getContactList().addUser(u);
                         userRepository.save(u);
                         userRepository.save(u2);
-                        removeRequest(u2, u);
+                        remove.set(true);
+                       
 
                         break;
                     case "rejcet":
@@ -97,13 +100,17 @@ public class ContactRequestController {
                         u2.findUserFromContactRequests(element).setStatus(Status.REJECTRED);
                         userRepository.save(u);
                         userRepository.save(u2);
-                        removeRequest(u2, u);
+                        remove.set(true);
+                       
                         break;
                 }
 
             }
 
         });
+        if (remove.get() == true){
+            removeRequest(u2, u);
+        }
         return "true";
 
     }
@@ -142,7 +149,7 @@ public class ContactRequestController {
     }
 
 
-    private String removeRequest(User sender, User receiver){
+    public String removeRequest(User sender, User receiver){
         Set<ContactRequest> toRemove = new HashSet<ContactRequest>();
         
         Set<ContactRequest> contactRequests = sender.getContactRequest();
