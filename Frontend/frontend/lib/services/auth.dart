@@ -177,7 +177,8 @@ Future userExistsOrNot(FirebaseUser user) async {
 }
 
 Future connectLoggedInUser(FirebaseUser user) async {
-
+  
+try{
    var url = 'https://group6-15.pvt.dsv.su.se/user/find?uid=${user.uid}';
 
    var response = await http.get(Uri.parse(url));
@@ -189,8 +190,9 @@ Future connectLoggedInUser(FirebaseUser user) async {
       userlib.setUid(user.uid);
       userlib.setLogin(true);
       return "ok";
-  } else {
-    throw("FAILED TO CONNECT TO DB or Non user found");
+  } } catch(e){
+    print(e.toString());
+    return null;
   }
 
   }
