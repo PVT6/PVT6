@@ -138,6 +138,12 @@ public class ContactRequestController {
         User sender = userRepository.findByUid(sendUid);
         User receiver = userRepository.findByPhone(phone);
         if (receiver != null) {
+            if(checkIfAlreadyFriends(sender, receiver)){
+                return "Already friends";
+            }
+
+            
+
             ContactRequest request = new ContactRequest(sender, receiver, Status.WAITING);
             sender.setContactRequest(request);
             receiver.setContactRequest(request);
@@ -146,6 +152,14 @@ public class ContactRequestController {
             return "Sent friend request";
         } else
             return "No user found";
+    }
+
+
+    private Boolean checkIfAlreadyFriends(User u1, User u2){
+
+        Boolean user1 = u1.getContactList().getUser().contains(u2);
+        Boolean user2 = u2.getContactList().getUser().contains(u1);
+        return user2 && user1;
     }
 
 
