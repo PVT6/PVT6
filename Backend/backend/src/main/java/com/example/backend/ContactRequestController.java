@@ -89,7 +89,7 @@ public class ContactRequestController {
                         u2.getContactList().addUser(u);
                         userRepository.save(u);
                         userRepository.save(u2);
-                        // DELETE REQEST?
+                        removeRequest(u, u2);
 
                         break;
                     case "rejcet":
@@ -97,7 +97,7 @@ public class ContactRequestController {
                         u2.findUserFromContactRequests(element).setStatus(Status.REJECTRED);
                         userRepository.save(u);
                         userRepository.save(u2);
-                          // DELETE REQEST?
+                        removeRequest(u, u2);
                         break;
                 }
 
@@ -139,6 +139,38 @@ public class ContactRequestController {
             return "Sent friend request";
         } else
             return "No user found";
+    }
+
+
+    private String removeRequest(User sender, User receiver){
+        Set<ContactRequest> toRemove = new HashSet<ContactRequest>();
+        
+        Set<ContactRequest> contactRequests = sender.getContactRequest();
+        contactRequests.forEach((e) -> {
+            if (e.getReceiver() == receiver) {
+                toRemove.add(e);
+            }
+        });
+
+        toRemove.forEach((e) -> {
+            contactRequests.remove(e);
+            userRepository.saveAndFlush(sender);
+        });
+
+        toRemove.clear();
+
+        Set<ContactRequest> contactRequests2 = receiver.getContactRequest();
+        contactRequests2.forEach((e) -> {
+            if (e.getSender() == sender) {
+                toRemove.add(e);
+            }
+        });
+
+        toRemove.forEach((e) -> {
+            contactRequests2.remove(e);
+            userRepository.saveAndFlush(receiver);
+        });
+        return "true";
     }
 
     @PostMapping(value = "/cancleRequests")
