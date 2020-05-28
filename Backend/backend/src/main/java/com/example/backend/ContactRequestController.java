@@ -146,7 +146,7 @@ public class ContactRequestController {
         User sender = userRepository.findByUid(uid);
         User receiver = userRepository.findByPhone(phone);
         Set<ContactRequest> toRemove = new HashSet<ContactRequest>();
-        ;
+        
         Set<ContactRequest> contactRequests = sender.getContactRequest();
         contactRequests.forEach((e) -> {
             if (e.getReceiver() == receiver) {

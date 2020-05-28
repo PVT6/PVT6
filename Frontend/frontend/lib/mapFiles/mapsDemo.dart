@@ -50,6 +50,7 @@ class MapsDemoState extends State<MapsDemo> {
   List<CameraDescription> cameras;
   bool cameraState = false;
   List<Marker> markers = [];
+  MarkerLayerOptions layer2 ;
   //Location(name: "Lumaparken", latitude: 59.303985, longitude: 18.097073);
   double userLat = 59.303985;
   double userLng = 18.097073;
@@ -58,6 +59,21 @@ class MapsDemoState extends State<MapsDemo> {
     super.initState();
     getCameras();
     getLocation();
+    Marker m = Marker(
+      width: 45.0,
+      height: 45.0,
+      point: new LatLng(59.303985, 18.097073),
+      builder: (context) => new Container(
+        child: IconButton(
+          icon: Icon(Icons.child_friendly),
+          onPressed: null,
+          color: Colors.blue,
+          iconSize: 45.0,
+        ),
+      ),
+    );
+
+    markers.add(m);
   }
 
   Future<Null> getCameras() async {
@@ -284,7 +300,7 @@ class MapsDemoState extends State<MapsDemo> {
                               'accessToken': FlutterConfig.get('MAPBOX_ID'),
                               'id': 'mapbox.mapbox-streets-v8'
                             }),
-                        MarkerLayerOptions(markers: markers),
+                        layer2 = new MarkerLayerOptions(markers: markers),
                         // ADD THIS
                         userLocationOptions,
                       ])
@@ -306,6 +322,21 @@ class MapsDemoState extends State<MapsDemo> {
                             onPressed: () {
                               setState(() {
                                 counter++; //denna är för test, counter ska sedan hålla notifications
+
+                                markers.first = Marker(
+                                  width: 45.0,
+                                  height: 45.0,
+                                  point: new LatLng(18.076973, 59.315499),
+                                  builder: (context) => new Container(
+                                    child: IconButton(
+                                      icon: Icon(Icons.donut_large),
+                                      onPressed: null,
+                                      color: blue,
+                                      iconSize: 45.0,
+                                    ),
+                                  ),
+                                );
+                                layer2.rebuild.listen((event) { });
                               });
                             },
                             materialTapTargetSize: MaterialTapTargetSize.padded,
