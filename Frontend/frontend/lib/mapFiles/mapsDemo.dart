@@ -33,7 +33,8 @@ const colorPeachPink = const Color(0xFFffdcd2);
 const colorLighterPink = const Color(0xFFffe9e5);
 
 class MapsDemo extends StatefulWidget {
-  MapsDemo() : super();
+  LatLng coordinates;
+  MapsDemo(this.coordinates) : super();
 
   final String title = "Maps Demo";
 
@@ -271,7 +272,11 @@ class MapsDemoState extends State<MapsDemo> {
                 ? FlutterMap(
                     mapController: controller,
                     options: new MapOptions(
-                        center: LatLng(0, 0),
+                        //center: LatLng(position.latitude, position.longitude),
+                        center: widget.coordinates.latitude == 0 &&
+                                widget.coordinates.longitude == 0
+                            ? LatLng(59.303985, 18.097073)
+                            : widget.coordinates,
                         minZoom: 15.0,
                         plugins: [
                           // ADD THIS
