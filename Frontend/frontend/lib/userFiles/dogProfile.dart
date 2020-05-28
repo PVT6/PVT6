@@ -1,7 +1,7 @@
-import 'dart:convert';
+
 
 import 'package:flutter/material.dart';
-import 'package:carousel_pro/carousel_pro.dart';
+
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:frontend/friendsAndContacts/friendsPage.dart';
 import 'package:frontend/userFiles/profile.dart';
@@ -40,10 +40,7 @@ class DogProfileState extends State<DogProfile> {
           icon: Icon(
             Icons.arrow_back,
           ),
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => ProfileEightPage()),
-          ),
+          onPressed: () => Navigator.pop(context)
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,

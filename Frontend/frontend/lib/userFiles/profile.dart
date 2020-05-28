@@ -5,11 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:frontend/mapFiles/temp.dart';
 import 'package:frontend/userFiles/addDogTest.dart';
-import 'package:frontend/userFiles/addPet.dart';
 import 'package:frontend/userFiles/dogProfile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:frontend/userFiles/editProfile.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 import 'user.dart' as userlib;
 import 'package:frontend/mapFiles/mapsDemo.dart';
 import 'package:http/http.dart' as http;
