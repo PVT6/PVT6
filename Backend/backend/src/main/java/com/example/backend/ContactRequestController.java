@@ -141,6 +141,9 @@ public class ContactRequestController {
             if(checkIfAlreadyFriends(sender, receiver)){
                 return "Already friends";
             }
+            if(sender == receiver){
+                return "You can not add your self";
+            }
 
             
 
