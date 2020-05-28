@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/mapFiles/mapsDemo.dart';
 import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'package:provider/provider.dart';
+import 'package:frontend/loadingScreen.dart';
 
 class Wrapper extends StatelessWidget {
   @override
@@ -19,8 +20,7 @@ class Wrapper extends StatelessWidget {
     if (user == null) {
       return MySignInPage();
     } else {
-      //Byt ut "Authenticate" till våran hem skärm.
-      return MapsDemo(); // ska skicka användaren till hem skärmen
+      return LoadingScreen(user: user);
     }
     
   }
