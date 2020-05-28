@@ -21,7 +21,7 @@ public class UserTest {
 
     @Test
     public void makeUserConstructor() {
-        User user = new User("uid", "email@email.com", "0700000000", "name" );
+        User user = new User("uid", "email@email.com", "0700000000", "name",new ContactList() );
 
         assertNotNull(user.getId());
 

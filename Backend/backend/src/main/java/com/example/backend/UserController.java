@@ -32,14 +32,13 @@ public class UserController    {
 
     @PostMapping(path = "/new") // Map ONLY POST Requests
     public @ResponseBody String addNewUser(@RequestParam String uid, String email, String phone, String name) {
-        User n = new User(uid, email, phone, name);
+        User n = new User(uid, email, phone, name, new ContactList());
         userRepository.save(n);
         return "Saved";
     }
     @GetMapping(path = "/all")
     public @ResponseBody Iterable<User> getAll(){
         Iterable<User>  u = userRepository.findAll();
-        System.out.println(".");
         return u;
     }
 
@@ -49,6 +48,13 @@ public class UserController    {
         return u.getOwnedDog();    
     }
 
+    @PostMapping(path = "/location")
+    public @ResponseBody String updatePos(@RequestParam Double lat, Double log, String uid){
+        User u = userRepository.findByUid(uid);
+        u.setPosition(new Position((log), (lat)));
+        userRepository.save(u);
+        return "true";
+    }
 
     @GetMapping(path = "/find")
     public @ResponseBody User findUser(@RequestParam String uid){
@@ -57,9 +63,9 @@ public class UserController    {
     }
 
     @PostMapping(path = "/newdog") // Map ONLY POST Requests
-    public @ResponseBody String addNewDog(@RequestParam String uid, String name, String breed, String age, String weight) {
+    public @ResponseBody String addNewDog(@RequestParam String uid, String name, String breed, String age, String height, String weight, String dogpicture, String description, String gender) {
         User u = userRepository.findByUid(uid);
-        Dog d = new Dog(name, breed, age, weight);
+        Dog d = new Dog(name, breed, age, height, weight, description, dogpicture, gender);
         u.setOwnedDog(d);
         userRepository.save(u);
         return "added new dog";

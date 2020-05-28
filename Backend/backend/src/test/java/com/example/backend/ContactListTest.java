@@ -41,7 +41,7 @@ public class ContactListTest {
     public void getUserAfterSet() {
         ContactList cl = new ContactList();
         User user = new User("uid");
-        cl.setUser(user);
+        cl.addUser(user);
         Set<User> users = cl.getUser();
 
         assertFalse(users.isEmpty());

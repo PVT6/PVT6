@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/friendsAndContacts/addContactPage.dart';
-import 'package:frontend/mapFiles/temp.dart';
-import 'package:latlong/latlong.dart';
 
+import 'package:frontend/mapFiles/mapsDemo.dart';
+
+import 'package:frontend/mapFiles/temp2.dart';
+import 'package:latlong/latlong.dart';
 
 class DogPlaceDesc2 extends StatelessWidget {
   final String image;
@@ -13,17 +14,19 @@ class DogPlaceDesc2 extends StatelessWidget {
   final Function directions;
   final Function commonRoutes;
   final LatLng coordinates;
-  
 
   DogPlaceDesc2(this.image, this.rating, this.location, this.title, this.desc,
-       this.directions, this.commonRoutes, this.coordinates);
+      this.directions, this.commonRoutes, this.coordinates);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: colorPurple,
-        title: Text('Description', style: TextStyle(color : colorPeachPink),),
+        title: Text(
+          'Description',
+          style: TextStyle(color: colorPeachPink),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -115,14 +118,23 @@ class DogPlaceDesc2 extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Mapbox(coordinates)),
+                                    builder: (context) =>
+                                        MapsDemo(coordinates)),
                               );
                             },
                           ),
                           FlatButton(
                             child: Text('Directions'),
                             color: colorPurple,
-                            onPressed: directions,
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Navigation(
+                                        coordinates.latitude,
+                                        coordinates.longitude)),
+                              );
+                            },
                           ),
                           FlatButton(
                             child: Text('Common routes'),

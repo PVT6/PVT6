@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/services/auth.dart';
-
+import 'package:latlong/latlong.dart' as latlng;
 import 'mapFiles/mapsDemo.dart';
 
 import 'package:flutter/material.dart';
@@ -19,7 +19,6 @@ const colorDarkRed = const Color(0xffb66a6b);
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
 class LoadingScreen extends StatefulWidget {
-
   FirebaseUser user;
   LoadingScreen({Key key, this.user}) : super(key: key);
 
@@ -32,10 +31,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   LatLng userLocation;
   @override
   void initState() {
-
     loaddUsersData();
-    
-
   }
 
   @override
@@ -84,17 +80,12 @@ class _LoadingScreenState extends State<LoadingScreen> {
                   Text("Loading data...", style: style.copyWith(color: colorDarkRed, fontWeight: FontWeight.bold),),
                   SizedBox(height: 120,)
                 ],
-                ),
-                )
-
+              ),
+            )
           ])
         ],
       ),
-
-      
-      
     );
-
   }
 
 
@@ -106,7 +97,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
         Navigator.push(
                               context,
                               new MaterialPageRoute(
-                                  builder: (context) => MapsDemo()));
+                                  builder: (context) => MapsDemo(userlib.usersCurrentLocation)));
       }
 
 

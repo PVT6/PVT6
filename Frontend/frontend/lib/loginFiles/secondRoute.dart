@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:frontend/mapFiles/mapsDemo.dart';
 import 'package:frontend/services/auth.dart';
+import 'package:latlong/latlong.dart' as latlng;
 
 class SecondRouteState extends StatefulWidget {
   SecondRouteState() : super();
@@ -16,6 +17,7 @@ class SecondRouteState extends StatefulWidget {
 
 class SecondRoute extends State<SecondRouteState> {
   final TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+    latlng.LatLng setter = latlng.LatLng(0,0);
 
   final AuthService _auth = AuthService();
 
@@ -194,7 +196,7 @@ class SecondRoute extends State<SecondRouteState> {
                       } else {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => MapsDemo()),
+                          MaterialPageRoute(builder: (context) => MapsDemo(setter)),
                         );
                       }
                     }

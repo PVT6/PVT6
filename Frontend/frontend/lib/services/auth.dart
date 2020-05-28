@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:frontend/friendsAndContacts/sharePos.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:frontend/userFiles/user.dart' as userlib;
@@ -42,6 +43,7 @@ try {
     userlib.setEmail(email);
     userlib.setUid(user.uid);
     userlib.setLogin(true);
+    initState();
   }
   else {
     throw("FAILED TO CONNECT TO DB");
@@ -67,6 +69,7 @@ try {
       userlib.setEmail(users['email']);
       userlib.setUid(user.uid);
       userlib.setLogin(true);
+      initState();
   }
   else {
     throw("FAILED TO CONNECT TO DB or Non user found");

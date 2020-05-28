@@ -1,11 +1,14 @@
+
+
 import 'package:flutter/material.dart';
-import 'package:carousel_pro/carousel_pro.dart';
+
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:frontend/friendsAndContacts/friendsPage.dart';
 import 'package:frontend/userFiles/profile.dart';
 import '../dog.dart';
 import 'user.dart' as userlib;
 import 'addPet.dart';
+import 'package:http/http.dart' as http;
 
 class DogProfile extends StatefulWidget {
   Dog dog;
@@ -28,6 +31,7 @@ class DogProfileState extends State<DogProfile> {
     this.dog = dog;
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,10 +40,7 @@ class DogProfileState extends State<DogProfile> {
           icon: Icon(
             Icons.arrow_back,
           ),
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => ProfileEightPage()),
-          ),
+          onPressed: () => Navigator.pop(context)
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -198,7 +199,12 @@ class DogProfileState extends State<DogProfile> {
                       children: <Widget>[
                         FlatButton(
                           color: colorPeachPink,
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ProfileEightPage()));
+                          },
                           child: Row(
                             children: <Widget>[
                               Icon(
@@ -218,12 +224,7 @@ class DogProfileState extends State<DogProfile> {
                         ),
                         FlatButton(
                           color: colorPeachPink,
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ProfileEightPage()));
-                          },
+                          onPressed: () {},
                           child: Row(
                             children: <Widget>[
                               Icon(
