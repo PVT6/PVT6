@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/mapFiles/mapsDemo.dart';
 import 'package:frontend/loginFiles/MySignInPage.dart';
-import 'package:frontend/services/auth.dart';
 import 'package:provider/provider.dart';
+import 'package:frontend/loadingScreen.dart';
 
 class Wrapper extends StatelessWidget {
   @override
@@ -12,7 +12,6 @@ class Wrapper extends StatelessWidget {
     final user = Provider.of<FirebaseUser>(context); // Getting user data from the provider.
     // return home scrren eller authenticate widget.
     //https://youtu.be/z05m8nlPRxk?t=394  
-    final AuthService _auth = AuthService();
 
     print('User :');
     print(user);
@@ -21,9 +20,7 @@ class Wrapper extends StatelessWidget {
     if (user == null) {
       return MySignInPage();
     } else {
-      _auth.connectLoggedInUser(user);
-      //Byt ut "Authenticate" till våran hem skärm.
-      return MapsDemo(); // ska skicka användaren till hem skärmen
+      return LoadingScreen(user: user);
     }
     
   }
