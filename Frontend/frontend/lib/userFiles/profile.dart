@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:frontend/loadingScreen.dart';
 import 'package:frontend/mapFiles/temp.dart';
 import 'package:frontend/userFiles/addDogTest.dart';
 import 'package:frontend/userFiles/addPet.dart';
@@ -231,7 +232,7 @@ class UserInfo extends StatelessWidget {
                         },
                       )
                     : Center(
-                        child: CircularProgressIndicator(),
+                        child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(colorDarkRed)),
                       ),
               )),
           Container(
