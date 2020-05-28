@@ -4,6 +4,12 @@ import 'package:frontend/services/auth.dart';
 
 import 'mapFiles/mapsDemo.dart';
 
+import 'package:flutter/material.dart';
+import 'package:location/location.dart';
+import 'package:latlong/latlong.dart';
+import 'package:frontend/userFiles/user.dart' as userlib;
+
+
 
 const colorBeige = const Color(0xFFF5F3EE);
 const colorDarkBeige = const Color(0xFFc2c0bc);
@@ -22,7 +28,7 @@ class LoadingScreen extends StatefulWidget {
 
 class _LoadingScreenState extends State<LoadingScreen> {
   final AuthService _auth = AuthService();
-
+  LatLng userLocation;
   @override
   void initState() {
 
@@ -96,5 +102,21 @@ class _LoadingScreenState extends State<LoadingScreen> {
                               new MaterialPageRoute(
                                   builder: (context) => MapsDemo()));
       }
+
+
+
+       getLocation() async {
+    var location = new Location();
+    location.onLocationChanged.listen((currentLocation) {
+      print(currentLocation.latitude);
+      print(currentLocation.longitude);
+      setState(() {
+        userLocation = LatLng(currentLocation.latitude, currentLocation.longitude);
+        userlib.setUserLocation(userLocation);
+      });
+
+      print("getLocation:$userLocation");
+    });
+  }
 
 }

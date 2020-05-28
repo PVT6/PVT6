@@ -1,10 +1,12 @@
 library frontend.user;
+import 'package:latlong/latlong.dart';
 
 bool isLoggedIn = false;
 String name = "";
 String phone = "";
 String email = "";
 String uid = "";
+LatLng usersCurrentLocation;
 void setName(String n) {
   name = n;
 }
@@ -19,6 +21,9 @@ void setLogin(bool n){
 }
 void setUid(String n){
   uid = n;
+}
+void setUserLocation(LatLng n){
+  usersCurrentLocation = n;
 }
 
 
