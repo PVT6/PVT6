@@ -8,6 +8,7 @@ import 'package:frontend/userFiles/profile.dart';
 import 'package:http/http.dart' as http;
 import 'user.dart' as userlib;
 import '../dog.dart';
+
 class AddDog extends StatefulWidget {
   AddDog() : super();
 
@@ -24,20 +25,6 @@ class AddDogState extends State<AddDog> {
   String breed = '';
   String age = '';
   String error = '';
-
-     Future<void> getDogs() async {
-    var uid = userlib.uid;
-    var url = 'https://group6-15.pvt.dsv.su.se/user/dogs?uid=${uid}';
-    var response = await http.get(Uri.parse(url));
-    if (response.statusCode == 200) {
-      dogs = (json.decode(response.body) as List)
-          .map((i) => Dog.fromJson(i))
-          .toList();
-      userDogs = dogs;
-    } else {
-      // ERROR HÄR
-    }
-  }
 
   Widget _buildPageContent(BuildContext context) {
     return Container(
@@ -63,10 +50,9 @@ class AddDogState extends State<AddDog> {
                 mini: true,
                 onPressed: () {
                   Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ProfileEightPage()),
-                      );
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfileEightPage()),
+                  );
                 },
                 backgroundColor: colorPurple,
                 child: Icon(Icons.arrow_back),
@@ -115,8 +101,7 @@ class AddDogState extends State<AddDog> {
                             style: TextStyle(color: colorPurple),
                             decoration: InputDecoration(
                                 hintText: "Name",
-                                hintStyle:
-                                    TextStyle(color: colorPurple),
+                                hintStyle: TextStyle(color: colorPurple),
                                 border: InputBorder.none,
                                 icon: Icon(
                                   Icons.person,
@@ -145,8 +130,7 @@ class AddDogState extends State<AddDog> {
                             style: TextStyle(color: colorPurple),
                             decoration: InputDecoration(
                                 hintText: "Breed",
-                                hintStyle:
-                                    TextStyle(color: colorPurple),
+                                hintStyle: TextStyle(color: colorPurple),
                                 border: InputBorder.none,
                                 icon: Icon(
                                   Icons.pets,
@@ -175,8 +159,7 @@ class AddDogState extends State<AddDog> {
                             style: TextStyle(color: colorPurple),
                             decoration: InputDecoration(
                                 hintText: "Age",
-                                hintStyle:
-                                    TextStyle(color: colorPurple),
+                                hintStyle: TextStyle(color: colorPurple),
                                 border: InputBorder.none,
                                 icon: Icon(
                                   Icons.calendar_today,
@@ -215,9 +198,7 @@ class AddDogState extends State<AddDog> {
               child: RaisedButton(
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
-                    
-                    var url =
-                        'https://group6-15.pvt.dsv.su.se/user/newdog';
+                    var url = 'https://group6-15.pvt.dsv.su.se/user/newdog';
                     var response = await http.post(Uri.parse(url), body: {
                       'name': name,
                       'breed': breed,
@@ -226,7 +207,6 @@ class AddDogState extends State<AddDog> {
                       'uid': userlib.uid
                     });
                     if (response.statusCode == 200) {
-                      getDogs();
                       Navigator.push(
                         context,
                         MaterialPageRoute(
