@@ -232,7 +232,7 @@ class _HomePageState extends State<FriendsPage>
   }
 
   getFriendPos(User c) async {
-    if (c.position.x != null) {
+    if (c.position.x != null ) {
       final coordinates = new Coordinates(c.position.y, c.position.x);
       var addresses =
           await Geocoder.local.findAddressesFromCoordinates(coordinates);
