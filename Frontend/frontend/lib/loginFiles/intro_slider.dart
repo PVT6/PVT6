@@ -74,15 +74,25 @@ class IntroScreenState extends State<IntroScreen> {
         backgroundColor: colorPrimaryRed,
       ),
     );
+        slides.add(
+      new Slide(
+          title: "TRASH CAN",
+          description:
+              "In need of a trash can? \n\n Just zoom in where ever you are and you will see the nearest trash can on the map.",
+          pathImage: "assets/trashcanslide.png",
+          styleTitle: style.copyWith(fontSize: 30.0, color: Colors.white),
+          styleDescription: style.copyWith(fontSize: 30.0, color: Colors.white),
+          backgroundColor: colorDarkBeige),
+    );
     slides.add(
       new Slide(
           title: "ENJOY",
           description:
               "Explore our app with your dog and make the time together even more enjoyable!",
           pathImage: "assets/logoprotonotext.png",
-          styleTitle: style.copyWith(fontSize: 30.0, color: Colors.white),
-          styleDescription: style.copyWith(fontSize: 30.0, color: Colors.white),
-          backgroundColor: colorDarkBeige),
+        styleTitle: style.copyWith(fontSize: 30.0),
+        styleDescription: style.copyWith(fontSize: 30.0),
+        backgroundColor: colorPrimaryRed,)
     );
   }
 
