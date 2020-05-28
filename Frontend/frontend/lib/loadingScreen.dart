@@ -101,6 +101,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   loaddUsersData() async{
         FirebaseUser user = widget.user;
         await _auth.connectLoggedInUser(user);
+        await getLocation();
         Navigator.pop(context);
         Navigator.push(
                               context,

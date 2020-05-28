@@ -18,11 +18,12 @@ import 'dart:convert';
 import 'mapWithRoute.dart';
 
 List<SavedRoute> savedRoutes = [];
+LatLng startPos = userlib.usersCurrentLocation;
 
 class _MapPreviewPageState extends State<MapPreviewPage> {
   Location location;
   LatLng userLocation;
-
+  
   static LatLng latLng = LatLng(59.338738, 18.064034);
   String kmString = "0";
   String routeTimeString = "0";
@@ -70,7 +71,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
         FlutterMap(
           mapController: mapController,
           options: new MapOptions(
-            center: LatLng(latLng.latitude, latLng.longitude),
+            center: LatLng(startPos.latitude, startPos.longitude),
             minZoom: 14,
             plugins: [
               // ADD THIS
