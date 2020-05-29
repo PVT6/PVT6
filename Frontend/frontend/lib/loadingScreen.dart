@@ -34,6 +34,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   void initState() {
    
     loaddUsersData();
+    getLocation();
     startShareLocation();
   }
 
@@ -106,7 +107,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
 
 
-       Future getLocation() async {
+       getLocation() {
        var location = new Location();
        location.onLocationChanged.listen((currentLocation) {
        print(currentLocation.latitude);
