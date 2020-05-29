@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 
+//assertNotNull(dog.getId()) everywhere since Dog should always have an id
+
 public class DogTest {
     @Test
     public void makeDogEmptyConstructor() {
@@ -16,19 +18,27 @@ public class DogTest {
         assertNull(dog.getName());
         assertNull(dog.getRace());
         assertNull(dog.getAge());
+        assertNull(dog.getHeight());
         assertNull(dog.getWeight());
+        //asserNull(dog.getDogpicture());
+        assertNull(dog.getDescription());
+        assertNull(dog.getGender());
     }
 
     @Test
     public void makeDogConstructor() {
-        Dog dog = new Dog("name", "breed", "1", "2", null, null, null, null);
+        Dog dog = new Dog("name", "breed", "1", "2", "3", "dogpicture", "description", "gender");
 
         assertNotNull(dog.getId());
 
         assertEquals("name", dog.getName());
         assertEquals("breed", dog.getRace());
         assertEquals("1", dog.getAge());
-        assertEquals("2", dog.getWeight());
+        assertEquals("2", dog.getHeight());
+        assertEquals("3", dog.getWeight());
+        //assertEquals("dogpicture", dog.getDogpicture());
+        assertEquals("description", dog.getDescription());
+        assertEquals("gender", dog.getGender());
     }
 
     @Test
@@ -38,14 +48,22 @@ public class DogTest {
         dog.setName("name");
         dog.setRace("breed");
         dog.setAge("1");
-        dog.setWeight("2");
+        dog.setHeight("2");
+        dog.setWeight("3");
+        //dog.setDogpicture("dogpicture");
+        dog.setDescription("description");
+        dog.setGender("gender");
 
         assertNotNull(dog.getId());
 
         assertEquals("name", dog.getName());
         assertEquals("breed", dog.getRace());
         assertEquals("1", dog.getAge());
-        assertEquals("2", dog.getWeight());
+        assertEquals("2", dog.getHeight());
+        assertEquals("3", dog.getWeight());
+        //assertEquals("dogpicture", dog.getDogpicture());
+        assertEquals("description", dog.getDescription());
+        assertEquals("gender", dog.getGender());
     }
 
 }
