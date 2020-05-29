@@ -114,7 +114,7 @@ public class Dog {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return "";
+        return "Error";
     }
 
     @JsonIgnore
