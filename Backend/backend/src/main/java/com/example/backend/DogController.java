@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.imageio.ImageIO;
 import javax.sql.rowset.serial.SerialBlob;
@@ -130,9 +131,17 @@ public class DogController {
     }
 
     @GetMapping(value = "/getPicture")
-    public @ResponseBody String getPic(@RequestParam long id) {
-        Dog d = dogRepository.findById(id).get();
-        return d.getImage();
+    public @ResponseBody String getPic(@RequestParam long id, String uid) {
+        User u = userRepo.findByUid(uid);
+        AtomicReference<String> picture =  new AtomicReference<String>();
+        picture.set("none");
+        u.getOwnedDog().forEach((e) -> {
+            if(e.getId() == id){
+                picture.set(e.getImage());
+            }
+        });
+        
+        return picture.get();
     }
 
     @PostMapping(value = "/deletedog")
