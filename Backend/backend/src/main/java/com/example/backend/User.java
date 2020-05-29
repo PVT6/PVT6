@@ -151,6 +151,9 @@ public class User {
   public Set<Dog> getOwnedDog() {
     return ownedDog;
   }
+  public void removeDog(Dog d){
+    ownedDog.remove(d);
+  }
 
   public void setContactRequest(ContactRequest r) {
     this.contactRequests.add(r);

@@ -12,7 +12,6 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
-
 import javax.imageio.ImageIO;
 import javax.sql.rowset.serial.SerialBlob;
 import javax.sql.rowset.serial.SerialException;
@@ -32,6 +31,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class DogController {
     @Autowired
     private DogRepository dogRepository;
+
+    @Autowired
+    private UserRepository userRepo;
 
     @GetMapping(path = "/all")
     public @ResponseBody List<Dog> allDog() {
@@ -109,7 +111,7 @@ public class DogController {
             dogRepository.save(d);
 
         } catch (SerialException e) {
-        
+
             e.printStackTrace();
         } catch (SQLException e) {
 
@@ -119,22 +121,25 @@ public class DogController {
         return "";
 
     }
+
     @GetMapping(value = "/getPicture")
-    public @ResponseBody String getPic(@RequestParam long id){
+    public @ResponseBody String getPic(@RequestParam long id) {
         Dog d = dogRepository.findById(id).get();
         return d.getImage();
     }
 
     @PostMapping(value = "/deletedog")
-    public @ResponseBody String deleteDog(@RequestParam long id) {
+    public @ResponseBody String deleteDog(@RequestParam long id, String uid) {
         Optional<Dog> optinalEntity = dogRepository.findById(id);
         Dog d = optinalEntity.get();
-        if (d != null) {
-            dogRepository.delete(d);
-            return "true";
-        } else {
-            return "false";
-        }
+
+        //dogRepository.delete(d);
+        User u = userRepo.findByUid(uid);
+        u.removeDog(d);
+        userRepo.save(u);
+
+        return "true";
+
     }
 
     public static byte[] getImage() {
@@ -147,9 +152,9 @@ public class DogController {
                 return byteOutStream.toByteArray();
             } catch (IOException e) {
                 e.printStackTrace();
-           }
+            }
         }
         return null;
-     }
+    }
 
 }
