@@ -68,7 +68,7 @@ public class UserController    {
         Dog d = new Dog(name, breed, age, height, weight, description, dogpicture, gender);
         u.setOwnedDog(d);
         userRepository.save(u);
-        return "added new dog";
+        return d.getId().toString();
     }
 
     @PostMapping(value="/update")

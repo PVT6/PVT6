@@ -122,14 +122,9 @@ class CameraScreenState extends State<CameraScreen> {
           color: Colors.green,
           onPressed: (() {
               
-              var s = base64StringFromImage( Image.file(
-                  File(imagePath),
-                  fit: BoxFit.cover,
-                ));
+            Navigator.pop(context);
                 
-                print(s);
-                
-              ;
+              
           }()),
         
           

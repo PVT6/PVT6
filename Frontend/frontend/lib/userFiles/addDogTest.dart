@@ -17,6 +17,7 @@ import 'package:frontend/userFiles/addDogClasses/searchBreed.dart';
 import 'package:frontend/userFiles/profile.dart';
 import 'package:http/http.dart' as http;
 import '../customAppBar.dart';
+import 'ImageConverter.dart';
 import 'user.dart' as userlib;
 import '../dog.dart';
 
@@ -257,6 +258,7 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
   }
 
   _goToResultPage() async {
+    print(await base64StringFromImage(dogPicture));
     if (dogName == null || finalBreed == null) {
       return showAlertDialog(context);
     } else {
