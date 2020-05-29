@@ -29,6 +29,16 @@ class DogProfileState extends State<DogProfile> {
     this.dog = dog;
   }
 
+  @override
+  void initState() {
+    _asyncMethod();
+    super.initState();
+  }
+
+   Future _asyncMethod() async {
+    await dog.getPicture();
+  }
+
 
   
 
@@ -88,6 +98,7 @@ class DogProfileState extends State<DogProfile> {
                               //Image.asset("BrewDog.jpg", fit: BoxFit.cover),
                               child: widget.dog.dogPic != null
                                   ? ((){
+                                    
                                     print(widget.dog.dogPic);
                                     return widget.dog.dogPic;
                                   } ())
