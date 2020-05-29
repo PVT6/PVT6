@@ -22,7 +22,6 @@ import '../dog.dart';
 
 MapController controller = new MapController();
 List<Dog> dogs;
-List<Dog> userDogs;
 
 //const kApiKey =
 //'pk.eyJ1IjoibHVjYXMtZG9tZWlqIiwiYSI6ImNrOWIyc2VpaTAxZXEzbGwzdGx5bGsxZjIifQ.pfwWSfqvApF610G-rKFK8A';
@@ -52,20 +51,6 @@ class _MapBoxState extends State<Mapbox> {
     return new String.fromCharCodes(codeUnits);
   }
 
-  Future<void> getDogs() async {
-    var uid = userlib.uid;
-    var url = 'https://group6-15.pvt.dsv.su.se/user/dogs?uid=${uid}';
-    var response = await http.get(Uri.parse(url));
-    if (response.statusCode == 200) {
-      dogs = (json.decode(response.body) as List)
-          .map((i) => Dog.fromJson(i))
-          .toList();
-      userDogs = dogs;
-    } else {
-      // ERROR HÄR
-    }
-  }
-
   Widget button(Function function, IconData icon) {
     return FloatingActionButton(
       heroTag: _randomString(10),
@@ -90,6 +75,19 @@ class _MapBoxState extends State<Mapbox> {
         markers: markers,
         defaultZoom: 30.0);
     return new Scaffold(
+      floatingActionButton: FloatingActionButton.extended(
+        label: Text('Search'),
+        icon: Icon(Icons.search),
+        backgroundColor: colorPurple,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SearchPage(),
+            ),
+          );
+        },
+      ),
       appBar: new AppBar(
           title: new Text('DogWalk', style: style,), backgroundColor: colorDarkBeige),
       drawer: Drawer(
@@ -156,70 +154,49 @@ class _MapBoxState extends State<Mapbox> {
                           new MaterialPageRoute(
                               builder: (context) => BrowseDogParks()))
                     }), //Tror denna kan behövs senare då logout antagligen är fel implementerad
-            // CustomListTile(
-            //     Icons.lock,
-            //     'Log out',
-            //     () async => {
-            //           await _auth.signOut(),
-            //           Navigator.push(
-            //               context,
-            //               new MaterialPageRoute(
-            //                   builder: (context) => MySignInPage()))
-            //         }),
+
             SizedBox(
               height: 200,
             ),
-            Row(
-              children: <Widget>[
-                SizedBox(
-                  width: 150,
-                  height: 120,
-                  child: Image.asset(
-                    'assets/logopurplepink.png',
-                  ),
-                ),
-                SizedBox(
-                  width: 30,
-                ),
-                Material(
-                  elevation: 5.0,
-                  color: Colors.red,
-                  child: MaterialButton(
-                    minWidth: 120,
-                    padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                    onPressed: () async {
-                      await _auth.signOut();
-                      Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              builder: (context) =>
-                                  MySignInPage())); // dismiss dialog
-                    },
-                    child: Text("Sign out",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold)),
-                  ),
-                ),
+                Row(
+                  children: <Widget>[
+                    SizedBox(
+                      width: 150,
+                      height: 120,
+                      child: Image.asset(
+                        'assets/logopurplepink.png',
+                      ),
+                    ),
+                    SizedBox(
+                      width: 30,
+                    ),
+                    Material(
+                      elevation: 5.0,
+                      color: Colors.red,
+                      child: MaterialButton(
+                        minWidth: 120,
+                        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                        onPressed: () async {
+                          await _auth.signOut();
+                          Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                  builder: (context) =>
+                                      MySignInPage())); // dismiss dialog
+                        },
+                        child: Text("Sign out",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold)),
+                      ),
+                    ),
+                  ],
+                )
               ],
-            )
-          ],
-        )),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        label: Text('Search'),
-        icon: Icon(Icons.search),
-        backgroundColor: colorPurple,
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => SearchPage(),
-            ),
-          );
-        },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+            ))),
+      
+      
       body: Stack(children: [
         FlutterMap(
             mapController: controller,

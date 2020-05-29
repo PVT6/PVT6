@@ -1,7 +1,9 @@
+import 'package:frontend/friendsAndContacts/contactsModel.dart';
+
 class SentRequest {
   String status;
   Sender sender;
-  Sender receiver;
+  Receiver receiver;
 
   SentRequest({this.status, this.sender, this.receiver});
 
@@ -9,8 +11,9 @@ class SentRequest {
     status = json['status'];
     sender =
         json['sender'] != null ? new Sender.fromJson(json['sender']) : null;
-    receiver =
-        json['receiver'] != null ? new Sender.fromJson(json['receiver']) : null;
+    receiver = json['receiver'] != null
+        ? new Receiver.fromJson(json['receiver'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -26,30 +29,16 @@ class SentRequest {
   }
 }
 
-class Sender {
-  int id;
-  String name;
-  String email;
-  String phoneNumber;
-  Null position;
+class Sender extends User {
+  Sender({id, name, email, savedRoutes, phoneNumber, position, ownedDog})
+      : super({id, name, email, savedRoutes, phoneNumber, position, ownedDog});
 
-  Sender({this.id, this.name, this.email, this.phoneNumber, this.position});
+  Sender.fromJson(json) : super.fromJson(Map<String, dynamic>.from(json));
+}
 
-  Sender.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    email = json['email'];
-    phoneNumber = json['phoneNumber'];
-    position = json['position'];
-  }
+class Receiver extends User {
+  Receiver({id, name, email, savedRoutes, phoneNumber, position, ownedDog})
+      : super({id, name, email, savedRoutes, phoneNumber, position, ownedDog});
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['email'] = this.email;
-    data['phoneNumber'] = this.phoneNumber;
-    data['position'] = this.position;
-    return data;
-  }
+  Receiver.fromJson(json) : super.fromJson(Map<String, dynamic>.from(json));
 }

@@ -30,13 +30,14 @@ public class ContactRequestController {
         User user = userRepository.findByUid(uid);
         for (ContactRequest e : list) {
 
-            if(e.getSender() != null && e.getSender().getUid() == user.getUid()){
+            if (e.getSender() != null && e.getSender().getUid() == user.getUid()) {
                 sent.add(e);
             }
 
         }
         return sent;
     }
+
     @GetMapping(path = "/waitingRequests")
     public @ResponseBody Set<ContactRequest> getWaitingContactRequests(@RequestParam String uid) {
         Set<ContactRequest> sent = new HashSet<ContactRequest>();
@@ -44,27 +45,59 @@ public class ContactRequestController {
         User user = userRepository.findByUid(uid);
         for (ContactRequest e : list) {
 
-            if(e.getSender() != null && e.getSender().getUid() != user.getUid()){
+            if (e.getSender() != null && e.getSender().getUid() != user.getUid()) {
                 sent.add(e);
             }
 
         }
         return sent;
+
     }
 
+    @GetMapping(path = "/clearRequests")
+    public @ResponseBody String clearRequests(@RequestParam String uid) {
+        User u = userRepository.findByUid(uid);
+        u.getContactRequest().clear();
+        userRepository.save(u);
+        return "true";
+    }
 
     @PostMapping(path = "/answer")
     public @ResponseBody String answerRequest(@RequestParam String e, String phone, String uid) {
-        Set<ContactRequest> contactRequests = userRepository.findByUid(uid).getContactRequest();
+        User u = userRepository.findByUid(uid);
+        User u2 = userRepository.findByPhone(phone);
+
+        Set<ContactRequest> contactRequests = u.getContactRequest();
         contactRequests.forEach((element) -> {
-            if (element.getSender().getPhoneNumber() == phone) {
+            if (element.getSender() == u2) {
                 switch (e) {
                     case "accept":
                         element.setStatus(Status.ACCEPTED);
+                        u2.findUserFromContactRequests(element).setStatus(Status.ACCEPTED);
+                        // ADD TO FRIENDS
+                        if (u.getContactList() == null) {
+                            u.setContactList(new ContactList());
+                            userRepository.save(u);
+                        }
+                        if (u2.getContactList() == null) {
+                            u2.setContactList(new ContactList());
+                            userRepository.save(u2);
+                         
+                        }
+
+                        u.getContactList().addUser(u2);
+                        u2.getContactList().addUser(u);
+                        userRepository.save(u);
+                        userRepository.save(u2);
+                        // DELETE REQEST?
 
                         break;
                     case "rejcet":
                         element.setStatus(Status.REJECTRED);
+                        u2.findUserFromContactRequests(element).setStatus(Status.REJECTRED);
+                        userRepository.save(u);
+                        userRepository.save(u2);
+                          // DELETE REQEST?
                         break;
                 }
 
@@ -80,9 +113,21 @@ public class ContactRequestController {
         return userRepository.findByUid(uid).getContactList();
     }
 
+    @PostMapping(path = "/remove")
+    public @ResponseBody String removeContact(@RequestParam String uid, String phone) {
+        User u1 = userRepository.findByUid(uid);
+        User u2 = userRepository.findByPhone(phone);
+
+        u1.getContactList().getUser().remove(u2);
+        u2.getContactList().getUser().remove(u1);
+        userRepository.save(u1);
+        userRepository.save(u2);
+
+        return "true";
+    }
+
     @PostMapping(value = "/new")
     public @ResponseBody String sendRequest(@RequestParam String sendUid, String phone) {
-
         User sender = userRepository.findByUid(sendUid);
         User receiver = userRepository.findByPhone(phone);
         if (receiver != null) {
@@ -94,6 +139,41 @@ public class ContactRequestController {
             return "Sent friend request";
         } else
             return "No user found";
+    }
+
+    @PostMapping(value = "/cancleRequests")
+    public @ResponseBody String cancleRequests(@RequestParam String uid, String phone) {
+        User sender = userRepository.findByUid(uid);
+        User receiver = userRepository.findByPhone(phone);
+        Set<ContactRequest> toRemove = new HashSet<ContactRequest>();
+        ;
+        Set<ContactRequest> contactRequests = sender.getContactRequest();
+        contactRequests.forEach((e) -> {
+            if (e.getReceiver() == receiver) {
+                toRemove.add(e);
+            }
+        });
+
+        toRemove.forEach((e) -> {
+            contactRequests.remove(e);
+            userRepository.saveAndFlush(sender);
+        });
+
+        toRemove.clear();
+
+        Set<ContactRequest> contactRequests2 = receiver.getContactRequest();
+        contactRequests2.forEach((e) -> {
+            if (e.getSender() == sender) {
+                toRemove.add(e);
+            }
+        });
+
+        toRemove.forEach((e) -> {
+            contactRequests2.remove(e);
+            userRepository.saveAndFlush(receiver);
+        });
+
+        return "true";
     }
 
 }

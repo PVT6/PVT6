@@ -6,14 +6,17 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'package:frontend/mapFiles/temp.dart';
 import 'package:frontend/userFiles/addDogTest.dart';
-import 'package:frontend/userFiles/addPet.dart';
 import 'package:frontend/userFiles/dogProfile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:frontend/userFiles/editProfile.dart';
+
 import 'user.dart' as userlib;
 import 'package:frontend/mapFiles/mapsDemo.dart';
 import 'package:http/http.dart' as http;
 import '../dog.dart';
+import 'package:latlong/latlong.dart' as latlng;
+
+List<Dog> userDogs;
 
 class ProfileEightPage extends StatefulWidget {
   ProfileEightPage() : super();
@@ -24,9 +27,11 @@ class ProfileEightPage extends StatefulWidget {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
 class ProfileEightPageState extends State<ProfileEightPage> {
+  latlng.LatLng setter = latlng.LatLng(0,0);
   @override
   void initState() {
     super.initState();
+    setDogs();
   }
 
   Future<void> getDogs() async {
@@ -37,10 +42,16 @@ class ProfileEightPageState extends State<ProfileEightPage> {
       dogs = (json.decode(response.body) as List)
           .map((i) => Dog.fromJson(i))
           .toList();
-      userDogs = dogs;
+      setState(() {
+        userDogs = dogs;
+      });
     } else {
       // ERROR HÄR
     }
+  }
+
+  Future<void> setDogs() async {
+    getDogs();
   }
 
   @override
@@ -59,7 +70,7 @@ class ProfileEightPageState extends State<ProfileEightPage> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => MapsDemo()),
+              MaterialPageRoute(builder: (context) => MapsDemo(setter)),
             );
           },
         ),
@@ -290,17 +301,6 @@ class UserInfo extends StatelessWidget {
                               style: TextStyle(color: colorDarkRed),
                             ),
                           ),
-                          // ListTile(
-                          //   leading: Icon(Icons.person, color: colorDarkRed),
-                          //   title: Text(
-                          //     "About Me",
-                          //     style: TextStyle(color: colorDarkRed),
-                          //   ),
-                          //   subtitle: Text(
-                          //     "I love big fluffy dogs. Proud owner of a Bernese Mountain Dog",
-                          //     style: TextStyle(color: colorDarkRed),
-                          //   ),
-                          // ),
                         ],
                       ),
                     ],

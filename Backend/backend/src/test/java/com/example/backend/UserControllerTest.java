@@ -31,7 +31,7 @@ public class UserControllerTest {
         UserController usrcon = new UserController();
 
         usrcon.addNewUser("uid", "email", "phone", "name");
-        String result = usrcon.addNewDog("uid", "dogname", "breed", "age", "weight");
+        String result = usrcon.addNewDog("uid", "dogname", "breed", "age", "weight", "", "", "", "");
 
         assertEquals("added new dog", result);
     }
@@ -41,9 +41,9 @@ public class UserControllerTest {
         UserController usrcon = new UserController();
 
         usrcon.addNewUser("uid", "email", "phone", "name");
-        usrcon.addNewDog("uid", "dogname", "breed", "age", "weight");
+        usrcon.addNewDog("uid", "dogname", "breed", "age", "weight", "", "", "", "");
 
-        Dog dog = new Dog("dogname", "breed", "age", "weight");
+        Dog dog = new Dog("dogname", "breed", "age", "weight", "", "", "", "");
 
         Set<Dog> dogs = usrcon.findDogs("uid");
         assertTrue(dogs.contains(dog));
@@ -52,7 +52,7 @@ public class UserControllerTest {
     @Test
     public void findUser() {
         UserController usrcon = new UserController();
-        User user = new User("uid", "email", "phone", "name");
+        User user = new User("uid", "email", "phone", "name", new ContactList());
         
         usrcon.addNewUser("uid", "email", "phone", "name");
 

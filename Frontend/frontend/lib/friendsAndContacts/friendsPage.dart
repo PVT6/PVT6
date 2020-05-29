@@ -1,64 +1,61 @@
 import 'dart:convert';
 
+import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/friendsAndContacts/addContactPage.dart';
+import 'package:frontend/friendsAndContacts/contactsModel.dart';
 import 'package:frontend/friendsAndContacts/sentRequest.dart';
 import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'package:frontend/userFiles/addDogTest.dart';
+import 'package:frontend/mapFiles/mapsDemo.dart';
+import 'package:frontend/userFiles/dogProfile.dart';
+import 'package:geocoder/geocoder.dart';
 import 'package:http/http.dart' as http;
 import 'package:frontend/userFiles/user.dart' as userlib;
+import 'package:frontend/mapFiles/temp.dart';
+import '../dog.dart';
+import 'package:latlong/latlong.dart' as latlng;
 
-List<User> friends = [
-  User('Lina', "123@gmail.com", '456', false),
-  User('Karl', "123@gmail.com", '789', true),
-  User('Ella', "123@gmail.com", '123', true),
-  User('Marika', "123@gmail.com", '456', false),
-];
-List<User> users = [
-  User('Jakob', "123@gmail.com", '123', true),
-  User('Sharon', "123@gmail.com", '123', false),
-  User('Erik', "123@gmail.com", '123', true)
-];
-
-List<User> databaseUser = [
-  User('Jakob', "123@gmail.com", '123', true),
-  User('Sharon', "123@gmail.com", '456', false),
-  User('Erik', "123@gmail.com", '789', true),
-  User('Johan', "123@gmail.com", '123', true),
-  User('Lina', "123@gmail.com", '456', false),
-  User('Karl', "123@gmail.com", '789', true),
-  User('Ella', "123@gmail.com", '123', true),
-  User('Marika', "123@gmail.com", '456', false),
-  User('Pär', "123@gmail.com", '789', true),
-  User('Mattias', "123@gmail.com", '123', true),
-  User('Viktor', "123@gmail.com", '456', false),
-  User('Emma', "123@gmail.com", '789', true),
-  User('Daniel', "123@gmail.com", '123', true),
-  User('Johanna', "123@gmail.com", '456', false),
-  User('Kevin', "123@gmail.com", '789', true),
-  User('Elsa', "123@gmail.com", '123', true),
-  User('Sara', "123@gmail.com", '456', false),
-  User('Emil', "123@gmail.com", '789', true),
-  User('Joel', "123@gmail.com", '123', true),
-  User('Siri', "123@gmail.com", '456', false),
-  User('Eskil', "123@gmail.com", '789', true),
-  User('Simon', "123@gmail.com", '123', true),
-  User('Linn', "123@gmail.com", '456', false),
-  User('Linda', "123@gmail.com", '789', true),
-  User('Habib', "123@gmail.com", '123', true),
-  User('Ashraf', "123@gmail.com", '456', false),
-  User('Lukas', "123@gmail.com", '789', true),
-  User('John', "123@gmail.com", '123', true),
-  User('Daniella', "123@gmail.com", '456', false),
-  User('Trött', "123@gmail.com", '789', true),
-  User('På', "123@gmail.com", '123', true),
-  User('Namn', "123@gmail.com", '456', false),
-  User('Nu', "123@gmail.com", '789', true),
-];
+List<User> friends = [];
 
 const colorPurple = const Color(0xFF82658f);
 const colorPeachPink = const Color(0xFFffdcd2);
 const colorLighterPink = const Color(0xFFffe9e5);
+List<SentRequest> sentRequest = [];
+List<SentRequest> waitingRequest = [];
+Future<void> getInfo() async {
+  //sentRequests
+
+  var url =
+      'https://group6-15.pvt.dsv.su.se/contacts/sentRequests?uid=${userlib.uid}';
+  var response = await http.get(Uri.parse(url));
+  sentRequest = (json.decode(response.body) as List)
+      .map((i) => SentRequest.fromJson(i))
+      .toList();
+  print(response.statusCode);
+
+  url =
+      'https://group6-15.pvt.dsv.su.se/contacts/waitingRequests?uid=${userlib.uid}';
+  response = await http.get(Uri.parse(url));
+  waitingRequest = (json.decode(response.body) as List)
+      .map((i) => SentRequest.fromJson(i))
+      .toList();
+  print(response.statusCode);
+
+  url = 'https://group6-15.pvt.dsv.su.se/contacts/all?uid=${userlib.uid}';
+  response = await http.get(Uri.parse(url));
+  if (response.body != "") {
+    final body = json.decode(response.body);
+
+    print("LOAD FRIENDS");
+    friends = (json.decode(jsonEncode(body["user"])) as List)
+        .map((i) => User.fromJson(i))
+        .toList();
+    print(response.statusCode);
+  } else {
+    print("NO FRIENDS");
+    friends.clear();
+  }
+}
 
 class FriendsPage extends StatefulWidget {
   @override
@@ -69,29 +66,65 @@ class _HomePageState extends State<FriendsPage>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
-  List<SentRequest> sentRequest = [];
-  List<SentRequest> receivingRequests = [];
 
-  Future<void> getInfo() async {
-    //contacts
-    var url =
-        'https://group6-15.pvt.dsv.su.se/contacts/sentRequests?uid=${userlib.uid}';
-    var response = await http.get(Uri.parse(url));
-    List<SentRequest> sentRequest = (json.decode(response.body) as List)
-        .map((i) => SentRequest.fromJson(i))
-        .toList();
-  }
+  List<SentRequest> receivingRequests = [];
 
   @override
   void initState() {
+    setInfo();
     _tabController = new TabController(length: 3, vsync: this);
     super.initState();
   }
 
-  showAlertDialog(BuildContext context) {
+  Future<void> setInfo() async {
+    getInfo();
+  }
+
+  Future<void> getInfo() async {
+    //sentRequests
+
+    var url =
+        'https://group6-15.pvt.dsv.su.se/contacts/sentRequests?uid=${userlib.uid}';
+    var response = await http.get(Uri.parse(url));
+    setState(() {
+      sentRequest = (json.decode(response.body) as List)
+          .map((i) => SentRequest.fromJson(i))
+          .toList();
+      print(response.statusCode);
+    });
+
+    url =
+        'https://group6-15.pvt.dsv.su.se/contacts/waitingRequests?uid=${userlib.uid}';
+    response = await http.get(Uri.parse(url));
+    setState(() {
+      waitingRequest = (json.decode(response.body) as List)
+          .map((i) => SentRequest.fromJson(i))
+          .toList();
+      print(response.statusCode);
+    });
+
+    url = 'https://group6-15.pvt.dsv.su.se/contacts/all?uid=${userlib.uid}';
+    response = await http.get(Uri.parse(url));
+    if (response.body != "") {
+      final body = json.decode(response.body);
+
+      print("LOAD FRIENDS");
+      setState(() {
+        friends = (json.decode(jsonEncode(body["user"])) as List)
+            .map((i) => User.fromJson(i))
+            .toList();
+        print(response.statusCode);
+      });
+    } else {
+      print("NO FRIENDS");
+      friends.clear();
+    }
+  }
+
+  cancleRequestAlert(BuildContext context, phone) {
     // set up the buttons
     Widget cancelButton = FlatButton(
-      child: Text("Decline"),
+      child: Text("No"),
       onPressed: () {
         Navigator.of(context).pop(); // dismiss dialog
       },
@@ -104,7 +137,72 @@ class _HomePageState extends State<FriendsPage>
       child: MaterialButton(
         minWidth: 100,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {
+        onPressed: () async {
+          Navigator.of(context).pop();
+          var url = 'https://group6-15.pvt.dsv.su.se/contacts/cancleRequests';
+
+          var response = await http
+              .post(Uri.parse(url), body: {'uid': userlib.uid, 'phone': phone});
+          print(response.statusCode);
+          getInfo();
+        },
+        child: Text("Yes",
+            textAlign: TextAlign.center,
+            style: style.copyWith(
+                color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(32.0))),
+      title: Text("Friend Request"),
+      content: Text("Do you really want to cancle this friend request"),
+      actions: [
+        cancelButton,
+        acceptButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showAlertDialog(BuildContext context, phone) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Decline"),
+      onPressed: () async {
+        var url = 'https://group6-15.pvt.dsv.su.se/contacts/answer';
+
+        var response = await http.post(Uri.parse(url),
+            body: {'uid': userlib.uid, 'phone': phone, 'e': 'rejcet'});
+        print(response.statusCode);
+        getInfo();
+
+        Navigator.of(context).pop(); // dismiss dialog
+      },
+    );
+
+    Widget acceptButton = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(30.0),
+      color: Colors.green,
+      child: MaterialButton(
+        minWidth: 100,
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () async {
+          var url = 'https://group6-15.pvt.dsv.su.se/contacts/answer';
+          var response = await http.post(Uri.parse(url),
+              body: {'uid': userlib.uid, 'phone': phone, 'e': 'accept'});
+          print(response.statusCode);
+          getInfo();
           Navigator.of(context).pop(); // dismiss dialog
         },
         child: Text("Accept",
@@ -133,6 +231,17 @@ class _HomePageState extends State<FriendsPage>
         return alert;
       },
     );
+  }
+
+  getFriendPos(User c) async {
+    if (c.position.x != null ) {
+      final coordinates = new Coordinates(c.position.y, c.position.x);
+      var addresses =
+          await Geocoder.local.findAddressesFromCoordinates(coordinates);
+      var first = addresses.first;
+      return addresses.first.addressLine;
+    }
+    return "unavailable";
   }
 
   @override
@@ -201,20 +310,22 @@ class _HomePageState extends State<FriendsPage>
                                       builder: (BuildContext context) =>
                                           ProfileInfo(c)));
                                 },
-                                leading: CircleAvatar(
-                                  child: Text(
-                                    "PH",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  backgroundColor: colorDarkRed,
-                                ),
-                                title: Text(
-                                  c.name ?? "",
-                                  style: style.copyWith(fontSize: 18.0),
-                                ),
-                                subtitle: Text(
-                                  "Stockholm, Vällingby . 53 min",
-                                  style: style.copyWith(fontSize: 15.0),
+                                leading: CircleAvatar(child: Text("PH",
+                                    style: TextStyle(color: Colors.white)),
+                                    backgroundColor: colorDarkRed,
+                                    ),
+                                title: Text(c.name ?? "",
+                                  style: style.copyWith(fontSize: 18.0)),
+                                subtitle: FutureBuilder<dynamic>(
+                                  future: getFriendPos(c),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<dynamic> snapshot) {
+                                    if (snapshot.hasData) {
+                                      return Text(snapshot.data);
+                                    } else {
+                                      return Text("Loading");
+                                    }
+                                  },
                                 ),
                                 trailing: IconButton(
                                   icon: Icon(
@@ -223,10 +334,12 @@ class _HomePageState extends State<FriendsPage>
                                     size: 37,
                                   ),
                                   onPressed: () {
+                                    latlng.LatLng coordinates = latlng.LatLng(
+                                        c.position.y, c.position.x);
                                     Navigator.of(context).push(
                                         MaterialPageRoute(
                                             builder: (BuildContext context) =>
-                                                InputPage()));
+                                                MapsDemo(coordinates)));
                                   },
                                 ),
                               ));
@@ -263,50 +376,63 @@ class _HomePageState extends State<FriendsPage>
                       ),
                       textAlign: TextAlign.left,
                     ),
-                    users != null
+                    waitingRequest != null
                         ? ListView.builder(
                             physics: NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
-                            itemCount: users?.length ??
+                            itemCount: waitingRequest?.length ??
                                 0, //lägga till vår egen lista på denna bör funka
                             itemBuilder: (BuildContext context, int index) {
-                              User c = users?.elementAt(index);
+                              SentRequest c = waitingRequest?.elementAt(index);
                               return Card(
                                   elevation: 8.0,
                                   shape: RoundedRectangleBorder(
                                       borderRadius:
                                           BorderRadius.circular(10.0)),
                                   child: ListTile(
-                                    onTap: () {
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) =>
-                                                  ProfileInfo(c)));
-                                    },
-                                    leading: CircleAvatar(
-                                      child: Text(
-                                        "PH",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      backgroundColor: colorDarkRed,
-                                    ),
-                                    title: Text(
-                                      c.name ?? "",
-                                      style: style.copyWith(fontSize: 18),
-                                    ),
-                                    subtitle: Text(c.email ?? "",
-                                        style: style.copyWith(fontSize: 15)),
-                                    trailing: IconButton(
-                                      icon: Icon(
-                                        Icons.person_add,
-                                        color: Colors.green,
-                                        size: 37,
-                                      ),
-                                      onPressed: () {
-                                        showAlertDialog(context);
-                                      },
-                                    ), //onPressed Lägger till i vänner och tar bort från lista
-                                  ));
+                                      leading: CircleAvatar(child: Text("PH")),
+                                      title: Text(c.sender.name ?? ""),
+                                      subtitle:
+                                          Text(c.sender.phoneNumber ?? ""),
+                                      trailing: (() {
+                                        IconButton b;
+
+                                        // HÄR BEHÖVS ICONER FÖR WAITING REJECTED OCH ACCEPTED
+                                        if (c.status == "WAITING") {
+                                          b = IconButton(
+                                            icon: Icon(
+                                              Icons.person_add,
+                                              color: Colors.green,
+                                              size: 37,
+                                            ),
+                                            onPressed: () {
+                                              showAlertDialog(context,
+                                                  c.sender.phoneNumber);
+                                            },
+                                          );
+                                        } else if (c.status == "ACCEPTED") {
+                                          b = IconButton(
+                                            icon: Icon(
+                                              Icons.done,
+                                              color: Colors.green,
+                                              size: 37,
+                                            ),
+                                            onPressed: () {},
+                                          );
+                                        } else {
+                                          b = IconButton(
+                                            icon: Icon(
+                                              Icons.clear,
+                                              color: Colors.red,
+                                              size: 37,
+                                            ),
+                                            onPressed: () {},
+                                          );
+                                        }
+                                        return b;
+                                      }())
+                                      //onPressed Lägger till i vänner och tar bort från lista
+                                      ));
                             },
                           )
                         : Center(
@@ -322,43 +448,34 @@ class _HomePageState extends State<FriendsPage>
                       ),
                       textAlign: TextAlign.left,
                     ),
-                    users != null
+                    sentRequest != null
                         ? ListView.builder(
                             physics: NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
-                            itemCount: users?.length ??
+                            itemCount: sentRequest?.length ??
                                 0, //lägga till vår egen lista på denna bör funka
                             itemBuilder: (BuildContext context, int index) {
-                              User c = users?.elementAt(index);
+                              SentRequest c = sentRequest?.elementAt(index);
                               return Card(
                                   elevation: 8.0,
                                   shape: RoundedRectangleBorder(
                                       borderRadius:
                                           BorderRadius.circular(10.0)),
                                   child: ListTile(
-                                    onTap: () {
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) =>
-                                                  ProfileInfo(c)));
-                                    },
-                                    leading: CircleAvatar(
-                                      child: Text(
-                                        "PH",
-                                        style: TextStyle(color: Colors.white),
+                                    leading: CircleAvatar(child: Text("PH")),
+                                    title: Text(c.receiver.name ?? ""),
+                                    subtitle:
+                                        Text(c.receiver.phoneNumber ?? ""),
+                                    trailing: IconButton(
+                                      icon: Icon(
+                                        Icons.hourglass_empty,
+                                        color: Colors.yellow,
+                                        size: 37,
                                       ),
-                                      backgroundColor: colorDarkRed,
-                                    ),
-                                    title: Text(
-                                      c.name ?? "",
-                                      style: style.copyWith(fontSize: 18),
-                                    ),
-                                    subtitle: Text(c.email ?? "",
-                                        style: style.copyWith(fontSize: 15)),
-                                    trailing: Icon(
-                                      Icons.hourglass_empty,
-                                      color: Colors.yellow,
-                                      size: 37,
+                                      onPressed: () {
+                                        cancleRequestAlert(
+                                            context, c.receiver.phoneNumber);
+                                      },
                                     ),
                                   ));
                             },
@@ -375,15 +492,8 @@ class _HomePageState extends State<FriendsPage>
       ),
     );
   }
-}
 
-class User {
-  final String name;
-  final String email;
-  final String phone;
-  bool friendstatus;
-
-  User(this.name, this.email, this.phone, this.friendstatus);
+  _getFriendPos() {}
 }
 
 class SearchUsers extends StatefulWidget {
@@ -400,74 +510,52 @@ class _MyHomePageState extends State<SearchUsers> {
   final _formKey = GlobalKey<FormState>();
   bool userExists = true;
 
-  final duplicateItems = [
-    User('Jakob', "123@gmail.com", '0763085859', true),
-    User('Sharon', "123@gmail.com", '456', false),
-    User('Erik', "123@gmail.com", '0763085858', true),
-    User('Johan', "123@gmail.com", '123', true),
-    User('Lina', "123@gmail.com", '456', false),
-    User('Karl', "123@gmail.com", '789', true),
-    User('Ella', "123@gmail.com", '123', true),
-    User('Marika', "123@gmail.com", '456', false),
-    User('Pär', "123@gmail.com", '789', true),
-    User('Mattias', "123@gmail.com", '123', true),
-    User('Viktor', "123@gmail.com", '456', false),
-    User('Emma', "123@gmail.com", '789', true),
-    User('Daniel', "123@gmail.com", '123', true),
-    User('Johanna', "123@gmail.com", '456', false),
-    User('Kevin', "123@gmail.com", '789', true),
-    User('Elsa', "123@gmail.com", '123', true),
-    User('Sara', "123@gmail.com", '456', false),
-    User('Emil', "123@gmail.com", '789', true),
-    User('Joel', "123@gmail.com", '123', true),
-    User('Siri', "123@gmail.com", '456', false),
-    User('Eskil', "123@gmail.com", '789', true),
-    User('Simon', "123@gmail.com", '123', true),
-    User('Linn', "123@gmail.com", '456', false),
-    User('Linda', "123@gmail.com", '789', true),
-    User('Habib', "123@gmail.com", '123', true),
-    User('Ashraf', "123@gmail.com", '456', false),
-    User('Lukas', "123@gmail.com", '789', true),
-    User('John', "123@gmail.com", '123', true),
-    User('Daniella', "123@gmail.com", '456', false),
-    User('Trött', "123@gmail.com", '789', true),
-    User('På', "123@gmail.com", '123', true),
-    User('Namn', "123@gmail.com", '456', false),
-    User('Nu', "123@gmail.com", '789', true),
-  ];
   var items = List<User>();
 
-  @override
-  void initState() {
-    items.addAll(duplicateItems);
-    super.initState();
-  }
+  Future<void> getInfo() async {
+    //sentRequests
 
-  void filterSearchResults(String query) {
-    List<User> dummySearchList = List<User>();
-    dummySearchList.addAll(duplicateItems);
-    if (query.isNotEmpty) {
-      List<User> dummyListData = List<User>();
-      dummySearchList.forEach((item) {
-        if (item.phone.contains(query)) {
-          dummyListData.add(item);
-        }
-      });
+    var url =
+        'https://group6-15.pvt.dsv.su.se/contacts/sentRequests?uid=${userlib.uid}';
+    var response = await http.get(Uri.parse(url));
+    setState(() {
+      sentRequest = (json.decode(response.body) as List)
+          .map((i) => SentRequest.fromJson(i))
+          .toList();
+      print(response.statusCode);
+    });
+
+    url =
+        'https://group6-15.pvt.dsv.su.se/contacts/waitingRequests?uid=${userlib.uid}';
+    response = await http.get(Uri.parse(url));
+    setState(() {
+      waitingRequest = (json.decode(response.body) as List)
+          .map((i) => SentRequest.fromJson(i))
+          .toList();
+      print(response.statusCode);
+    });
+
+    url = 'https://group6-15.pvt.dsv.su.se/contacts/all?uid=${userlib.uid}';
+    response = await http.get(Uri.parse(url));
+    if (response.body != "") {
+      final body = json.decode(response.body);
+
+      print("LOAD FRIENDS");
       setState(() {
-        items.clear();
-        items.addAll(dummyListData);
+        friends = (json.decode(jsonEncode(body["user"])) as List)
+            .map((i) => User.fromJson(i))
+            .toList();
+        print(response.statusCode);
       });
-      return;
     } else {
-      setState(() {
-        items.clear();
-        items.addAll(duplicateItems);
-      });
+      print("NO FRIENDS");
+      friends.clear();
     }
   }
 
   showAlertDialogApproved(BuildContext context) {
     // set up the buttons
+    getInfo();
     Widget okButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
@@ -505,6 +593,7 @@ class _MyHomePageState extends State<SearchUsers> {
   }
 
   showAlertDialogDeclined(BuildContext context) {
+    getInfo();
     // set up the buttons
     Widget okButton = Material(
       elevation: 5.0,
@@ -573,11 +662,7 @@ class _MyHomePageState extends State<SearchUsers> {
                       ),
                       SizedBox(height: 20.0),
                       RaisedButton(
-                        color: colorDarkRed,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0)
-                        ),
-                          child: Text('  Search User  ', style: style.copyWith(fontWeight: FontWeight.bold)),
+                          child: Text('add User'),
                           onPressed: () async {
                             if (phone != null) {
                               var url =
@@ -616,35 +701,36 @@ class ProfileInfo extends StatefulWidget {
 
 class ProfileInfoState extends State<ProfileInfo> {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
-  showAlertDialog(BuildContext context) {
-    Widget okButton = Material(
-      elevation: 5.0,
-      borderRadius: BorderRadius.circular(30.0),
-      color: Colors.green,
-      child: MaterialButton(
-        minWidth: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {
-          Navigator.of(context).pop(); // dismiss dialog
-          setState(() {
-            widget.user.friendstatus = false;
-          });
-        },
-        child: Text("Ok",
-            textAlign: TextAlign.center,
-            style: style.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold)),
-      ),
-    );
 
-    // set up the AlertDialog
+  showAlertDialog(BuildContext context) {
     AlertDialog alert = AlertDialog(
+      backgroundColor: colorPeachPink,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(32.0))),
-      title: Text("UserName"),
-      content: Text("Friend request sent"),
+      title: Text("Remove as friend?"),
+      content:
+          Text("Are you sure you want to remove user from your friendslist?"),
       actions: [
-        okButton,
+        FlatButton(
+          color: Colors.red,
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text("No"),
+        ),
+        FlatButton(
+          color: Colors.green,
+          onPressed: () async {
+            Navigator.of(context).pop(); // dismiss dialog
+            var url = 'https://group6-15.pvt.dsv.su.se/contacts/remove';
+
+            var response = await http.post(Uri.parse(url),
+                body: {'uid': userlib.uid, 'phone': widget.user.phoneNumber});
+            print(response.statusCode);
+            getInfo();
+          },
+          child: Text("Yes"),
+        ),
       ],
     );
 
@@ -657,309 +743,402 @@ class ProfileInfoState extends State<ProfileInfo> {
     );
   }
 
+  Future<void> getInfo() async {
+    //sentRequests
+
+    var url =
+        'https://group6-15.pvt.dsv.su.se/contacts/sentRequests?uid=${userlib.uid}';
+    var response = await http.get(Uri.parse(url));
+    setState(() {
+      sentRequest = (json.decode(response.body) as List)
+          .map((i) => SentRequest.fromJson(i))
+          .toList();
+      print(response.statusCode);
+    });
+
+    url =
+        'https://group6-15.pvt.dsv.su.se/contacts/waitingRequests?uid=${userlib.uid}';
+    response = await http.get(Uri.parse(url));
+    setState(() {
+      waitingRequest = (json.decode(response.body) as List)
+          .map((i) => SentRequest.fromJson(i))
+          .toList();
+      print(response.statusCode);
+    });
+
+    url = 'https://group6-15.pvt.dsv.su.se/contacts/all?uid=${userlib.uid}';
+    response = await http.get(Uri.parse(url));
+    if (response.body != "") {
+      final body = json.decode(response.body);
+
+      print("LOAD FRIENDS");
+      setState(() {
+        friends = (json.decode(jsonEncode(body["user"])) as List)
+            .map((i) => User.fromJson(i))
+            .toList();
+        print(response.statusCode);
+      });
+    } else {
+      print("NO FRIENDS");
+      friends.clear();
+    }
+  }
+
+  getFriendPos(User c) async {
+    if (c.position.x != null) {
+      final coordinates = new Coordinates(c.position.y, c.position.x);
+      var addresses =
+          await Geocoder.local.findAddressesFromCoordinates(coordinates);
+      var first = addresses.first;
+      return addresses.first.addressLine;
+    }
+    return "unavailable";
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue.shade100,
-      extendBodyBehindAppBar: true,
-      extendBody: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            ProfileHeader(
-              avatar: new AssetImage("profilePH.png"), //userData
-              coverImage: new AssetImage("backgroundStockholm.png"), //userData
-              title: widget.user.name, //userData
-              subtitle: "Dog lover",
-              actions: <Widget>[
-                //Row med items
-
-                SizedBox(
-                  width: 230,
+        backgroundColor: colorLighterPink,
+        extendBody: true,
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          leading: //Row med items
+              MaterialButton(
+            shape: CircleBorder(),
+            elevation: 0,
+            child: Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
+        body: SingleChildScrollView(
+            child: Column(children: <Widget>[
+          Stack(
+            children: <Widget>[
+              Container(
+                transform: Matrix4.translationValues(0.0, -50.0, 0.0),
+                child: Hero(
+                  tag: "BrewDog.jpg",
+                  child: ClipShadowPath(
+                    clipper: CircularClipper(),
+                    shadow: Shadow(blurRadius: 20.0),
+                    child: Image(
+                      height: 400.0,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      image: AssetImage("BrewDog.jpg"),
+                    ),
+                  ),
                 ),
-                widget.user.friendstatus != false
-                    ? MaterialButton(
-                        color: Colors.green,
-                        shape: BeveledRectangleBorder(),
-                        elevation: 0,
-                        child: Icon(Icons.person_add),
-                        onPressed: () {
-                          showAlertDialog(context);
-                        },
-                      )
-                    : MaterialButton(
-                        color: Colors.red,
-                        shape: BeveledRectangleBorder(),
-                        elevation: 0,
-                        child: Icon(Icons.remove_circle),
-                        onPressed: () {
-                          setState(() {
-                            widget.user.friendstatus = true;
-                          });
-                        },
-                      ),
-              ],
-            ),
-            const SizedBox(height: 10.0),
-            Container(
-              padding: EdgeInsets.all(10),
-              child: Column(
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Container(
-                    padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      "My Dogs",
-                      style: TextStyle(
-                        color: Colors.black87,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
+                  IconButton(
+                    padding: EdgeInsets.only(left: 30.0),
+                    onPressed: () => Navigator.pop(context),
+                    icon: Icon(Icons.arrow_back),
+                    iconSize: 30.0,
+                    color: Colors.black,
                   ),
-                  Row(
-                    //user hundlista här
-                    children: <Widget>[
-                      SizedBox(
-                          child: InkWell(
-                        onTap: () {},
-                        child: Container(
-                          width: 100,
-                          height: 100,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20.0),
-                            child: Image.asset(
-                              'BrewDog.jpg',
-                            ),
-                          ),
-                        ),
-                      )),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      SizedBox(
-                          child: InkWell(
-                        onTap: () {},
-                        child: Container(
-                          width: 100,
-                          height: 100,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20.0),
-                            child: Image.asset(
-                              'LeBistro.jpg',
-                            ),
-                          ),
-                        ),
-                      )),
-                    ],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      "User Information", //userData
-                      style: TextStyle(
-                        color: Colors.black87,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                  Card(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)),
-                    child: Container(
-                      alignment: Alignment.topLeft,
-                      padding: EdgeInsets.all(15),
-                      child: Column(
-                        children: <Widget>[
-                          Column(
-                            children: <Widget>[
-                              ...ListTile.divideTiles(
-                                color: Colors.grey,
-                                tiles: [
-                                  ListTile(
-                                    contentPadding: EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 4),
-                                    leading: Icon(Icons.my_location),
-                                    title: Text(
-                                      "Location",
-                                      style: TextStyle(
-                                          color: Colors.blue.shade300),
-                                    ),
-                                    subtitle: Text(
-                                      "Stockholm",
-                                      style: TextStyle(
-                                          color: Colors.blue.shade300),
-                                    ),
-                                  ),
-                                  ListTile(
-                                    leading: Icon(Icons.email),
-                                    title: Text(
-                                      "Email",
-                                      style: TextStyle(
-                                          color: Colors.blue.shade300),
-                                    ),
-                                    subtitle: Text(
-                                      widget.user.email,
-                                      style: TextStyle(
-                                          color: Colors.blue.shade300),
-                                    ),
-                                  ),
-                                  ListTile(
-                                    leading: Icon(Icons.phone),
-                                    title: Text(
-                                      "Phone",
-                                      style: TextStyle(
-                                          color: Colors.blue.shade300),
-                                    ),
-                                    subtitle: Text(
-                                      widget.user.phone,
-                                      style: TextStyle(
-                                          color: Colors.blue.shade300),
-                                    ),
-                                  ),
-                                  ListTile(
-                                    leading: Icon(Icons.person),
-                                    title: Text(
-                                      "About Me",
-                                      style: TextStyle(
-                                          color: Colors.blue.shade300),
-                                    ),
-                                    subtitle: Text(
-                                      "I love big fluffy dogs. Proud owner of a Bernese Mountain Dog",
-                                      style: TextStyle(
-                                          color: Colors.blue.shade300),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
+                  IconButton(
+                    padding: EdgeInsets.only(left: 30.0),
+                    onPressed: () => print('Add to Favorites'),
+                    icon: Icon(Icons.favorite_border),
+                    iconSize: 30.0,
+                    color: Colors.black,
                   ),
                 ],
               ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class ProfileHeader extends StatelessWidget {
-  final ImageProvider<dynamic> coverImage;
-  final ImageProvider<dynamic> avatar;
-  final String title;
-  final String subtitle;
-  final List<Widget> actions;
-
-  const ProfileHeader(
-      {Key key,
-      @required this.coverImage,
-      @required this.avatar,
-      @required this.title,
-      this.subtitle,
-      this.actions})
-      : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Ink(
-          height: 200,
-          decoration: BoxDecoration(
-            image: DecorationImage(image: coverImage, fit: BoxFit.cover),
-          ),
-        ),
-        Ink(
-          height: 200,
-          decoration: BoxDecoration(
-            color: Colors.black38,
-          ),
-        ),
-        if (actions != null)
-          Container(
-            width: double.infinity,
-            height: 200,
-            padding: const EdgeInsets.only(bottom: 0.0, right: 0.0),
-            alignment: Alignment.bottomRight,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: actions,
-            ),
-          ),
-        Container(
-          width: double.infinity,
-          margin: const EdgeInsets.only(top: 160),
-          child: Column(
-            children: <Widget>[
-              Avatar(
-                image: avatar,
-                radius: 60,
-                backgroundColor: Colors.white,
-                borderColor: Colors.grey.shade300,
-                borderWidth: 4.0,
+              Positioned(
+                bottom: 0.0,
+                right: 25.0,
+                child: //               true // är alltid true här
+                    true
+                        ? MaterialButton(
+                            color: Colors.red,
+                            shape: BeveledRectangleBorder(),
+                            elevation: 0,
+                            child: Icon(Icons.remove_circle),
+                            onPressed: () {
+                              showAlertDialog(context);
+                            },
+                          )
+                        : MaterialButton(
+                            color: Colors.green,
+                            shape: BeveledRectangleBorder(),
+                            elevation: 0,
+                            child: Icon(Icons.person_add),
+                            onPressed: () {
+                              setState(() {
+                                //widget.user.friendstatus = true;
+                              });
+                            },
+                          ),
               ),
-              Text(
-                title,
-                style: Theme.of(context).textTheme.title,
-              ),
-              if (subtitle != null) ...[
-                const SizedBox(height: 5.0),
-                Text(
-                  subtitle,
-                  style: Theme.of(context).textTheme.subtitle,
-                ),
-              ]
             ],
           ),
-        )
-      ],
+          const SizedBox(height: 10.0),
+          Container(
+            padding: EdgeInsets.all(10),
+            child: Column(
+              children: <Widget>[
+                Container(
+                    padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
+                    alignment: Alignment.topLeft,
+                    child: BorderedText(
+                      strokeWidth: 5.0,
+                      strokeColor: colorPurple,
+                      child: Text(
+                        "My Dogs",
+                        style: TextStyle(
+                          color: colorLighterPink,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                    )),
+                SingleChildScrollView(
+                    physics: ScrollPhysics(),
+                    child: Container(
+                      height: 70,
+                      child: widget.user.ownedDog != null
+                          ? ListView.builder(
+                              //https://pusher.com/tutorials/flutter-listviews
+
+                              shrinkWrap: true,
+                              itemCount: widget.user.ownedDog?.length ?? 0,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (BuildContext context, int index) {
+                                Dog c = widget.user.ownedDog?.elementAt(index);
+                                return (c.name != null && c.name.length > 0)
+                                    ? SizedBox(
+                                        child: InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    DogProfile(c)),
+                                          );
+                                        },
+                                        child: Container(
+                                          width: 75,
+                                          height: 75,
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(20.0),
+                                            child: Image.asset(
+                                              'BrewDog.jpg',
+                                            ),
+                                          ),
+                                        ),
+                                      ))
+                                    : SizedBox(
+                                        child: InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    DogProfile(c)),
+                                          );
+                                        },
+                                        child: Container(
+                                          width: 75,
+                                          height: 75,
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(20.0),
+                                            child: Image.asset(
+                                              'BrewDog.jpg',
+                                            ),
+                                          ),
+                                        ),
+                                      ));
+                              },
+                            )
+                          : Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                    )),
+                Container(
+                  padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "User Information", //userData
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+                Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0)),
+                  child: Container(
+                    alignment: Alignment.topLeft,
+                    padding: EdgeInsets.all(15),
+                    child: Column(
+                      children: <Widget>[
+                        Column(
+                          children: <Widget>[
+                            ...ListTile.divideTiles(
+                              color: Colors.grey,
+                              tiles: [
+                                ListTile(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 12, vertical: 4),
+                                  leading: Icon(Icons.my_location),
+                                  title: Text(
+                                    "Location",
+                                    style:
+                                        TextStyle(color: Colors.blue.shade300),
+                                  ),
+                                  subtitle: FutureBuilder<dynamic>(
+                                    future: getFriendPos(widget.user),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<dynamic> snapshot) {
+                                      if (snapshot.hasData) {
+                                        return Text(
+                                          snapshot.data,
+                                          style: TextStyle(
+                                              color: Colors.blue.shade300),
+                                        );
+                                      } else {
+                                        return Text(
+                                          "Loading",
+                                          style: TextStyle(
+                                              color: Colors.blue.shade300),
+                                        );
+                                      }
+                                    },
+                                  ),
+                                ),
+                                ListTile(
+                                  leading: Icon(Icons.email),
+                                  title: Text(
+                                    "Email",
+                                    style:
+                                        TextStyle(color: Colors.blue.shade300),
+                                  ),
+                                  subtitle: Text(
+                                    widget.user.email,
+                                    style:
+                                        TextStyle(color: Colors.blue.shade300),
+                                  ),
+                                ),
+                                ListTile(
+                                  leading: Icon(Icons.phone),
+                                  title: Text(
+                                    "Phone",
+                                    style:
+                                        TextStyle(color: Colors.blue.shade300),
+                                  ),
+                                  subtitle: Text(
+                                    widget.user.phoneNumber,
+                                    style:
+                                        TextStyle(color: Colors.blue.shade300),
+                                  ),
+                                ),
+                                ListTile(
+                                  leading: Icon(Icons.person),
+                                  title: Text(
+                                    "About Me",
+                                    style:
+                                        TextStyle(color: Colors.blue.shade300),
+                                  ),
+                                  subtitle: Text(
+                                    "I love big fluffy dogs. Proud owner of a Bernese Mountain Dog",
+                                    style:
+                                        TextStyle(color: Colors.blue.shade300),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ])));
+  }
+}
+
+class CircularClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var path = Path();
+    path.lineTo(0.0, size.height - 50);
+    path.quadraticBezierTo(
+      size.width / 4,
+      size.height,
+      size.width / 2,
+      size.height,
+    );
+    path.quadraticBezierTo(
+      size.width - size.width / 4,
+      size.height,
+      size.width,
+      size.height - 50,
+    );
+    path.lineTo(size.width, 0.0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+}
+
+@immutable
+class ClipShadowPath extends StatelessWidget {
+  final Shadow shadow;
+  final CustomClipper<Path> clipper;
+  final Widget child;
+
+  ClipShadowPath({
+    @required this.shadow,
+    @required this.clipper,
+    @required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      painter: _ClipShadowShadowPainter(
+        clipper: this.clipper,
+        shadow: this.shadow,
+      ),
+      child: ClipPath(child: child, clipper: this.clipper),
     );
   }
 }
 
-class Avatar extends StatelessWidget {
-  final ImageProvider<dynamic> image;
-  final Color borderColor;
-  final Color backgroundColor;
-  final double radius;
-  final double borderWidth;
+class _ClipShadowShadowPainter extends CustomPainter {
+  final Shadow shadow;
+  final CustomClipper<Path> clipper;
 
-  const Avatar(
-      {Key key,
-      @required this.image,
-      this.borderColor = Colors.grey,
-      this.backgroundColor,
-      this.radius = 30,
-      this.borderWidth = 5})
-      : super(key: key);
+  _ClipShadowShadowPainter({@required this.shadow, @required this.clipper});
 
   @override
-  Widget build(BuildContext context) {
-    return CircleAvatar(
-      radius: radius + borderWidth,
-      backgroundColor: borderColor,
-      child: CircleAvatar(
-        radius: radius,
-        backgroundColor: backgroundColor != null
-            ? backgroundColor
-            : Theme.of(context).primaryColor,
-        child: CircleAvatar(
-          radius: radius - borderWidth,
-          backgroundImage: image,
-        ),
-      ),
-    );
+  void paint(Canvas canvas, Size size) {
+    var paint = shadow.toPaint();
+    var clipPath = clipper.getClip(size).shift(shadow.offset);
+    canvas.drawPath(clipPath, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return true;
   }
 }

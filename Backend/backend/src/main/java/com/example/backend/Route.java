@@ -22,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import org.dom4j.Text;
 import org.hibernate.annotations.Columns;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.type.ListType;
 import org.json.JSONObject;

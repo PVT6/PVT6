@@ -57,6 +57,15 @@ dependencies:
   image_picker: ^0.6.6+1
   bordered_text: ^1.0.0
   firebase_messaging: ^6.0.15
+  cron: any
+  intl: ^0.16.1
+  camera: ^0.5.8+2
+  path_provider: any
+  path: any
+  video_player: ^0.10.11+1
+  gallery_saver: ^2.0.1
+  geocoder: any
+
 
   
 dev_dependencies:

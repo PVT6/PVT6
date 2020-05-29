@@ -4,6 +4,10 @@ import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'package:frontend/mapFiles/temp.dart';
 import 'package:latlong/latlong.dart';
 
+import 'package:frontend/mapFiles/mapsDemo.dart';
+
+import 'package:frontend/mapFiles/temp2.dart';
+import 'package:latlong/latlong.dart';
 
 class DogPlaceDesc2 extends StatelessWidget {
   final String image;
@@ -14,10 +18,13 @@ class DogPlaceDesc2 extends StatelessWidget {
   final Function directions;
   final Function commonRoutes;
   final LatLng coordinates;
+  
  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
+
+
   DogPlaceDesc2(this.image, this.rating, this.location, this.title, this.desc,
-       this.directions, this.commonRoutes, this.coordinates);
+      this.directions, this.commonRoutes, this.coordinates);
 
   @override
   Widget build(BuildContext context) {
@@ -118,14 +125,23 @@ class DogPlaceDesc2 extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Mapbox(coordinates)),
+                                    builder: (context) =>
+                                        MapsDemo(coordinates)),
                               );
                             },
                           ),
                           FlatButton(
                             child: Text('Directions', style: style.copyWith(fontSize: 14.0,fontWeight: FontWeight.bold),),
                             color: colorDarkRed,
-                            onPressed: directions,
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Navigation(
+                                        coordinates.latitude,
+                                        coordinates.longitude)),
+                              );
+                            },
                           ),
                           FlatButton(
                             child: Text('Common routes',style: style.copyWith(fontSize: 14.0, fontWeight: FontWeight.bold)),

@@ -3,6 +3,7 @@ import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'package:frontend/mapFiles/mapsDemo.dart';
 import 'package:intro_slider/intro_slider.dart';
 import 'package:intro_slider/slide_object.dart';
+import 'package:latlong/latlong.dart' as latlng;
 
 class IntroScreen extends StatefulWidget {
   IntroScreen() : super();
@@ -15,6 +16,7 @@ class IntroScreen extends StatefulWidget {
 
 class IntroScreenState extends State<IntroScreen> {
   List<Slide> slides = new List();
+  latlng.LatLng setter = latlng.LatLng(0,0);
 
   @override
   void initState() {
@@ -99,7 +101,7 @@ class IntroScreenState extends State<IntroScreen> {
   void onDonePress() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MapsDemo()),
+      MaterialPageRoute(builder: (context) => MapsDemo(setter)),
     );
   }
 

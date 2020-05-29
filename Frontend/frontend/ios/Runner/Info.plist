@@ -69,5 +69,40 @@
 	<true/>
 	<key>kTCCServiceMediaLibrary</key>
 	<string>media</string>
+	<key>NSAppleMusicUsageDescription</key>
+<string>Music!</string>
+<key>kTCCServiceMediaLibrary</key>
+<string>media</string>
+<key>NSCalendarsUsageDescription</key>
+<string>Calendars</string>
+<key>NSCameraUsageDescription</key>
+<string>camera</string>
+<key>NSContactsUsageDescription</key>
+<string>contacts</string>
+<key>NSMicrophoneUsageDescription</key>
+<string>microphone</string>
+<key>NSSpeechRecognitionUsageDescription</key>
+<string>speech</string>
+<key>NSMotionUsageDescription</key>
+<string>motion</string>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>photos</string>
+<key>NSRemindersUsageDescription</key>
+<string>reminders</string>
+
+    <key>MGLMapboxAccessToken</key>
+    <string>pk.eyJ1IjoibWFydGluOTcwMyIsImEiOiJjazl2MmZrNDAwN2dtM2xtbzJneHBlZmd3In0.C2Nr6avH256SVRQ2XH9JKg</string>
+    <key>io.flutter.embedded_views_preview</key>
+    <true/>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>This app needs access to gallery to save photos</string>
+<key>NSLocationAlwaysUsageDescription</key>
+<string>Your location is required for this app</string>
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>Shows your location on the map and helps improve OpenStreetMap.</string>
+<key>NSCameraUsageDescription</key>
+<string>Enable myApp to access your camera to capture your photo</string>
+<key>NSMicrophoneUsageDescription</key>
+<string>Enable myApp to access mic to record your voice</string>
 </dict>
 </plist>

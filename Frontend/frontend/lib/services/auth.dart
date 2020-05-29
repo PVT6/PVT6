@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:frontend/friendsAndContacts/sharePos.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:frontend/userFiles/user.dart' as userlib;
@@ -42,6 +43,7 @@ try {
     userlib.setEmail(email);
     userlib.setUid(user.uid);
     userlib.setLogin(true);
+    initState();
   }
   else {
     throw("FAILED TO CONNECT TO DB");
@@ -67,6 +69,7 @@ try {
       userlib.setEmail(users['email']);
       userlib.setUid(user.uid);
       userlib.setLogin(true);
+      initState();
   }
   else {
     throw("FAILED TO CONNECT TO DB or Non user found");
@@ -174,15 +177,26 @@ Future userExistsOrNot(FirebaseUser user) async {
   return true;
 
   }
-
-
-
-
-
-
-  
-
 }
+
+Future connectLoggedInUser(FirebaseUser user) async {
+
+   var url = 'https://group6-15.pvt.dsv.su.se/user/find?uid=${user.uid}';
+
+   var response = await http.get(Uri.parse(url));
+    if (response.body != ""){
+      var users = await json.decode(response.body);
+      await userlib.setName(users['name']);
+      userlib.setPhone(users['phoneNumber']);
+      userlib.setEmail(users['email']);
+      userlib.setUid(user.uid);
+      userlib.setLogin(true);
+      return "ok";
+  } else {
+    throw("FAILED TO CONNECT TO DB or Non user found");
+  }
+
+  }
 
 
 }

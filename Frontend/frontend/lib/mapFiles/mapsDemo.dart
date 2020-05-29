@@ -1,6 +1,7 @@
-import 'dart:convert';
+
 import 'dart:core';
 import 'dart:math';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:frontend/browseDogParks.dart';
@@ -22,6 +23,7 @@ import 'package:flutter_config/flutter_config.dart';
 import 'package:http/http.dart' as http;
 import '../dog.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:frontend/cameraScreen.dart';
 
 MapController controller = new MapController();
 
@@ -32,7 +34,8 @@ const colorLighterPink = const Color(0xFFffe9e5);
 TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
 class MapsDemo extends StatefulWidget {
-  MapsDemo() : super();
+  LatLng coordinates;
+  MapsDemo(this.coordinates) : super();
 
   final String title = "Maps Demo";
 
@@ -46,14 +49,63 @@ class MapsDemoState extends State<MapsDemo> {
   UserLocationOptions userLocationOptions;
   Position position;
   int counter = 0;
+  List<CameraDescription> cameras;
+  bool cameraState = false;
+  List<Marker> markers = [];
+  //Location(name: "Lumaparken", latitude: 59.303985, longitude: 18.097073);
+  double userLat = 59.303985;
+  double userLng = 18.097073;
 
-  void getLocation() async {
+  void initState() {
+    super.initState();
+    getCameras();
+    getLocation();
+  }
+
+  Future<Null> getCameras() async {
+    setState(() async {
+      WidgetsFlutterBinding.ensureInitialized();
+      cameras = await availableCameras();
+    });
+  }
+
+  Future<void> getLocation() async {
     Position temp = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     position = temp;
   }
 
-  List<Marker> markers = [];
+  showCameraFailAlertDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      backgroundColor: colorPeachPink,
+      title: Text(
+        "Error (Camera Open)",
+        style: TextStyle(color: Colors.red),
+      ),
+      content: Text(
+          "To search for a location please make sure you are on the map view!"),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 
   String _randomString(int length) {
     var rand = new Random();
@@ -62,20 +114,6 @@ class MapsDemoState extends State<MapsDemo> {
     });
 
     return new String.fromCharCodes(codeUnits);
-  }
-
-  Future<void> getDogs() async {
-    var uid = userlib.uid;
-    var url = 'https://group6-15.pvt.dsv.su.se/user/dogs?uid=${uid}';
-    var response = await http.get(Uri.parse(url));
-    if (response.statusCode == 200) {
-      dogs = (json.decode(response.body) as List)
-          .map((i) => Dog.fromJson(i))
-          .toList();
-      userDogs = dogs;
-    } else {
-      // ERROR HÄR
-    }
   }
 
   Widget button(Function function, IconData icon) {
@@ -94,7 +132,6 @@ class MapsDemoState extends State<MapsDemo> {
 
   @override
   Widget build(BuildContext context) {
-    getDogs();
     userLocationOptions = UserLocationOptions(
       context: context,
       mapController: controller,
@@ -139,29 +176,7 @@ class MapsDemoState extends State<MapsDemo> {
                           ),
                         ],
                       ),
-                    )
-                    // accountName: Text(
-                    //   userlib.name, //userData
-                    //   style: TextStyle(
-                    //       color: textYellow,
-                    //       fontWeight: FontWeight.bold,
-                    //       fontSize: 24.0,
-                    //       letterSpacing: 1.1),
-                    // ),
-                    // accountEmail: Text(
-                    //   userlib.email, //userData
-                    //   style: TextStyle(
-                    //       color: Colors.white,
-                    //       fontSize: 16.0,
-                    //       letterSpacing: 1.1),
-                    // ),
-                    // currentAccountPicture: CircleAvatar(
-                    //   child: Text(
-                    //     "PH", //userData
-                    //     style: TextStyle(fontSize: 40.0),
-                    //   ),
-                    // ),
-                    ),
+                    )),
                 CustomListTile(
                     Icons.person,
                     'Profile',
@@ -242,24 +257,32 @@ class MapsDemoState extends State<MapsDemo> {
       body: Builder(builder: (BuildContext context) {
         return Stack(
           children: <Widget>[
-            new FlutterMap(
-                mapController: controller,
-                options:
-                    new MapOptions(center: LatLng(0, 0), minZoom: 15.0, plugins: [
-                  // ADD THIS
-                  UserLocationPlugin(),
-                ]), //ändra detta till coordinate för att komma tillbaka till stockholm
-                layers: [
-                  new TileLayerOptions(
-                      urlTemplate: FlutterConfig.get('MAPBOXAPI_URL'),
-                      additionalOptions: {
-                        'accessToken': FlutterConfig.get('MAPBOX_ID'),
-                        'id': 'mapbox.mapbox-streets-v8'
-                      }),
-                  MarkerLayerOptions(markers: markers),
-                  // ADD THIS
-                  userLocationOptions,
-                ]),
+            !cameraState == true
+                ? FlutterMap(
+                    mapController: controller,
+                    options: new MapOptions(
+                        //center: LatLng(position.latitude, position.longitude),
+                        center: widget.coordinates.latitude == 0 &&
+                                widget.coordinates.longitude == 0
+                            ? LatLng(59.303985, 18.097073)
+                            : widget.coordinates,
+                        minZoom: 17.0,
+                        plugins: [
+                          // ADD THIS
+                          UserLocationPlugin(),
+                        ]), //ändra detta till coordinate för att komma tillbaka till stockholm
+                    layers: [
+                        new TileLayerOptions(
+                            urlTemplate: FlutterConfig.get('MAPBOXAPI_URL'),
+                            additionalOptions: {
+                              'accessToken': FlutterConfig.get('MAPBOX_ID'),
+                              'id': 'mapbox.mapbox-streets-v8'
+                            }),
+                        MarkerLayerOptions(markers: markers),
+                        // ADD THIS
+                        userLocationOptions,
+                      ])
+                : CameraScreen(cameras),
             Padding(
               padding: EdgeInsets.all(16.0),
               child: Align(
@@ -391,14 +414,16 @@ class MapsDemoState extends State<MapsDemo> {
                           ),
                           color: Colors.white,
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SearchLocation(
-                                  controller: controller,
-                                ),
-                              ),
-                            );
+                            !cameraState == true
+                                ? Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SearchLocation(
+                                        controller: controller,
+                                      ),
+                                    ),
+                                  )
+                                : showCameraFailAlertDialog(context);
                           },
                         )),
                     SingleChildScrollView(
@@ -521,20 +546,23 @@ class MapsDemoState extends State<MapsDemo> {
   }
 
   _onAddMarkerButtonPressed() {
-    (position == null)
-        ? setState(() {
-            getLocation();
-          })
-        : Navigator.push(
-            context,
-            new MaterialPageRoute(
-                builder: (context) =>
-                    Navigation(position.latitude, position.longitude)));
+    Navigator.push(
+        context,
+        new MaterialPageRoute(
+            builder: (context) => Navigation(userLat, userLng)));
   }
 
-  _goToPosition1() {}
+  _goToPosition1() {
+    setState(() {
+      if (cameraState == false) {
+        cameraState = true;
+      } else {
+        cameraState = false;
+      }
+    });
+  }
 
-  _openNotifications() {}
+  //_openNotifications() {}
 }
 
 class CustomListTile extends StatelessWidget {

@@ -14,6 +14,7 @@ import 'package:frontend/userFiles/addDogClasses/heightSlider.dart';
 import 'package:frontend/userFiles/addDogClasses/ageSlider.dart';
 import 'package:frontend/userFiles/addDogClasses/dogPicture.dart';
 import 'package:frontend/userFiles/addDogClasses/searchBreed.dart';
+import 'package:frontend/userFiles/profile.dart';
 import 'package:http/http.dart' as http;
 import '../customAppBar.dart';
 import 'user.dart' as userlib;
@@ -510,10 +511,7 @@ class ResultPageState extends State<ResultPage> {
           icon: Icon(
             Icons.arrow_back,
           ),
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => InputPage()),
-          ),
+          onPressed: () => Navigator.pop(context)
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -677,7 +675,7 @@ class ResultPageState extends State<ResultPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => FriendsPage()),
+                                builder: (context) => ProfileEightPage()),
                           );
                         },
                         child: Container(
