@@ -125,15 +125,15 @@ public class DogController {
         return d.getImage();
     }
 
-    @DeleteMapping(value = "/deletedog")
-    public @ResponseBody boolean deleteDog(@RequestBody long id) {
+    @PostMapping(value = "/deletedog")
+    public @ResponseBody String deleteDog(@RequestBody long id) {
         Optional<Dog> optinalEntity = dogRepository.findById(id);
         Dog d = optinalEntity.get();
         if (d != null) {
             dogRepository.delete(d);
-            return true;
+            return "true";
         } else {
-            return false;
+            return "false";
         }
     }
 
