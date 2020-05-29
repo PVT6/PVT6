@@ -8,6 +8,7 @@ import 'package:frontend/mapFiles/mapsDemo.dart';
 import 'package:frontend/mapFiles/temp.dart';
 import 'package:frontend/mapFiles/routeTest.dart';
 import 'package:frontend/services/auth.dart';
+import 'package:frontend/wrapper.dart';
 import '../fadeRoute.dart';
 import 'secondRoute.dart';
 import 'package:latlong/latlong.dart';
@@ -132,10 +133,7 @@ class _MySignInPageState extends State<MySignInPage>
             if (result == null) {
               controller.forward(from: 0.0); 
             } else {
-              Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (context) => LoadingScreen(result)));
+              Navigator.pop(context);
             }
           }
         },
@@ -247,11 +245,10 @@ class _MySignInPageState extends State<MySignInPage>
                                   hasError = true;
                                 });
                               } else {
-                                FirebaseUser logInUser = result;
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => LoadingScreen(logInUser)),
+                                      builder: (context) => LoadingScreen(result)),
                                 );
                               }
                             },
@@ -276,11 +273,10 @@ class _MySignInPageState extends State<MySignInPage>
                                   hasError = true;
                                 });
                               } else {
-                                FirebaseUser logInUser = result;
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => LoadingScreen(logInUser)),
+                                      builder: (context) => LoadingScreen(result)),
                                 );
                               }
                             },
@@ -305,11 +301,10 @@ class _MySignInPageState extends State<MySignInPage>
                                   hasError = true;
                                 });
                               } else {
-                                FirebaseUser logInUser = result;
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => LoadingScreen(logInUser)),
+                                      builder: (context) => LoadingScreen(result)),
                                 );
                               }
                             },

@@ -6,7 +6,7 @@ String name = "";
 String phone = "";
 String email = "";
 String uid = "";
-LatLng usersCurrentLocation;
+LatLng usersCurrentLocation = LatLng(1, 1);
 void setName(String n) {
   name = n;
 }

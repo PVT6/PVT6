@@ -591,7 +591,11 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
       routeTimeString = estimatedTime;
       for (var i = 0; i < route.length; i++) {
         points.add(new LatLng(route[i][1], route[i][0]));
+
       }
+      mapController.move(
+                            LatLng(points.first.latitude, points.first.longitude), 1);
+      
     } else {
       // ERROR HÄR
     }
