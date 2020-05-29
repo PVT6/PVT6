@@ -12,11 +12,11 @@ import 'package:frontend/userFiles/user.dart' as userlib;
 
 
 import 'package:frontend/friendsAndContacts/sharePos.dart';
-const colorBeige = const Color(0xFFF5F3EE);
-const colorDarkBeige = const Color(0xFFc2c0bc);
-const colorPrimaryRed = const Color(0xffEA9999);
-const colorLightRed = const Color(0xFFffcaca);
-const colorDarkRed = const Color(0xffb66a6b);
+const _colorBeige = const Color(0xFFF5F3EE);
+const _colorDarkBeige = const Color(0xFFc2c0bc);
+const _colorPrimaryRed = const Color(0xffEA9999);
+const _colorLightRed = const Color(0xFFffcaca);
+const _colorDarkRed = const Color(0xffb66a6b);
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
 class LoadingScreen extends StatefulWidget {
@@ -45,7 +45,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
         fit: StackFit.expand,
         children: <Widget>[
           Container(
-            decoration: BoxDecoration(color: colorBeige,),
+            decoration: BoxDecoration(color: _colorBeige,),
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -69,7 +69,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
                         padding: EdgeInsets.only(top: 10.0),
                         ),
                         Text("Hang in there, more dog-fun will soon be available!",
-                        style: style.copyWith(color: colorDarkRed, fontSize: 15.0,fontWeight: FontWeight.bold),
+                        style: style.copyWith(color: _colorDarkRed, fontSize: 15.0,fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,)
 
             ])
@@ -79,9 +79,9 @@ class _LoadingScreenState extends State<LoadingScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(colorDarkRed),),
+                  CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(_colorDarkRed),),
                   Padding(padding: EdgeInsets.only(top: 20.0),),
-                  Text("Loading data...", style: style.copyWith(color: colorDarkRed, fontWeight: FontWeight.bold),),
+                  Text("Loading data...", style: style.copyWith(color: _colorDarkRed, fontWeight: FontWeight.bold),),
                   SizedBox(height: 120,)
                 ],
               ),
