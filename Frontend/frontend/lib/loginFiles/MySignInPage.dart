@@ -17,6 +17,13 @@ LatLng basic = new LatLng(59.343431, 18.094141);
 Color darkGreen = Colors.green[900];
 Color lightGreen = Colors.green[100];
 
+// Färgschema från prototyp
+const colorBeige = const Color(0xFFF5F3EE);
+const colorDarkBeige = const Color(0xFFc2c0bc);
+const colorPrimaryRed = const Color(0xffEA9999);
+const colorLightRed = const Color(0xFFffcaca);
+const colorDarkRed = const Color(0xffb66a6b);
+
 class MySignInPage extends StatefulWidget {
   MySignInPage({Key key, this.title}) : super(key: key);
   final String title;
@@ -72,7 +79,7 @@ class _MySignInPageState extends State<MySignInPage>
                   hintText: "Username",
                   icon: new Icon(
                     Icons.mail,
-                    color: colorPurple,
+                    color: colorPrimaryRed,
                   ),
                 ),
                 validator: (value) =>
@@ -101,7 +108,7 @@ class _MySignInPageState extends State<MySignInPage>
                     hintText: "Password",
                     icon: new Icon(
                       Icons.lock,
-                      color: colorPurple,
+                      color: colorPrimaryRed,
                     ),
                   ),
                   validator: (value) =>
@@ -117,7 +124,7 @@ class _MySignInPageState extends State<MySignInPage>
     final loginButon = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
-      color: colorPurple, //hexadecimal för ljusgrön behövs
+      color: colorPrimaryRed, //hexadecimal för ljusgrön behövs
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -146,7 +153,7 @@ class _MySignInPageState extends State<MySignInPage>
             gradient: LinearGradient(
                 begin: Alignment.topRight,
                 end: Alignment.bottomLeft,
-                colors: [colorLighterPink, colorPeachPink])),
+                colors: [colorBeige, colorDarkBeige])),
         child: Stack(fit: StackFit.expand, children: <Widget>[
           SingleChildScrollView(
             padding: const EdgeInsets.all(36.0),
@@ -161,7 +168,7 @@ class _MySignInPageState extends State<MySignInPage>
                         width: 280,
                         height: 200,
                         child: Image.asset(
-                          'assets/logopurplepink.png',
+                          'assets/logoprototype.png',
                         ),
                       ),
                       SizedBox(height: 20.0),
@@ -179,18 +186,14 @@ class _MySignInPageState extends State<MySignInPage>
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
                             FlatButton(
-                              child: BorderedText(
-                                strokeWidth: 3.0,
-                                strokeColor: colorPurple,
                                 child: Text(
                                   "Forgot Password?",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12.0,
+                                  style: style.copyWith(
+                                    color: colorDarkRed,
+                                    fontSize: 15.0,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                              ),
                               onPressed: () {
                                 //borde skapa egen sida för detta, om det inte görs med firebase?
                                 Navigator.push(
@@ -202,18 +205,14 @@ class _MySignInPageState extends State<MySignInPage>
                               },
                             ),
                             FlatButton(
-                              child: BorderedText(
-                                strokeWidth: 3.0,
-                                strokeColor: colorPurple,
                                 child: Text(
                                   "New user? Sign up",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12.0,
+                                  style: style.copyWith(
+                                    color: colorDarkRed,
+                                    fontSize: 15.0,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                              ),
                               onPressed: () {
                                 Navigator.push(
                                   context,

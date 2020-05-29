@@ -4,6 +4,8 @@ import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/friendsAndContacts/contactsModel.dart';
 import 'package:frontend/friendsAndContacts/sentRequest.dart';
+import 'package:frontend/loginFiles/MySignInPage.dart';
+import 'package:frontend/userFiles/addDogTest.dart';
 import 'package:frontend/mapFiles/mapsDemo.dart';
 import 'package:frontend/userFiles/dogProfile.dart';
 import 'package:geocoder/geocoder.dart';
@@ -245,14 +247,18 @@ class _HomePageState extends State<FriendsPage>
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      backgroundColor: colorLighterPink,
+      backgroundColor: colorBeige,
       appBar: new AppBar(
-        title: new Text("Friends Page"),
+        iconTheme: IconThemeData(color: Colors.white),
+        title: new Text(
+          "Friends Page",
+          style: style.copyWith(color: Colors.white),
+        ),
         centerTitle: true,
-        backgroundColor: colorPurple,
+        backgroundColor: colorDarkBeige,
         bottom: TabBar(
-          unselectedLabelColor: Colors.white,
-          labelColor: Colors.amber,
+          unselectedLabelColor: colorPrimaryRed,
+          labelColor: colorDarkRed,
           tabs: [
             new Tab(icon: new Icon(Icons.person)),
             new Tab(
@@ -263,7 +269,7 @@ class _HomePageState extends State<FriendsPage>
             )
           ],
           controller: _tabController,
-          indicatorColor: Colors.white,
+          indicatorColor: colorDarkRed,
           indicatorSize: TabBarIndicatorSize.tab,
         ),
         bottomOpacity: 1,
@@ -304,8 +310,12 @@ class _HomePageState extends State<FriendsPage>
                                       builder: (BuildContext context) =>
                                           ProfileInfo(c)));
                                 },
-                                leading: CircleAvatar(child: Text("PH")),
-                                title: Text(c.name ?? ""),
+                                leading: CircleAvatar(child: Text("PH",
+                                    style: TextStyle(color: Colors.white)),
+                                    backgroundColor: colorDarkRed,
+                                    ),
+                                title: Text(c.name ?? "",
+                                  style: style.copyWith(fontSize: 18.0)),
                                 subtitle: FutureBuilder<dynamic>(
                                   future: getFriendPos(c),
                                   builder: (BuildContext context,
@@ -356,11 +366,12 @@ class _HomePageState extends State<FriendsPage>
                 ),
                 Column(
                   children: <Widget>[
+                    SizedBox(height: 10),
                     Text(
                       "Friend requests",
-                      style: TextStyle(
+                      style: style.copyWith(
                         color: Colors.black,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
                       textAlign: TextAlign.left,
@@ -427,11 +438,12 @@ class _HomePageState extends State<FriendsPage>
                         : Center(
                             child: CircularProgressIndicator(),
                           ),
+                    SizedBox(height: 20),
                     Text(
                       "Pending Requests",
-                      style: TextStyle(
+                      style: style.copyWith(
                         color: Colors.black,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
                       textAlign: TextAlign.left,
@@ -694,7 +706,7 @@ class _MyHomePageState extends State<SearchUsers> {
   Widget build(BuildContext context) {
     String phone;
     return new Scaffold(
-      backgroundColor: colorLighterPink,
+      backgroundColor: colorBeige,
       body: Container(
         child: Column(
           children: <Widget>[
@@ -706,14 +718,14 @@ class _MyHomePageState extends State<SearchUsers> {
                       SizedBox(height: 20.0),
                       TextFormField(
                         decoration: InputDecoration(
-                            labelText: "Add By Number",
+                            labelText: "Add by number", labelStyle: style.copyWith(fontSize :18),
                             hintText: "ex:0701112233",
                             prefixIcon: Icon(Icons.search),
                             border: OutlineInputBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(25.0)))),
                         validator: (val) =>
-                            val.isEmpty ? 'Enter a phonenumber.' : null,
+                            val.isEmpty ? 'Enter a phone number.' : null,
                         onChanged: (val) {
                           phone = val;
                           //setState(() => email = val);
