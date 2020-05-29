@@ -101,7 +101,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
         Navigator.push(
                               context,
                               new MaterialPageRoute(
-                                  builder: (context) => MapsDemo(userlib.usersCurrentLocation)));
+                                  builder: (context) => new MapsDemo(userlib.usersCurrentLocation)));
                                   
       }
 
