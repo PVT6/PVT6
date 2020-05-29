@@ -91,7 +91,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
             new PolylineLayerOptions(polylines: [
               new Polyline(
                 points: points,
-                color: Colors.blue,
+                color: Colors.blue.shade500.withOpacity(0.6),
                 strokeWidth: 4.0,
               )
             ]),
@@ -246,7 +246,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
 
   getLocation() async {
     var location = new Location();
-    location.onLocationChanged().listen((currentLocation) {
+    location.onLocationChanged.listen((currentLocation) {
       print(currentLocation.latitude);
       print(currentLocation.longitude);
       setState(() {
