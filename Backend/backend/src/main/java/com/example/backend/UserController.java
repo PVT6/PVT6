@@ -1,5 +1,7 @@
 package com.example.backend;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.validation.constraints.Null;
@@ -71,7 +73,18 @@ public class UserController    {
         u.setOwnedDog(d);
         
         userRepository.save(u);
-        return d.getId().toString();
+        Dog d2 = (Dog) getLastElement(u.getOwnedDog());
+        return d2.getId().toString();
+    }
+
+
+    public Object getLastElement(final Collection c) {
+        final Iterator itr = c.iterator();
+        Object lastElement = itr.next();
+        while(itr.hasNext()) {
+            lastElement = itr.next();
+        }
+        return lastElement;
     }
 
     @PostMapping(value="/update")
