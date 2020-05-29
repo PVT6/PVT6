@@ -105,41 +105,48 @@ public class DogController {
     @PostMapping(value = "/setPicture")
     public @ResponseBody String setPicture(@RequestParam Long id, String base64, String uid) {
         byte[] decodedByte = Base64.getMimeDecoder().decode(base64);
+        AtomicReference<String> test =  new AtomicReference<String>();
         User u = userRepo.findByUid(uid);
+        test.set("newValue");
         try {
             Blob blob = new SerialBlob(decodedByte);
             u.getOwnedDog().forEach((e) -> {
-                if(e.getId() == id){
-                                
+          
+                if(e.getId().equals(id)){    
+                       
                     e.setBlobImage(blob);
                     userRepo.save(u);
+                    test.set("host");
                 }
             });
            
     
 
         } catch (SerialException e) {
-
+            test.set(e.getMessage());
             e.printStackTrace();
         } catch (SQLException e) {
 
             e.printStackTrace();
         }
 
-        return "";
+        return test.get();
 
     }
 
     @GetMapping(value = "/getPicture")
     public @ResponseBody String getPic(@RequestParam long id, String uid) {
-        User u = userRepo.findByUid(uid);
-        AtomicReference<String> picture =  new AtomicReference<String>();
-        picture.set("none");
-        u.getOwnedDog().forEach((e) -> {
-            if(e.getId() == id){
-                picture.set(e.getImage());
-            }
-        });
+         User u = userRepo.findByUid(uid);
+         AtomicReference<String> picture =  new AtomicReference<String>();
+         picture.set("none");
+         u.getOwnedDog().forEach((e) -> {
+             if(e.getId().equals(id)){
+                 if(e.getImage() != null){
+                    picture.set(e.getImage());
+                 }
+                
+             }
+         });
         
         return picture.get();
     }
