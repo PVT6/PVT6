@@ -33,7 +33,7 @@ void dispose() {
 
 void getLocation() async {
   var location = new Location();
-  location.onLocationChanged.listen((currentLocation) {
+  location.onLocationChanged().listen((currentLocation) {
     latLng = LatLng(currentLocation.latitude, currentLocation.longitude);
   });
 }
