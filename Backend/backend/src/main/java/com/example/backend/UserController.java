@@ -67,10 +67,11 @@ public class UserController    {
     public @ResponseBody String addNewDog(@RequestParam String uid, String name, String breed, String age, String height, String weight, String dogpicture, String description, String gender) {
         User u = userRepository.findByUid(uid);
         Dog d = new Dog(name, breed, age, height, weight, description, dogpicture, gender);
-        Long id = d.getId();
+       
         u.setOwnedDog(d);
         
         userRepository.save(u);
+        Long id = d.getId();
         dogRepo.save(d);
         return id.toString();
     }
