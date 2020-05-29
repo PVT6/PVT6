@@ -102,7 +102,7 @@ public class DogController {
     }
 
     @PostMapping(value = "/setPicture")
-    public @ResponseBody String setPicture(@RequestParam long id, String base64) {
+    public @ResponseBody String setPicture(@RequestBody long id, String base64) {
         byte[] decodedByte = Base64.getMimeDecoder().decode(base64);
         try {
             Blob blob = new SerialBlob(decodedByte);
@@ -136,6 +136,19 @@ public class DogController {
         //dogRepository.delete(d);
         User u = userRepo.findByUid(uid);
         u.removeDog(d);
+        userRepo.save(u);
+
+        return "true";
+
+    }
+    @PostMapping(value = "/clearAllDogs")
+    public @ResponseBody String deleteAllDog(@RequestParam String uid) {
+        
+  
+
+        //dogRepository.delete(d);
+        User u = userRepo.findByUid(uid);
+        u.getOwnedDog().clear();
         userRepo.save(u);
 
         return "true";
