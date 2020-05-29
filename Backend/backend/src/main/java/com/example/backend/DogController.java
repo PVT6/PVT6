@@ -102,11 +102,12 @@ public class DogController {
     }
 
     @PostMapping(value = "/setPicture")
-    public @ResponseBody String setPicture(@RequestBody long id, String base64) {
+    public @ResponseBody String setPicture(@RequestBody String id, String base64) {
         byte[] decodedByte = Base64.getMimeDecoder().decode(base64);
         try {
             Blob blob = new SerialBlob(decodedByte);
-            Dog d = dogRepository.findById(id).get();
+
+            Dog d = dogRepository.findById(Long.parseLong(id)).get();
             d.setBlobImage(blob);
             dogRepository.save(d);
 
