@@ -18,6 +18,19 @@ import 'package:latlong/latlong.dart' as latlng;
 
 List<Dog> userDogs;
 
+ Future<void> getDogs() async {
+    var uid = userlib.uid;
+    var url = 'https://group6-15.pvt.dsv.su.se/user/dogs?uid=${uid}';
+    var response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      dogs = (json.decode(response.body) as List)
+          .map((i) => Dog.fromJson(i))
+          .toList();
+    } else {
+      // ERROR HÄR
+    }
+  }
+
 class ProfileEightPage extends StatefulWidget {
   ProfileEightPage() : super();
   @override
@@ -32,26 +45,16 @@ class ProfileEightPageState extends State<ProfileEightPage> {
   void initState() {
     super.initState();
     setDogs();
+    
   }
 
-  Future<void> getDogs() async {
-    var uid = userlib.uid;
-    var url = 'https://group6-15.pvt.dsv.su.se/user/dogs?uid=${uid}';
-    var response = await http.get(Uri.parse(url));
-    if (response.statusCode == 200) {
-      dogs = (json.decode(response.body) as List)
-          .map((i) => Dog.fromJson(i))
-          .toList();
-      setState(() {
-        userDogs = dogs;
-      });
-    } else {
-      // ERROR HÄR
-    }
-  }
+ 
 
   Future<void> setDogs() async {
     getDogs();
+     setState(() {
+        userDogs = dogs;
+      });
   }
 
   @override

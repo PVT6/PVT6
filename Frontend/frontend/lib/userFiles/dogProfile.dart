@@ -29,9 +29,6 @@ class DogProfileState extends State<DogProfile> {
     this.dog = dog;
   }
 
-
-  
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,12 +84,13 @@ class DogProfileState extends State<DogProfile> {
                               //child:
                               //Image.asset("BrewDog.jpg", fit: BoxFit.cover),
                               child: widget.dog.dogPic != null
-                                  ? ((){
-                                    print(widget.dog.dogPic);
-                                    return widget.dog.dogPic;
-                                  } ())
-                                  : Image.asset("logopurplepink.png") //widget.dog.dogPic 
-                                  )),
+                                  ? (() {
+                                      print(widget.dog.dogPic);
+                                      return widget.dog.dogPic;
+                                    }())
+                                  : Image.asset(
+                                      "logopurplepink.png") //widget.dog.dogPic
+                              )),
                       Container(
                         alignment: Alignment.topCenter,
                         child: Container(
@@ -221,7 +219,16 @@ class DogProfileState extends State<DogProfile> {
                         ),
                         FlatButton(
                           color: colorPeachPink,
-                          onPressed: () {},
+                          onPressed: () async {
+                            var url =
+                                'https://group6-15.pvt.dsv.su.se/dog/deletedog?id=${widget.dog.id.toString()}&uid=${userlib.uid}';
+
+                            var response = await http.post(Uri.parse(url));
+                               
+                            print(response.statusCode);
+                            await getDogs();
+                            Navigator.pop(context);
+                          },
                           child: Row(
                             children: <Widget>[
                               Icon(
