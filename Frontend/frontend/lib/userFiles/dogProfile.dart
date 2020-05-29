@@ -30,6 +30,19 @@ class DogProfileState extends State<DogProfile> {
   }
 
   @override
+  void initState() {
+    _asyncMethod();
+    super.initState();
+  }
+
+   Future _asyncMethod() async {
+    await dog.getPicture();
+  }
+
+
+  
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
