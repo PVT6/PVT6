@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/friendsAndContacts/addContactPage.dart';
+import 'package:frontend/loginFiles/MySignInPage.dart';
+import 'package:frontend/mapFiles/temp.dart';
+import 'package:latlong/latlong.dart';
 
 import 'package:frontend/mapFiles/mapsDemo.dart';
 
@@ -14,6 +18,10 @@ class DogPlaceDesc2 extends StatelessWidget {
   final Function directions;
   final Function commonRoutes;
   final LatLng coordinates;
+  
+ TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+
+
 
   DogPlaceDesc2(this.image, this.rating, this.location, this.title, this.desc,
       this.directions, this.commonRoutes, this.coordinates);
@@ -22,11 +30,8 @@ class DogPlaceDesc2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: colorPurple,
-        title: Text(
-          'Description',
-          style: TextStyle(color: colorPeachPink),
-        ),
+        backgroundColor: colorDarkBeige,
+        title: Text('Description', style: style.copyWith(color: Colors.white),),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -67,7 +72,7 @@ class DogPlaceDesc2 extends StatelessWidget {
                   Row(
                     children: <Widget>[
                       Expanded(
-                        child: Text(location),
+                        child: Text(location, style: style.copyWith(fontSize: 13),),
                       ),
                       IconButton(
                         icon: Icon(Icons.share),
@@ -77,7 +82,7 @@ class DogPlaceDesc2 extends StatelessWidget {
                   ),
                   Text(
                     title,
-                    style: Theme.of(context).textTheme.title,
+                    style: style.copyWith(fontWeight: FontWeight.bold),
                   ),
                   Divider(),
                   SizedBox(
@@ -89,7 +94,7 @@ class DogPlaceDesc2 extends StatelessWidget {
                       SizedBox(
                         width: 5.0,
                       ),
-                      Text("20.2k"),
+                      Text("20.2k", style: style.copyWith(fontSize: 15.0)),
                       SizedBox(
                         width: 16.0,
                       ),
@@ -97,7 +102,7 @@ class DogPlaceDesc2 extends StatelessWidget {
                       SizedBox(
                         width: 5.0,
                       ),
-                      Text("2.2k"),
+                      Text("2.2k",style: style.copyWith(fontSize: 15.0)),
                     ],
                   ),
                   SizedBox(
@@ -105,15 +110,17 @@ class DogPlaceDesc2 extends StatelessWidget {
                   ),
                   Text(
                     desc,
+                    style: style.copyWith(fontSize: 13),
                     textAlign: TextAlign.justify,
                   ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       ButtonBar(
                         children: <Widget>[
                           FlatButton(
-                            child: Text('View on Map'),
-                            color: colorPurple,
+                            child: Text('View on Map', style: style.copyWith(fontSize: 14.0,fontWeight: FontWeight.bold)),
+                            color: colorDarkRed,
                             onPressed: () {
                               Navigator.push(
                                 context,
@@ -124,8 +131,8 @@ class DogPlaceDesc2 extends StatelessWidget {
                             },
                           ),
                           FlatButton(
-                            child: Text('Directions'),
-                            color: colorPurple,
+                            child: Text('Directions', style: style.copyWith(fontSize: 14.0,fontWeight: FontWeight.bold),),
+                            color: colorDarkRed,
                             onPressed: () {
                               Navigator.push(
                                 context,
@@ -137,8 +144,8 @@ class DogPlaceDesc2 extends StatelessWidget {
                             },
                           ),
                           FlatButton(
-                            child: Text('Common routes'),
-                            color: colorPurple,
+                            child: Text('Common routes',style: style.copyWith(fontSize: 14.0, fontWeight: FontWeight.bold)),
+                            color: colorDarkRed,
                             onPressed: commonRoutes,
                           ),
                         ],

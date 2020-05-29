@@ -1,6 +1,7 @@
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/friendsAndContacts/addContactPage.dart';
+import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'package:frontend/loginFiles/intro_slider.dart';
 import 'package:frontend/userFiles/dogProfile.dart';
 import 'package:frontend/userFiles/friendsFeed.dart';
@@ -20,12 +21,13 @@ var redLight = Color(0xFFf2dcdf);
 var blue = Color(0xFF398bcf);
 var blueLight = Color(0xFFc1dbee);
 LatLng location = new LatLng(0, 0);
+TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
 class BrowseDogParks extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: colorLighterPink,
+        backgroundColor: colorBeige,
         body: Container(
           child: ListView(
             children: <Widget>[
@@ -54,13 +56,10 @@ class MenuItemsList extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          BorderedText(
-              strokeWidth: 6.0,
-              strokeColor: colorPurple,
-              child: Text(
+              Text(
                 'Highest rated dogparks',
-                style: TextStyle(fontSize: 22.0, color: Colors.white),
-              )),
+                style: style.copyWith(fontSize: 25.0, color: colorDarkRed, fontWeight: FontWeight.bold),
+              ),
           SizedBox(height: 16.0),
           MenuItem(
             "Hundoarna.jpg",
@@ -342,7 +341,9 @@ class FoodListview extends StatelessWidget {
                               'Location',
                               'Brewdog',
                               'Offers dog "Beer", + desc',
-                              () => {},
+                              () => {
+                                Navigator.push(context, new MaterialPageRoute(builder: (context) => IntroScreen()))
+                              },
                               () => {},
                               location = new LatLng(59.336378, 18.034161),
                             )))
@@ -408,12 +409,12 @@ class MyAppBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           MaterialButton(
-            color: colorPurple,
+            color: colorDarkRed,
             shape: CircleBorder(),
             elevation: 0,
             child: Icon(
               Icons.arrow_back,
-              color: colorPeachPink,
+              color: Colors.white,
             ),
             onPressed: () {
               Navigator.pop(context);
@@ -424,11 +425,11 @@ class MyAppBar extends StatelessWidget {
             children: <Widget>[
               Text(
                 'Stockholm',
-                style: TextStyle(color: Colors.black54),
+                style: style.copyWith(color: Colors.black54),
               ),
               Text(
                 'Dog friendly locations',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: style.copyWith(fontSize: 12.0,fontWeight: FontWeight.bold),
               ),
             ],
           )
@@ -538,7 +539,7 @@ class MenuItem extends StatelessWidget {
                       children: <Widget>[
                         Container(
                           decoration: BoxDecoration(
-                              color: colorPurple,
+                              color: colorDarkRed,
                               borderRadius: BorderRadius.circular(4.0)),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
@@ -561,13 +562,13 @@ class MenuItem extends StatelessWidget {
                         ),
                         Text(
                           title,
-                          style: TextStyle(fontWeight: FontWeight.w600),
+                          style: style.copyWith(fontSize: 15.0,fontWeight: FontWeight.w600),
                         ),
                         Container(
                             width: 200.0,
                             child: Text(
                               desc,
-                              style: TextStyle(color: Colors.grey),
+                              style: style.copyWith(fontSize: 13.0, color: Colors.grey),
                             )),
                       ],
                     ),

@@ -1,10 +1,11 @@
 import "package:flutter/material.dart";
+import 'package:frontend/loginFiles/MySignInPage.dart';
 
 
 
 
 class GradientAppBar extends StatelessWidget {
-
+TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 static const colorPurple = const Color(0xFF82658f);
 static const colorPeachPink = const Color(0xFFffdcd2);
 static const colorLighterPink = const Color(0xFFffe9e5);
@@ -26,12 +27,12 @@ static const colorLighterPink = const Color(0xFFffe9e5);
       child: Center(
         child: Text(
           title,
-          style: TextStyle(fontSize: 20.0, color: Colors.black, fontWeight: FontWeight.bold),
+          style: style.copyWith(fontSize: 20.0, color: Colors.grey.shade800, fontWeight: FontWeight.bold),
         ),
       ),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-            colors: [colorPurple, colorPeachPink],
+            colors: [colorDarkRed, colorLightRed],
             begin: const FractionalOffset(0.0, 0.0),
             end: const FractionalOffset(0.5, 0.0),
             stops: [0.0, 1.0],

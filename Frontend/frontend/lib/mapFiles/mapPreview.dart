@@ -5,6 +5,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:frontend/friendsAndContacts/friendsPage.dart';
+import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'package:frontend/routePickerMap/Route.dart';
 import 'package:location/location.dart';
 import 'package:latlong/latlong.dart';
@@ -31,7 +32,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
   StreamSubscription<StatefulMapControllerStateChange> sub;
   UserLocationOptions userLocationOptions;
   List<Marker> markers = [];
-
+  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   String routesData = "";
 
   var points = <LatLng>[];
@@ -123,19 +124,21 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                                 },
                                 materialTapTargetSize:
                                     MaterialTapTargetSize.padded,
-                                backgroundColor: colorPeachPink,
+                                backgroundColor: colorBeige,
                                 child: Icon(
                                   Icons.play_circle_filled,
                                   size: 36.0,
-                                  color: colorPurple,
+                                  color: colorDarkRed,
                                 ),
                               )
                             ]))),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    FlatButton(
-                      color: colorPeachPink,
+                    RaisedButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      color: colorBeige,
                       onPressed: () {
                         getKm(context);
                         mapController.move(
@@ -145,35 +148,37 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                         children: <Widget>[
                           Icon(
                             FontAwesomeIcons.dice,
-                            color: colorPurple,
+                            color: colorDarkRed,
                           ),
-                          Text("Random Route", style: TextStyle(fontSize: 11)),
+                          Text("   Random Route",
+                              style: style.copyWith(fontSize: 11)),
                         ],
                       ),
                     ),
                     SizedBox(
                       width: 10,
                     ),
-                    FlatButton(
-                      color: colorPeachPink,
+                    RaisedButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      color: colorBeige,
                       onPressed: () {
                         saveRoute(context, points);
                       },
                       child: Row(
                         children: <Widget>[
-                          Icon(
-                            Icons.save,
-                            color: colorPurple,
-                          ),
-                          Text("Save", style: TextStyle(fontSize: 11)),
+                          Icon(Icons.save, color: colorDarkRed),
+                          Text("  Save", style: style.copyWith(fontSize: 11)),
                         ],
                       ),
                     ),
                     SizedBox(
                       width: 10,
                     ),
-                    FlatButton(
-                      color: colorPeachPink,
+                    RaisedButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      color: colorBeige,
                       onPressed: () {
                         showSavedRoutes(context);
                       },
@@ -181,9 +186,9 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                         children: <Widget>[
                           Icon(
                             Icons.folder,
-                            color: colorPurple,
+                            color: colorDarkRed,
                           ),
-                          Text("Saved", style: TextStyle(fontSize: 11)),
+                          Text("  Saved", style: style.copyWith(fontSize: 11)),
                         ],
                       ),
                     ),
@@ -200,7 +205,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                 ),
                 elevation: 20,
                 child: Container(
-                  width: 205,
+                  width: 220,
                   height: 45,
                   child: DecoratedBox(
                       decoration: BoxDecoration(
@@ -212,20 +217,20 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                         children: <Widget>[
                           Column(
                             children: <Widget>[
-                              Text("Distance",
-                                  style:
-                                      TextStyle(color: Colors.grey.shade500)),
+                              Text("  Distance  ",
+                                  style: style.copyWith(
+                                      color: Colors.black, fontSize: 15)),
                               Text(" $kmString" + "km",
-                                  style: new TextStyle(fontSize: 20)),
+                                  style: style.copyWith(fontSize: 20)),
                             ],
                           ),
                           Column(
                             children: <Widget>[
-                              Text("Estimated Time ",
-                                  style:
-                                      TextStyle(color: Colors.grey.shade500)),
+                              Text("  Estimated Time  ",
+                                  style: style.copyWith(
+                                      color: Colors.black, fontSize: 15)),
                               Text("$routeTimeString",
-                                  style: new TextStyle(fontSize: 20)),
+                                  style: style.copyWith(fontSize: 20)),
                             ],
                           ),
                         ],
@@ -234,9 +239,8 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
         // ...
       ])),
       appBar: AppBar(
-        title: const Text('Route Preview'),
-        backgroundColor: colorPurple,
-      ),
+          title: new Text('Route Preview', style: style.copyWith()),
+          backgroundColor: colorDarkBeige),
     );
   }
 
@@ -265,25 +269,26 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              backgroundColor: colorPeachPink,
+              backgroundColor: colorBeige,
               title: Text(
                 "Save Route",
-                style: TextStyle(
-                  fontFamily: 'Hipster Script W00 Regular',
+                style: style.copyWith(
                   fontSize: 28,
                 ),
               ),
               content: Row(
                 children: <Widget>[
+                  SizedBox(width: 15),
                   SizedBox(
                     width: 200.0,
-                    height: 300.0,
+                    height: 60.0,
                     child: TextField(
                       onChanged: (val) {
                         setState(() => name = val);
                       },
                       decoration: new InputDecoration(
                         labelText: "Input a name",
+                        labelStyle: style.copyWith(fontSize: 13),
                         border: new OutlineInputBorder(
                             borderSide: new BorderSide(color: Colors.black)),
                       ),
@@ -292,12 +297,18 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                 ],
               ),
               actions: <Widget>[
-                FlatButton(
+                RaisedButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)
+                  ),
                   color: Colors.red,
                   onPressed: () => Navigator.pop(context, false),
-                  child: Text("Cancel"),
+                  child: Text("Cancel", style: style.copyWith(fontSize: 13)),
                 ),
-                FlatButton(
+                RaisedButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)
+                  ),
                   color: Colors.green,
                   onPressed: () async {
                     if (routesData != "") {
@@ -324,7 +335,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                       showFailAlertDialog(context);
                     }
                   },
-                  child: Text("Save"),
+                  child: Text("Save", style: style.copyWith(fontSize: 13)),
                 ),
               ],
             );
@@ -343,23 +354,25 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              backgroundColor: colorPeachPink,
+              backgroundColor: colorBeige,
               title: Text(
                 "Generate a route",
-                style: TextStyle(
-                  fontFamily: 'Hipster Script W00 Regular',
+                style: style.copyWith(
                   fontSize: 28,
                 ),
+                textAlign: TextAlign.center,
               ),
               content: Row(
                 children: <Widget>[
+                  SizedBox(width: 18,),
                   SizedBox(
                     width: 200.0,
-                    height: 300.0,
+                    height: 60.0,
                     child: TextField(
                       controller: kmController,
                       decoration: new InputDecoration(
                         labelText: "How long? (In Km)",
+                        labelStyle: style.copyWith(fontSize: 15),
                         border: new OutlineInputBorder(
                             borderSide: new BorderSide(color: Colors.black)),
                       ),
@@ -372,19 +385,27 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                 ],
               ),
               actions: <Widget>[
-                FlatButton(
+                RaisedButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   color: Colors.red,
                   onPressed: () => Navigator.pop(context, "-1"),
-                  child: Text("Cancel"),
+                  child: Text("Cancel",style: style.copyWith(
+                    fontSize: 13.0,)),
                 ),
-                FlatButton(
+                RaisedButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),),
                   color: Colors.green,
                   onPressed: () {
                     kmString = kmController.text.toString();
                     Navigator.pop(context);
                     generateRoute(LatLng(latLng.latitude, latLng.longitude));
                   },
-                  child: Text("Generate"),
+                  child: Text("Generate", style: style.copyWith(
+                    fontSize: 13.0,
+                  ),),
                 ),
               ],
             );
@@ -401,18 +422,17 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              backgroundColor: colorPeachPink,
+              backgroundColor: colorBeige,
               title: Text(
                 "Saved routes",
-                style: TextStyle(
-                  fontFamily: 'Hipster Script W00 Regular',
+                style: style.copyWith(
                   fontSize: 28,
                 ),
               ),
               content: Row(
                 children: <Widget>[
                   Container(
-                    height: 400,
+                    height: 300,
                     width: 200,
                     child: new ListView.builder(
                         padding: const EdgeInsets.all(8),
@@ -500,10 +520,13 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                 ],
               ),
               actions: <Widget>[
-                FlatButton(
+                RaisedButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   color: Colors.red,
                   onPressed: () => Navigator.pop(context),
-                  child: Text("Cancel"),
+                  child: Text("Cancel", style: style.copyWith(fontSize: 13),)
                 ),
               ],
             );
