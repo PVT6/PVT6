@@ -37,7 +37,7 @@ class Mapbox extends StatefulWidget {
 class _MapBoxState extends State<Mapbox> {
   final AuthService _auth = AuthService();
   LatLng userLocation;
-
+  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   UserLocationOptions userLocationOptions;
 
   List<Marker> markers = [];
@@ -75,87 +75,89 @@ class _MapBoxState extends State<Mapbox> {
         markers: markers,
         defaultZoom: 30.0);
     return new Scaffold(
+      floatingActionButton: FloatingActionButton.extended(
+        label: Text('Search'),
+        icon: Icon(Icons.search),
+        backgroundColor: colorPurple,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SearchPage(),
+            ),
+          );
+        },
+      ),
       appBar: new AppBar(
-          title: new Text('DogWalk Stockholm'), backgroundColor: colorPurple),
+          title: new Text('DogWalk', style: style,), backgroundColor: colorDarkBeige),
       drawer: Drawer(
         child: Container(
-            color: colorLighterPink,
+          color: colorBeige,
             child: ListView(
-              padding: EdgeInsets.zero,
-              children: <Widget>[
-                UserAccountsDrawerHeader(
-                  decoration: BoxDecoration(color: colorPurple),
-                  accountName: Text(
-                    userlib.name, //userData
-                    style: TextStyle(
-                        color: textYellow,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24.0,
-                        letterSpacing: 1.1),
-                  ),
-                  accountEmail: Text(
-                    userlib.email, //userData
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16.0,
-                        letterSpacing: 1.1),
-                  ),
-                  currentAccountPicture: CircleAvatar(
-                    child: Text(
-                      "PH", //userData
-                      style: TextStyle(fontSize: 40.0),
-                    ),
-                  ),
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            UserAccountsDrawerHeader(
+              decoration: BoxDecoration(color: colorBeige),
+              accountName: Text(
+                userlib.name, //userData
+                style: TextStyle(
+                    color: textYellow,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24.0,
+                    letterSpacing: 1.1),
+              ),
+              accountEmail: Text(
+                userlib.email, //userData
+                style: TextStyle(
+                    color: Colors.white, fontSize: 16.0, letterSpacing: 1.1),
+              ),
+              currentAccountPicture: CircleAvatar(
+                child: Text(
+                  "PH", //userData
+                  style: TextStyle(fontSize: 40.0),
                 ),
-                CustomListTile(
-                    Icons.person,
-                    'Profile',
-                    () => {
-                          Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (context) => ProfileEightPage()))
-                        }),
-                CustomListTile(
-                    Icons.contact_phone,
-                    'Connections',
-                    () => {
-                          Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (context) => FriendsPage()))
-                        }),
-                CustomListTile(
-                    Icons.settings,
-                    'Settings',
-                    () => {
-                          Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (context) => Settings()))
-                        }),
-                CustomListTile(
-                    FontAwesomeIcons.dog,
-                    'Browse Dogfriendly Places',
-                    () => {
-                          Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (context) => BrowseDogParks()))
-                        }), //Tror denna kan behövs senare då logout antagligen är fel implementerad
-                // CustomListTile(
-                //     Icons.lock,
-                //     'Log out',
-                //     () async => {
-                //           await _auth.signOut(),
-                //           Navigator.push(
-                //               context,
-                //               new MaterialPageRoute(
-                //                   builder: (context) => MySignInPage()))
-                //         }),
-                SizedBox(
-                  height: 200,
-                ),
+              ),
+            ),
+            CustomListTile(
+                Icons.person,
+                'Profile',
+                () => {
+                      Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (context) => ProfileEightPage()))
+                    }),
+            CustomListTile(
+                Icons.contact_phone,
+                'Connections',
+                () => {
+                      Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (context) => FriendsPage()))
+                    }),
+            CustomListTile(
+                Icons.settings,
+                'Settings',
+                () => {
+                      Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (context) => Settings()))
+                    }),
+            CustomListTile(
+                FontAwesomeIcons.dog,
+                'Browse Dogfriendly Places',
+                () => {
+                      Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (context) => BrowseDogParks()))
+                    }), //Tror denna kan behövs senare då logout antagligen är fel implementerad
+
+            SizedBox(
+              height: 200,
+            ),
                 Row(
                   children: <Widget>[
                     SizedBox(
@@ -192,22 +194,9 @@ class _MapBoxState extends State<Mapbox> {
                   ],
                 )
               ],
-            )),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        label: Text('Search'),
-        icon: Icon(Icons.search),
-        backgroundColor: colorPurple,
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => SearchPage(),
-            ),
-          );
-        },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+            ))),
+      
+      
       body: Stack(children: [
         FlutterMap(
             mapController: controller,

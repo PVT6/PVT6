@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:frontend/friendsAndContacts/addContactPage.dart';
+import 'package:frontend/loginFiles/MySignInPage.dart';
 
 import '../../customAppBar.dart';
 import '../addDogTest.dart';
@@ -404,14 +405,14 @@ class SearchBreedState extends State<SearchBreeds> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      backgroundColor: colorLighterPink,
+      backgroundColor: colorBeige,
       
       body: Column(children: <Widget>[
           GradientAppBar("Breed", ),Column(
         children: <Widget>[
           Text(
             "Select a breed from the list below",
-            style: TextStyle(
+            style: style.copyWith(
               color: Colors.black,
               fontWeight: FontWeight.w500,
               fontSize: 16,
@@ -456,7 +457,7 @@ class SearchBreedState extends State<SearchBreeds> {
                                 });
                               },
                               leading: CircleAvatar(
-                                  child: Icon(FontAwesomeIcons.dog)),
+                                  child: Icon(FontAwesomeIcons.dog, color: Colors.white,), backgroundColor: colorDarkRed,),
                               title: Text(items[index] ?? ""),
                             ),
                           )
@@ -476,7 +477,7 @@ class SearchBreedState extends State<SearchBreeds> {
                                   },
                                   leading: CircleAvatar(
                                       child: Icon(
-                                    FontAwesomeIcons.dog,
+                                    FontAwesomeIcons.dog, color: Colors.white,
                                   )),
                                   title: Text(items[index] ?? ""),
                                 ),
@@ -489,15 +490,15 @@ class SearchBreedState extends State<SearchBreeds> {
           Row(
             children: <Widget>[
               Container(
-                width: 80,
-                height: 80,
-                child: Image.asset("logopurplepink.png"),
+                width: 90,
+                height: 90,
+                child: Image.asset("logoprototype.png"),
               ),
               Text(
                 "Selected breed: ",
-                style: TextStyle(
+                style: style.copyWith(
                   color: Colors.black,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
               ),
@@ -505,12 +506,12 @@ class SearchBreedState extends State<SearchBreeds> {
           ),
           if (selectedBreed != "")
             Card(
-              color: colorPurple,
+              color: colorPrimaryRed,
               elevation: 8.0,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0)),
               child: ListTile(
-                leading: CircleAvatar(child: Icon(FontAwesomeIcons.dog)),
+                leading: CircleAvatar(child: Icon(FontAwesomeIcons.dog, color: Colors.white,), backgroundColor: colorDarkRed,),
                 title: Text(selectedBreed),
               ),
             )

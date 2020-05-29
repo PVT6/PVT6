@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'dart:math' as math;
 import '../addDogTest.dart';
 
@@ -75,9 +76,9 @@ class AgeBackground extends StatelessWidget {
           child: child,
         ),
         SvgPicture.asset(
-          "assets/weight_arrow.svg",
-          height: screenAwareSize(10.0, context),
-          width: screenAwareSize(18.0, context),
+          "assets/bleach.svg",
+          height: screenAwareSize(18.0, context),
+          width: screenAwareSize(25.0, context),
         ),
       ],
     );
@@ -150,7 +151,7 @@ class AgeSlider extends StatelessWidget {
 
   TextStyle _getHighlightTextStyle(BuildContext context) {
     return new TextStyle(
-      color: Theme.of(context).primaryColor,
+      color: colorDarkRed,
       fontSize: 28.0,
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'dart:math' as math;
 import '../addDogTest.dart';
 
@@ -198,6 +199,7 @@ class GenderArrow extends AnimatedWidget {
             "assets/gender_arrow.svg",
             height: _arrowLength(context),
             width: _arrowLength(context),
+            color: Colors.black,
           ),
         ),
       ),

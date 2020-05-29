@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:frontend/friendsAndContacts/addContactPage.dart';
+import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'user.dart' as userlib;
 import 'package:http/http.dart' as http;
@@ -53,26 +54,29 @@ class EditProfileState extends State<EditProfile> {
         new TextEditingController(text: userlib.phone);
     return new Scaffold(
       appBar: new AppBar(
-        title: const Text(
+        iconTheme: IconThemeData(color: Colors.white),
+        title: new Text(
           'Edit Profile',
-          style: TextStyle(color: colorPeachPink),
+          style: style.copyWith(color: Colors.white),
         ),
-        backgroundColor: colorPurple,
+        backgroundColor: colorDarkBeige,
       ),
       body: Container(
           decoration: BoxDecoration(
               gradient: LinearGradient(
                   begin: Alignment.topRight,
                   end: Alignment.bottomLeft,
-                  colors: [colorLighterPink, colorPeachPink])),
+                  colors: [colorBeige, colorBeige])),
           child: Form(
               child: new ListView(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             children: <Widget>[
+              SizedBox(height: 20),
               Container(
                 height: 150,
                 width: 150,
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     _path == null
                         ? Image.asset("LeBistro.jpg", fit: BoxFit.cover,)
@@ -92,7 +96,7 @@ class EditProfileState extends State<EditProfile> {
                 child: new TextField(
                   controller: name,
                   decoration: const InputDecoration(labelText: "First Name"),
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: style.copyWith(fontWeight: FontWeight.bold),
                 ),
               ),
               new Container(
@@ -100,17 +104,22 @@ class EditProfileState extends State<EditProfile> {
                     controller: email,
                     decoration: const InputDecoration(
                         labelText: "Email", hintText: "abc@gmail.com"),
-                    style: TextStyle(fontWeight: FontWeight.bold)),
+                    style: style.copyWith(fontWeight: FontWeight.bold)),
               ),
               new Container(
                 child: new TextField(
                     controller: phone,
                     decoration: const InputDecoration(
-                        labelText: "Phonenumber", hintText: "070 XXX XX XX"),
-                    style: TextStyle(fontWeight: FontWeight.bold)),
+                        labelText: "Phone number", hintText: "070 XXX XX XX"),
+                    style: style.copyWith(fontWeight: FontWeight.bold)),
               ),
-              FlatButton(
-                color: colorPurple,
+              SizedBox(height: 20),
+              RaisedButton(
+                elevation: 6,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                color: colorLightRed,
                 onPressed: () async {
                   var url = 'https://group6-15.pvt.dsv.su.se/user/update';
                   var response = await http.post(Uri.parse(url), body: {
@@ -137,7 +146,8 @@ class EditProfileState extends State<EditProfile> {
                     // ERROR MEDELANDE HÄR
                   }
                 },
-                child: Text("Update", style: TextStyle(fontSize: 17)),
+                child: Text("Update", style: style.copyWith(fontWeight: FontWeight.bold,
+                color: colorDarkRed)),
               ),
             ],
           ))),
