@@ -18,6 +18,7 @@ Future<String> base64StringFromImage(String image) async {
   final bytes = await Io.File(image).readAsBytes();
 
   String img64 = base64Encode(bytes);
+  print(img64);
   //  var url = 'https://group6-15.pvt.dsv.su.se/dog/setPicture';
 
   //       var response = await http.post(Uri.parse(url),

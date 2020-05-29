@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -32,16 +30,17 @@ class DogProfileState extends State<DogProfile> {
   }
 
 
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-          ),
-          onPressed: () => Navigator.pop(context)
-        ),
+            icon: Icon(
+              Icons.arrow_back,
+            ),
+            onPressed: () => Navigator.pop(context)),
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: <Widget>[
@@ -84,18 +83,16 @@ class DogProfileState extends State<DogProfile> {
                           margin: const EdgeInsets.only(
                               left: 30.0, right: 30.0, top: 10.0),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(30.0),
-                            child:
-                                Image.asset("BrewDog.jpg", fit: BoxFit.cover),
-                            // child: dogPicture == null
-                            //     ? Image.asset("logopurplepink.png")
-                            //     : Image.file(
-                            //         File(
-                            //           dogPicture,
-                            //         ),
-                            //         fit: BoxFit.cover,
-                            //       )),
-                          )),
+                              borderRadius: BorderRadius.circular(30.0),
+                              //child:
+                              //Image.asset("BrewDog.jpg", fit: BoxFit.cover),
+                              child: widget.dog.dogPic != null
+                                  ? ((){
+                                    print(widget.dog.dogPic);
+                                    return widget.dog.dogPic;
+                                  } ())
+                                  : Image.asset("logopurplepink.png") //widget.dog.dogPic 
+                                  )),
                       Container(
                         alignment: Alignment.topCenter,
                         child: Container(
@@ -118,7 +115,7 @@ class DogProfileState extends State<DogProfile> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      widget.dog.name,
+                      widget.dog.id.toString(),
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 30.0),
                     ),

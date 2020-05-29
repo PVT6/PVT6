@@ -94,34 +94,33 @@ class NameSelectState extends State<NameSelect> {
   Widget build(BuildContext context) {
     return new Scaffold(
         body: Column(
-          children: <Widget>[
-            GradientAppBar("Name"),
-            TextFormField(
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(15),
-              ],
-              obscureText: false,
-              style: style,
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                hintText: 'Name here',
-                filled: true,
-                fillColor: Colors.white,
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey),
-                ),
-              ),
-              validator: (value) =>
-                  value.isEmpty ? 'Name can\'t be empty' : null,
-              onChanged: (val) {
-                setState(() => dogName = val);
-              },
-            )
+      children: <Widget>[
+        GradientAppBar("Name"),
+        TextFormField(
+          inputFormatters: [
+            LengthLimitingTextInputFormatter(15),
           ],
-        ));
+          obscureText: false,
+          style: style,
+          keyboardType: TextInputType.emailAddress,
+          decoration: InputDecoration(
+            hintText: 'Name here',
+            filled: true,
+            fillColor: Colors.white,
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey),
+            ),
+          ),
+          validator: (value) => value.isEmpty ? 'Name can\'t be empty' : null,
+          onChanged: (val) {
+            setState(() => dogName = val);
+          },
+        )
+      ],
+    ));
   }
 }
 
@@ -258,7 +257,6 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
   }
 
   _goToResultPage() async {
-   
     if (dogName == null || finalBreed == null) {
       return showAlertDialog(context);
     } else {
@@ -272,19 +270,27 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
       });
       print(response.statusCode);
       if (response.statusCode == 200) {
-        
-        return Navigator.of(context).push(FadeRoute(
-          builder: (context) => ResultPage(
-            weight: weight,
-            height: height,
-            gender: gender,
-            dogName: dogName,
-            age: age,
-            finalBreed: finalBreed,
-            dogPicture: dogPicture,
-            desc: desc,
-          ),
-        ));
+        var url = 'https://group6-15.pvt.dsv.su.se/dog/setPicture';
+        String base64 = await base64StringFromImage(dogPicture);
+        print(response.body);
+        var setPictureRequest = await http.post(Uri.parse(url),
+            body: {'id': response.body, 'base64': base64});
+
+            
+            print(setPictureRequest.body);
+        if (setPictureRequest.statusCode == 200)
+          return Navigator.of(context).push(FadeRoute(
+            builder: (context) => ResultPage(
+              weight: weight,
+              height: height,
+              gender: gender,
+              dogName: dogName,
+              age: age,
+              finalBreed: finalBreed,
+              dogPicture: dogPicture,
+              desc: desc,
+            ),
+          ));
       } else {
         // ERROR MEDELANDE HÄR
       }
@@ -372,7 +378,7 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
 
   Widget _buildTitle(BuildContext context) {
     return Container(
-      color: colorBeige,
+        color: colorBeige,
         padding: EdgeInsets.only(
           left: 24.0,
           top: screenAwareSize(56.0, context),
@@ -512,11 +518,10 @@ class ResultPageState extends State<ResultPage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-          ),
-          onPressed: () => Navigator.pop(context)
-        ),
+            icon: Icon(
+              Icons.arrow_back,
+            ),
+            onPressed: () => Navigator.pop(context)),
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: <Widget>[
