@@ -258,7 +258,7 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
   }
 
   _goToResultPage() async {
-    print(await base64StringFromImage(dogPicture));
+   
     if (dogName == null || finalBreed == null) {
       return showAlertDialog(context);
     } else {
@@ -270,7 +270,9 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
         'weight': weight.toString(),
         'uid': userlib.uid
       });
+      print(response.statusCode);
       if (response.statusCode == 200) {
+        
         return Navigator.of(context).push(FadeRoute(
           builder: (context) => ResultPage(
             weight: weight,
