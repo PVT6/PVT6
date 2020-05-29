@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 
+//assertNotNull(user.getId()) everywhere since User should always have an id
+
 public class UserTest {
     
     @Test
