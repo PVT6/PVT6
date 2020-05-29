@@ -126,7 +126,7 @@ public class DogController {
     }
 
     @PostMapping(value = "/deletedog")
-    public @ResponseBody String deleteDog(@RequestBody long id) {
+    public @ResponseBody String deleteDog(@RequestParam long id) {
         Optional<Dog> optinalEntity = dogRepository.findById(id);
         Dog d = optinalEntity.get();
         if (d != null) {
