@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/services/auth.dart';
 import 'package:latlong/latlong.dart' as latlng;
 import 'mapFiles/mapsDemo.dart';
-
+import 'package:frontend/friendsAndContacts/sharePos.dart';
 const colorBeige = const Color(0xFFF5F3EE);
 const colorDarkBeige = const Color(0xFFc2c0bc);
 const colorPrimaryRed = const Color(0xffEA9999);
@@ -24,7 +24,9 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   @override
   void initState() {
+   
     loaddUsersData();
+    startShareLocation();
   }
 
   @override
