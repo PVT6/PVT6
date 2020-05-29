@@ -71,9 +71,7 @@ public class UserController    {
         u.setOwnedDog(d);
         
         userRepository.save(u);
-        Long id = d.getId();
-        dogRepo.save(d);
-        return id.toString();
+        return d.getId().toString();
     }
 
     @PostMapping(value="/update")
