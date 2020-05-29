@@ -1,4 +1,3 @@
-
 import 'dart:core';
 import 'dart:math';
 import 'package:camera/camera.dart';
@@ -7,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:frontend/browseDogParks.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:frontend/friendsAndContacts/friendsPage.dart';
+import 'package:frontend/friendsAndContacts/sharePos.dart';
 import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'package:frontend/mapFiles/mapBoxSearch.dart';
 import 'package:frontend/mapFiles/mapPreview.dart';
@@ -26,7 +26,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:frontend/cameraScreen.dart';
 
 MapController controller = new MapController();
-
+List<Marker> markers = [];
 // Färgschema #1
 const colorPurple = const Color(0xFF82658f);
 const colorPeachPink = const Color(0xFFffdcd2);
@@ -43,6 +43,34 @@ class MapsDemo extends StatefulWidget {
   MapsDemoState createState() => MapsDemoState();
 }
 
+void updateFriensPos() {
+  markers.clear();
+  posName.forEach((element) {
+    Marker m = Marker(
+        width: 130.0,
+        height: 95.0,
+        point: new LatLng(element.pos.latitude, element.pos.longitude),
+        builder: (context) => new Container(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(element.name,
+                    style: TextStyle(backgroundColor: Colors.white)),
+                    IconButton(
+                      icon: Icon(Icons.person_pin),
+                      iconSize: 40.0,
+                      tooltip: element.name,
+                      onPressed: () {},
+                      color: Colors.blue,
+                    ),
+                  ]),
+            ));
+
+    markers.add(m);
+  });
+  print(markers);
+}
+
 class MapsDemoState extends State<MapsDemo> {
   MapController controller = new MapController();
   final AuthService _auth = AuthService();
@@ -51,7 +79,7 @@ class MapsDemoState extends State<MapsDemo> {
   int counter = 0;
   List<CameraDescription> cameras;
   bool cameraState = false;
-  List<Marker> markers = [];
+
   //Location(name: "Lumaparken", latitude: 59.303985, longitude: 18.097073);
   double userLat = 59.303985;
   double userLng = 18.097073;
@@ -278,7 +306,7 @@ class MapsDemoState extends State<MapsDemo> {
                               'accessToken': FlutterConfig.get('MAPBOX_ID'),
                               'id': 'mapbox.mapbox-streets-v8'
                             }),
-                        MarkerLayerOptions(markers: markers),
+                        new MarkerLayerOptions(markers: markers),
                         // ADD THIS
                         userLocationOptions,
                       ])
@@ -300,6 +328,20 @@ class MapsDemoState extends State<MapsDemo> {
                             onPressed: () {
                               setState(() {
                                 counter++; //denna är för test, counter ska sedan hålla notifications
+
+                                markers.first = Marker(
+                                  width: 45.0,
+                                  height: 45.0,
+                                  point: new LatLng(59.315499, 18.076973),
+                                  builder: (context) => new Container(
+                                    child: IconButton(
+                                      icon: Icon(Icons.donut_large),
+                                      onPressed: null,
+                                      color: Colors.red,
+                                      iconSize: 45.0,
+                                    ),
+                                  ),
+                                );
                               });
                             },
                             materialTapTargetSize: MaterialTapTargetSize.padded,

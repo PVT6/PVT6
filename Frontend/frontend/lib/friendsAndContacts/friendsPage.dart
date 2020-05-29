@@ -591,6 +591,77 @@ class _MyHomePageState extends State<SearchUsers> {
       },
     );
   }
+  showAlertDialogFriendsAlready(BuildContext context) {
+    getInfo();
+    // set up the buttons
+    Widget okButton = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(30.0),
+      color: Colors.green,
+      child: MaterialButton(
+        minWidth: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () {
+          Navigator.of(context).pop(); // dismiss dialog
+        },
+        child: Text("Ok",
+            textAlign: TextAlign.center,
+            style: style.copyWith(
+                color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(32.0))),
+      title: Text("You are already friends"),
+      content: Text(
+          "You are already friends with this user"),
+      actions: [okButton],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+    });
+  }
+  showAlertDialogYourSelf(BuildContext context) {
+    getInfo();
+    // set up the buttons
+    Widget okButton = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(30.0),
+      color: Colors.green,
+      child: MaterialButton(
+        minWidth: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () {
+          Navigator.of(context).pop(); // dismiss dialog
+        },
+        child: Text("Ok",
+            textAlign: TextAlign.center,
+            style: style.copyWith(
+                color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(32.0))),
+      title: Text("You cannot add yourself"),
+      content: Text(
+          "..."),
+      actions: [okButton],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+    });
+  }
+    
 
   showAlertDialogDeclined(BuildContext context) {
     getInfo();
@@ -673,10 +744,18 @@ class _MyHomePageState extends State<SearchUsers> {
                                     'sendUid': userlib.uid,
                                     'phone': phone
                                   });
+                                  print(response.body);
                               if (response.statusCode == 200) {
                                 if (response.body == "Sent friend request") {
                                   showAlertDialogApproved(context);
-                                } else {
+                                }
+                                else if(response.body == "Already friends"){
+                                   showAlertDialogFriendsAlready(context);
+                                } 
+                                else if(response.body ==  "You can not add your self"){
+                                  showAlertDialogYourSelf(context);
+                                }
+                                else {
                                   showAlertDialogDeclined(context);
                                 }
                               }

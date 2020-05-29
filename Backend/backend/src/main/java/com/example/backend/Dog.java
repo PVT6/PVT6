@@ -106,6 +106,7 @@ public class Dog {
     public void setDescription(String newDescription) {
         this.description = newDescription;
     }
+    
     @JsonIgnore
     public String getImage() {
         try {

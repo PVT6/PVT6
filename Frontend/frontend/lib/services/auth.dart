@@ -43,7 +43,6 @@ try {
     userlib.setEmail(email);
     userlib.setUid(user.uid);
     userlib.setLogin(true);
-    initState();
   }
   else {
     throw("FAILED TO CONNECT TO DB");
@@ -69,7 +68,6 @@ try {
       userlib.setEmail(users['email']);
       userlib.setUid(user.uid);
       userlib.setLogin(true);
-      initState();
   }
   else {
     throw("FAILED TO CONNECT TO DB or Non user found");
@@ -87,6 +85,7 @@ Future signOut() async {
   try {
     await _googleSignIn.signOut();
     await fbLogin.logOut();
+    dispose();
     return await _auth.signOut();
   } catch(e){
     print(e.toString());

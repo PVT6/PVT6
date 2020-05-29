@@ -2,6 +2,7 @@ package com.example.backend;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -66,8 +67,9 @@ public class ContactRequestController {
     public @ResponseBody String answerRequest(@RequestParam String e, String phone, String uid) {
         User u = userRepository.findByUid(uid);
         User u2 = userRepository.findByPhone(phone);
-
+        AtomicBoolean remove = new AtomicBoolean();
         Set<ContactRequest> contactRequests = u.getContactRequest();
+        
         contactRequests.forEach((element) -> {
             if (element.getSender() == u2) {
                 switch (e) {
@@ -89,7 +91,8 @@ public class ContactRequestController {
                         u2.getContactList().addUser(u);
                         userRepository.save(u);
                         userRepository.save(u2);
-                        // DELETE REQEST?
+                        remove.set(true);
+                       
 
                         break;
                     case "rejcet":
@@ -97,13 +100,17 @@ public class ContactRequestController {
                         u2.findUserFromContactRequests(element).setStatus(Status.REJECTRED);
                         userRepository.save(u);
                         userRepository.save(u2);
-                          // DELETE REQEST?
+                        remove.set(true);
+                       
                         break;
                 }
 
             }
 
         });
+        if (remove.get() == true){
+            removeRequest(u2, u);
+        }
         return "true";
 
     }
@@ -131,6 +138,15 @@ public class ContactRequestController {
         User sender = userRepository.findByUid(sendUid);
         User receiver = userRepository.findByPhone(phone);
         if (receiver != null) {
+            if(checkIfAlreadyFriends(sender, receiver)){
+                return "Already friends";
+            }
+            if(sender == receiver){
+                return "You can not add your self";
+            }
+
+            
+
             ContactRequest request = new ContactRequest(sender, receiver, Status.WAITING);
             sender.setContactRequest(request);
             receiver.setContactRequest(request);
@@ -141,12 +157,52 @@ public class ContactRequestController {
             return "No user found";
     }
 
+
+    private Boolean checkIfAlreadyFriends(User u1, User u2){
+
+        Boolean user1 = u1.getContactList().getUser().contains(u2);
+        Boolean user2 = u2.getContactList().getUser().contains(u1);
+        return user2 && user1;
+    }
+
+
+    public String removeRequest(User sender, User receiver){
+        Set<ContactRequest> toRemove = new HashSet<ContactRequest>();
+        
+        Set<ContactRequest> contactRequests = sender.getContactRequest();
+        contactRequests.forEach((e) -> {
+            if (e.getReceiver() == receiver) {
+                toRemove.add(e);
+            }
+        });
+
+        toRemove.forEach((e) -> {
+            contactRequests.remove(e);
+            userRepository.saveAndFlush(sender);
+        });
+
+        toRemove.clear();
+
+        Set<ContactRequest> contactRequests2 = receiver.getContactRequest();
+        contactRequests2.forEach((e) -> {
+            if (e.getSender() == sender) {
+                toRemove.add(e);
+            }
+        });
+
+        toRemove.forEach((e) -> {
+            contactRequests2.remove(e);
+            userRepository.saveAndFlush(receiver);
+        });
+        return "true";
+    }
+
     @PostMapping(value = "/cancleRequests")
     public @ResponseBody String cancleRequests(@RequestParam String uid, String phone) {
         User sender = userRepository.findByUid(uid);
         User receiver = userRepository.findByPhone(phone);
         Set<ContactRequest> toRemove = new HashSet<ContactRequest>();
-        ;
+        
         Set<ContactRequest> contactRequests = sender.getContactRequest();
         contactRequests.forEach((e) -> {
             if (e.getReceiver() == receiver) {
