@@ -268,16 +268,16 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
         'weight': weight.toString(),
         'uid': userlib.uid
       });
-      print(response.statusCode);
+      print(response.body);
       if (response.statusCode == 200) {
         var url = 'https://group6-15.pvt.dsv.su.se/dog/setPicture';
         String base64 = await base64StringFromImage(dogPicture);
-        print(response.body);
         var setPictureRequest = await http.post(Uri.parse(url),
-            body: {'id': response.body, 'base64': base64});
+            body: {'id': response.body, 'base64': base64, 'uid': userlib.uid }, headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        });
 
-            
-            print(setPictureRequest.body);
+      print(setPictureRequest.statusCode);
         if (setPictureRequest.statusCode == 200)
           return Navigator.of(context).push(FadeRoute(
             builder: (context) => ResultPage(

@@ -52,6 +52,9 @@ class ProfileEightPageState extends State<ProfileEightPage> {
 
   Future<void> setDogs() async {
     await getDogs();
+       setState(() {
+        userDogs = dogs;
+      });
     userDogs.forEach((element) => _asyncMethod(element));
   }
 

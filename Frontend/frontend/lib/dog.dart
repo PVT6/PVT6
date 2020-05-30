@@ -3,7 +3,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:frontend/userFiles/ImageConverter.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:frontend/userFiles/user.dart' as userlib;
 class Dog {
   int id;
   String name;

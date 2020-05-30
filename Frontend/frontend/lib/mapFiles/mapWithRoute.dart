@@ -122,7 +122,7 @@ class _MapWithRoute extends State<MapWithRoute> {
 
   getLocation() async {
     var location = new Location();
-    location.onLocationChanged().listen((currentLocation) {
+    location.onLocationChanged.listen((currentLocation) {
       print(currentLocation.latitude);
       print(currentLocation.longitude);
       setState(() {

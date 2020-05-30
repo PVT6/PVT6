@@ -3,6 +3,7 @@ package com.example.backend;
 import java.beans.Transient;
 import java.text.BreakIterator;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -59,7 +60,7 @@ public class User {
   // route
 
   @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
-  private Set<Dog> ownedDog;
+  private List<Dog> ownedDog;
 
   @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
   private Set<ContactRequest> contactRequests;
@@ -148,7 +149,7 @@ public class User {
   }
 
   
-  public Set<Dog> getOwnedDog() {
+  public List<Dog> getOwnedDog() {
     return ownedDog;
   }
   public void removeDog(Dog d){

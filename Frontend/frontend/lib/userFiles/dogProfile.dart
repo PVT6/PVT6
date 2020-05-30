@@ -31,13 +31,11 @@ class DogProfileState extends State<DogProfile> {
 
   @override
   void initState() {
-    _asyncMethod();
+  
     super.initState();
   }
 
-   Future _asyncMethod() async {
-    await dog.getPicture();
-  }
+
 
 
   
@@ -126,7 +124,7 @@ class DogProfileState extends State<DogProfile> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      widget.dog.id.toString(),
+                      widget.dog.name.toString(),
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 30.0),
                     ),
