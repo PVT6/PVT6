@@ -77,17 +77,17 @@ public class UserController {
     }
 
     @PostMapping(path = "/newdog") // Map ONLY POST Requests
-    public @ResponseBody String addNewDog(@RequestParam String uid, String name, String breed, String age,
-            String height, String weight, String dogpicture, String description, String gender) {
+    public @ResponseBody Dog addNewDog(@RequestParam String uid, String name, String breed, String age,
+            String height, String weight, String description, String gender) {
 
         try {
             
-            User u = userRepository.findByUid(uid);
-            Dog d = new Dog(name, breed, age, height, weight, description, gender);
+             User u = userRepository.findByUid(uid);
+             Dog d = new Dog(name, breed, age, height, weight, description, gender);
 
-            u.setOwnedDog(d);
-            userRepository.save(u);
-            return ((Dog) getLastElement(u.getOwnedDog())).getId().toString();
+             u.setOwnedDog(d);
+             userRepository.save(u);
+            return ((Dog) getLastElement(u.getOwnedDog()));
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

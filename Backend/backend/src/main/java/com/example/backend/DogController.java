@@ -109,17 +109,22 @@ public class DogController {
         AtomicReference<String> test =  new AtomicReference<String>();
         User u = userRepo.findByUid(uid);
         test.set("newValue");
+       
+        AtomicReference<Dog> toAddPic = new AtomicReference<Dog>();
         try {
             Blob blob = new SerialBlob(decodedByte);
             u.getOwnedDog().forEach((e) -> {
           
                 if(e.getId().equals(id)){    
-                       
-                    e.setBlobImage(blob);
-                    userRepo.save(u);
-                    test.set("host");
+                    toAddPic.set(e);   
+                 
                 }
             });
+            if(toAddPic.get() != null){
+                toAddPic.get().setBlobImage(blob);
+                userRepo.save(u);
+            }
+        
            
     
 
@@ -127,11 +132,11 @@ public class DogController {
             test.set(e.getMessage());
             e.printStackTrace();
         } catch (SQLException e) {
-
+            test.set(e.getMessage());
             e.printStackTrace();
         }
 
-        return test.get();
+        return "True";
 
     }
 

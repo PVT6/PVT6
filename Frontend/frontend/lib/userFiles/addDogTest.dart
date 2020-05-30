@@ -260,15 +260,19 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
     if (dogName == null || finalBreed == null) {
       return showAlertDialog(context);
     } else {
+      //(@RequestParam String uid, String name, String breed, String age,    String height, String weight, String dogpicture, String description, String gender)
       var url = 'https://group6-15.pvt.dsv.su.se/user/newdog';
       var response = await http.post(Uri.parse(url), body: {
         'name': dogName,
         'breed': finalBreed,
+        'description': desc,
+        'gender': gender.toString(),
         'age': age.toString(),
         'weight': weight.toString(),
         'uid': userlib.uid
       });
       print(response.body);
+      print("SET PICTURE");
       if (response.statusCode == 200) {
         var url = 'https://group6-15.pvt.dsv.su.se/dog/setPicture';
         String base64 = await base64StringFromImage(dogPicture);
@@ -277,7 +281,8 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
           'Content-Type': 'application/x-www-form-urlencoded'
         });
 
-      print(setPictureRequest.statusCode);
+         print(setPictureRequest.statusCode);
+          print(setPictureRequest.body);
         if (setPictureRequest.statusCode == 200)
           return Navigator.of(context).push(FadeRoute(
             builder: (context) => ResultPage(
