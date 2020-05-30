@@ -106,12 +106,15 @@ public class Dog {
     }
     @JsonIgnore
     public String getImage() {
-        try {
-            byte[] pic = blobPicture.getBytes(1, (int) blobPicture.length());
-            return new String(Base64.getEncoder().encode(pic));
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if(blobPicture != null){
+            try {
+                byte[] pic = blobPicture.getBytes(1, (int) blobPicture.length());
+                return new String(Base64.getEncoder().encode(pic));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
+      
         return "Error";
     }
 

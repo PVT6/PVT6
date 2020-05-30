@@ -31,14 +31,8 @@ class DogProfileState extends State<DogProfile> {
 
   @override
   void initState() {
-  
     super.initState();
   }
-
-
-
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -96,8 +90,12 @@ class DogProfileState extends State<DogProfile> {
                               //Image.asset("BrewDog.jpg", fit: BoxFit.cover),
                               child: widget.dog.dogPic != null
                                   ? (() {
-                                      print(widget.dog.dogPic);
-                                      return widget.dog.dogPic;
+                                      return FittedBox(
+                                        child: widget.dog.dogPic,
+                                        fit: BoxFit.cover,
+                                      );
+
+                              
                                     }())
                                   : Image.asset(
                                       "logopurplepink.png") //widget.dog.dogPic
@@ -235,7 +233,7 @@ class DogProfileState extends State<DogProfile> {
                                 'https://group6-15.pvt.dsv.su.se/dog/deletedog?id=${widget.dog.id.toString()}&uid=${userlib.uid}';
 
                             var response = await http.post(Uri.parse(url));
-                               
+
                             print(response.statusCode);
                             await getDogs();
                             Navigator.pop(context);

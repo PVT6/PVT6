@@ -36,7 +36,7 @@ class Dog {
     var url = 'https://group6-15.pvt.dsv.su.se/dog/getPicture?id=${this.id}';
     var response = await http.get(Uri.parse(url));
     print(response.statusCode);
-    if(response.body != "" && response.statusCode == 200)
+    if(response.body != "none" && response.statusCode == 200)
       this.dogPic = await imageFromBase64String(response.body);
     
   }

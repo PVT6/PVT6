@@ -148,7 +148,7 @@ public class DogController {
          u.forEach((eu) -> {
             eu.getOwnedDog().forEach((e) -> {
                 if(e.getId().equals(id)){
-                    if(e.getImage() != null){
+                    if(e.getImage() != "Error"){
                        picture.set(e.getImage());
                     }
                    
