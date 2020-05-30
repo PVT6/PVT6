@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 import javax.imageio.ImageIO;
@@ -135,18 +136,21 @@ public class DogController {
     }
 
     @GetMapping(value = "/getPicture")
-    public @ResponseBody String getPic(@RequestParam long id, String uid) {
-         User u = userRepo.findByUid(uid);
+    public @ResponseBody String getPic(@RequestParam long id) {
+         List<User> u = userRepo.findAll();
          AtomicReference<String> picture =  new AtomicReference<String>();
          picture.set("none");
-         u.getOwnedDog().forEach((e) -> {
-             if(e.getId().equals(id)){
-                 if(e.getImage() != null){
-                    picture.set(e.getImage());
-                 }
-                
-             }
+         u.forEach((eu) -> {
+            eu.getOwnedDog().forEach((e) -> {
+                if(e.getId().equals(id)){
+                    if(e.getImage() != null){
+                       picture.set(e.getImage());
+                    }
+                   
+                }
+            });
          });
+      
         
         return picture.get();
     }
