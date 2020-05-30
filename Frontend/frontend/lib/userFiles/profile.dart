@@ -31,10 +31,10 @@ class ProfileEightPage extends StatefulWidget {
   ProfileEightPageState createState() => ProfileEightPageState();
 }
 
-  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
 class ProfileEightPageState extends State<ProfileEightPage> {
-  latlng.LatLng setter = latlng.LatLng(0,0);
+  latlng.LatLng setter = latlng.LatLng(0, 0);
   @override
   void initState() {
     super.initState();
@@ -103,25 +103,6 @@ class ProfileEightPageState extends State<ProfileEightPage> {
                     ),
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    IconButton(
-                      padding: EdgeInsets.only(left: 30.0),
-                      onPressed: () => Navigator.pop(context),
-                      icon: Icon(Icons.arrow_back),
-                      iconSize: 30.0,
-                      color: Colors.black,
-                    ),
-                    IconButton(
-                      padding: EdgeInsets.only(left: 30.0),
-                      onPressed: () => print('Add to Favorites'),
-                      icon: Icon(Icons.favorite_border),
-                      iconSize: 30.0,
-                      color: Colors.black,
-                    ),
-                  ],
-                ),
                 Positioned(
                   bottom: 0.0,
                   left: 20.0,
@@ -171,7 +152,97 @@ class ProfileEightPageState extends State<ProfileEightPage> {
   }
 }
 
-class UserInfo extends StatelessWidget {
+class UserInfo extends StatefulWidget {
+  UserInfo() : super();
+  @override
+  UserInfoState createState() => UserInfoState();
+}
+
+class UserInfoState extends State<UserInfo> {
+  showDogList(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              backgroundColor: colorBeige,
+              title: Text(
+                "My Dogs",
+                style: style.copyWith(
+                  fontSize: 28,
+                ),
+              ),
+              content: Row(
+                children: <Widget>[
+                  Container(
+                    height: 300,
+                    width: 250,
+                    child: new ListView.builder(
+                        padding: const EdgeInsets.all(8),
+                        itemCount: userDogs.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          Dog c = userDogs?.elementAt(index);
+                          return Row(
+                            children: <Widget>[
+                              Container(
+                                height: 75,
+                                width: 175,
+                                margin: EdgeInsets.all(2),
+                                decoration: BoxDecoration(
+                                  border: Border.all(width: 3.0),
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(
+                                          20.0) //         <--- border radius here
+                                      ),
+                                  image: DecorationImage(
+                                    image: AssetImage("routeBackground.jpg"),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                child: Center(
+                                    child: Card(
+                                  child: Text(
+                                    '${userDogs[index].name} ',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                )),
+                              ),
+                              IconButton(
+                                icon: Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                ),
+                                onPressed: () {},
+                              ),
+                            ],
+                          );
+                        }),
+                  ),
+                ],
+              ),
+              actions: <Widget>[
+                RaisedButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    color: Colors.red,
+                    onPressed: () => Navigator.pop(context),
+                    child: Text(
+                      "Cancel",
+                      style: style.copyWith(fontSize: 13),
+                    )),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -181,13 +252,23 @@ class UserInfo extends StatelessWidget {
           Container(
               padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
               alignment: Alignment.topLeft,
-                child: Text(
-                  "My Dogs",
-                  style: style.copyWith(
-                    color: _colorDarkRed,
-                    fontWeight: FontWeight.bold,
+              child: Row(
+                children: <Widget>[
+                  Text(
+                    "My Dogs",
+                    style: style.copyWith(
+                      color: _colorDarkRed,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.left,
                   ),
-                  textAlign: TextAlign.left,
+                  IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () {
+                      showDogList(context);
+                    },
+                  )
+                ],
               )),
           SingleChildScrollView(
               physics: ScrollPhysics(),
@@ -246,21 +327,21 @@ class UserInfo extends StatelessWidget {
                         },
                       )
                     : Center(
-                        child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(_colorDarkRed)),
+                        child: CircularProgressIndicator(
+                            valueColor: new AlwaysStoppedAnimation<Color>(
+                                _colorDarkRed)),
                       ),
               )),
           Container(
-              padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
-              alignment: Alignment.topLeft,
-                child: Text(
-                  "User Information", //userData
-                  style: style.copyWith(
-                    color: _colorDarkRed,
-                    fontWeight: FontWeight.bold
-                  ),
-                  textAlign: TextAlign.left,
-                ),
-              ),
+            padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
+            alignment: Alignment.topLeft,
+            child: Text(
+              "User Information", //userData
+              style: style.copyWith(
+                  color: _colorDarkRed, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.left,
+            ),
+          ),
           Card(
             child: Container(
               alignment: Alignment.topLeft,
@@ -275,8 +356,8 @@ class UserInfo extends StatelessWidget {
                           ListTile(
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 12, vertical: 4),
-                            leading:
-                                Icon(FontAwesomeIcons.user, color: _colorDarkRed),
+                            leading: Icon(FontAwesomeIcons.user,
+                                color: _colorDarkRed),
                             title: Text(
                               "Username",
                               style: TextStyle(color: _colorDarkRed),

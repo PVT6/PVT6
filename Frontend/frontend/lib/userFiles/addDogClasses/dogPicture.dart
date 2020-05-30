@@ -21,8 +21,13 @@ class DogPicturesState extends State<DogPictures> {
   void _showPhotoLibrary() async {
     final file = await ImagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
-      _path = file.path;
-      dogPicture = file.path;
+      if (file != null) {
+        _path = file.path;
+        dogPicture = file.path;
+        Navigator.pop(context);
+      } else {
+        Navigator.pop(context);
+      }
     });
   }
 
@@ -65,7 +70,10 @@ class DogPicturesState extends State<DogPictures> {
                         borderRadius: BorderRadius.all(Radius.circular(25.0))),
                     child: Row(
                       children: <Widget>[
-                        Icon(Icons.add_a_photo, color: colorDarkRed,),
+                        Icon(
+                          Icons.add_a_photo,
+                          color: colorDarkRed,
+                        ),
                         Text(
                           "     Add Picture       ",
                           style: style.copyWith(

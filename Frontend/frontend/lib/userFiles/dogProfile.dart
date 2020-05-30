@@ -1,21 +1,14 @@
-
-
 import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:frontend/friendsAndContacts/friendsPage.dart';
 import 'package:frontend/userFiles/profile.dart';
 import '../dog.dart';
-import 'user.dart' as userlib;
-import 'addPet.dart';
-import 'package:http/http.dart' as http;
 
 class DogProfile extends StatefulWidget {
-  Dog dog;
+  final Dog dog;
 
-  DogProfile(Dog dog) : super() {
-    this.dog = dog;
-  }
+  DogProfile(this.dog) : super() {}
 
   final String title = "Maps Demo";
 
@@ -31,29 +24,17 @@ class DogProfileState extends State<DogProfile> {
     this.dog = dog;
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-          ),
-          onPressed: () => Navigator.pop(context)
-        ),
+            icon: Icon(
+              Icons.arrow_back,
+            ),
+            onPressed: () => Navigator.pop(context)),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.notifications),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {},
-          ),
-        ],
       ),
       extendBodyBehindAppBar: true,
       backgroundColor: colorLighterPink,
@@ -216,33 +197,7 @@ class DogProfileState extends State<DogProfile> {
                             ],
                           ),
                         ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        FlatButton(
-                          color: colorPeachPink,
-                          onPressed: () {},
-                          child: Row(
-                            children: <Widget>[
-                              Icon(
-                                FontAwesomeIcons.cross,
-                                color: colorPurple,
-                              ),
-                              Text("Remove Dog",
-                                  style: TextStyle(fontSize: 11)),
-                            ],
-                          ),
-                        ),
                       ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    SizedBox(
-                      height: 10,
                     ),
                   ],
                 ),

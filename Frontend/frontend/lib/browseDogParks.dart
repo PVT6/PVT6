@@ -1,13 +1,12 @@
-import 'package:bordered_text/bordered_text.dart';
+
 import 'package:flutter/material.dart';
-import 'package:frontend/friendsAndContacts/addContactPage.dart';
+
 import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'package:frontend/loginFiles/intro_slider.dart';
-import 'package:frontend/userFiles/dogProfile.dart';
+
 import 'package:frontend/userFiles/friendsFeed.dart';
 import 'package:latlong/latlong.dart';
 import 'package:frontend/dogPlaceDesc.dart';
-
 
 var textYellow = Color(0xFFf6c24d);
 var iconYellow = Color(0xFFf4bf47);
@@ -37,17 +36,29 @@ class BrowseDogParks extends StatelessWidget {
               FoodListview(),
               SizedBox(height: 16.0),
               SizedBox(height: 16.0),
-              MenuItemsList()
+              MenuItemsList(
+                context: context,
+              )
             ],
           ),
         ));
   }
 }
 
-class MenuItemsList extends StatelessWidget {
-  const MenuItemsList({
-    Key key,
-  }) : super(key: key);
+class MenuItemsList extends StatefulWidget {
+  MenuItemsList({Key key, this.title, this.context}) : super(key: key);
+  final String title;
+  final BuildContext context;
+
+  @override
+  MenuItemsListState createState() => new MenuItemsListState();
+}
+
+class MenuItemsListState extends State<MenuItemsList> {
+  BuildContext context;
+  List<MenuItem> items = [];
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -56,10 +67,13 @@ class MenuItemsList extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-              Text(
-                'Highest rated dogparks',
-                style: style.copyWith(fontSize: 25.0, color: colorDarkRed, fontWeight: FontWeight.bold),
-              ),
+          Text(
+            'Highest rated dogparks',
+            style: style.copyWith(
+                fontSize: 25.0,
+                color: colorDarkRed,
+                fontWeight: FontWeight.bold),
+          ),
           SizedBox(height: 16.0),
           MenuItem(
             "Hundoarna.jpg",
@@ -106,12 +120,8 @@ class MenuItemsList extends StatelessWidget {
                             'Location',
                             'Orminges hundrastgård',
                             'With an agility track aswell as an abundance of trees, + desc',
-                           
-                           
-                            () => {
-                              
-                                  
-                            }, //Här
+
+                            () => {}, //Här
                             () => {},
                             location = new LatLng(59.334389, 18.254072),
                           )))
@@ -342,7 +352,10 @@ class FoodListview extends StatelessWidget {
                               'Brewdog',
                               'Offers dog "Beer", + desc',
                               () => {
-                                Navigator.push(context, new MaterialPageRoute(builder: (context) => IntroScreen()))
+                                Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (context) => IntroScreen()))
                               },
                               () => {},
                               location = new LatLng(59.336378, 18.034161),
@@ -369,7 +382,7 @@ class FoodListview extends StatelessWidget {
                             )))
               },
             ),
-             ItemCard(
+            ItemCard(
               "LeBistro.jpg",
               'Jakobs Test Location',
               'Testar navigation här',
@@ -429,7 +442,8 @@ class MyAppBar extends StatelessWidget {
               ),
               Text(
                 'Dog friendly locations',
-                style: style.copyWith(fontSize: 12.0,fontWeight: FontWeight.bold),
+                style:
+                    style.copyWith(fontSize: 12.0, fontWeight: FontWeight.bold),
               ),
             ],
           )
@@ -562,13 +576,15 @@ class MenuItem extends StatelessWidget {
                         ),
                         Text(
                           title,
-                          style: style.copyWith(fontSize: 15.0,fontWeight: FontWeight.w600),
+                          style: style.copyWith(
+                              fontSize: 15.0, fontWeight: FontWeight.w600),
                         ),
                         Container(
                             width: 200.0,
                             child: Text(
                               desc,
-                              style: style.copyWith(fontSize: 13.0, color: Colors.grey),
+                              style: style.copyWith(
+                                  fontSize: 13.0, color: Colors.grey),
                             )),
                       ],
                     ),

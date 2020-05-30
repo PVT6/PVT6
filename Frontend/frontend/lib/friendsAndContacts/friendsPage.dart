@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:frontend/friendsAndContacts/contactsModel.dart';
 import 'package:frontend/friendsAndContacts/sentRequest.dart';
 import 'package:frontend/loginFiles/MySignInPage.dart';
-import 'package:frontend/userFiles/addDogTest.dart';
+
 import 'package:frontend/mapFiles/mapsDemo.dart';
 import 'package:frontend/userFiles/dogProfile.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:http/http.dart' as http;
 import 'package:frontend/userFiles/user.dart' as userlib;
-import 'package:frontend/mapFiles/temp.dart';
+
 import '../dog.dart';
 import 'package:latlong/latlong.dart' as latlng;
 
@@ -77,7 +77,8 @@ class _HomePageState extends State<FriendsPage>
   }
 
   Future<void> setInfo() async {
-    getInfo();
+    await getInfo();
+    friends.sort((a, b) => a.name.compareTo(b.name));
   }
 
   Future<void> getInfo() async {
@@ -234,7 +235,7 @@ class _HomePageState extends State<FriendsPage>
   }
 
   getFriendPos(User c) async {
-    if (c.position.x != null ) {
+    if (c.position.x != null) {
       final coordinates = new Coordinates(c.position.y, c.position.x);
       var addresses =
           await Geocoder.local.findAddressesFromCoordinates(coordinates);
@@ -310,12 +311,13 @@ class _HomePageState extends State<FriendsPage>
                                       builder: (BuildContext context) =>
                                           ProfileInfo(c)));
                                 },
-                                leading: CircleAvatar(child: Text("PH",
-                                    style: TextStyle(color: Colors.white)),
-                                    backgroundColor: colorDarkRed,
-                                    ),
+                                leading: CircleAvatar(
+                                  child: Text("PH",
+                                      style: TextStyle(color: Colors.white)),
+                                  backgroundColor: colorDarkRed,
+                                ),
                                 title: Text(c.name ?? "",
-                                  style: style.copyWith(fontSize: 18.0)),
+                                    style: style.copyWith(fontSize: 18.0)),
                                 subtitle: FutureBuilder<dynamic>(
                                   future: getFriendPos(c),
                                   builder: (BuildContext context,
@@ -591,6 +593,7 @@ class _MyHomePageState extends State<SearchUsers> {
       },
     );
   }
+
   showAlertDialogFriendsAlready(BuildContext context) {
     getInfo();
     // set up the buttons
@@ -616,16 +619,16 @@ class _MyHomePageState extends State<SearchUsers> {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(32.0))),
       title: Text("You are already friends"),
-      content: Text(
-          "You are already friends with this user"),
+      content: Text("You are already friends with this user"),
       actions: [okButton],
     );
     showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-    });
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        });
   }
+
   showAlertDialogYourSelf(BuildContext context) {
     getInfo();
     // set up the buttons
@@ -651,17 +654,15 @@ class _MyHomePageState extends State<SearchUsers> {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(32.0))),
       title: Text("You cannot add yourself"),
-      content: Text(
-          "..."),
+      content: Text("..."),
       actions: [okButton],
     );
     showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-    });
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        });
   }
-    
 
   showAlertDialogDeclined(BuildContext context) {
     getInfo();
@@ -718,7 +719,8 @@ class _MyHomePageState extends State<SearchUsers> {
                       SizedBox(height: 20.0),
                       TextFormField(
                         decoration: InputDecoration(
-                            labelText: "Add by number", labelStyle: style.copyWith(fontSize :18),
+                            labelText: "Add by number",
+                            labelStyle: style.copyWith(fontSize: 18),
                             hintText: "ex:0701112233",
                             prefixIcon: Icon(Icons.search),
                             border: OutlineInputBorder(
@@ -744,18 +746,16 @@ class _MyHomePageState extends State<SearchUsers> {
                                     'sendUid': userlib.uid,
                                     'phone': phone
                                   });
-                                  print(response.body);
+                              print(response.body);
                               if (response.statusCode == 200) {
                                 if (response.body == "Sent friend request") {
                                   showAlertDialogApproved(context);
-                                }
-                                else if(response.body == "Already friends"){
-                                   showAlertDialogFriendsAlready(context);
-                                } 
-                                else if(response.body ==  "You can not add your self"){
+                                } else if (response.body == "Already friends") {
+                                  showAlertDialogFriendsAlready(context);
+                                } else if (response.body ==
+                                    "You can not add your self") {
                                   showAlertDialogYourSelf(context);
-                                }
-                                else {
+                                } else {
                                   showAlertDialogDeclined(context);
                                 }
                               }
@@ -912,29 +912,10 @@ class ProfileInfoState extends State<ProfileInfo> {
                   ),
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  IconButton(
-                    padding: EdgeInsets.only(left: 30.0),
-                    onPressed: () => Navigator.pop(context),
-                    icon: Icon(Icons.arrow_back),
-                    iconSize: 30.0,
-                    color: Colors.black,
-                  ),
-                  IconButton(
-                    padding: EdgeInsets.only(left: 30.0),
-                    onPressed: () => print('Add to Favorites'),
-                    icon: Icon(Icons.favorite_border),
-                    iconSize: 30.0,
-                    color: Colors.black,
-                  ),
-                ],
-              ),
               Positioned(
                 bottom: 0.0,
                 right: 25.0,
-                child: //               true // är alltid true här
+                child: // är alltid true här
                     true
                         ? MaterialButton(
                             color: Colors.red,
@@ -957,6 +938,27 @@ class ProfileInfoState extends State<ProfileInfo> {
                             },
                           ),
               ),
+              Positioned(
+                  bottom: 0.0,
+                  left: 25.0,
+                  child: MaterialButton(
+                    color: colorPeachPink,
+                    shape: BeveledRectangleBorder(),
+                    elevation: 0,
+                    child: Row(
+                      children: <Widget>[
+                        Icon(Icons.person_pin),
+                        Text("View on map")
+                      ],
+                    ),
+                    onPressed: () {
+                      latlng.LatLng coordinates = latlng.LatLng(
+                          widget.user.position.y, widget.user.position.x);
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              MapsDemo(coordinates)));
+                    },
+                  )),
             ],
           ),
           const SizedBox(height: 10.0),

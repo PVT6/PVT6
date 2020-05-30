@@ -55,7 +55,13 @@ void updateFriensPos() {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(element.name,
-                    style: TextStyle(backgroundColor: Colors.white)),
+                        style: TextStyle(
+                          letterSpacing: 1,
+                          backgroundColor: Colors.white,
+                          color: textYellow,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Hipster Script W00 Regular',
+                        )),
                     IconButton(
                       icon: Icon(Icons.person_pin),
                       iconSize: 40.0,
@@ -289,12 +295,14 @@ class MapsDemoState extends State<MapsDemo> {
                 ? FlutterMap(
                     mapController: controller,
                     options: new MapOptions(
+                        zoom: 17,
                         //center: LatLng(position.latitude, position.longitude),
                         center: widget.coordinates.latitude == 0 &&
                                 widget.coordinates.longitude == 0
                             ? LatLng(59.303985, 18.097073)
                             : widget.coordinates,
-                        minZoom: 17.0,
+                        minZoom: 4.0,
+                        maxZoom: 20,
                         plugins: [
                           // ADD THIS
                           UserLocationPlugin(),
@@ -317,72 +325,74 @@ class MapsDemoState extends State<MapsDemo> {
                 alignment: Alignment.bottomRight,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    Container(
-                      height: 60,
-                      width: 60,
-                      child: Stack(
-                        children: <Widget>[
-                          new FloatingActionButton(
-                            heroTag: _randomString(10),
-                            onPressed: () {
-                              setState(() {
-                                counter++; //denna är för test, counter ska sedan hålla notifications
+                  children: <Widget>[ // !!!!!!!!!!!!!!!!!!!!!!!!Kommentarer under är om vi vill ha en notification knapp
+                    // Container(
+                    //   height: 60,
+                    //   width: 60,
+                    //   child: Stack(
+                    //     children: <Widget>[
+                    //       new FloatingActionButton(
+                    //         heroTag: _randomString(10),
+                    //         onPressed: () {
+                    //           setState(() {
+                    //             counter++; //denna är för test, counter ska sedan hålla notifications
 
-                                markers.first = Marker(
-                                  width: 45.0,
-                                  height: 45.0,
-                                  point: new LatLng(59.315499, 18.076973),
-                                  builder: (context) => new Container(
-                                    child: IconButton(
-                                      icon: Icon(Icons.donut_large),
-                                      onPressed: null,
-                                      color: Colors.red,
-                                      iconSize: 45.0,
-                                    ),
-                                  ),
-                                );
-                              });
-                            },
-                            materialTapTargetSize: MaterialTapTargetSize.padded,
-                            backgroundColor: colorBeige,
-                            child: Icon(
-                              FontAwesomeIcons.solidBell,
-                              size: 36.0,
-                              color: colorDarkRed,
-                            ),
-                          ),
-                          counter != 0
-                              ? new Positioned(
-                                  right: 11,
-                                  top: 11,
-                                  child: new Container(
-                                    padding: EdgeInsets.all(2),
-                                    decoration: new BoxDecoration(
-                                      color: Colors.red,
-                                      borderRadius: BorderRadius.circular(6),
-                                    ),
-                                    constraints: BoxConstraints(
-                                      minWidth: 14,
-                                      minHeight: 14,
-                                    ),
-                                    child: Text(
-                                      '$counter',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 8,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                )
-                              : new Container()
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 220,
-                    ),
+                    //             markers.first = Marker(
+                    //               width: 45.0,
+                    //               height: 45.0,
+                    //               point: new LatLng(59.315499, 18.076973),
+                    //               builder: (context) => new Container(
+                    //                 child: IconButton(
+                    //                   icon: Icon(Icons.donut_large),
+                    //                   onPressed: null,
+                    //                   color: Colors.red,
+                    //                   iconSize: 45.0,
+                    //                 ),
+                    //               ),
+                    //             );
+                    //           });
+                    //         },
+                    //         materialTapTargetSize: MaterialTapTargetSize.padded,
+                    //         backgroundColor: colorBeige,
+                    //         child: Icon(
+                    //           FontAwesomeIcons.solidBell,
+                    //           size: 36.0,
+                    //           color: colorDarkRed,
+                    //         ),
+                    //       ),
+                    //       counter != 0
+                    //           ? new Positioned(
+                    //               right: 11,
+                    //               top: 11,
+                    //               child: new Container(
+                    //                 padding: EdgeInsets.all(2),
+                    //                 decoration: new BoxDecoration(
+                    //                   color: Colors.red,
+                    //                   borderRadius: BorderRadius.circular(6),
+                    //                 ),
+                    //                 constraints: BoxConstraints(
+                    //                   minWidth: 14,
+                    //                   minHeight: 14,
+                    //                 ),
+                    //                 child: Text(
+                    //                   '$counter',
+                    //                   style: TextStyle(
+                    //                     color: Colors.white,
+                    //                     fontSize: 8,
+                    //                   ),
+                    //                   textAlign: TextAlign.center,
+                    //                 ),
+                    //               ),
+                    //             )
+                    //           : new Container()
+                    //     ],
+                    //   ),
+                    // ),
+                    // SizedBox(
+                    //   height: 220,
+                    // ),
+
+                    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Slut på notificationknapp
                     button(_onMapTypeButtonPressed, FontAwesomeIcons.dice),
                     SizedBox(
                       height: 16.0,
@@ -441,7 +451,7 @@ class MapsDemoState extends State<MapsDemo> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text(
-                                "Search Around",
+                                "Search",
                                 style: style.copyWith(
                                   color: Colors.grey.shade500,
                                   fontWeight: FontWeight.w300,
@@ -541,7 +551,8 @@ class MapsDemoState extends State<MapsDemo> {
                                           color: colorDarkRed,
                                         ),
                                         Text("Trashcans",
-                                            style: style.copyWith(fontSize: 12)),
+                                            style:
+                                                style.copyWith(fontSize: 12)),
                                       ],
                                     ),
                                   )),

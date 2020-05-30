@@ -24,7 +24,7 @@ LatLng startPos = userlib.usersCurrentLocation;
 class _MapPreviewPageState extends State<MapPreviewPage> {
   Location location;
   LatLng userLocation;
-  
+
   static LatLng latLng = LatLng(59.338738, 18.064034);
   String kmString = "0";
   String routeTimeString = "0";
@@ -73,7 +73,8 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
           mapController: mapController,
           options: new MapOptions(
             center: LatLng(startPos.latitude, startPos.longitude),
-            minZoom: 14,
+            minZoom: 4.0,
+            maxZoom: 20,
             plugins: [
               // ADD THIS
               UserLocationPlugin(),
@@ -120,7 +121,9 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => MapWithRoute(pointsImport: points, latLngImport: latLng)),
+                                        builder: (context) => MapWithRoute(
+                                            pointsImport: points,
+                                            latLngImport: latLng)),
                                   );
                                 },
                                 materialTapTargetSize:
@@ -181,6 +184,10 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                           borderRadius: BorderRadius.circular(20)),
                       color: colorBeige,
                       onPressed: () {
+                        setState(() {
+                          savedRoutes.sort((a, b) => double.parse(a.distans)
+                              .compareTo(double.parse(b.distans)));
+                        });
                         showSavedRoutes(context);
                       },
                       child: Row(
@@ -247,7 +254,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
 
   getLocation() async {
     var location = new Location();
-    location.onLocationChanged.listen((currentLocation) {
+    location.onLocationChanged().listen((currentLocation) {
       print(currentLocation.latitude);
       print(currentLocation.longitude);
       setState(() {
@@ -300,16 +307,14 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
               actions: <Widget>[
                 RaisedButton(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)
-                  ),
+                      borderRadius: BorderRadius.circular(10)),
                   color: Colors.red,
                   onPressed: () => Navigator.pop(context, false),
                   child: Text("Cancel", style: style.copyWith(fontSize: 13)),
                 ),
                 RaisedButton(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)
-                  ),
+                      borderRadius: BorderRadius.circular(10)),
                   color: Colors.green,
                   onPressed: () async {
                     if (routesData != "") {
@@ -365,7 +370,9 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
               ),
               content: Row(
                 children: <Widget>[
-                  SizedBox(width: 18,),
+                  SizedBox(
+                    width: 18,
+                  ),
                   SizedBox(
                     width: 200.0,
                     height: 60.0,
@@ -392,21 +399,27 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                   ),
                   color: Colors.red,
                   onPressed: () => Navigator.pop(context, "-1"),
-                  child: Text("Cancel",style: style.copyWith(
-                    fontSize: 13.0,)),
+                  child: Text("Cancel",
+                      style: style.copyWith(
+                        fontSize: 13.0,
+                      )),
                 ),
                 RaisedButton(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   color: Colors.green,
                   onPressed: () {
                     kmString = kmController.text.toString();
                     Navigator.pop(context);
                     generateRoute(LatLng(latLng.latitude, latLng.longitude));
                   },
-                  child: Text("Generate", style: style.copyWith(
-                    fontSize: 13.0,
-                  ),),
+                  child: Text(
+                    "Generate",
+                    style: style.copyWith(
+                      fontSize: 13.0,
+                    ),
+                  ),
                 ),
               ],
             );
@@ -522,13 +535,15 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
               ),
               actions: <Widget>[
                 RaisedButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  color: Colors.red,
-                  onPressed: () => Navigator.pop(context),
-                  child: Text("Cancel", style: style.copyWith(fontSize: 13),)
-                ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    color: Colors.red,
+                    onPressed: () => Navigator.pop(context),
+                    child: Text(
+                      "Cancel",
+                      style: style.copyWith(fontSize: 13),
+                    )),
               ],
             );
           },
@@ -614,11 +629,9 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
       routeTimeString = estimatedTime;
       for (var i = 0; i < route.length; i++) {
         points.add(new LatLng(route[i][1], route[i][0]));
-
       }
       mapController.move(
-                            LatLng(points.first.latitude, points.first.longitude), 1);
-      
+          LatLng(points.first.latitude, points.first.longitude), 1);
     } else {
       // ERROR HÄR
     }

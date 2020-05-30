@@ -30,7 +30,7 @@ final MapController controller;
           language: "Swedish",
           popOnSelect: true,
           apiKey: FlutterConfig.get('MAPBOX_ID'),
-          searchHint: 'Search around',
+          searchHint: 'Search',
           limit: 10,
           onSelected: (place) {
             LatLng pos = new LatLng(
