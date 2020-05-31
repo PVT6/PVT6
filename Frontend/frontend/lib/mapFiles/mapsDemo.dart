@@ -57,7 +57,7 @@ void updateFriensPos() {
                     Text(element.name,
                     style: TextStyle(backgroundColor: Colors.white)),
                     IconButton(
-                      icon: Icon(Icons.person_pin),
+                      icon: Icon(Icons.person_pin, color: colorDarkRed),
                       iconSize: 40.0,
                       tooltip: element.name,
                       onPressed: () {},
@@ -196,11 +196,11 @@ class MapsDemoState extends State<MapsDemo> {
                           Text(
                             userlib.name, //userData
                             style: TextStyle(
-                                color: textYellow,
+                                color: Colors.grey.shade600,
                                 fontWeight: FontWeight.bold,
                                 fontFamily: 'Hipster Script W00 Regular',
                                 fontSize: 18.0,
-                                letterSpacing: 1.1),
+                                letterSpacing: 2.5),
                           ),
                         ],
                       ),
@@ -468,110 +468,6 @@ class MapsDemoState extends State<MapsDemo> {
                                 : showCameraFailAlertDialog(context);
                           },
                         )),
-                    SingleChildScrollView(
-                        physics: ScrollPhysics(),
-                        child: Container(
-                          height: 33,
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            shrinkWrap: true,
-                            children: <Widget>[
-                              Container(
-                                width: 125,
-                                child: FlatButton(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(18.0),
-                                      side: BorderSide(
-                                          color: Colors.transparent)),
-                                  color: colorBeige,
-                                  onPressed: () {},
-                                  child: Row(
-                                    children: <Widget>[
-                                      Icon(
-                                        Icons.restaurant,
-                                        color: colorDarkRed,
-                                      ),
-                                      Text("Restaurant",
-                                          style: style.copyWith(fontSize: 12)),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Container(
-                                width: 90,
-                                child: FlatButton(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(18.0),
-                                      side: BorderSide(
-                                          color: Colors.transparent)),
-                                  color: colorBeige,
-                                  onPressed: () {},
-                                  child: Row(
-                                    children: <Widget>[
-                                      Icon(
-                                        Icons.nature,
-                                        color: colorDarkRed,
-                                      ),
-                                      Text("Parks",
-                                          style: style.copyWith(fontSize: 12)),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Container(
-                                  width: 120,
-                                  child: FlatButton(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(18.0),
-                                        side: BorderSide(
-                                            color: Colors.transparent)),
-                                    color: colorBeige,
-                                    onPressed: () {},
-                                    child: Row(
-                                      children: <Widget>[
-                                        Icon(
-                                          FontAwesomeIcons.trash,
-                                          color: colorDarkRed,
-                                        ),
-                                        Text("Trashcans",
-                                            style: style.copyWith(fontSize: 12)),
-                                      ],
-                                    ),
-                                  )),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Container(
-                                width: 140,
-                                child: FlatButton(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(18.0),
-                                      side: BorderSide(
-                                          color: Colors.transparent)),
-                                  color: colorBeige,
-                                  onPressed: () {},
-                                  child: Row(
-                                    children: <Widget>[
-                                      Icon(
-                                        FontAwesomeIcons.lightbulb,
-                                        color: colorDarkRed,
-                                      ),
-                                      Text("Street Lamps",
-                                          style: style.copyWith(fontSize: 12)),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ))
                   ],
                 ),
               ),
