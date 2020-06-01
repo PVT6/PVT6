@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'package:frontend/loginFiles/intro_slider.dart';
 
-
 class DetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -18,11 +17,11 @@ class DetailPage extends StatelessWidget {
     final topContentText = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        SizedBox(height: 120.0),
-        Icon(
-          Icons.pets,
-          color: Colors.white,
-          size: 40.0,
+        SizedBox(height: 60.0),
+        Container(
+          height: 100,
+          width: 100,
+          child: Image.asset("logoprotonotext.png"),
         ),
         Container(
           width: 90.0,
@@ -80,13 +79,13 @@ class DetailPage extends StatelessWidget {
             },
             child: Icon(Icons.arrow_back, color: Colors.white),
           ),
-        )
+        ),
       ],
     );
 
     final bottomContentText = Text(
       "DogWalk is the product of nine hard working students from Stockholm university getting together during a"
-      " product developing course.\n\nThe application uses API:s such as locations of trashcans and streetlights, together with map functions and route generators." 
+      " product developing course.\n\nThe application uses API:s such as locations of trashcans and streetlights, together with map functions and route generators."
       "All these functions are intended to help both you and your dog make more interesting and memorable walks together. Since we also know our furries friends like to find new playmates, we also implemented a fully functioning friendsystem.\n \nWe sincerely hope you will enjoy using it!",
       style: TextStyle(fontSize: 14.0),
     );
@@ -106,7 +105,7 @@ class DetailPage extends StatelessWidget {
         ));
     final bottomContent = Container(
       width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.only(left:10,right: 10, top: 5),
+      padding: EdgeInsets.only(left: 10, right: 10, top: 5),
       child: Center(
         child: Column(
           children: <Widget>[bottomContentText, readButton],

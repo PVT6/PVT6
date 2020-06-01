@@ -11,6 +11,7 @@ import 'package:frontend/userFiles/addDogTest.dart';
 import 'package:frontend/userFiles/dogProfile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:frontend/userFiles/editProfile.dart';
+import 'package:mapbox_gl/mapbox_gl.dart';
 
 import 'user.dart' as userlib;
 import 'package:frontend/mapFiles/mapsDemo.dart';
@@ -187,6 +188,35 @@ class UserInfo extends StatefulWidget {
 }
 
 class UserInfoState extends State<UserInfo> {
+  String kmString = "0";
+  String routeTimeString = "0";
+   var points = <LatLng>[];
+
+ void openSavedRoutes(String id) async {
+    final data = await http
+        .get("https://group6-15.pvt.dsv.su.se/route/getRoute?id=${id}");
+    print(data.body);
+    if (data.statusCode == 200) {
+      points.clear();
+
+      var jsonfile = json.decode(data.body);
+
+      var routedata = jsonfile['routes'][0];
+      var route = routedata["geometry"]["coordinates"];
+      kmString = (routedata["distance"] / 1000).toStringAsFixed(2);
+      var estimatedTime = (routedata["duration"] / 3600)
+          .toStringAsFixed(2)
+          .toString(); // MAN KAN ÄNDRA GÅNGHASTIGHET FÖR ATT FÅ MER ACCURATE
+      routeTimeString = estimatedTime;
+      for (var i = 0; i < route.length; i++) {
+        points.add(new LatLng(route[i][1], route[i][0]));
+      }
+    
+    } else {
+      // ERROR HÄR
+    }
+  }
+
   getLocationName() async {
     final coordinates1 = new Coordinates(userlib.usersCurrentLocation.latitude,
         userlib.usersCurrentLocation.longitude);
