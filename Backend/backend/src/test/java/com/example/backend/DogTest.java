@@ -21,7 +21,7 @@ public class DogTest {
 
     @Test
     public void makeDogConstructor() {
-        Dog dog = new Dog("name", "breed", "1", "2", null, null, null, null);
+        Dog dog = new Dog("name", "breed", "1", "2", null, null, null);
 
         assertNotNull(dog.getId());
 

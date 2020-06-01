@@ -109,7 +109,6 @@ public class DogController {
         AtomicReference<String> test =  new AtomicReference<String>();
         User u = userRepo.findByUid(uid);
         test.set("newValue");
-       
         AtomicReference<Dog> toAddPic = new AtomicReference<Dog>();
         try {
             Blob blob = new SerialBlob(decodedByte);
@@ -123,6 +122,7 @@ public class DogController {
             if(toAddPic.get() != null){
                 toAddPic.get().setBlobImage(blob);
                 userRepo.save(u);
+                test.set("here");
             }
         
            
@@ -136,7 +136,7 @@ public class DogController {
             e.printStackTrace();
         }
 
-        return "True";
+        return test.get();
 
     }
 

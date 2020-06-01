@@ -260,8 +260,6 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
     if (dogName == null || finalBreed == null) {
       return showAlertDialog(context);
     } else {
-      print(desc);
-      print(gender);
       //(@RequestParam String uid, String name, String breed, String age,    String height, String weight, String dogpicture, String description, String gender)
       var url = 'https://group6-15.pvt.dsv.su.se/user/newdog';
       var response = await http.post(Uri.parse(url), body: {
@@ -273,18 +271,15 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
         'weight': weight.toString(),
         'uid': userlib.uid
       });
-      print(response.body);
-      print("SET PICTURE");
+
+      print("FIRST" + response.statusCode.toString());
       if (response.statusCode == 200 && dogPicture != null) {
         var url = 'https://group6-15.pvt.dsv.su.se/dog/setPicture';
         String base64 = await base64StringFromImage(dogPicture);
         var setPictureRequest = await http.post(Uri.parse(url),
-            body: {'id': response.body, 'base64': base64, 'uid': userlib.uid }, headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        });
+            body: {'id': response.body, 'base64': base64, 'uid': userlib.uid},
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'});
 
-         print(setPictureRequest.statusCode);
-          print(setPictureRequest.body);
         if (setPictureRequest.statusCode == 200)
           return Navigator.of(context).push(FadeRoute(
             builder: (context) => ResultPage(
@@ -298,21 +293,19 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
               desc: desc,
             ),
           ));
-      } else if(response.statusCode == 200) {
-         return Navigator.of(context).push(FadeRoute(
-            builder: (context) => ResultPage(
-              weight: weight,
-              height: height,
-              gender: gender,
-              dogName: dogName,
-              age: age,
-              finalBreed: finalBreed,
-              dogPicture: Image.asset(
-                                      "logopurplepink.png"),
-              desc: desc,
-            ),
-          ));
       }
+      return Navigator.of(context).push(FadeRoute(
+        builder: (context) => ResultPage(
+          weight: weight,
+          height: height,
+          gender: gender,
+          dogName: dogName,
+          age: age,
+          finalBreed: finalBreed,
+          dogPicture: Image.asset("logopurplepink.png"),
+          desc: desc,
+        ),
+      ));
     }
   }
 
