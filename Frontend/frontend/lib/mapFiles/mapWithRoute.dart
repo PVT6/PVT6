@@ -5,6 +5,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:frontend/friendsAndContacts/friendsPage.dart';
+import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'package:frontend/routePickerMap/Route.dart';
 import 'package:location/location.dart';
 import 'package:latlong/latlong.dart';
@@ -19,7 +20,6 @@ import 'dart:convert';
 
 
 
-
 class MapWithRoute extends StatefulWidget {
   @override
   var pointsImport;
@@ -29,12 +29,15 @@ class MapWithRoute extends StatefulWidget {
 }
 
 class _MapWithRoute extends State<MapWithRoute> {
+  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   LatLng usersCurrentPos;
   MapController mapController;
   StatefulMapController statefulMapController;
   StreamSubscription<StatefulMapControllerStateChange> sub;
   UserLocationOptions userLocationOptions;
   List<Marker> markers = [];
+
+
   @override
   void initState() {
     mapController = MapController();
@@ -94,8 +97,8 @@ class _MapWithRoute extends State<MapWithRoute> {
         // ...
       ])),
         appBar: AppBar(
-        title: const Text('Route Walker'),
-        backgroundColor: colorPurple,
+        title: Text('Route Walker', style: style.copyWith(fontSize: 15,),),
+        backgroundColor: colorDarkBeige,
       ),
         
 
@@ -107,9 +110,9 @@ class _MapWithRoute extends State<MapWithRoute> {
                   Navigator.pop(context);
                      },
                   icon: Icon(FontAwesomeIcons.flagCheckered,
-                            color: colorPurple,),
-                  label: Text("Finish", style: TextStyle(fontSize: 11, color: colorPurple), ),
-                  backgroundColor: colorPeachPink,
+                            color: colorDarkRed,),
+                  label: Text("Finish", style: style.copyWith(fontSize: 11, color: colorDarkRed), ),
+                  backgroundColor: colorBeige,
         ),
 
 
