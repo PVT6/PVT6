@@ -1,9 +1,8 @@
-
-
 import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:frontend/friendsAndContacts/friendsPage.dart';
+import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'package:frontend/userFiles/profile.dart';
 import '../dog.dart';
 import 'user.dart' as userlib;
@@ -31,32 +30,20 @@ class DogProfileState extends State<DogProfile> {
     this.dog = dog;
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-          ),
-          onPressed: () => Navigator.pop(context)
-        ),
+            icon: Icon(
+              Icons.arrow_back,
+            ),
+            onPressed: () => Navigator.pop(context)),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.notifications),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {},
-          ),
-        ],
       ),
       extendBodyBehindAppBar: true,
-      backgroundColor: colorLighterPink,
+      backgroundColor: colorBeige,
       body: Stack(
         children: <Widget>[
           Container(
@@ -66,9 +53,9 @@ class DogProfileState extends State<DogProfile> {
                     bottomLeft: Radius.circular(50.0),
                     bottomRight: Radius.circular(50.0)),
                 gradient: LinearGradient(
-                    colors: [colorPeachPink, colorPurple],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight)),
+                    colors: [colorDarkRed, colorBeige, colorDarkRed],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight)),
           ),
           Container(
             margin: const EdgeInsets.only(top: 80),
@@ -105,7 +92,7 @@ class DogProfileState extends State<DogProfile> {
                               color: Colors.yellow,
                               borderRadius: BorderRadius.circular(20.0)),
                           child: Text(widget.dog.breed,
-                              style: TextStyle(
+                              style: style.copyWith(
                                 fontSize: 16,
                               )),
                         ),
@@ -119,7 +106,7 @@ class DogProfileState extends State<DogProfile> {
                   children: <Widget>[
                     Text(
                       widget.dog.name,
-                      style: TextStyle(
+                      style: style.copyWith(
                           fontWeight: FontWeight.bold, fontSize: 30.0),
                     ),
                   ],
@@ -131,8 +118,12 @@ class DogProfileState extends State<DogProfile> {
                   width: 280,
                   height: 80,
                   child: Text(
-                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."),
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                    style: style.copyWith(
+                        fontSize: 13, fontWeight: FontWeight.bold),
+                  ),
                 ),
+                SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -141,14 +132,15 @@ class DogProfileState extends State<DogProfile> {
                       children: <Widget>[
                         Text(
                           "Weight: ",
-                          style: TextStyle(
-                            color: colorPurple,
+                          style: style.copyWith(
+                            color: colorDarkRed,
                             fontSize: 20,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
                           widget.dog.weight + "kg",
-                          style: TextStyle(color: Colors.grey.shade600),
+                          style: TextStyle(color: Colors.grey.shade800),
                         ),
                       ],
                     ),
@@ -159,14 +151,15 @@ class DogProfileState extends State<DogProfile> {
                       children: <Widget>[
                         Text(
                           "Height: ",
-                          style: TextStyle(
-                            color: colorPurple,
+                          style: style.copyWith(
+                            color: colorDarkRed,
                             fontSize: 20,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
                           "50" + "cm",
-                          style: TextStyle(color: Colors.grey.shade600),
+                          style: TextStyle(color: Colors.grey.shade800),
                         ),
                       ],
                     ),
@@ -177,14 +170,15 @@ class DogProfileState extends State<DogProfile> {
                       children: <Widget>[
                         Text(
                           " Age: ",
-                          style: TextStyle(
-                            color: colorPurple,
+                          style: style.copyWith(
+                            color: colorDarkRed,
                             fontSize: 20,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
                           widget.dog.age + "y.o",
-                          style: TextStyle(color: Colors.grey.shade600),
+                          style: TextStyle(color: Colors.grey.shade800),
                         ),
                       ],
                     ),
@@ -197,8 +191,11 @@ class DogProfileState extends State<DogProfile> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        FlatButton(
-                          color: colorPeachPink,
+                        RaisedButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)
+                          ),
+                          color: colorDarkBeige,
                           onPressed: () {
                             Navigator.push(
                                 context,
@@ -209,7 +206,7 @@ class DogProfileState extends State<DogProfile> {
                             children: <Widget>[
                               Icon(
                                 Icons.person,
-                                color: colorPurple,
+                                color: colorDarkRed,
                               ),
                               Text("Owners Profile",
                                   style: TextStyle(fontSize: 11)),
@@ -222,14 +219,17 @@ class DogProfileState extends State<DogProfile> {
                         SizedBox(
                           width: 10,
                         ),
-                        FlatButton(
-                          color: colorPeachPink,
+                        RaisedButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)
+                          ),
+                          color: colorDarkBeige,
                           onPressed: () {},
                           child: Row(
                             children: <Widget>[
                               Icon(
                                 FontAwesomeIcons.cross,
-                                color: colorPurple,
+                                color: colorDarkRed,
                               ),
                               Text("Remove Dog",
                                   style: TextStyle(fontSize: 11)),
