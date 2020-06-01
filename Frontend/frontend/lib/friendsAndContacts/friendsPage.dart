@@ -7,6 +7,7 @@ import 'package:frontend/friendsAndContacts/sentRequest.dart';
 import 'package:frontend/loginFiles/MySignInPage.dart';
 
 import 'package:frontend/mapFiles/mapsDemo.dart';
+import 'package:frontend/routePickerMap/Route.dart';
 import 'package:frontend/userFiles/dogProfile.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:http/http.dart' as http;
@@ -925,7 +926,6 @@ class ProfileInfoState extends State<ProfileInfo> {
               )),
             ],
           ),
-          
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
@@ -1039,6 +1039,72 @@ class ProfileInfoState extends State<ProfileInfo> {
                                                     DogProfile(c)),
                                           );
                                         },
+                                        child: Container(
+                                          width: 75,
+                                          height: 75,
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(20.0),
+                                            child: Image.asset(
+                                              'BrewDog.jpg',
+                                            ),
+                                          ),
+                                        ),
+                                      ));
+                              },
+                            )
+                          : Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                    )),
+                Container(
+                    padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
+                    alignment: Alignment.topLeft,
+                    child: BorderedText(
+                      strokeWidth: 5.0,
+                      strokeColor: colorPurple,
+                      child: Text(
+                        "My Saved Routes",
+                        style: TextStyle(
+                          color: colorLighterPink,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                    )),
+                SingleChildScrollView(
+                    physics: ScrollPhysics(),
+                    child: Container(
+                      height: 70,
+                      child: widget.user.savedRoutes != null
+                          ? ListView.builder(
+                              //https://pusher.com/tutorials/flutter-listviews
+
+                              shrinkWrap: true,
+                              itemCount: widget.user.savedRoutes?.length ?? 0,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (BuildContext context, int index) {
+                                
+                                SavedRoutes c =
+                                    widget.user.savedRoutes?.elementAt(index);
+                                return (c.name != null && c.name.length > 0)
+                                    ? SizedBox(
+                                        child: InkWell(
+                                        onTap: () {},
+                                        child: Container(
+                                          width: 75,
+                                          height: 75,
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(20.0),
+                                            child: Icon(Icons.directions_walk)
+                                          ),
+                                        ),
+                                      ))
+                                    : SizedBox(
+                                        child: InkWell(
+                                        onTap: () {},
                                         child: Container(
                                           width: 75,
                                           height: 75,
