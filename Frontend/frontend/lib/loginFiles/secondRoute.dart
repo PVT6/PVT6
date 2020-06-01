@@ -7,6 +7,8 @@ import 'package:frontend/mapFiles/mapsDemo.dart';
 import 'package:frontend/services/auth.dart';
 import 'package:latlong/latlong.dart' as latlng;
 
+import '../loadingScreen.dart';
+
 class SecondRouteState extends StatefulWidget {
   SecondRouteState() : super();
 
@@ -196,7 +198,7 @@ class SecondRoute extends State<SecondRouteState> {
                       } else {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => MapsDemo(setter)),
+                          MaterialPageRoute(builder: (context) => LoadingScreen(result)),
                         );
                       }
                     }
