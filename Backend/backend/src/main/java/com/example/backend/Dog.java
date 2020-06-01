@@ -30,11 +30,10 @@ public class Dog {
     private String height;
     private String weight;
     private String description;
-    private String dogpicture;
     private String gender;
     private Blob blobPicture;
 
-    public Dog(String name, String breed, String age, String height, String weight, String dogpicture,
+    public Dog(String name, String breed, String age, String height, String weight,
             String description, String gender) {
         this.name = name;
         this.breed = breed;
@@ -42,7 +41,6 @@ public class Dog {
         this.height = height;
         this.weight = weight;
         this.description = description;
-        this.dogpicture = dogpicture;
         this.gender = gender;
 
     }
@@ -109,13 +107,16 @@ public class Dog {
     
     @JsonIgnore
     public String getImage() {
-        try {
-            byte[] pic = blobPicture.getBytes(1, (int) blobPicture.length());
-            return new String(Base64.getEncoder().encode(pic));
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if(blobPicture != null){
+            try {
+                byte[] pic = blobPicture.getBytes(1, (int) blobPicture.length());
+                return new String(Base64.getEncoder().encode(pic));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-        return "";
+      
+        return "Error";
     }
 
     @JsonIgnore

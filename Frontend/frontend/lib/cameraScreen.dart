@@ -7,6 +7,7 @@ import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:frontend/userFiles/ImageConverter.dart';
 
 const colorPurple = const Color(0xFF82658f);
 const colorPeachPink = const Color(0xFFffdcd2);
@@ -123,7 +124,15 @@ class CameraScreenState extends State<CameraScreen> {
             borderRadius: BorderRadius.circular(15)
           ),
           color: Colors.green,
-          onPressed: () => Navigator.pop(context),
+          onPressed: (() {
+              
+            Navigator.pop(context);
+                
+              
+          }()),
+        
+          
+           //Navigator.pop(context),
           child: Text("Ok"),
         ),
       ],

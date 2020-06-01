@@ -31,6 +31,11 @@ class DogProfileState extends State<DogProfile> {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -71,18 +76,19 @@ class DogProfileState extends State<DogProfile> {
                           margin: const EdgeInsets.only(
                               left: 30.0, right: 30.0, top: 10.0),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(30.0),
-                            child:
-                                Image.asset("BrewDog.jpg", fit: BoxFit.cover),
-                            // child: dogPicture == null
-                            //     ? Image.asset("logopurplepink.png")
-                            //     : Image.file(
-                            //         File(
-                            //           dogPicture,
-                            //         ),
-                            //         fit: BoxFit.cover,
-                            //       )),
-                          )),
+                              borderRadius: BorderRadius.circular(30.0),
+                              //child:
+                              //Image.asset("BrewDog.jpg", fit: BoxFit.cover),
+                              child: widget.dog.dogPic != null
+                                  ? (() {
+                                      return FittedBox(
+                                        child: widget.dog.dogPic,
+                                        fit: BoxFit.cover,
+                                      );
+                                    }())
+                                  : Image.asset(
+                                      "logopurplepink.png") //widget.dog.dogPic
+                              )),
                       Container(
                         alignment: Alignment.topCenter,
                         child: Container(
@@ -105,7 +111,7 @@ class DogProfileState extends State<DogProfile> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      widget.dog.name,
+                      widget.dog.name.toString(),
                       style: style.copyWith(
                           fontWeight: FontWeight.bold, fontSize: 30.0),
                     ),
@@ -115,15 +121,13 @@ class DogProfileState extends State<DogProfile> {
                   height: 10,
                 ),
                 Container(
-                  width: 280,
-                  height: 80,
-                  child: Text(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-                    style: style.copyWith(
-                        fontSize: 13, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                SizedBox(height: 15),
+                    width: 280,
+                    height: 80,
+                    child: Text(
+                      widget.dog.description,
+                      style: style.copyWith(
+                          fontSize: 13, fontWeight: FontWeight.bold),
+                    )),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -158,8 +162,8 @@ class DogProfileState extends State<DogProfile> {
                           ),
                         ),
                         Text(
-                          "50" + "cm",
-                          style: TextStyle(color: Colors.grey.shade800),
+                          widget.dog.height + "cm",
+                          style: TextStyle(color: Colors.grey.shade600),
                         ),
                       ],
                     ),
@@ -193,8 +197,7 @@ class DogProfileState extends State<DogProfile> {
                       children: <Widget>[
                         RaisedButton(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15)
-                          ),
+                              borderRadius: BorderRadius.circular(15)),
                           color: colorDarkBeige,
                           onPressed: () {
                             Navigator.push(
@@ -221,10 +224,18 @@ class DogProfileState extends State<DogProfile> {
                         ),
                         RaisedButton(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15)
-                          ),
+                              borderRadius: BorderRadius.circular(15)),
                           color: colorDarkBeige,
-                          onPressed: () {},
+                          onPressed: () async {
+                            var url =
+                                'https://group6-15.pvt.dsv.su.se/dog/deletedog?id=${widget.dog.id.toString()}&uid=${userlib.uid}';
+
+                            var response = await http.post(Uri.parse(url));
+
+                            print(response.statusCode);
+                            await getDogs();
+                            Navigator.pop(context);
+                          },
                           child: Row(
                             children: <Widget>[
                               Icon(
