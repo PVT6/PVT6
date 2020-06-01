@@ -234,7 +234,7 @@ class _HomePageState extends State<FriendsPage>
   }
 
   getFriendPos(User c) async {
-    if (c.position.x != null ) {
+    if (c.position.x != null) {
       final coordinates = new Coordinates(c.position.y, c.position.x);
       var addresses =
           await Geocoder.local.findAddressesFromCoordinates(coordinates);
@@ -310,12 +310,13 @@ class _HomePageState extends State<FriendsPage>
                                       builder: (BuildContext context) =>
                                           ProfileInfo(c)));
                                 },
-                                leading: CircleAvatar(child: Text("PH",
-                                    style: TextStyle(color: Colors.white)),
-                                    backgroundColor: colorDarkRed,
-                                    ),
+                                leading: CircleAvatar(
+                                  child: Text("PH",
+                                      style: TextStyle(color: Colors.white)),
+                                  backgroundColor: colorDarkRed,
+                                ),
                                 title: Text(c.name ?? "",
-                                  style: style.copyWith(fontSize: 18.0)),
+                                    style: style.copyWith(fontSize: 18.0)),
                                 subtitle: FutureBuilder<dynamic>(
                                   future: getFriendPos(c),
                                   builder: (BuildContext context,
@@ -591,6 +592,7 @@ class _MyHomePageState extends State<SearchUsers> {
       },
     );
   }
+
   showAlertDialogFriendsAlready(BuildContext context) {
     getInfo();
     // set up the buttons
@@ -616,16 +618,16 @@ class _MyHomePageState extends State<SearchUsers> {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(32.0))),
       title: Text("You are already friends"),
-      content: Text(
-          "You are already friends with this user"),
+      content: Text("You are already friends with this user"),
       actions: [okButton],
     );
     showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-    });
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        });
   }
+
   showAlertDialogYourSelf(BuildContext context) {
     getInfo();
     // set up the buttons
@@ -651,17 +653,15 @@ class _MyHomePageState extends State<SearchUsers> {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(32.0))),
       title: Text("You cannot add yourself"),
-      content: Text(
-          "..."),
+      content: Text("..."),
       actions: [okButton],
     );
     showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-    });
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        });
   }
-    
 
   showAlertDialogDeclined(BuildContext context) {
     getInfo();
@@ -718,7 +718,8 @@ class _MyHomePageState extends State<SearchUsers> {
                       SizedBox(height: 20.0),
                       TextFormField(
                         decoration: InputDecoration(
-                            labelText: "Add by number", labelStyle: style.copyWith(fontSize :18),
+                            labelText: "Add by number",
+                            labelStyle: style.copyWith(fontSize: 18),
                             hintText: "ex:0701112233",
                             prefixIcon: Icon(Icons.search),
                             border: OutlineInputBorder(
@@ -733,7 +734,15 @@ class _MyHomePageState extends State<SearchUsers> {
                       ),
                       SizedBox(height: 20.0),
                       RaisedButton(
-                          child: Text('add User'),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0)),
+                          color: colorPrimaryRed,
+                          elevation: 6.0,
+                          child: Text(
+                            'Add user',
+                            style: style.copyWith(
+                                fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
                           onPressed: () async {
                             if (phone != null) {
                               var url =
@@ -744,18 +753,16 @@ class _MyHomePageState extends State<SearchUsers> {
                                     'sendUid': userlib.uid,
                                     'phone': phone
                                   });
-                                  print(response.body);
+                              print(response.body);
                               if (response.statusCode == 200) {
                                 if (response.body == "Sent friend request") {
                                   showAlertDialogApproved(context);
-                                }
-                                else if(response.body == "Already friends"){
-                                   showAlertDialogFriendsAlready(context);
-                                } 
-                                else if(response.body ==  "You can not add your self"){
+                                } else if (response.body == "Already friends") {
+                                  showAlertDialogFriendsAlready(context);
+                                } else if (response.body ==
+                                    "You can not add your self") {
                                   showAlertDialogYourSelf(context);
-                                }
-                                else {
+                                } else {
                                   showAlertDialogDeclined(context);
                                 }
                               }
@@ -783,21 +790,25 @@ class ProfileInfoState extends State<ProfileInfo> {
 
   showAlertDialog(BuildContext context) {
     AlertDialog alert = AlertDialog(
-      backgroundColor: colorPeachPink,
+      backgroundColor: colorBeige,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(32.0))),
-      title: Text("Remove as friend?"),
+      title: Text("Remove as friend?", style: style.copyWith(fontWeight: FontWeight.bold)),
       content:
-          Text("Are you sure you want to remove user from your friendslist?"),
+          Text("Are you sure you want to remove user from your friendslist?", style: style.copyWith(fontSize: 17)),
       actions: [
-        FlatButton(
+        RaisedButton(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           color: Colors.red,
           onPressed: () {
             Navigator.of(context).pop();
           },
           child: Text("No"),
         ),
-        FlatButton(
+        RaisedButton(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           color: Colors.green,
           onPressed: () async {
             Navigator.of(context).pop(); // dismiss dialog
@@ -877,7 +888,7 @@ class ProfileInfoState extends State<ProfileInfo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: colorLighterPink,
+        backgroundColor: colorBeige,
         extendBody: true,
         extendBodyBehindAppBar: true,
         appBar: AppBar(
@@ -938,8 +949,9 @@ class ProfileInfoState extends State<ProfileInfo> {
                     true
                         ? MaterialButton(
                             color: Colors.red,
-                            shape: BeveledRectangleBorder(),
-                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15)),
+                            elevation: 3,
                             child: Icon(Icons.remove_circle),
                             onPressed: () {
                               showAlertDialog(context);
@@ -947,8 +959,9 @@ class ProfileInfoState extends State<ProfileInfo> {
                           )
                         : MaterialButton(
                             color: Colors.green,
-                            shape: BeveledRectangleBorder(),
-                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15)),
+                            elevation: 3,
                             child: Icon(Icons.person_add),
                             onPressed: () {
                               setState(() {
@@ -965,21 +978,15 @@ class ProfileInfoState extends State<ProfileInfo> {
             child: Column(
               children: <Widget>[
                 Container(
-                    padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
-                    alignment: Alignment.topLeft,
-                    child: BorderedText(
-                      strokeWidth: 5.0,
-                      strokeColor: colorPurple,
-                      child: Text(
-                        "My Dogs",
-                        style: TextStyle(
-                          color: colorLighterPink,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
-                    )),
+                  padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "My Dogs",
+                    style: style.copyWith(
+                        color: colorDarkRed, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
                 SingleChildScrollView(
                     physics: ScrollPhysics(),
                     child: Container(
@@ -1049,10 +1056,10 @@ class ProfileInfoState extends State<ProfileInfo> {
                   alignment: Alignment.topLeft,
                   child: Text(
                     "User Information", //userData
-                    style: TextStyle(
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16,
+                    style: style.copyWith(
+                      color: colorDarkRed,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
                     ),
                     textAlign: TextAlign.left,
                   ),
@@ -1073,11 +1080,16 @@ class ProfileInfoState extends State<ProfileInfo> {
                                 ListTile(
                                   contentPadding: EdgeInsets.symmetric(
                                       horizontal: 12, vertical: 4),
-                                  leading: Icon(Icons.my_location),
+                                  leading: Icon(
+                                    Icons.my_location,
+                                    color: colorDarkRed,
+                                  ),
                                   title: Text(
                                     "Location",
-                                    style:
-                                        TextStyle(color: Colors.blue.shade300),
+                                    style: style.copyWith(
+                                        color: colorDarkRed,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                   subtitle: FutureBuilder<dynamic>(
                                     future: getFriendPos(widget.user),
@@ -1086,56 +1098,78 @@ class ProfileInfoState extends State<ProfileInfo> {
                                       if (snapshot.hasData) {
                                         return Text(
                                           snapshot.data,
-                                          style: TextStyle(
-                                              color: Colors.blue.shade300),
+                                          style: style.copyWith(
+                                              color: Colors.grey.shade700,
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.bold),
                                         );
                                       } else {
-                                        return Text(
-                                          "Loading",
-                                          style: TextStyle(
-                                              color: Colors.blue.shade300),
-                                        );
+                                        return Text("Loading",
+                                            style: TextStyle(
+                                              color: colorDarkRed,
+                                            ));
                                       }
                                     },
                                   ),
                                 ),
                                 ListTile(
-                                  leading: Icon(Icons.email),
+                                  leading: Icon(
+                                    Icons.email,
+                                    color: colorDarkRed,
+                                  ),
                                   title: Text(
                                     "Email",
-                                    style:
-                                        TextStyle(color: Colors.blue.shade300),
+                                    style: style.copyWith(
+                                        color: colorDarkRed,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                   subtitle: Text(
                                     widget.user.email,
-                                    style:
-                                        TextStyle(color: Colors.blue.shade300),
+                                    style: style.copyWith(
+                                        color: Colors.grey.shade700,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ),
                                 ListTile(
-                                  leading: Icon(Icons.phone),
+                                  leading: Icon(
+                                    Icons.phone,
+                                    color: colorDarkRed,
+                                  ),
                                   title: Text(
                                     "Phone",
-                                    style:
-                                        TextStyle(color: Colors.blue.shade300),
+                                    style: style.copyWith(
+                                        color: colorDarkRed,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                   subtitle: Text(
                                     widget.user.phoneNumber,
-                                    style:
-                                        TextStyle(color: Colors.blue.shade300),
+                                    style: style.copyWith(
+                                        color: Colors.grey.shade700,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ),
                                 ListTile(
-                                  leading: Icon(Icons.person),
+                                  leading: Icon(
+                                    Icons.person,
+                                    color: colorDarkRed,
+                                  ),
                                   title: Text(
                                     "About Me",
-                                    style:
-                                        TextStyle(color: Colors.blue.shade300),
+                                    style: style.copyWith(
+                                        color: colorDarkRed,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                   subtitle: Text(
                                     "I love big fluffy dogs. Proud owner of a Bernese Mountain Dog",
-                                    style:
-                                        TextStyle(color: Colors.blue.shade300),
+                                    style: style.copyWith(
+                                        color: Colors.grey.shade700,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ),
                               ],

@@ -445,21 +445,21 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                                 height: 75,
                                 margin: EdgeInsets.all(2),
                                 decoration: BoxDecoration(
+                                  color: colorPrimaryRed,
                                   border: Border.all(width: 3.0),
                                   borderRadius: BorderRadius.all(
                                       Radius.circular(
                                           20.0) //         <--- border radius here
                                       ),
-                                  image: DecorationImage(
-                                    image: AssetImage("routeBackground.jpg"),
-                                    fit: BoxFit.cover,
-                                  ),
                                 ),
                                 child: Center(
                                     child: Card(
+                                      elevation: 0,
+                                      color: colorPrimaryRed,
+                                      shadowColor: colorPrimaryRed,
                                   child: Text(
-                                    '${savedRoutes[index].name} ${savedRoutes[index].distans} Km',
-                                    style: TextStyle(
+                                    '${savedRoutes[index].name}\n ${savedRoutes[index].distans} km',
+                                    style: style.copyWith(
                                       color: Colors.black,
                                       fontSize: 16,
                                     ),
@@ -471,22 +471,20 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                                   barrierDismissible: true,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
-                                      backgroundColor: colorPeachPink,
+                                      backgroundColor: colorBeige,
                                       title: Text(
                                         '${savedRoutes[index].name}',
-                                        style: TextStyle(
-                                          fontFamily:
-                                              'Hipster Script W00 Regular',
+                                        style: style.copyWith(
                                           fontSize: 28,
                                         ),
                                       ),
                                       content: Text(
-                                          '${savedRoutes[index].distans}km'),
+                                          '${savedRoutes[index].distans} km', style: style.copyWith(),),
                                       actions: <Widget>[
                                         FlatButton(
                                           onPressed: () =>
                                               Navigator.pop(context),
-                                          child: Text('Close'),
+                                          child: Text('Close', style: style.copyWith(fontSize: 15, color: Colors.black)),
                                         ),
                                         IconButton(
                                           icon: Icon(
@@ -500,7 +498,10 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                                             Navigator.pop(context);
                                           },
                                         ),
-                                        FlatButton(
+                                        RaisedButton(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(15)
+                                          ),
                                           color: Colors.green,
                                           onPressed: () {
                                             openSavedRoutes(savedRoutes[index]
@@ -509,7 +510,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                                             Navigator.pop(context);
                                             Navigator.pop(context);
                                           },
-                                          child: Text('Open'),
+                                          child: Text('Open', style: style.copyWith(fontSize: 15)),
                                         ),
                                       ],
                                     );

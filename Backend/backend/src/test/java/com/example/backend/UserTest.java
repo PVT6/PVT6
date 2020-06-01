@@ -6,15 +6,12 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 
-//assertNotNull(user.getId()) everywhere since User should always have an id
 
 public class UserTest {
     
     @Test
     public void makeUserEmptyConstructor() {
         User user = new User();
-
-        assertNotNull(user.getId());
 
         assertNull(user.getEmail());
         assertNull(user.getPhoneNumber());
@@ -25,8 +22,6 @@ public class UserTest {
     public void makeUserConstructor() {
         User user = new User("uid", "email@email.com", "0700000000", "name",new ContactList() );
 
-        assertNotNull(user.getId());
-
         assertEquals("email@email.com" ,user.getEmail());
         assertEquals("0700000000", user.getPhoneNumber());
         assertEquals("name", user.getName());
@@ -35,8 +30,6 @@ public class UserTest {
     @Test
     public void makeUserSetters() {
         User user = new User();
-
-        assertNotNull(user.getId());
 
        user.setEmail("email@email.com");
        user.setPhoneNumber("0700000000");
