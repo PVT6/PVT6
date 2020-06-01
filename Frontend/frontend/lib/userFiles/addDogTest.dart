@@ -423,7 +423,7 @@ class BuildCardState extends State<BuildCards> {
         backgroundColor: colorBeige,
         body: Column(children: <Widget>[
           GradientAppBar(
-            "Description",
+            "Overall Information",
           ),
           Expanded(
               child: Container(

@@ -190,9 +190,9 @@ class UserInfo extends StatefulWidget {
 class UserInfoState extends State<UserInfo> {
   String kmString = "0";
   String routeTimeString = "0";
-   var points = <LatLng>[];
+  var points = <LatLng>[];
 
- void openSavedRoutes(String id) async {
+  void openSavedRoutes(String id) async {
     final data = await http
         .get("https://group6-15.pvt.dsv.su.se/route/getRoute?id=${id}");
     print(data.body);
@@ -211,7 +211,6 @@ class UserInfoState extends State<UserInfo> {
       for (var i = 0; i < route.length; i++) {
         points.add(new LatLng(route[i][1], route[i][0]));
       }
-    
     } else {
       // ERROR HÄR
     }
@@ -224,6 +223,22 @@ class UserInfoState extends State<UserInfo> {
         await Geocoder.local.findAddressesFromCoordinates(coordinates1);
     var first = addresses.first;
     return addresses.first.addressLine;
+  }
+
+  Future<void> getDogs() async {
+    var uid = userlib.uid;
+    var url = 'https://group6-15.pvt.dsv.su.se/user/dogs?uid=${uid}';
+    var response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      dogs = (json.decode(response.body) as List)
+          .map((i) => Dog.fromJson(i))
+          .toList();
+      setState(() {
+        userDogs = dogs;
+      });
+    } else {
+      // ERROR HÄR
+    }
   }
 
   showDogList(BuildContext context) {
@@ -283,7 +298,17 @@ class UserInfoState extends State<UserInfo> {
                                   Icons.delete,
                                   color: Colors.red,
                                 ),
-                                onPressed: () {},
+                                onPressed: () async {
+                                  var url =
+                                      'https://group6-15.pvt.dsv.su.se/dog/deletedog?id=${c.id.toString()}&uid=${userlib.uid}';
+
+                                  var response =
+                                      await http.post(Uri.parse(url));
+
+                                  print(response.statusCode);
+                                  await getDogs();
+                                  Navigator.pop(context);
+                                },
                               ),
                             ],
                           );
@@ -440,13 +465,12 @@ class UserInfoState extends State<UserInfo> {
                                   child: InkWell(
                                   onTap: () {},
                                   child: Container(
-                                    
                                     width: 75,
                                     height: 75,
                                     child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      child: Icon(Icons.directions_walk)
-                                    ),
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
+                                        child: Icon(Icons.directions_walk)),
                                   ),
                                 ))
                               : SizedBox(
