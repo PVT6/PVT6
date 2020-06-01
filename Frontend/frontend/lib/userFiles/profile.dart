@@ -1,10 +1,8 @@
 import 'dart:convert';
-
-import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:frontend/loadingScreen.dart';
+
 import 'package:frontend/loginFiles/MySignInPage.dart';
+import 'package:frontend/mapFiles/mapPreview.dart';
 import 'package:frontend/mapFiles/temp.dart';
 import 'package:frontend/routePickerMap/Route.dart';
 import 'package:frontend/userFiles/addDogTest.dart';
@@ -22,6 +20,19 @@ import 'package:geocoder/geocoder.dart';
 
 List<Dog> userDogs;
 List<SavedRoute> savedRoutes = [];
+
+Future<void> getDogs() async {
+  var uid = userlib.uid;
+  var url = 'https://group6-15.pvt.dsv.su.se/user/dogs?uid=${uid}';
+  var response = await http.get(Uri.parse(url));
+  if (response.statusCode == 200) {
+    dogs = (json.decode(response.body) as List)
+        .map((i) => Dog.fromJson(i))
+        .toList();
+  } else {
+    // ERROR HÄR
+  }
+}
 
 const _colorBeige = const Color(0xFFF5F3EE);
 const _colorDarkBeige = const Color(0xFFc2c0bc);
@@ -42,40 +53,38 @@ class ProfileEightPageState extends State<ProfileEightPage> {
   @override
   void initState() {
     super.initState();
-    setDogs();
-    getSavedRoutes();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await setDogs();
+      await getSavedRoutes();
+    });
   }
 
-  Future<void> getDogs() async {
-    var uid = userlib.uid;
-    var url = 'https://group6-15.pvt.dsv.su.se/user/dogs?uid=${uid}';
-    var response = await http.get(Uri.parse(url));
-    if (response.statusCode == 200) {
-      dogs = (json.decode(response.body) as List)
-          .map((i) => Dog.fromJson(i))
-          .toList();
-      setState(() {
-        userDogs = dogs;
-      });
-    } else {
-      // ERROR HÄR
-    }
+  Future<void> setDogs() async {
+    await getDogs();
+    setState(() {
+      userDogs = dogs;
+      userDogs.forEach((element) async => await _asyncMethod(element));
+    });
   }
 
   Future<void> getSavedRoutes() async {
     final response = await http.get(
         "https://group6-15.pvt.dsv.su.se/route/getSavedRoutes?uid=${userlib.uid}");
     if (response.statusCode == 200) {
-      savedRoutes = (json.decode(response.body) as List)
-          .map((i) => SavedRoute.fromJson(i))
-          .toList();
+      setState(() {
+        savedRoutes = (json.decode(response.body) as List)
+            .map((i) => SavedRoute.fromJson(i))
+            .toList();
+      });
     } else {
       // ERROR HÄR
     }
   }
 
-  Future<void> setDogs() async {
-    getDogs();
+  Future _asyncMethod(Dog d) async {
+    await d.getPicture();
+    print("ger");
   }
 
   @override
@@ -190,27 +199,33 @@ class UserInfo extends StatefulWidget {
 class UserInfoState extends State<UserInfo> {
   String kmString = "0";
   String routeTimeString = "0";
-  var points = <LatLng>[];
+  List<latlng.LatLng> points = <latlng.LatLng>[];
 
-  void openSavedRoutes(String id) async {
+  Future<void> openSavedRoutes(String id) async {
     final data = await http
         .get("https://group6-15.pvt.dsv.su.se/route/getRoute?id=${id}");
     print(data.body);
     if (data.statusCode == 200) {
       points.clear();
+      List<latlng.LatLng> points1 = <latlng.LatLng>[];
 
       var jsonfile = json.decode(data.body);
 
       var routedata = jsonfile['routes'][0];
       var route = routedata["geometry"]["coordinates"];
-      kmString = (routedata["distance"] / 1000).toStringAsFixed(2);
-      var estimatedTime = (routedata["duration"] / 3600)
-          .toStringAsFixed(2)
-          .toString(); // MAN KAN ÄNDRA GÅNGHASTIGHET FÖR ATT FÅ MER ACCURATE
-      routeTimeString = estimatedTime;
+
+      var estimatedTime =
+          (routedata["duration"] / 3600).toStringAsFixed(2).toString();
+      // MAN KAN ÄNDRA GÅNGHASTIGHET FÖR ATT FÅ MER ACCURATE
+
       for (var i = 0; i < route.length; i++) {
-        points.add(new LatLng(route[i][1], route[i][0]));
+        points1.add(new latlng.LatLng(route[i][1], route[i][0]));
       }
+      setState(() {
+        kmString = (routedata["distance"] / 1000).toStringAsFixed(2);
+        routeTimeString = estimatedTime;
+        points = points1;
+      });
     } else {
       // ERROR HÄR
     }
@@ -387,15 +402,15 @@ class UserInfoState extends State<UserInfo> {
                                     );
                                   },
                                   child: Container(
-                                    width: 75,
-                                    height: 75,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      child: Image.asset(
-                                        'BrewDog.jpg',
-                                      ),
-                                    ),
-                                  ),
+                                      width: 75,
+                                      height: 75,
+                                      child: ClipRRect(
+                                          child: c.dogPic == null
+                                              ? Image.asset("logoprototype.png")
+                                              : FittedBox(
+                                                  child: c.dogPic,
+                                                  fit: BoxFit.cover,
+                                                ))),
                                 ))
                               : SizedBox(
                                   child: InkWell(
@@ -451,7 +466,7 @@ class UserInfoState extends State<UserInfo> {
               physics: ScrollPhysics(),
               child: Container(
                 height: 70,
-                child: userDogs != null
+                child: savedRoutes != null
                     ? ListView.builder(
                         //https://pusher.com/tutorials/flutter-listviews
 
@@ -463,7 +478,18 @@ class UserInfoState extends State<UserInfo> {
                           return (c.name != null && c.name.length > 0)
                               ? SizedBox(
                                   child: InkWell(
-                                  onTap: () {},
+                                  onTap: () async {
+                                    await openSavedRoutes(c.id.toString());
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => MapPreviewPage(
+                                                kmString: kmString,
+                                                points: points,
+                                                openedThroughprofile: true,
+                                              )),
+                                    );
+                                  },
                                   child: Container(
                                     width: 75,
                                     height: 75,
@@ -475,7 +501,18 @@ class UserInfoState extends State<UserInfo> {
                                 ))
                               : SizedBox(
                                   child: InkWell(
-                                  onTap: () {},
+                                  onTap: () async {
+                                    await openSavedRoutes(c.id.toString());
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => MapPreviewPage(
+                                                kmString: kmString,
+                                                points: points,
+                                                openedThroughprofile: true,
+                                              )),
+                                    );
+                                  },
                                   child: Container(
                                     width: 75,
                                     height: 75,

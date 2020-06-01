@@ -160,7 +160,7 @@ class _MySignInPageState extends State<MySignInPage>
                 colors: [colorBeige, colorDarkBeige])),
         child: Stack(fit: StackFit.expand, children: <Widget>[
           SingleChildScrollView(
-            padding: const EdgeInsets.all(36.0),
+            padding: const EdgeInsets.all(30.0),
             child: Form(
                 key: _formKey,
                 child: Column(

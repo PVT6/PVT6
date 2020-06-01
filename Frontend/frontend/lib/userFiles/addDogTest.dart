@@ -17,6 +17,7 @@ import 'package:frontend/userFiles/addDogClasses/searchBreed.dart';
 import 'package:frontend/userFiles/profile.dart';
 import 'package:http/http.dart' as http;
 import '../customAppBar.dart';
+import 'ImageConverter.dart';
 import 'user.dart' as userlib;
 import '../dog.dart';
 
@@ -27,7 +28,7 @@ int weight = 15;
 int age = 0;
 String dogPicture;
 String desc = "";
-Gender gender = Gender.female;
+Gender gender;
 
 const Color mainBlue = const Color.fromRGBO(77, 123, 243, 1.0);
 const double baseHeight = 850.0;
@@ -93,34 +94,33 @@ class NameSelectState extends State<NameSelect> {
   Widget build(BuildContext context) {
     return new Scaffold(
         body: Column(
-          children: <Widget>[
-            GradientAppBar("Name"),
-            TextFormField(
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(15),
-              ],
-              obscureText: false,
-              style: style,
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                hintText: 'Name here',
-                filled: true,
-                fillColor: Colors.white,
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey),
-                ),
-              ),
-              validator: (value) =>
-                  value.isEmpty ? 'Name can\'t be empty' : null,
-              onChanged: (val) {
-                setState(() => dogName = val);
-              },
-            )
+      children: <Widget>[
+        GradientAppBar("Name"),
+        TextFormField(
+          inputFormatters: [
+            LengthLimitingTextInputFormatter(15),
           ],
-        ));
+          obscureText: false,
+          style: style,
+          keyboardType: TextInputType.emailAddress,
+          decoration: InputDecoration(
+            hintText: 'Name here',
+            filled: true,
+            fillColor: Colors.white,
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey),
+            ),
+          ),
+          validator: (value) => value.isEmpty ? 'Name can\'t be empty' : null,
+          onChanged: (val) {
+            setState(() => dogName = val);
+          },
+        )
+      ],
+    ));
   }
 }
 
@@ -195,7 +195,7 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
     int age1 = 0;
     String dogPicture1;
     String desc1 = "";
-    Gender gender1 = Gender.female;
+    Gender gender1;
     dogName = dogName1;
     finalBreed = finalBreed1;
     height = height1;
@@ -241,7 +241,7 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
         "Error",
         style: TextStyle(color: Colors.red),
       ),
-      content: Text("Please make sure you added a name and a breed"),
+      content: Text("Please make sure you added a name, a breed and a picture"),
       actions: [
         loginButon,
       ],
@@ -257,33 +257,57 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
   }
 
   _goToResultPage() async {
-    if (dogName == null || finalBreed == null) {
+    if (dogName == null || finalBreed == null || dogPicture == null) {
       return showAlertDialog(context);
     } else {
+      //(@RequestParam String uid, String name, String breed, String age,    String height, String weight, String dogpicture, String description, String gender)
       var url = 'https://group6-15.pvt.dsv.su.se/user/newdog';
       var response = await http.post(Uri.parse(url), body: {
         'name': dogName,
         'breed': finalBreed,
+        'description': desc,
+        'gender': gender.toString(),
         'age': age.toString(),
+        'height': height.toString(),
         'weight': weight.toString(),
         'uid': userlib.uid
       });
-      if (response.statusCode == 200) {
-        return Navigator.of(context).push(FadeRoute(
-          builder: (context) => ResultPage(
-            weight: weight,
-            height: height,
-            gender: gender,
-            dogName: dogName,
-            age: age,
-            finalBreed: finalBreed,
-            dogPicture: dogPicture,
-            desc: desc,
-          ),
-        ));
-      } else {
-        // ERROR MEDELANDE HÄR
+      print(height.toString());
+
+      print("FIRST" + response.statusCode.toString());
+      if (response.statusCode == 200 && dogPicture != null) {
+        var url = 'https://group6-15.pvt.dsv.su.se/dog/setPicture';
+        String base64 = await base64StringFromImage(dogPicture);
+        var setPictureRequest = await http.post(Uri.parse(url),
+            body: {'id': response.body, 'base64': base64, 'uid': userlib.uid},
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'});
+
+        if (setPictureRequest.statusCode == 200)
+          return Navigator.of(context).push(FadeRoute(
+            builder: (context) => ResultPage(
+              weight: weight,
+              height: height,
+              gender: gender,
+              dogName: dogName,
+              age: age,
+              finalBreed: finalBreed,
+              dogPicture: dogPicture,
+              desc: desc,
+            ),
+          ));
       }
+      return Navigator.of(context).push(FadeRoute(
+        builder: (context) => ResultPage(
+          weight: weight,
+          height: height,
+          gender: gender,
+          dogName: dogName,
+          age: age,
+          finalBreed: finalBreed,
+          dogPicture: Image.asset("logopurplepink.png"),
+          desc: desc,
+        ),
+      ));
     }
   }
 
@@ -368,7 +392,7 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
 
   Widget _buildTitle(BuildContext context) {
     return Container(
-      color: colorBeige,
+        color: colorBeige,
         padding: EdgeInsets.only(
           left: 24.0,
           top: screenAwareSize(56.0, context),
@@ -508,11 +532,10 @@ class ResultPageState extends State<ResultPage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-          ),
-          onPressed: () => Navigator.pop(context)
-        ),
+            icon: Icon(
+              Icons.arrow_back,
+            ),
+            onPressed: () => Navigator.pop(context)),
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: <Widget>[
@@ -599,6 +622,7 @@ class ResultPageState extends State<ResultPage> {
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 30.0),
                     ),
+                    Text("(" + gender.toString() + ")"),
                   ],
                 ),
                 SizedBox(
