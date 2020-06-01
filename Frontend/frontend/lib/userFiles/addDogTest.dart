@@ -241,7 +241,7 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
         "Error",
         style: TextStyle(color: Colors.red),
       ),
-      content: Text("Please make sure you added a name and a breed"),
+      content: Text("Please make sure you added a name, a breed and a picture"),
       actions: [
         loginButon,
       ],
@@ -257,7 +257,7 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
   }
 
   _goToResultPage() async {
-    if (dogName == null || finalBreed == null) {
+    if (dogName == null || finalBreed == null ||  dogPicture == null) {
       return showAlertDialog(context);
     } else {
       //(@RequestParam String uid, String name, String breed, String age,    String height, String weight, String dogpicture, String description, String gender)
