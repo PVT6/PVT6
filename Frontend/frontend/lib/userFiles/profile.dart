@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:frontend/loadingScreen.dart';
 import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'package:frontend/mapFiles/temp.dart';
+import 'package:frontend/routePickerMap/Route.dart';
 import 'package:frontend/userFiles/addDogTest.dart';
 import 'package:frontend/userFiles/dogProfile.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,8 +17,10 @@ import 'package:frontend/mapFiles/mapsDemo.dart';
 import 'package:http/http.dart' as http;
 import '../dog.dart';
 import 'package:latlong/latlong.dart' as latlng;
+import 'package:geocoder/geocoder.dart';
 
 List<Dog> userDogs;
+List<SavedRoute> savedRoutes = [];
 
 const _colorBeige = const Color(0xFFF5F3EE);
 const _colorDarkBeige = const Color(0xFFc2c0bc);
@@ -39,6 +42,7 @@ class ProfileEightPageState extends State<ProfileEightPage> {
   void initState() {
     super.initState();
     setDogs();
+    getSavedRoutes();
   }
 
   Future<void> getDogs() async {
@@ -52,6 +56,18 @@ class ProfileEightPageState extends State<ProfileEightPage> {
       setState(() {
         userDogs = dogs;
       });
+    } else {
+      // ERROR HÄR
+    }
+  }
+
+  Future<void> getSavedRoutes() async {
+    final response = await http.get(
+        "https://group6-15.pvt.dsv.su.se/route/getSavedRoutes?uid=${userlib.uid}");
+    if (response.statusCode == 200) {
+      savedRoutes = (json.decode(response.body) as List)
+          .map((i) => SavedRoute.fromJson(i))
+          .toList();
     } else {
       // ERROR HÄR
     }
@@ -103,17 +119,32 @@ class ProfileEightPageState extends State<ProfileEightPage> {
                     ),
                   ),
                 ),
-                Positioned(
-                  bottom: 0.0,
-                  left: 20.0,
-                  child: MaterialButton(
+                Positioned.fill(
+                    child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Text(
+                    userlib.name,
+                    style: style.copyWith(
+                        fontSize: 25.0,
+                        color: colorDarkRed,
+                        fontWeight: FontWeight.bold),
+                  ),
+                )),
+              ],
+            ),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  RaisedButton(
                     color: _colorLightRed,
-                    shape: CircleBorder(),
-                    elevation: 0,
-                    child: Icon(
-                      Icons.edit,
-                      color: _colorDarkRed,
-                    ),
+                    elevation: 15,
+                    child: Row(children: <Widget>[
+                      Icon(
+                        Icons.edit,
+                        color: _colorDarkRed,
+                      ),
+                      Text("Edit Profile")
+                    ]),
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -121,17 +152,17 @@ class ProfileEightPageState extends State<ProfileEightPage> {
                       );
                     },
                   ),
-                ),
-                Positioned(
-                  bottom: 0.0,
-                  right: 25.0,
-                  child: MaterialButton(
+                  RaisedButton(
                     color: _colorLightRed,
-                    shape: CircleBorder(),
-                    elevation: 0,
-                    child: Icon(
-                      Icons.pets,
-                      color: _colorDarkRed,
+                    elevation: 15,
+                    child: Row(
+                      children: <Widget>[
+                        Icon(
+                          Icons.pets,
+                          color: _colorDarkRed,
+                        ),
+                        Text("Add Dog")
+                      ],
                     ),
                     onPressed: () {
                       Navigator.push(
@@ -140,10 +171,7 @@ class ProfileEightPageState extends State<ProfileEightPage> {
                       );
                     },
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10.0),
+                ]),
             UserInfo(),
           ],
         ),
@@ -159,6 +187,15 @@ class UserInfo extends StatefulWidget {
 }
 
 class UserInfoState extends State<UserInfo> {
+  getLocationName() async {
+    final coordinates1 = new Coordinates(userlib.usersCurrentLocation.latitude,
+        userlib.usersCurrentLocation.longitude);
+    var addresses =
+        await Geocoder.local.findAddressesFromCoordinates(coordinates1);
+    var first = addresses.first;
+    return addresses.first.addressLine;
+  }
+
   showDogList(BuildContext context) {
     showDialog(
       context: context,
@@ -250,26 +287,27 @@ class UserInfoState extends State<UserInfo> {
       child: Column(
         children: <Widget>[
           Container(
-              padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
-              alignment: Alignment.topLeft,
-              child: Row(
-                children: <Widget>[
-                  Text(
-                    "My Dogs",
-                    style: style.copyWith(
-                      color: _colorDarkRed,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.left,
+            padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
+            alignment: Alignment.topLeft,
+            child: Row(
+              children: <Widget>[
+                Text(
+                  "My Dogs",
+                  style: style.copyWith(
+                    color: _colorDarkRed,
+                    fontWeight: FontWeight.bold,
                   ),
-                  IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () {
-                      showDogList(context);
-                    },
-                  )
-                ],
-              )),
+                  textAlign: TextAlign.left,
+                ),
+                IconButton(
+                  icon: Icon(Icons.edit),
+                  onPressed: () {
+                    showDogList(context);
+                  },
+                )
+              ],
+            ),
+          ),
           SingleChildScrollView(
               physics: ScrollPhysics(),
               child: Container(
@@ -335,6 +373,77 @@ class UserInfoState extends State<UserInfo> {
           Container(
             padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
             alignment: Alignment.topLeft,
+            child: Row(
+              children: <Widget>[
+                Text(
+                  "My Saved Routes",
+                  style: style.copyWith(
+                    color: _colorDarkRed,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+                IconButton(
+                  icon: Icon(Icons.edit),
+                  onPressed: () {
+                    //showDogList(context);
+                  },
+                )
+              ],
+            ),
+          ),
+          SingleChildScrollView(
+              physics: ScrollPhysics(),
+              child: Container(
+                height: 70,
+                child: userDogs != null
+                    ? ListView.builder(
+                        //https://pusher.com/tutorials/flutter-listviews
+
+                        shrinkWrap: true,
+                        itemCount: savedRoutes?.length ?? 0,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (BuildContext context, int index) {
+                          SavedRoute c = savedRoutes?.elementAt(index);
+                          return (c.name != null && c.name.length > 0)
+                              ? SizedBox(
+                                  child: InkWell(
+                                  onTap: () {},
+                                  child: Container(
+                                    
+                                    width: 75,
+                                    height: 75,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      child: Icon(Icons.directions_walk)
+                                    ),
+                                  ),
+                                ))
+                              : SizedBox(
+                                  child: InkWell(
+                                  onTap: () {},
+                                  child: Container(
+                                    width: 75,
+                                    height: 75,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      child: Image.asset(
+                                        'BrewDog.jpg',
+                                      ),
+                                    ),
+                                  ),
+                                ));
+                        },
+                      )
+                    : Center(
+                        child: CircularProgressIndicator(
+                            valueColor: new AlwaysStoppedAnimation<Color>(
+                                _colorDarkRed)),
+                      ),
+              )),
+          Container(
+            padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
+            alignment: Alignment.topLeft,
             child: Text(
               "User Information", //userData
               style: style.copyWith(
@@ -356,15 +465,28 @@ class UserInfoState extends State<UserInfo> {
                           ListTile(
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 12, vertical: 4),
-                            leading: Icon(FontAwesomeIcons.user,
-                                color: _colorDarkRed),
+                            leading:
+                                Icon(Icons.my_location, color: _colorDarkRed),
                             title: Text(
-                              "Username",
+                              "Location",
                               style: TextStyle(color: _colorDarkRed),
                             ),
-                            subtitle: Text(
-                              userlib.name,
-                              style: TextStyle(color: _colorDarkRed),
+                            subtitle: FutureBuilder<dynamic>(
+                              future: getLocationName(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<dynamic> snapshot) {
+                                if (snapshot.hasData) {
+                                  return Text(
+                                    snapshot.data,
+                                    style: TextStyle(color: _colorDarkRed),
+                                  );
+                                } else {
+                                  return Text(
+                                    "Loading",
+                                    style: TextStyle(color: _colorDarkRed),
+                                  );
+                                }
+                              },
                             ),
                           ),
                           ListTile(

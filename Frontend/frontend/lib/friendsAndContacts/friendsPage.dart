@@ -912,56 +912,67 @@ class ProfileInfoState extends State<ProfileInfo> {
                   ),
                 ),
               ),
-              Positioned(
-                bottom: 0.0,
-                right: 25.0,
-                child: // är alltid true här
-                    true
-                        ? MaterialButton(
-                            color: Colors.red,
-                            shape: BeveledRectangleBorder(),
-                            elevation: 0,
-                            child: Icon(Icons.remove_circle),
-                            onPressed: () {
-                              showAlertDialog(context);
-                            },
-                          )
-                        : MaterialButton(
-                            color: Colors.green,
-                            shape: BeveledRectangleBorder(),
-                            elevation: 0,
-                            child: Icon(Icons.person_add),
-                            onPressed: () {
-                              setState(() {
-                                //widget.user.friendstatus = true;
-                              });
-                            },
-                          ),
-              ),
-              Positioned(
-                  bottom: 0.0,
-                  left: 25.0,
-                  child: MaterialButton(
-                    color: colorPeachPink,
-                    shape: BeveledRectangleBorder(),
-                    elevation: 0,
-                    child: Row(
-                      children: <Widget>[
-                        Icon(Icons.person_pin),
-                        Text("View on map")
-                      ],
-                    ),
-                    onPressed: () {
-                      latlng.LatLng coordinates = latlng.LatLng(
-                          widget.user.position.y, widget.user.position.x);
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              MapsDemo(coordinates)));
-                    },
-                  )),
+              Positioned.fill(
+                  child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Text(
+                  widget.user.name,
+                  style: style.copyWith(
+                      fontSize: 25.0,
+                      color: colorDarkRed,
+                      fontWeight: FontWeight.bold),
+                ),
+              )),
             ],
           ),
-          const SizedBox(height: 10.0),
+          
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              RaisedButton(
+                color: colorPeachPink,
+                shape: BeveledRectangleBorder(),
+                elevation: 15,
+                child: Row(
+                  children: <Widget>[
+                    Icon(Icons.person_pin),
+                    Text("View on map")
+                  ],
+                ),
+                onPressed: () {
+                  latlng.LatLng coordinates = latlng.LatLng(
+                      widget.user.position.y, widget.user.position.x);
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          MapsDemo(coordinates)));
+                },
+              ),
+              true
+                  ? RaisedButton(
+                      color: colorPeachPink,
+                      shape: BeveledRectangleBorder(),
+                      elevation: 15,
+                      child: Row(children: <Widget>[
+                        Icon(Icons.remove_circle),
+                        Text("Remove Friend"),
+                      ]),
+                      onPressed: () {
+                        showAlertDialog(context);
+                      },
+                    )
+                  : MaterialButton(
+                      color: Colors.green,
+                      shape: BeveledRectangleBorder(),
+                      elevation: 0,
+                      child: Icon(Icons.person_add),
+                      onPressed: () {
+                        setState(() {
+                          //widget.user.friendstatus = true;
+                        });
+                      },
+                    ),
+            ],
+          ),
           Container(
             padding: EdgeInsets.all(10),
             child: Column(
@@ -1123,19 +1134,6 @@ class ProfileInfoState extends State<ProfileInfo> {
                                   ),
                                   subtitle: Text(
                                     widget.user.phoneNumber,
-                                    style:
-                                        TextStyle(color: Colors.blue.shade300),
-                                  ),
-                                ),
-                                ListTile(
-                                  leading: Icon(Icons.person),
-                                  title: Text(
-                                    "About Me",
-                                    style:
-                                        TextStyle(color: Colors.blue.shade300),
-                                  ),
-                                  subtitle: Text(
-                                    "I love big fluffy dogs. Proud owner of a Bernese Mountain Dog",
                                     style:
                                         TextStyle(color: Colors.blue.shade300),
                                   ),

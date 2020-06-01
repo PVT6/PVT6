@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import 'package:frontend/loginFiles/MySignInPage.dart';
@@ -36,9 +35,7 @@ class BrowseDogParks extends StatelessWidget {
               FoodListview(),
               SizedBox(height: 16.0),
               SizedBox(height: 16.0),
-              MenuItemsList(
-                context: context,
-              )
+              MenuItemsList()
             ],
           ),
         ));
@@ -46,22 +43,213 @@ class BrowseDogParks extends StatelessWidget {
 }
 
 class MenuItemsList extends StatefulWidget {
-  MenuItemsList({Key key, this.title, this.context}) : super(key: key);
+  MenuItemsList({Key key, this.title}) : super(key: key);
   final String title;
-  final BuildContext context;
 
   @override
   MenuItemsListState createState() => new MenuItemsListState();
 }
 
 class MenuItemsListState extends State<MenuItemsList> {
-  BuildContext context;
   List<MenuItem> items = [];
-
-
+  List<MenuItem> duplicateItems = [];
+   TextEditingController editingController = TextEditingController();
+   String filter;
+  @override
+  void initState() {
+    setState(() {
+      
+    });
+        duplicateItems.forEach((item) {
+      items.add(item);
+    });
+    editingController.addListener(() {
+      setState(() {
+        filter = editingController.text;
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    List<MenuItem> setterList = [
+      MenuItem(
+        "Hundoarna.jpg",
+        '4.5',
+        'Hundöarna Drottningholm',
+        'Looking for a place where your dog can run free with other dogs look no further, ...',
+        () => {
+          Navigator.push(
+              context,
+              new MaterialPageRoute(
+                  builder: (context) => DogPlaceDesc2(
+                        "Hundoarna.jpg",
+                        '4.5',
+                        'Location',
+                        'Hundöarna Drottningholm',
+                        "Looking for a place where your dog can run free with other dogs look no further, hundöarna at Drottningholms castle are is by all means the place for you to visit. The park is home for majestice trees and bridges, aswell as a quite place for peaceful walks. Perfect for walkers and dogowners alike.",
+                        () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => IntroScreen()),
+                          )
+                        },
+                        () => {},
+                        location = new LatLng(59.321841, 17.886783),
+                      )))
+        },
+      ),
+      MenuItem(
+        "ormingesHundrastgard.jpg",
+        "4.5",
+        'Orminges hundrastgård',
+        'With an agility track aswell aswell as an abundance of trees, ...',
+        () => {
+          Navigator.push(
+              context,
+              new MaterialPageRoute(
+                  builder: (context) => DogPlaceDesc2(
+                        "ormingesHundrastgard.jpg",
+                        '4.5',
+                        'Location',
+                        'Orminges hundrastgård',
+                        'With an agility track aswell as an abundance of trees, + desc',
+
+                        () => {}, //Här
+                        () => {},
+                        location = new LatLng(59.334389, 18.254072),
+                      )))
+        },
+      ),
+      MenuItem(
+        "AkersbergasHundpark.jpg",
+        '4.5',
+        'Åkersbergas hundpark',
+        'Exercise for both you and your dog, ...',
+        () => {
+          Navigator.push(
+              context,
+              new MaterialPageRoute(
+                  builder: (context) => DogPlaceDesc2(
+                        "AkersbergasHundpark.jpg",
+                        '4.5',
+                        'Location',
+                        'Åkersbergas hundpark',
+                        'Exercise for both you and your dog, + desc',
+                        () => {},
+                        () => {},
+                        location = new LatLng(59.491098, 18.281011),
+                      )))
+        },
+      ),
+      MenuItem(
+        "hundrastgard-henriksdal.jpg",
+        '4.5',
+        'Henriksdalsbergets hundrastgård',
+        'Varied walking in dynamic enviroments, ...',
+        () => {
+          Navigator.push(
+              context,
+              new MaterialPageRoute(
+                  builder: (context) => DogPlaceDesc2(
+                        "hundrastgard-henriksdal.jpg",
+                        '4.5',
+                        'Location',
+                        'Henriksdalsbergets hundrastgård',
+                        'Varied walking in dynamic enviroments, + desc',
+                        () => {},
+                        () => {},
+                        location = new LatLng(59.311540, 18.118437),
+                      )))
+        },
+      ),
+      MenuItem(
+        "Valdemarsudde.jpg",
+        '4.5',
+        'Waldermarsuddes hundrastområde',
+        'Big closed in dog park with stunning enviroment, ...',
+        () => {
+          Navigator.push(
+              context,
+              new MaterialPageRoute(
+                  builder: (context) => DogPlaceDesc2(
+                        "Valdemarsudde.jpg",
+                        '4.5',
+                        'Location',
+                        'Waldersmarsuddes hundrastområde',
+                        'Big closed in dog park with stunning enviroment, + desc',
+                        () => {},
+                        () => {},
+                        location = new LatLng(59.320092, 18.113662),
+                      )))
+        },
+      ),
+      MenuItem(
+        "BrommaKyrka.jpg",
+        '4.5',
+        'Bromma kyrka hundrastområde',
+        'In this beautiful forest your dogs can run free through hills and paths, ...',
+        () => {
+          Navigator.push(
+              context,
+              new MaterialPageRoute(
+                  builder: (context) => DogPlaceDesc2(
+                        "BrommaKyrka.jpg",
+                        '4.5',
+                        'Location',
+                        'Bromma kyrka hundrastområde',
+                        'In this beautiful forest your dogs can run free through hills and paths, + desc',
+                        () => {},
+                        () => {},
+                        location = new LatLng(59.355280, 17.920966),
+                      )))
+        },
+      ),
+      MenuItem(
+        "Langholmen.jpg",
+        '4.5',
+        'Långholmens hundrastgård',
+        'Dog friendly enviroments with a local cafee where dogs are most welcome, ...',
+        () => {
+          Navigator.push(
+              context,
+              new MaterialPageRoute(
+                  builder: (context) => DogPlaceDesc2(
+                        "Langholmen.jpg",
+                        '4.5',
+                        'Location',
+                        'Långholmens hundrastgård',
+                        'Dog friendly enviroments with a local cafee where dogs are most welcome, + desc',
+                        () => {},
+                        () => {},
+                        location = new LatLng(59.321889, 18.034564),
+                      )))
+        },
+      ),
+      MenuItem(
+        "Bellevueparken.jpg",
+        '4.5',
+        'Bellevueparkens hundrastområde',
+        'Soothing dog walks in a 30.000 square meter territory, ...',
+        () => {
+          Navigator.push(
+              context,
+              new MaterialPageRoute(
+                  builder: (context) => DogPlaceDesc2(
+                        "Bellevueparken.jpg",
+                        '4.5',
+                        'Location',
+                        'Bellevueparkens hundrastområde',
+                        'Soothing dog walks in a 30.000 square meter territory, + desc',
+                        () => {},
+                        () => {},
+                        location = new LatLng(59.354116, 18.047865),
+                      )))
+        },
+      ),
+    ];
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Column(
@@ -382,26 +570,7 @@ class FoodListview extends StatelessWidget {
                             )))
               },
             ),
-            ItemCard(
-              "LeBistro.jpg",
-              'Jakobs Test Location',
-              'Testar navigation här',
-              () => {
-                Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (context) => DogPlaceDesc2(
-                              "LeBistro.jpg",
-                              '5',
-                              'Coop Vinsta',
-                              'Vinsta',
-                              'Trött',
-                              () => {},
-                              () => {},
-                              location = new LatLng(59.369411, 17.858453),
-                            )))
-              },
-            ),
+            
           ],
         ),
       ),

@@ -7,6 +7,7 @@ import 'package:frontend/browseDogParks.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:frontend/friendsAndContacts/friendsPage.dart';
 import 'package:frontend/friendsAndContacts/sharePos.dart';
+import 'package:frontend/infoPage.dart';
 import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'package:frontend/mapFiles/mapBoxSearch.dart';
 import 'package:frontend/mapFiles/mapPreview.dart';
@@ -246,7 +247,17 @@ class MapsDemoState extends State<MapsDemo> {
                               context,
                               new MaterialPageRoute(
                                   builder: (context) => BrowseDogParks()))
-                        }), //Tror denna kan behövs senare då logout antagligen är fel implementerad
+                        }),
+                CustomListTile(
+                    FontAwesomeIcons.infoCircle,
+                    'About DogWalk',
+                    () => {
+                          Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                  builder: (context) => DetailPage()))
+                        }),
+                //Tror denna kan behövs senare då logout antagligen är fel implementerad
                 // CustomListTile(
                 //     Icons.lock,
                 //     'Log out',
@@ -325,7 +336,8 @@ class MapsDemoState extends State<MapsDemo> {
                 alignment: Alignment.bottomRight,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[ // !!!!!!!!!!!!!!!!!!!!!!!!Kommentarer under är om vi vill ha en notification knapp
+                  children: <Widget>[
+                    // !!!!!!!!!!!!!!!!!!!!!!!!Kommentarer under är om vi vill ha en notification knapp
                     // Container(
                     //   height: 60,
                     //   width: 60,

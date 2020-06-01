@@ -107,26 +107,7 @@ class DogPlaceDesc2 extends StatelessWidget {
                     style: style.copyWith(fontWeight: FontWeight.bold),
                   ),
                   Divider(),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Icon(Icons.favorite_border),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      Text("20.2k", style: style.copyWith(fontSize: 15.0)),
-                      SizedBox(
-                        width: 16.0,
-                      ),
-                      Icon(Icons.comment),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      Text("2.2k", style: style.copyWith(fontSize: 15.0)),
-                    ],
-                  ),
+                 
                   SizedBox(
                     height: 10.0,
                   ),
