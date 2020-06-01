@@ -135,8 +135,8 @@ class DogProfileState extends State<DogProfile> {
                   width: 280,
                   height: 80,
                   child: Text(
-                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."),
-                ),
+                      widget.dog.description)
+                          ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -169,7 +169,7 @@ class DogProfileState extends State<DogProfile> {
                           ),
                         ),
                         Text(
-                          "50" + "cm",
+                          widget.dog.height + "cm",
                           style: TextStyle(color: Colors.grey.shade600),
                         ),
                       ],

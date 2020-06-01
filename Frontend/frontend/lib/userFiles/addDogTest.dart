@@ -268,9 +268,11 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
         'description': desc,
         'gender': gender.toString(),
         'age': age.toString(),
+        'height': height.toString(),
         'weight': weight.toString(),
         'uid': userlib.uid
       });
+      print(height.toString());
 
       print("FIRST" + response.statusCode.toString());
       if (response.statusCode == 200 && dogPicture != null) {
