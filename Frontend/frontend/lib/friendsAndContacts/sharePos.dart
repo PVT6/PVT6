@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:cron/cron.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
@@ -35,7 +37,7 @@ sharePos() async {
   }
 }
 
-getFriensPos(){ 
+getFriensPos(){
   return posName;
 }
 downloadFriendsPos() async {
@@ -64,6 +66,27 @@ downloadFriendsPos() async {
   }
 }
 
+void testConnection(BuildContext context) async{
+  var url = 'https://group6-15.pvt.dsv.su.se/version';
+  var response = await http.get(Uri.parse(url));
+  if(response.body == "1.2") { //should be 1.1 when done testing
+    //return "DB CONNECTED";
+  }
+  else {
+    showAlertDialog(context);
+  }
+}
+
+void showAlertDialog(BuildContext context) {
+  //return 
+  Widget okButton = FlatButton(child: Text("OK"), onPressed: (){},
+  );
+
+  AlertDialog alert = AlertDialog(title: Text("Unable to connect to DB"), actions: [okButton,],
+  );
+
+  showDialog(context: context, builder:(BuildContext){ return alert;},);
+}
 
 void startShareLocation() {
   getLocation();
