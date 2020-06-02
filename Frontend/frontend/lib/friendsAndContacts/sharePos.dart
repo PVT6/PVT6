@@ -22,6 +22,10 @@ class PostionAndName {
 Timer timer;
 LatLng latLng;
 sharePos() async {
+
+
+
+
   if(latLng != null) {
   var url = 'https://group6-15.pvt.dsv.su.se/user/location';
   var response = await http.post((url), body: {
@@ -41,7 +45,7 @@ getFriensPos(){
 downloadFriendsPos() async {
   var url = 'https://group6-15.pvt.dsv.su.se/contacts/all?uid=${userlib.uid}';
   var response = await http.get(Uri.parse(url));
-  if (response.body != "") {
+  if (response.body != "" && response.statusCode == 200){
     final body = json.decode(response.body);
 
     print("LOAD FRIENDS");
