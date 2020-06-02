@@ -57,7 +57,7 @@ downloadFriendsPos() async {
         posName.add(new PostionAndName(element.name, new LatLng(element.position.y, element.position.x)));
       }
     });
-    print(posName.first.pos);
+    //print(posName.first.pos);
   } else {
     print("NO FRIENDS");
     updatedFriends.clear();

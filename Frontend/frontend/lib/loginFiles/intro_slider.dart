@@ -4,6 +4,7 @@ import 'package:frontend/mapFiles/mapsDemo.dart';
 import 'package:intro_slider/intro_slider.dart';
 import 'package:intro_slider/slide_object.dart';
 import 'package:latlong/latlong.dart' as latlng;
+import 'package:frontend/userFiles/user.dart' as userlib;
 
 class IntroScreen extends StatefulWidget {
   IntroScreen() : super();
@@ -101,7 +102,7 @@ class IntroScreenState extends State<IntroScreen> {
   void onDonePress() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MapsDemo(setter)),
+      MaterialPageRoute(builder: (context) => new MapsDemo(userlib.usersCurrentLocation)),
     );
   }
 

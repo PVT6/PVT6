@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/services/auth.dart';
 import 'package:latlong/latlong.dart' as latlng;
+import 'loginFiles/intro_slider.dart';
 import 'mapFiles/mapsDemo.dart';
 
 import 'package:flutter/material.dart';
@@ -21,7 +22,8 @@ const _colorDarkRed = const Color(0xffb66a6b);
 
 class LoadingScreen extends StatefulWidget {
   FirebaseUser user;
-  LoadingScreen(this.user) : super();
+  String location;
+  LoadingScreen(this.user,{this.location}) : super();
 
   @override
   _LoadingScreenState createState() => _LoadingScreenState();
@@ -98,10 +100,17 @@ class _LoadingScreenState extends State<LoadingScreen> {
         await _auth.connectLoggedInUser(user);
         await getLocation();
         Navigator.pop(context);
-        Navigator.push(
+        if(widget.location == "introSlider"){
+          Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                  builder: (context) => IntroScreen()));
+        }else{
+          Navigator.push(
                               context,
                               new MaterialPageRoute(
                                   builder: (context) => new MapsDemo(userlib.usersCurrentLocation)));
+        }
                                   
       }
 

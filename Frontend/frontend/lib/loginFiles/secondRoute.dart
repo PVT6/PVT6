@@ -198,7 +198,7 @@ class SecondRoute extends State<SecondRouteState> {
                       } else {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => LoadingScreen(result)),
+                          MaterialPageRoute(builder: (context) => LoadingScreen(result, location: "introSlider")),
                         );
                       }
                     }
