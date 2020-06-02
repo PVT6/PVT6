@@ -64,6 +64,7 @@ class ProfileEightPageState extends State<ProfileEightPage> {
     await getDogs();
     setState(() {
       userDogs = dogs;
+
       userDogs.forEach((element) async => await _asyncMethod(element));
     });
   }
@@ -427,7 +428,7 @@ class UserInfoState extends State<UserInfo> {
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(20.0),
                                       child: Image.asset(
-                                        'BrewDog.jpg',
+                                        'logoprototype.png',
                                       ),
                                     ),
                                   ),
@@ -475,30 +476,37 @@ class UserInfoState extends State<UserInfo> {
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (BuildContext context, int index) {
                           SavedRoute c = savedRoutes?.elementAt(index);
+                          bool _loading = false;
                           return (c.name != null && c.name.length > 0)
                               ? SizedBox(
-                                  child: InkWell(
-                                  onTap: () async {
-                                    await openSavedRoutes(c.id.toString());
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => MapPreviewPage(
-                                                kmString: kmString,
-                                                points: points,
-                                                openedThroughprofile: true,
-                                              )),
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 75,
-                                    height: 75,
-                                    child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0),
-                                        child: Icon(Icons.directions_walk)),
-                                  ),
-                                ))
+                                  child: !_loading
+                                      ? InkWell(
+                                          onTap: () async {
+                                            await openSavedRoutes(
+                                                c.id.toString());
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      MapPreviewPage(
+                                                        kmString: kmString,
+                                                        points: points,
+                                                        openedThroughprofile:
+                                                            true,
+                                                      )),
+                                            );
+                                          },
+                                          child: Container(
+                                            width: 75,
+                                            height: 75,
+                                            child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(20.0),
+                                                child: Icon(
+                                                    Icons.directions_walk)),
+                                          ),
+                                        )
+                                      : CircularProgressIndicator())
                               : SizedBox(
                                   child: InkWell(
                                   onTap: () async {
