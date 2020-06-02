@@ -71,7 +71,7 @@ downloadFriendsPos() async {
 
 void startShareLocation() {
   getLocation();
-  timer = Timer.periodic(Duration(seconds: 2), (Timer t) => sharePos());
+  timer = Timer.periodic(Duration(seconds: 7), (Timer t) => sharePos());
 }
 
 void dispose() {

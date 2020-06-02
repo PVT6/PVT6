@@ -52,6 +52,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
         points = widget.points;
         kmString = widget.kmString;
         routeTimeString = widget.routeTimeString;
+        openedThroughProfile = widget.openedThroughprofile;
       }
     });
 
@@ -80,8 +81,10 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
           child: Stack(children: <Widget>[
         FlutterMap(
           mapController: mapController,
-          options:  new MapOptions(
-            center: LatLng(startPos.latitude, startPos.longitude),
+          options: new MapOptions(
+            center: openedThroughProfile == true
+                ? LatLng(points.first.latitude, points.first.longitude)
+                : LatLng(startPos.latitude, startPos.longitude),
             minZoom: 4.0,
             maxZoom: 20,
             plugins: [
@@ -163,8 +166,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                             FontAwesomeIcons.dice,
                             color: colorDarkRed,
                           ),
-                          Text("Random",
-                              style: style.copyWith(fontSize: 11)),
+                          Text("Random", style: style.copyWith(fontSize: 11)),
                         ],
                       ),
                     ),
@@ -649,7 +651,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
         points.add(new LatLng(route[i][1], route[i][0]));
       }
       mapController.move(
-          LatLng(points.first.latitude, points.first.longitude), 1);
+          LatLng(points.first.latitude, points.first.longitude), 15);
     } else {
       // ERROR HÄR
     }

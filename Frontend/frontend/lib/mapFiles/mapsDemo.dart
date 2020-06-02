@@ -59,7 +59,7 @@ void updateFriensPos() {
                         style: TextStyle(
                           letterSpacing: 1,
                           backgroundColor: Colors.white,
-                          color: textYellow,
+                          color: Colors.black,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'Hipster Script W00 Regular',
                         )),
@@ -68,7 +68,6 @@ void updateFriensPos() {
                       iconSize: 40.0,
                       tooltip: element.name,
                       onPressed: () {},
-                      color: Colors.blue,
                     ),
                   ]),
             ));
@@ -257,7 +256,6 @@ class MapsDemoState extends State<MapsDemo> {
                               new MaterialPageRoute(
                                   builder: (context) => DetailPage()))
                         }),
-               
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.3,
                 ),
