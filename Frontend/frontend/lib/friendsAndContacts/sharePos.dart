@@ -78,14 +78,13 @@ void testConnection(BuildContext context) async{
 }
 
 void showAlertDialog(BuildContext context) {
-  //return 
   Widget okButton = FlatButton(child: Text("OK"), onPressed: (){},
   );
 
   AlertDialog alert = AlertDialog(title: Text("Unable to connect to DB"), actions: [okButton,],
   );
 
-  showDialog(context: context, builder:(BuildContext){ return alert;},);
+  showDialog(context: context, builder:(BuildContext context){ return alert;},);
 }
 
 void startShareLocation() {
