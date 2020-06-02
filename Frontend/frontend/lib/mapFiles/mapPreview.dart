@@ -80,7 +80,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
           child: Stack(children: <Widget>[
         FlutterMap(
           mapController: mapController,
-          options: new MapOptions(
+          options:  new MapOptions(
             center: LatLng(startPos.latitude, startPos.longitude),
             minZoom: 4.0,
             maxZoom: 20,

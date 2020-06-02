@@ -12,7 +12,7 @@ import 'package:frontend/userFiles/ImageConverter.dart';
 const colorPurple = const Color(0xFF82658f);
 const colorPeachPink = const Color(0xFFffdcd2);
 const colorLighterPink = const Color(0xFFffe9e5);
-  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
 class CameraScreen extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -114,25 +114,17 @@ class CameraScreenState extends State<CameraScreen> {
                   fit: BoxFit.cover,
                 )),
             Text(
-                "You can add this new Photo to your own profile or one of your dogs!", style: style.copyWith(fontSize: 15)),
+                "You can add this new Photo to your own profile or one of your dogs!",
+                style: style.copyWith(fontSize: 15)),
           ],
         ),
       ),
       actions: [
         RaisedButton(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15)
-          ),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           color: Colors.green,
-          onPressed: (() {
-              
-            Navigator.pop(context);
-                
-              
-          }()),
-        
-          
-           //Navigator.pop(context),
+          onPressed: () => {Navigator.pop(context)},
           child: Text("Ok"),
         ),
       ],
@@ -163,17 +155,15 @@ class CameraScreenState extends State<CameraScreen> {
               backgroundColor: colorBeige,
               onPressed: () {
                 onTakePictureButtonPressed();
-                // if (imagePath != null) {
-                //   _takePhoto();
-                // }
-                // setState(() {
-                //   _takePhoto();
-                // });
               },
               tooltip: "Centre FAB",
               child: Container(
                 margin: EdgeInsets.all(13.0),
-                child: Icon(Icons.camera_alt, color: colorDarkRed, size: 30,),
+                child: Icon(
+                  Icons.camera_alt,
+                  color: colorDarkRed,
+                  size: 30,
+                ),
               ),
               elevation: 4.0,
             ),
