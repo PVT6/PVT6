@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,19 @@ import 'package:latlong/latlong.dart' as latlng;
 
 List<Dog> userDogs;
 
+Future<void> getDogs() async {
+  var uid = userlib.uid;
+  var url = 'https://group6-15.pvt.dsv.su.se/user/dogs?uid=${uid}';
+  var response = await http.get(Uri.parse(url));
+  if (response.statusCode == 200) {
+    dogs = (json.decode(response.body) as List)
+        .map((i) => Dog.fromJson(i))
+        .toList();
+  } else {
+    // ERROR HÄR
+  }
+}
+
 const _colorBeige = const Color(0xFFF5F3EE);
 const _colorDarkBeige = const Color(0xFFc2c0bc);
 const _colorPrimaryRed = const Color(0xffEA9999);
@@ -31,34 +45,29 @@ class ProfileEightPage extends StatefulWidget {
   ProfileEightPageState createState() => ProfileEightPageState();
 }
 
-  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
 class ProfileEightPageState extends State<ProfileEightPage> {
-  latlng.LatLng setter = latlng.LatLng(0,0);
+  latlng.LatLng setter = latlng.LatLng(0, 0);
   @override
   void initState() {
     super.initState();
-    setDogs();
-  }
-
-  Future<void> getDogs() async {
-    var uid = userlib.uid;
-    var url = 'https://group6-15.pvt.dsv.su.se/user/dogs?uid=${uid}';
-    var response = await http.get(Uri.parse(url));
-    if (response.statusCode == 200) {
-      dogs = (json.decode(response.body) as List)
-          .map((i) => Dog.fromJson(i))
-          .toList();
-      setState(() {
-        userDogs = dogs;
-      });
-    } else {
-      // ERROR HÄR
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await setDogs();
+    });
   }
 
   Future<void> setDogs() async {
-    getDogs();
+    await getDogs();
+    setState(() {
+      userDogs = dogs;
+    });
+    userDogs.forEach((element) async => await _asyncMethod(element));
+  }
+
+  Future _asyncMethod(Dog d) async {
+    await d.getPicture();
+    print("ger");
   }
 
   @override
@@ -181,13 +190,13 @@ class UserInfo extends StatelessWidget {
           Container(
               padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
               alignment: Alignment.topLeft,
-                child: Text(
-                  "My Dogs",
-                  style: style.copyWith(
-                    color: _colorDarkRed,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.left,
+              child: Text(
+                "My Dogs",
+                style: style.copyWith(
+                  color: _colorDarkRed,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.left,
               )),
           SingleChildScrollView(
               physics: ScrollPhysics(),
@@ -213,15 +222,15 @@ class UserInfo extends StatelessWidget {
                                     );
                                   },
                                   child: Container(
-                                    width: 75,
-                                    height: 75,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      child: Image.asset(
-                                        'BrewDog.jpg',
-                                      ),
-                                    ),
-                                  ),
+                                      width: 75,
+                                      height: 75,
+                                      child: ClipRRect(
+                                          child: c.dogPic == null
+                                              ? Image.asset("logoprototype.png")
+                                              : FittedBox(
+                                                  child: c.dogPic,
+                                                  fit: BoxFit.cover,
+                                                ))),
                                 ))
                               : SizedBox(
                                   child: InkWell(
@@ -246,21 +255,21 @@ class UserInfo extends StatelessWidget {
                         },
                       )
                     : Center(
-                        child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(_colorDarkRed)),
+                        child: CircularProgressIndicator(
+                            valueColor: new AlwaysStoppedAnimation<Color>(
+                                _colorDarkRed)),
                       ),
               )),
           Container(
-              padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
-              alignment: Alignment.topLeft,
-                child: Text(
-                  "User Information", //userData
-                  style: style.copyWith(
-                    color: _colorDarkRed,
-                    fontWeight: FontWeight.bold
-                  ),
-                  textAlign: TextAlign.left,
-                ),
-              ),
+            padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
+            alignment: Alignment.topLeft,
+            child: Text(
+              "User Information", //userData
+              style: style.copyWith(
+                  color: _colorDarkRed, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.left,
+            ),
+          ),
           Card(
             child: Container(
               alignment: Alignment.topLeft,
@@ -275,8 +284,8 @@ class UserInfo extends StatelessWidget {
                           ListTile(
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 12, vertical: 4),
-                            leading:
-                                Icon(FontAwesomeIcons.user, color: _colorDarkRed),
+                            leading: Icon(FontAwesomeIcons.user,
+                                color: _colorDarkRed),
                             title: Text(
                               "Username",
                               style: TextStyle(color: _colorDarkRed),

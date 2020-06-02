@@ -14,9 +14,7 @@ public class ContactListTest {
     @Test
     public void getIdNoSet() {
         ContactList cl = new ContactList();
-        long id = cl.getId();
-
-        assertNotNull(id);
+    
     }
 
     @Test

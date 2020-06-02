@@ -3,13 +3,16 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:frontend/userFiles/ImageConverter.dart';
 
 const colorPurple = const Color(0xFF82658f);
 const colorPeachPink = const Color(0xFFffdcd2);
 const colorLighterPink = const Color(0xFFffe9e5);
+  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
 class CameraScreen extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -91,11 +94,10 @@ class CameraScreenState extends State<CameraScreen> {
 
   showPhotoTakenDialog(BuildContext context) {
     AlertDialog alert = AlertDialog(
-      backgroundColor: colorPeachPink,
+      backgroundColor: colorBeige,
       title: Text(
         "Picture Saved",
-        style: TextStyle(
-          fontFamily: 'Hipster Script W00 Regular',
+        style: style.copyWith(
           fontSize: 28,
         ),
       ),
@@ -112,14 +114,25 @@ class CameraScreenState extends State<CameraScreen> {
                   fit: BoxFit.cover,
                 )),
             Text(
-                "You can add this new Photo to your own profile or one of your dogs!"),
+                "You can add this new Photo to your own profile or one of your dogs!", style: style.copyWith(fontSize: 15)),
           ],
         ),
       ),
       actions: [
-        FlatButton(
+        RaisedButton(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15)
+          ),
           color: Colors.green,
-          onPressed: () => Navigator.pop(context),
+          onPressed: (() {
+              
+            Navigator.pop(context);
+                
+              
+          }()),
+        
+          
+           //Navigator.pop(context),
           child: Text("Ok"),
         ),
       ],
@@ -147,6 +160,7 @@ class CameraScreenState extends State<CameraScreen> {
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerFloat,
             floatingActionButton: FloatingActionButton(
+              backgroundColor: colorBeige,
               onPressed: () {
                 onTakePictureButtonPressed();
                 // if (imagePath != null) {
@@ -158,8 +172,8 @@ class CameraScreenState extends State<CameraScreen> {
               },
               tooltip: "Centre FAB",
               child: Container(
-                margin: EdgeInsets.all(15.0),
-                child: Icon(Icons.camera_alt),
+                margin: EdgeInsets.all(13.0),
+                child: Icon(Icons.camera_alt, color: colorDarkRed, size: 30,),
               ),
               elevation: 4.0,
             ),

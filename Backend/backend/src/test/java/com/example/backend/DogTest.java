@@ -6,21 +6,18 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 
-//assertNotNull(dog.getId()) everywhere since Dog should always have an id
 
 public class DogTest {
     @Test
     public void makeDogEmptyConstructor() {
         Dog dog = new Dog();
 
-        assertNotNull(dog.getId());
-
         assertNull(dog.getName());
         assertNull(dog.getRace());
         assertNull(dog.getAge());
         assertNull(dog.getHeight());
         assertNull(dog.getWeight());
-        //asserNull(dog.getDogpicture());
+        //assertNull(dog.getDogpicture());
         assertNull(dog.getDescription());
         assertNull(dog.getGender());
     }
@@ -28,8 +25,6 @@ public class DogTest {
     @Test
     public void makeDogConstructor() {
         Dog dog = new Dog("name", "breed", "1", "2", "3", "dogpicture", "description", "gender");
-
-        assertNotNull(dog.getId());
 
         assertEquals("name", dog.getName());
         assertEquals("breed", dog.getRace());
@@ -53,8 +48,6 @@ public class DogTest {
         //dog.setDogpicture("dogpicture");
         dog.setDescription("description");
         dog.setGender("gender");
-
-        assertNotNull(dog.getId());
 
         assertEquals("name", dog.getName());
         assertEquals("breed", dog.getRace());

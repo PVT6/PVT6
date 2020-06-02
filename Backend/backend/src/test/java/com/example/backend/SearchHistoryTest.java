@@ -13,8 +13,6 @@ public class SearchHistoryTest {
     @Test
     public void getIdNoSet() {
         SearchHistory sh = new SearchHistory();
-        long id = sh.getId();
-        assertNotNull(id);
     }
 
     @Test
