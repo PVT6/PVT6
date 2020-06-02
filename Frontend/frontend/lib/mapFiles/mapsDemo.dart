@@ -257,19 +257,9 @@ class MapsDemoState extends State<MapsDemo> {
                               new MaterialPageRoute(
                                   builder: (context) => DetailPage()))
                         }),
-                //Tror denna kan behövs senare då logout antagligen är fel implementerad
-                // CustomListTile(
-                //     Icons.lock,
-                //     'Log out',
-                //     () async => {
-                //           await _auth.signOut(),
-                //           Navigator.push(
-                //               context,
-                //               new MaterialPageRoute(
-                //                   builder: (context) => MySignInPage()))
-                //         }),
+               
                 SizedBox(
-                  height: 350,
+                  height: MediaQuery.of(context).size.height * 0.3,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
