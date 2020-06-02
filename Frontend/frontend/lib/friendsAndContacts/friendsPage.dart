@@ -1100,21 +1100,15 @@ class ProfileInfoState extends State<ProfileInfo> {
                             ),
                     )),
                 Container(
-                    padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
-                    alignment: Alignment.topLeft,
-                    child: BorderedText(
-                      strokeWidth: 5.0,
-                      strokeColor: colorPurple,
-                      child: Text(
-                        "My Saved Routes",
-                        style: TextStyle(
-                          color: colorLighterPink,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
-                    )),
+                  padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "My Saved Routes",
+                    style: style.copyWith(
+                        color: colorDarkRed, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
                 SingleChildScrollView(
                     physics: ScrollPhysics(),
                     child: Container(
