@@ -163,7 +163,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                             FontAwesomeIcons.dice,
                             color: colorDarkRed,
                           ),
-                          Text("   Random Route",
+                          Text("Random",
                               style: style.copyWith(fontSize: 11)),
                         ],
                       ),
@@ -181,7 +181,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                       child: Row(
                         children: <Widget>[
                           Icon(Icons.save, color: colorDarkRed),
-                          Text("  Save", style: style.copyWith(fontSize: 11)),
+                          Text("Save", style: style.copyWith(fontSize: 11)),
                         ],
                       ),
                     ),
@@ -205,7 +205,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                             Icons.folder,
                             color: colorDarkRed,
                           ),
-                          Text("  Saved", style: style.copyWith(fontSize: 11)),
+                          Text("Saved", style: style.copyWith(fontSize: 11)),
                         ],
                       ),
                     ),

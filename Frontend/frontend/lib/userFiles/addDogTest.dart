@@ -394,8 +394,8 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
     return Container(
         color: colorBeige,
         padding: EdgeInsets.only(
-          left: 24.0,
-          top: screenAwareSize(56.0, context),
+          left: 6.0,
+          top: screenAwareSize(40.0, context),
         ),
         child: Row(
           children: <Widget>[
