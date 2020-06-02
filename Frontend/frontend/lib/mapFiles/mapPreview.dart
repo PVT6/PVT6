@@ -155,7 +155,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                       onPressed: () {
                         getKm(context);
                         mapController.move(
-                            LatLng(latLng.latitude, latLng.longitude), 1);
+                            LatLng(latLng.latitude, latLng.longitude), 15);
                       },
                       child: Row(
                         children: <Widget>[
@@ -420,8 +420,9 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                   color: Colors.green,
                   onPressed: () {
                     kmString = kmController.text.toString();
-                    Navigator.pop(context);
+
                     generateRoute(LatLng(latLng.latitude, latLng.longitude));
+                    Navigator.pop(context);
                   },
                   child: Text(
                     "Generate",

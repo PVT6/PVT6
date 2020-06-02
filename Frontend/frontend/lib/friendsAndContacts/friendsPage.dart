@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/friendsAndContacts/contactsModel.dart';
 import 'package:frontend/friendsAndContacts/sentRequest.dart';
 import 'package:frontend/loginFiles/MySignInPage.dart';
+import 'package:frontend/mapFiles/mapPreview.dart';
 
 import 'package:frontend/mapFiles/mapsDemo.dart';
 import 'package:frontend/routePickerMap/Route.dart';
@@ -441,7 +442,7 @@ class _HomePageState extends State<FriendsPage>
                         : Center(
                             child: CircularProgressIndicator(),
                           ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 45),
                     Text(
                       "Pending Requests",
                       style: style.copyWith(
@@ -789,15 +790,50 @@ class ProfileInfo extends StatefulWidget {
 
 class ProfileInfoState extends State<ProfileInfo> {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+  String kmString = "0";
+  String routeTimeString = "0";
+  List<latlng.LatLng> points = <latlng.LatLng>[];
+
+  Future<void> openSavedRoutes(String id) async {
+    final data = await http
+        .get("https://group6-15.pvt.dsv.su.se/route/getRoute?id=${id}");
+    print(data.body);
+    if (data.statusCode == 200) {
+      points.clear();
+      List<latlng.LatLng> points1 = <latlng.LatLng>[];
+
+      var jsonfile = json.decode(data.body);
+
+      var routedata = jsonfile['routes'][0];
+      var route = routedata["geometry"]["coordinates"];
+
+      var estimatedTime =
+          (routedata["duration"] / 3600).toStringAsFixed(2).toString();
+      // MAN KAN ÄNDRA GÅNGHASTIGHET FÖR ATT FÅ MER ACCURATE
+
+      for (var i = 0; i < route.length; i++) {
+        points1.add(new latlng.LatLng(route[i][1], route[i][0]));
+      }
+      setState(() {
+        kmString = (routedata["distance"] / 1000).toStringAsFixed(2);
+        routeTimeString = estimatedTime;
+        points = points1;
+      });
+    } else {
+      // ERROR HÄR
+    }
+  }
 
   showAlertDialog(BuildContext context) {
     AlertDialog alert = AlertDialog(
       backgroundColor: colorBeige,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(32.0))),
-      title: Text("Remove as friend?", style: style.copyWith(fontWeight: FontWeight.bold)),
-      content:
-          Text("Are you sure you want to remove user from your friendslist?", style: style.copyWith(fontSize: 17)),
+      title: Text("Remove as friend?",
+          style: style.copyWith(fontWeight: FontWeight.bold)),
+      content: Text(
+          "Are you sure you want to remove user from your friendslist?",
+          style: style.copyWith(fontSize: 17)),
       actions: [
         RaisedButton(
           shape:
@@ -1091,26 +1127,53 @@ class ProfileInfoState extends State<ProfileInfo> {
                               itemCount: widget.user.savedRoutes?.length ?? 0,
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (BuildContext context, int index) {
-                                
                                 SavedRoutes c =
                                     widget.user.savedRoutes?.elementAt(index);
                                 return (c.name != null && c.name.length > 0)
                                     ? SizedBox(
                                         child: InkWell(
-                                        onTap: () {},
+                                        onTap: () async {
+                                          await openSavedRoutes(
+                                              c.id.toString());
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    MapPreviewPage(
+                                                      kmString: kmString,
+                                                      points: points,
+                                                      openedThroughprofile:
+                                                          true,
+                                                    )),
+                                          );
+                                        },
                                         child: Container(
                                           width: 75,
                                           height: 75,
                                           child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(20.0),
-                                            child: Icon(Icons.directions_walk)
-                                          ),
+                                              borderRadius:
+                                                  BorderRadius.circular(20.0),
+                                              child:
+                                                  Icon(Icons.directions_walk)),
                                         ),
                                       ))
                                     : SizedBox(
                                         child: InkWell(
-                                        onTap: () {},
+                                        onTap: () async {
+                                          await openSavedRoutes(
+                                              c.id.toString());
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    MapPreviewPage(
+                                                      kmString: kmString,
+                                                      points: points,
+                                                      openedThroughprofile:
+                                                          true,
+                                                    )),
+                                          );
+                                        },
                                         child: Container(
                                           width: 75,
                                           height: 75,
