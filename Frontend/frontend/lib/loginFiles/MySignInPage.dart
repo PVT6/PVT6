@@ -140,7 +140,11 @@ class _MySignInPageState extends State<MySignInPage>
             if (result == null) {
               controller.forward(from: 0.0); 
             } else {
-              Navigator.pop(context);
+              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => LoadingScreen(result)),
+                                );
             }
           }
         },

@@ -103,12 +103,13 @@ class _LoadingScreenState extends State<LoadingScreen> {
         if(widget.location == "introSlider"){
           Navigator.push(
                               context,
-                              new MaterialPageRoute(
+                              MaterialPageRoute(
                                   builder: (context) => IntroScreen()));
         }else{
+          print(" new MapsDemo");
           Navigator.push(
                               context,
-                              new MaterialPageRoute(
+                              MaterialPageRoute(
                                   builder: (context) => new MapsDemo(userlib.usersCurrentLocation)));
         }
                                   
