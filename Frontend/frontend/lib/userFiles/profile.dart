@@ -64,8 +64,6 @@ class ProfileEightPageState extends State<ProfileEightPage> {
     await getDogs();
     setState(() {
       userDogs = dogs;
-
-      userDogs.forEach((element) async => await _asyncMethod(element));
     });
   }
 
@@ -257,6 +255,15 @@ class UserInfoState extends State<UserInfo> {
     }
   }
 
+  Future<Image> getPicture(Dog d) async {
+    Image temp;
+    await d.getPicture();
+    setState(() {
+      temp = d.dogPic;
+    });
+    return temp;
+  }
+
   showDogList(BuildContext context) {
     showDialog(
       context: context,
@@ -293,13 +300,12 @@ class UserInfoState extends State<UserInfo> {
                                       Radius.circular(
                                           20.0) //         <--- border radius here
                                       ),
-                                  image: DecorationImage(
-                                    image: AssetImage("routeBackground.jpg"),
-                                    fit: BoxFit.cover,
-                                  ),
+                                  color: colorPrimaryRed,
                                 ),
                                 child: Center(
                                     child: Card(
+                                  color: colorPrimaryRed,
+                                  shadowColor: colorPrimaryRed,
                                   child: Text(
                                     '${userDogs[index].name} ',
                                     style: TextStyle(
@@ -395,44 +401,96 @@ class UserInfoState extends State<UserInfo> {
                           return (c.name != null && c.name.length > 0)
                               ? SizedBox(
                                   child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => DogProfile(c)),
-                                    );
-                                  },
-                                  child: Container(
-                                      width: 75,
-                                      height: 75,
-                                      child: ClipRRect(
+                                    onTap: () async {
+                                      await c.getPicture();
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                DogProfile(c)),
+                                      );
+                                    },
+                                    child: Stack(children: <Widget>[
+                                      Positioned.fill(
+                                          child: Align(
+                                        alignment: Alignment.bottomCenter,
+                                        child: Text(
+                                          c.name,
+                                          style: style.copyWith(
+                                              fontSize: 9.0,
+                                              color: Colors.black,
+                                              backgroundColor: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      )),
+                                      Container(
+                                        width: 75,
+                                        height: 75,
+                                        child: ClipRRect(
+                                          // child: FutureBuilder<dynamic>(
+                                          //   future: getPicture(c),
+                                          //   builder: (BuildContext context,
+                                          //       AsyncSnapshot<dynamic>
+                                          //           snapshot) {
+                                          //     if (snapshot.hasData) {
+                                          //       return FittedBox(
+                                          //         child: snapshot.data,
+                                          //         fit: BoxFit.cover,
+                                          //       );
+                                          //     } else {
+                                          //       return Image.asset(
+                                          //           "logoprototype.png");
+                                          //     }
+                                          //   },
+                                          // ),
                                           child: c.dogPic == null
                                               ? Image.asset("logoprototype.png")
                                               : FittedBox(
                                                   child: c.dogPic,
                                                   fit: BoxFit.cover,
-                                                ))),
-                                ))
+                                                ),
+                                          // ),
+                                        ),
+                                      ),
+                                    ]),
+                                  ),
+                                )
                               : SizedBox(
                                   child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => DogProfile(c)),
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 75,
-                                    height: 75,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      child: Image.asset(
-                                        'logoprototype.png',
-                                      ),
-                                    ),
-                                  ),
-                                ));
+                                      onTap: () async {
+                                        await c.getPicture();
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  DogProfile(c)),
+                                        );
+                                      },
+                                      child: Stack(children: <Widget>[
+                                        Positioned.fill(
+                                            child: Align(
+                                          alignment: Alignment.bottomCenter,
+                                          child: Text(
+                                            c.name,
+                                            style: style.copyWith(
+                                                fontSize: 9.0,
+                                                color: Colors.black,
+                                                backgroundColor: Colors.white,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        )),
+                                        Container(
+                                          width: 75,
+                                          height: 75,
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(20.0),
+                                            child: Image.asset(
+                                              'logoprototype.png',
+                                            ),
+                                          ),
+                                        ),
+                                      ])));
                         },
                       )
                     : Center(
@@ -454,12 +512,6 @@ class UserInfoState extends State<UserInfo> {
                   ),
                   textAlign: TextAlign.left,
                 ),
-                IconButton(
-                  icon: Icon(Icons.edit),
-                  onPressed: () {
-                    //showDogList(context);
-                  },
-                )
               ],
             ),
           ),
@@ -496,14 +548,34 @@ class UserInfoState extends State<UserInfo> {
                                                       )),
                                             );
                                           },
-                                          child: Container(
-                                            width: 75,
-                                            height: 75,
-                                            child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(20.0),
-                                                child: Icon(
-                                                    Icons.directions_walk)),
+                                          child: Stack(
+                                            children: <Widget>[
+                                              Container(
+                                                width: 75,
+                                                height: 75,
+                                                child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20.0),
+                                                    child: Icon(
+                                                      Icons.directions_walk,
+                                                      size: 30,
+                                                    )),
+                                              ),
+                                              Positioned.fill(
+                                                  child: Align(
+                                                alignment:
+                                                    Alignment.bottomCenter,
+                                                child: Text(
+                                                  c.name,
+                                                  style: style.copyWith(
+                                                      fontSize: 9.0,
+                                                      color: colorDarkRed,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              )),
+                                            ],
                                           ),
                                         )
                                       : CircularProgressIndicator())
@@ -521,15 +593,31 @@ class UserInfoState extends State<UserInfo> {
                                               )),
                                     );
                                   },
-                                  child: Container(
-                                    width: 75,
-                                    height: 75,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      child: Image.asset(
-                                        'BrewDog.jpg',
+                                  child: Stack(
+                                    children: <Widget>[
+                                      Container(
+                                        width: 75,
+                                        height: 75,
+                                        child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(20.0),
+                                            child: Icon(
+                                              Icons.directions_walk,
+                                              size: 30,
+                                            )),
                                       ),
-                                    ),
+                                      Positioned.fill(
+                                          child: Align(
+                                        alignment: Alignment.bottomCenter,
+                                        child: Text(
+                                          c.name,
+                                          style: style.copyWith(
+                                              fontSize: 9.0,
+                                              color: colorDarkRed,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      )),
+                                    ],
                                   ),
                                 ));
                         },

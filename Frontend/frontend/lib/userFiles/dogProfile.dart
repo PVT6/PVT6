@@ -20,14 +20,24 @@ class DogProfile extends StatefulWidget {
 
 class DogProfileState extends State<DogProfile> {
   Dog dog;
-
+  Image dogPic;
   DogProfileState(Dog dog) {
     this.dog = dog;
   }
 
   @override
   void initState() {
+    _asyncMethod(widget.dog);
+    setState(() {
+      dogPic = widget.dog.dogPic;
+    });
+
     super.initState();
+  }
+
+  Future<void> _asyncMethod(Dog d) async {
+    await d.getPicture();
+    print("ger");
   }
 
   @override
@@ -75,12 +85,10 @@ class DogProfileState extends State<DogProfile> {
                               //child:
                               //Image.asset("BrewDog.jpg", fit: BoxFit.cover),
                               child: widget.dog.dogPic != null
-                                  ? (() {
-                                      return FittedBox(
-                                        child: widget.dog.dogPic,
-                                        fit: BoxFit.cover,
-                                      );
-                                    }())
+                                  ? FittedBox(
+                                      child: dogPic,
+                                      fit: BoxFit.cover,
+                                    )
                                   : Image.asset(
                                       "logopurplepink.png") //widget.dog.dogPic
                               )),
@@ -110,7 +118,6 @@ class DogProfileState extends State<DogProfile> {
                       style: style.copyWith(
                           fontWeight: FontWeight.bold, fontSize: 30.0),
                     ),
-                    Text("(" + widget.dog.gender + ")"),
                   ],
                 ),
                 SizedBox(
