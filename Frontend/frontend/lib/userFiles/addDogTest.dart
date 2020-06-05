@@ -28,7 +28,7 @@ int weight = 15;
 int age = 0;
 String dogPicture;
 String desc = "";
-Gender gender = Gender.female;
+Gender gender;
 
 const Color mainBlue = const Color.fromRGBO(77, 123, 243, 1.0);
 const double baseHeight = 850.0;
@@ -195,7 +195,7 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
     int age1 = 0;
     String dogPicture1;
     String desc1 = "";
-    Gender gender1 = Gender.female;
+    Gender gender1;
     dogName = dogName1;
     finalBreed = finalBreed1;
     height = height1;
@@ -257,7 +257,7 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
   }
 
   _goToResultPage() async {
-    if (dogName == null || finalBreed == null ||  dogPicture == null) {
+    if (dogName == null || finalBreed == null || dogPicture == null) {
       return showAlertDialog(context);
     } else {
       //(@RequestParam String uid, String name, String breed, String age,    String height, String weight, String dogpicture, String description, String gender)
@@ -394,8 +394,8 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
     return Container(
         color: colorBeige,
         padding: EdgeInsets.only(
-          left: 24.0,
-          top: screenAwareSize(56.0, context),
+          left: 6.0,
+          top: screenAwareSize(40.0, context),
         ),
         child: Row(
           children: <Widget>[
@@ -447,7 +447,7 @@ class BuildCardState extends State<BuildCards> {
         backgroundColor: colorBeige,
         body: Column(children: <Widget>[
           GradientAppBar(
-            "Description",
+            "Overall Information",
           ),
           Expanded(
               child: Container(
@@ -622,6 +622,7 @@ class ResultPageState extends State<ResultPage> {
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 30.0),
                     ),
+                    Text("(" + gender.toString() + ")"),
                   ],
                 ),
                 SizedBox(

@@ -5,16 +5,11 @@ import 'package:frontend/friendsAndContacts/friendsPage.dart';
 import 'package:frontend/loginFiles/MySignInPage.dart';
 import 'package:frontend/userFiles/profile.dart';
 import '../dog.dart';
-import 'user.dart' as userlib;
-import 'addPet.dart';
-import 'package:http/http.dart' as http;
 
 class DogProfile extends StatefulWidget {
-  Dog dog;
+  final Dog dog;
 
-  DogProfile(Dog dog) : super() {
-    this.dog = dog;
-  }
+  DogProfile(this.dog) : super() {}
 
   final String title = "Maps Demo";
 
@@ -25,14 +20,24 @@ class DogProfile extends StatefulWidget {
 
 class DogProfileState extends State<DogProfile> {
   Dog dog;
-
+  Image dogPic;
   DogProfileState(Dog dog) {
     this.dog = dog;
   }
 
   @override
   void initState() {
+    _asyncMethod(widget.dog);
+    setState(() {
+      dogPic = widget.dog.dogPic;
+    });
+
     super.initState();
+  }
+
+  Future<void> _asyncMethod(Dog d) async {
+    await d.getPicture();
+    print("ger");
   }
 
   @override
@@ -80,12 +85,10 @@ class DogProfileState extends State<DogProfile> {
                               //child:
                               //Image.asset("BrewDog.jpg", fit: BoxFit.cover),
                               child: widget.dog.dogPic != null
-                                  ? (() {
-                                      return FittedBox(
-                                        child: widget.dog.dogPic,
-                                        fit: BoxFit.cover,
-                                      );
-                                    }())
+                                  ? FittedBox(
+                                      child: dogPic,
+                                      fit: BoxFit.cover,
+                                    )
                                   : Image.asset(
                                       "logopurplepink.png") //widget.dog.dogPic
                               )),
@@ -216,44 +219,7 @@ class DogProfileState extends State<DogProfile> {
                             ],
                           ),
                         ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        RaisedButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15)),
-                          color: colorDarkBeige,
-                          onPressed: () async {
-                            var url =
-                                'https://group6-15.pvt.dsv.su.se/dog/deletedog?id=${widget.dog.id.toString()}&uid=${userlib.uid}';
-
-                            var response = await http.post(Uri.parse(url));
-
-                            print(response.statusCode);
-                            await getDogs();
-                            Navigator.pop(context);
-                          },
-                          child: Row(
-                            children: <Widget>[
-                              Icon(
-                                FontAwesomeIcons.cross,
-                                color: colorDarkRed,
-                              ),
-                              Text("Remove Dog",
-                                  style: TextStyle(fontSize: 11)),
-                            ],
-                          ),
-                        ),
                       ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    SizedBox(
-                      height: 10,
                     ),
                   ],
                 ),

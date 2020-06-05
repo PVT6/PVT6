@@ -140,7 +140,11 @@ class _MySignInPageState extends State<MySignInPage>
             if (result == null) {
               controller.forward(from: 0.0); 
             } else {
-              Navigator.pop(context);
+              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => LoadingScreen(result)),
+                                );
             }
           }
         },
@@ -160,7 +164,7 @@ class _MySignInPageState extends State<MySignInPage>
                 colors: [colorBeige, colorDarkBeige])),
         child: Stack(fit: StackFit.expand, children: <Widget>[
           SingleChildScrollView(
-            padding: const EdgeInsets.all(36.0),
+            padding: const EdgeInsets.all(30.0),
             child: Form(
                 key: _formKey,
                 child: Column(

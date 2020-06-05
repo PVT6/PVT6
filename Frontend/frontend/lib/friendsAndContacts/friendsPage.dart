@@ -5,13 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:frontend/friendsAndContacts/contactsModel.dart';
 import 'package:frontend/friendsAndContacts/sentRequest.dart';
 import 'package:frontend/loginFiles/MySignInPage.dart';
-import 'package:frontend/userFiles/addDogTest.dart';
+import 'package:frontend/mapFiles/mapPreview.dart';
+
 import 'package:frontend/mapFiles/mapsDemo.dart';
+import 'package:frontend/routePickerMap/Route.dart';
 import 'package:frontend/userFiles/dogProfile.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:http/http.dart' as http;
 import 'package:frontend/userFiles/user.dart' as userlib;
-import 'package:frontend/mapFiles/temp.dart';
+
 import '../dog.dart';
 import 'package:latlong/latlong.dart' as latlng;
 
@@ -77,7 +79,8 @@ class _HomePageState extends State<FriendsPage>
   }
 
   Future<void> setInfo() async {
-    getInfo();
+    await getInfo();
+    friends.sort((a, b) => a.name.compareTo(b.name));
   }
 
   Future<void> getInfo() async {
@@ -439,7 +442,7 @@ class _HomePageState extends State<FriendsPage>
                         : Center(
                             child: CircularProgressIndicator(),
                           ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 45),
                     Text(
                       "Pending Requests",
                       style: style.copyWith(
@@ -787,15 +790,50 @@ class ProfileInfo extends StatefulWidget {
 
 class ProfileInfoState extends State<ProfileInfo> {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+  String kmString = "0";
+  String routeTimeString = "0";
+  List<latlng.LatLng> points = <latlng.LatLng>[];
+
+  Future<void> openSavedRoutes(String id) async {
+    final data = await http
+        .get("https://group6-15.pvt.dsv.su.se/route/getRoute?id=${id}");
+    print(data.body);
+    if (data.statusCode == 200) {
+      points.clear();
+      List<latlng.LatLng> points1 = <latlng.LatLng>[];
+
+      var jsonfile = json.decode(data.body);
+
+      var routedata = jsonfile['routes'][0];
+      var route = routedata["geometry"]["coordinates"];
+
+      var estimatedTime =
+          (routedata["duration"] / 3600).toStringAsFixed(2).toString();
+      // MAN KAN ÄNDRA GÅNGHASTIGHET FÖR ATT FÅ MER ACCURATE
+
+      for (var i = 0; i < route.length; i++) {
+        points1.add(new latlng.LatLng(route[i][1], route[i][0]));
+      }
+      setState(() {
+        kmString = (routedata["distance"] / 1000).toStringAsFixed(2);
+        routeTimeString = estimatedTime;
+        points = points1;
+      });
+    } else {
+      // ERROR HÄR
+    }
+  }
 
   showAlertDialog(BuildContext context) {
     AlertDialog alert = AlertDialog(
       backgroundColor: colorBeige,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(32.0))),
-      title: Text("Remove as friend?", style: style.copyWith(fontWeight: FontWeight.bold)),
-      content:
-          Text("Are you sure you want to remove user from your friendslist?", style: style.copyWith(fontSize: 17)),
+      title: Text("Remove as friend?",
+          style: style.copyWith(fontWeight: FontWeight.bold)),
+      content: Text(
+          "Are you sure you want to remove user from your friendslist?",
+          style: style.copyWith(fontSize: 17)),
       actions: [
         RaisedButton(
           shape:
@@ -885,6 +923,15 @@ class ProfileInfoState extends State<ProfileInfo> {
     return "unavailable";
   }
 
+  Future<Image> getPicture(Dog d) async {
+    Image temp;
+    await d.getPicture();
+    setState(() {
+      temp = d.dogPic;
+    });
+    return temp;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -923,56 +970,54 @@ class ProfileInfoState extends State<ProfileInfo> {
                   ),
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  IconButton(
-                    padding: EdgeInsets.only(left: 30.0),
-                    onPressed: () => Navigator.pop(context),
-                    icon: Icon(Icons.arrow_back),
-                    iconSize: 30.0,
-                    color: Colors.black,
-                  ),
-                  IconButton(
-                    padding: EdgeInsets.only(left: 30.0),
-                    onPressed: () => print('Add to Favorites'),
-                    icon: Icon(Icons.favorite_border),
-                    iconSize: 30.0,
-                    color: Colors.black,
-                  ),
-                ],
-              ),
-              Positioned(
-                bottom: 0.0,
-                right: 25.0,
-                child: //               true // är alltid true här
-                    true
-                        ? MaterialButton(
-                            color: Colors.red,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)),
-                            elevation: 3,
-                            child: Icon(Icons.remove_circle),
-                            onPressed: () {
-                              showAlertDialog(context);
-                            },
-                          )
-                        : MaterialButton(
-                            color: Colors.green,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)),
-                            elevation: 3,
-                            child: Icon(Icons.person_add),
-                            onPressed: () {
-                              setState(() {
-                                //widget.user.friendstatus = true;
-                              });
-                            },
-                          ),
-              ),
+              Positioned.fill(
+                  child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Text(
+                  widget.user.name,
+                  style: style.copyWith(
+                      fontSize: 25.0,
+                      color: colorDarkRed,
+                      fontWeight: FontWeight.bold),
+                ),
+              )),
             ],
           ),
-          const SizedBox(height: 10.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              RaisedButton(
+                color: colorPeachPink,
+                shape: BeveledRectangleBorder(),
+                elevation: 15,
+                child: Row(
+                  children: <Widget>[
+                    Icon(Icons.person_pin),
+                    Text("View on map")
+                  ],
+                ),
+                onPressed: () {
+                  latlng.LatLng coordinates = latlng.LatLng(
+                      widget.user.position.y, widget.user.position.x);
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          MapsDemo(coordinates)));
+                },
+              ),
+              RaisedButton(
+                color: colorPeachPink,
+                shape: BeveledRectangleBorder(),
+                elevation: 15,
+                child: Row(children: <Widget>[
+                  Icon(Icons.remove_circle),
+                  Text("Remove Friend"),
+                ]),
+                onPressed: () {
+                  showAlertDialog(context);
+                },
+              )
+            ],
+          ),
           Container(
             padding: EdgeInsets.all(10),
             child: Column(
@@ -1003,46 +1048,227 @@ class ProfileInfoState extends State<ProfileInfo> {
                                 return (c.name != null && c.name.length > 0)
                                     ? SizedBox(
                                         child: InkWell(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    DogProfile(c)),
-                                          );
-                                        },
-                                        child: Container(
-                                          width: 75,
-                                          height: 75,
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(20.0),
-                                            child: Image.asset(
-                                              'BrewDog.jpg',
-                                            ),
-                                          ),
-                                        ),
-                                      ))
+                                            onTap: () async {
+                                              await c.getPicture();
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        DogProfile(c)),
+                                              );
+                                            },
+                                            child: Stack(children: <Widget>[
+                                              Positioned.fill(
+                                                  child: Align(
+                                                alignment:
+                                                    Alignment.bottomCenter,
+                                                child: Text(
+                                                  c.name,
+                                                  style: style.copyWith(
+                                                      fontSize: 9.0,
+                                                      color: Colors.black,
+                                                      backgroundColor:
+                                                          Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              )),
+                                              Container(
+                                                width: 75,
+                                                height: 75,
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20.0),
+                                                  child: c.dogPic == null
+                                                      ? Image.asset(
+                                                          "logoprototype.png")
+                                                      : FittedBox(
+                                                          child: c.dogPic,
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                  //   child: FutureBuilder<dynamic>(
+                                                  //   future: getPicture(c),
+                                                  //   builder: (BuildContext context,
+                                                  //       AsyncSnapshot<dynamic>
+                                                  //           snapshot) {
+                                                  //     if (snapshot.hasData) {
+                                                  //       return FittedBox(
+                                                  //         child: snapshot.data,
+                                                  //         fit: BoxFit.cover,
+                                                  //       );
+                                                  //     } else {
+                                                  //       return Image.asset(
+                                                  //           "logoprototype.png");
+                                                  //     }
+                                                  //   },
+                                                  // ),
+                                                ),
+                                              ),
+                                            ])))
                                     : SizedBox(
                                         child: InkWell(
-                                        onTap: () {
+                                            onTap: () async {
+                                              await c.getPicture();
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        DogProfile(c)),
+                                              );
+                                            },
+                                            child: Stack(children: <Widget>[
+                                              Positioned.fill(
+                                                  child: Align(
+                                                alignment:
+                                                    Alignment.bottomCenter,
+                                                child: Text(
+                                                  c.name,
+                                                  style: style.copyWith(
+                                                      fontSize: 9.0,
+                                                      color: Colors.black,
+                                                      backgroundColor:
+                                                          Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              )),
+                                              Container(
+                                                width: 75,
+                                                height: 75,
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20.0),
+                                                  child: Image.asset(
+                                                    'logoprototype.png',
+                                                  ),
+                                                ),
+                                              ),
+                                            ])));
+                              },
+                            )
+                          : Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                    )),
+                Container(
+                  padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "My Saved Routes",
+                    style: style.copyWith(
+                        color: colorDarkRed, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+                SingleChildScrollView(
+                    physics: ScrollPhysics(),
+                    child: Container(
+                      height: 70,
+                      child: widget.user.savedRoutes != null
+                          ? ListView.builder(
+                              //https://pusher.com/tutorials/flutter-listviews
+
+                              shrinkWrap: true,
+                              itemCount: widget.user.savedRoutes?.length ?? 0,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (BuildContext context, int index) {
+                                SavedRoutes c =
+                                    widget.user.savedRoutes?.elementAt(index);
+                                return (c.name != null && c.name.length > 0)
+                                    ? SizedBox(
+                                        child: InkWell(
+                                          onTap: () async {
+                                            await openSavedRoutes(
+                                                c.id.toString());
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      MapPreviewPage(
+                                                        kmString: kmString,
+                                                        points: points,
+                                                        openedThroughprofile:
+                                                            true,
+                                                      )),
+                                            );
+                                          },
+                                          child: Stack(
+                                            children: <Widget>[
+                                              Container(
+                                                width: 75,
+                                                height: 75,
+                                                child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20.0),
+                                                    child: Icon(
+                                                      Icons.directions_walk,
+                                                      size: 30,
+                                                    )),
+                                              ),
+                                              Positioned.fill(
+                                                  child: Align(
+                                                alignment:
+                                                    Alignment.bottomCenter,
+                                                child: Text(
+                                                  c.name,
+                                                  style: style.copyWith(
+                                                      fontSize: 9.0,
+                                                      color: colorDarkRed,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              )),
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                    : SizedBox(
+                                        child: InkWell(
+                                        onTap: () async {
+                                          await openSavedRoutes(
+                                              c.id.toString());
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    DogProfile(c)),
+                                                    MapPreviewPage(
+                                                      kmString: kmString,
+                                                      points: points,
+                                                      openedThroughprofile:
+                                                          true,
+                                                    )),
                                           );
                                         },
-                                        child: Container(
-                                          width: 75,
-                                          height: 75,
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(20.0),
-                                            child: Image.asset(
-                                              'BrewDog.jpg',
+                                        child: Stack(
+                                          children: <Widget>[
+                                            Container(
+                                              width: 75,
+                                              height: 75,
+                                              child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20.0),
+                                                  child: Icon(
+                                                    Icons.directions_walk,
+                                                    size: 30,
+                                                  )),
                                             ),
-                                          ),
+                                            Positioned.fill(
+                                                child: Align(
+                                              alignment: Alignment.bottomCenter,
+                                              child: Text(
+                                                c.name,
+                                                style: style.copyWith(
+                                                    fontSize: 9.0,
+                                                    color: colorDarkRed,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            )),
+                                          ],
                                         ),
                                       ));
                               },
@@ -1146,26 +1372,6 @@ class ProfileInfoState extends State<ProfileInfo> {
                                   ),
                                   subtitle: Text(
                                     widget.user.phoneNumber,
-                                    style: style.copyWith(
-                                        color: Colors.grey.shade700,
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                ListTile(
-                                  leading: Icon(
-                                    Icons.person,
-                                    color: colorDarkRed,
-                                  ),
-                                  title: Text(
-                                    "About Me",
-                                    style: style.copyWith(
-                                        color: colorDarkRed,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  subtitle: Text(
-                                    "I love big fluffy dogs. Proud owner of a Bernese Mountain Dog",
                                     style: style.copyWith(
                                         color: Colors.grey.shade700,
                                         fontSize: 13,

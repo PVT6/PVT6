@@ -404,140 +404,145 @@ class SearchBreedState extends State<SearchBreeds> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-        backgroundColor: colorBeige,
-        body: Column(children: <Widget>[
-          GradientAppBar(
-            "Breed",
-          ),
-          Column(
-            children: <Widget>[
-              Text(
-                "Select a breed from the list below",
-                style: style.copyWith(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16,
-                ),
-                textAlign: TextAlign.left,
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    return new GestureDetector(
+        onTap: () {
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
+        },
+        child: Scaffold(
+            backgroundColor: colorBeige,
+            body: Column(children: <Widget>[
+              GradientAppBar(
+                "Breed",
               ),
-              Container(
-                width: 400,
-                height: 65,
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  controller: editingController,
-                  decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      labelText: "Search Breed",
-                      hintText: "ex: Whippet",
-                      prefixIcon: Icon(Icons.search),
-                      border: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(25.0)))),
-                ),
-              ),
-              Container(
-                  color: Colors.grey,
-                  width: 420,
-                  height: 200,
-                  child: Card(
-                    child: new ListView.builder(
-                      itemCount: items.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        String c = items?.elementAt(index);
-                        return filter == null || filter == ""
-                            ? new Card(
-                                elevation: 8.0,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                child: ListTile(
-                                  onTap: () {
-                                    setState(() {
-                                      selectedBreed = c;
-                                      finalBreed = c;
-                                    });
-                                  },
-                                  leading: CircleAvatar(
-                                    child: Icon(
-                                      FontAwesomeIcons.dog,
-                                      color: Colors.white,
-                                    ),
-                                    backgroundColor: colorDarkRed,
-                                  ),
-                                  title: Text(items[index] ?? ""),
-                                ),
-                              )
-                            : items[index]
-                                    .toLowerCase()
-                                    .contains(filter.toLowerCase())
+              Column(
+                children: <Widget>[
+                  Text(
+                    "Select a breed from the list below",
+                    style: style.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                  Container(
+                    width: 400,
+                    height: 65,
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      controller: editingController,
+                      decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          labelText: "Search Breed",
+                          hintText: "ex: Whippet",
+                          prefixIcon: Icon(Icons.search),
+                          border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(25.0)))),
+                    ),
+                  ),
+                  Container(
+                      color: Colors.grey,
+                      width: 420,
+                      height: 200,
+                      child: Card(
+                        child: new ListView.builder(
+                          itemCount: items.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            String c = items?.elementAt(index);
+                            return filter == null || filter == ""
                                 ? new Card(
                                     elevation: 8.0,
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(10.0)),
-                                    child: ListTileTheme(
-                                      selectedColor: colorDarkRed,
-                                      child: ListTile(
-                                        selected: true,
-                                        onTap: () {
-                                          setState(() {
-                                            selectedBreed = c;
-                                            finalBreed = c;
-                                          });
-                                        },
-                                        leading: CircleAvatar(
-                                          child: Icon(
-                                            FontAwesomeIcons.dog,
-                                            color: Colors.white,
-                                          ),
-                                          backgroundColor: colorDarkRed,
+                                    child: ListTile(
+                                      onTap: () {
+                                        setState(() {
+                                          selectedBreed = c;
+                                          finalBreed = c;
+                                        });
+                                      },
+                                      leading: CircleAvatar(
+                                        child: Icon(
+                                          FontAwesomeIcons.dog,
+                                          color: Colors.white,
                                         ),
-                                        title: Text(items[index] ?? ""),
+                                        backgroundColor: colorDarkRed,
                                       ),
+                                      title: Text(items[index] ?? ""),
                                     ),
                                   )
-                                : new Container();
-                      },
-                    ),
-                  )),
-              Row(
-                children: <Widget>[
-                  Container(
-                    width: 90,
-                    height: 90,
-                    child: Image.asset("logoprototype.png"),
+                                : items[index]
+                                        .toLowerCase()
+                                        .contains(filter.toLowerCase())
+                                    ? new Card(
+                                        elevation: 8.0,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0)),
+                                        child: ListTile(
+                                          onTap: () {
+                                            setState(() {
+                                              selectedBreed = c;
+                                              finalBreed = c;
+                                            });
+                                            if (!currentFocus.hasPrimaryFocus) {
+                                              currentFocus.unfocus();
+                                            }
+                                          },
+                                          leading: CircleAvatar(
+                                              child: Icon(
+                                            FontAwesomeIcons.dog,
+                                            color: Colors.white,
+                                          )),
+                                          title: Text(items[index] ?? ""),
+                                        ),
+                                      )
+                                    : new Container();
+                          },
+                        ),
+                      )),
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        width: 90,
+                        height: 90,
+                        child: Image.asset("logoprototype.png"),
+                      ),
+                      Text(
+                        "Selected breed: ",
+                        style: style.copyWith(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    "Selected breed: ",
-                    style: style.copyWith(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
+                  if (selectedBreed != "")
+                    Card(
+                      color: colorPrimaryRed,
+                      elevation: 8.0,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)),
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          child: Icon(
+                            FontAwesomeIcons.dog,
+                            color: Colors.white,
+                          ),
+                          backgroundColor: colorDarkRed,
+                        ),
+                        title: Text(selectedBreed),
+                      ),
+                    )
                 ],
               ),
-              if (selectedBreed != "")
-                Card(
-                  color: colorPrimaryRed,
-                  elevation: 8.0,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      child: Icon(
-                        FontAwesomeIcons.dog,
-                        color: Colors.white,
-                      ),
-                      backgroundColor: colorDarkRed,
-                    ),
-                    title: Text(selectedBreed),
-                  ),
-                )
-            ],
-          ),
-        ]));
+            ])));
   }
 }

@@ -1,39 +1,31 @@
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
-import 'package:frontend/services/auth.dart';
-import 'loginFiles/intro_slider.dart';
-import 'mapFiles/mapsDemo.dart';
+import 'package:frontend/routePickerMap/Route.dart';
 
-import 'package:location/location.dart';
-import 'package:latlong/latlong.dart';
+import 'dog.dart';
+
+import 'package:http/http.dart' as http;
+
 import 'package:frontend/userFiles/user.dart' as userlib;
-
-import 'package:frontend/friendsAndContacts/sharePos.dart';
+import 'dart:convert';
+import 'package:frontend/userFiles/profile.dart';
 
 const _colorBeige = const Color(0xFFF5F3EE);
-const _colorDarkBeige = const Color(0xFFc2c0bc);
-const _colorPrimaryRed = const Color(0xffEA9999);
-const _colorLightRed = const Color(0xFFffcaca);
 const _colorDarkRed = const Color(0xffb66a6b);
 TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
-class LoadingScreen extends StatefulWidget {
-  FirebaseUser user;
-  String location;
-  LoadingScreen(this.user, {this.location}) : super();
+class ProfileLoadingScreen extends StatefulWidget {
+  ProfileLoadingScreen() : super();
 
   @override
   _LoadingScreenState createState() => _LoadingScreenState();
 }
 
-class _LoadingScreenState extends State<LoadingScreen> {
-  final AuthService _auth = AuthService();
-  LatLng userLocation;
+class _LoadingScreenState extends State<ProfileLoadingScreen> {
   @override
   void initState() {
     loaddUsersData();
-    getLocation();
-    startShareLocation();
+    setPictures();
     super.initState();
   }
 
@@ -107,36 +99,61 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
 
   Future<void> loaddUsersData() async {
-    FirebaseUser user = widget.user;
-    await _auth.connectLoggedInUser(user);
-    await getLocation();
+    await setPictures();
+
     Navigator.pop(context);
-    if (widget.location == "introSlider") {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => IntroScreen()));
+
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ProfileEightPage()));
+  }
+
+  Future<void> getDogs() async {
+    var uid = userlib.uid;
+    var url = 'https://group6-15.pvt.dsv.su.se/user/dogs?uid=${uid}';
+    var response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      setState(() {
+        userDogs = (json.decode(response.body) as List)
+            .map((i) => Dog.fromJson(i))
+            .toList();
+      });
     } else {
-      print(" new MapsDemo");
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  new MapsDemo(userlib.usersCurrentLocation)));
+      // ERROR HÄR
     }
   }
 
-  getLocation() {
-    var location = new Location();
-    location.onLocationChanged().listen((currentLocation) {
-      print(currentLocation.latitude);
-      print(currentLocation.longitude);
-      setState(() {
-        userLocation =
-            LatLng(currentLocation.latitude, currentLocation.longitude);
-        userlib.setUserLocation(userLocation);
-      });
-
-      print("getLocation:$userLocation");
-      return "ok";
+  Future<Image> getPicture(Dog d) async {
+    Image temp;
+    await d.getPicture();
+    setState(() {
+      temp = d.dogPic;
     });
+    return temp;
+  }
+
+  Future setPictures() async {
+    await getDogs();
+    userDogs.forEach((element) {
+      _asyncMethod(element);
+    });
+  }
+
+  Future _asyncMethod(Dog d) async {
+    await d.getPicture();
+    print("ger");
+  }
+
+  Future<void> getSavedRoutes() async {
+    final response = await http.get(
+        "https://group6-15.pvt.dsv.su.se/route/getSavedRoutes?uid=${userlib.uid}");
+    if (response.statusCode == 200) {
+      setState(() {
+        savedRoutes = (json.decode(response.body) as List)
+            .map((i) => SavedRoute.fromJson(i))
+            .toList();
+      });
+    } else {
+      // ERROR HÄR
+    }
   }
 }

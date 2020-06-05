@@ -105,7 +105,12 @@ class _GenderCardState extends State<GenderCard>
   }
 
   void _setSelectedGender(Gender gender) {
-    setState(() => selectedGender = gender);
+    setState(() {
+      selectedGender = gender;
+      gender = selectedGender;
+      print(gender.toString());
+    });
+
     _arrowAnimationController.animateTo(
       _genderAngles[gender],
       duration: Duration(milliseconds: 150),

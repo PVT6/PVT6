@@ -15,16 +15,17 @@ import 'package:flutter_config/flutter_config.dart';
 import 'package:http/http.dart' as http;
 import 'package:frontend/userFiles/user.dart' as userlib;
 import 'dart:convert';
-
 import 'mapWithRoute.dart';
 
 List<SavedRoute> savedRoutes = [];
-LatLng startPos = userlib.usersCurrentLocation;
 
 class _MapPreviewPageState extends State<MapPreviewPage> {
   Location location;
   LatLng userLocation;
-  
+  bool openedThroughProfile;
+
+  LatLng startPos = userlib.usersCurrentLocation;
+
   static LatLng latLng = LatLng(59.338738, 18.064034);
   String kmString = "0";
   String routeTimeString = "0";
@@ -45,6 +46,15 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
 
     getLocation();
     getSavedRoutes();
+
+    setState(() {
+      if (widget.points != null) {
+        points = widget.points;
+        kmString = widget.kmString;
+        routeTimeString = widget.routeTimeString;
+        openedThroughProfile = widget.openedThroughprofile;
+      }
+    });
 
     mapController = MapController();
     statefulMapController = StatefulMapController(mapController: mapController);
@@ -72,8 +82,11 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
         FlutterMap(
           mapController: mapController,
           options: new MapOptions(
-            center: LatLng(startPos.latitude, startPos.longitude),
-            minZoom: 14,
+            center: openedThroughProfile == true
+                ? LatLng(points.first.latitude, points.first.longitude)
+                : LatLng(startPos.latitude, startPos.longitude),
+            minZoom: 4.0,
+            maxZoom: 20,
             plugins: [
               // ADD THIS
               UserLocationPlugin(),
@@ -120,7 +133,9 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => MapWithRoute(pointsImport: points, latLngImport: latLng)),
+                                        builder: (context) => MapWithRoute(
+                                            pointsImport: points,
+                                            latLngImport: latLng)),
                                   );
                                 },
                                 materialTapTargetSize:
@@ -143,7 +158,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                       onPressed: () {
                         getKm(context);
                         mapController.move(
-                            LatLng(latLng.latitude, latLng.longitude), 1);
+                            LatLng(latLng.latitude, latLng.longitude), 15);
                       },
                       child: Row(
                         children: <Widget>[
@@ -151,8 +166,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                             FontAwesomeIcons.dice,
                             color: colorDarkRed,
                           ),
-                          Text("   Random Route",
-                              style: style.copyWith(fontSize: 11)),
+                          Text("Random", style: style.copyWith(fontSize: 11)),
                         ],
                       ),
                     ),
@@ -169,7 +183,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                       child: Row(
                         children: <Widget>[
                           Icon(Icons.save, color: colorDarkRed),
-                          Text("  Save", style: style.copyWith(fontSize: 11)),
+                          Text("Save", style: style.copyWith(fontSize: 11)),
                         ],
                       ),
                     ),
@@ -181,6 +195,10 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                           borderRadius: BorderRadius.circular(20)),
                       color: colorBeige,
                       onPressed: () {
+                        setState(() {
+                          savedRoutes.sort((a, b) => double.parse(a.distans)
+                              .compareTo(double.parse(b.distans)));
+                        });
                         showSavedRoutes(context);
                       },
                       child: Row(
@@ -189,7 +207,7 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                             Icons.folder,
                             color: colorDarkRed,
                           ),
-                          Text("  Saved", style: style.copyWith(fontSize: 11)),
+                          Text("Saved", style: style.copyWith(fontSize: 11)),
                         ],
                       ),
                     ),
@@ -300,16 +318,14 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
               actions: <Widget>[
                 RaisedButton(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)
-                  ),
+                      borderRadius: BorderRadius.circular(10)),
                   color: Colors.red,
                   onPressed: () => Navigator.pop(context, false),
                   child: Text("Cancel", style: style.copyWith(fontSize: 13)),
                 ),
                 RaisedButton(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)
-                  ),
+                      borderRadius: BorderRadius.circular(10)),
                   color: Colors.green,
                   onPressed: () async {
                     if (routesData != "") {
@@ -365,7 +381,9 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
               ),
               content: Row(
                 children: <Widget>[
-                  SizedBox(width: 18,),
+                  SizedBox(
+                    width: 18,
+                  ),
                   SizedBox(
                     width: 200.0,
                     height: 60.0,
@@ -392,21 +410,28 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                   ),
                   color: Colors.red,
                   onPressed: () => Navigator.pop(context, "-1"),
-                  child: Text("Cancel",style: style.copyWith(
-                    fontSize: 13.0,)),
+                  child: Text("Cancel",
+                      style: style.copyWith(
+                        fontSize: 13.0,
+                      )),
                 ),
                 RaisedButton(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   color: Colors.green,
                   onPressed: () {
                     kmString = kmController.text.toString();
-                    Navigator.pop(context);
+
                     generateRoute(LatLng(latLng.latitude, latLng.longitude));
+                    Navigator.pop(context);
                   },
-                  child: Text("Generate", style: style.copyWith(
-                    fontSize: 13.0,
-                  ),),
+                  child: Text(
+                    "Generate",
+                    style: style.copyWith(
+                      fontSize: 13.0,
+                    ),
+                  ),
                 ),
               ],
             );
@@ -454,9 +479,9 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                                 ),
                                 child: Center(
                                     child: Card(
-                                      elevation: 0,
-                                      color: colorPrimaryRed,
-                                      shadowColor: colorPrimaryRed,
+                                  elevation: 0,
+                                  color: colorPrimaryRed,
+                                  shadowColor: colorPrimaryRed,
                                   child: Text(
                                     '${savedRoutes[index].name}\n ${savedRoutes[index].distans} km',
                                     style: style.copyWith(
@@ -479,12 +504,17 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                                         ),
                                       ),
                                       content: Text(
-                                          '${savedRoutes[index].distans} km', style: style.copyWith(),),
+                                        '${savedRoutes[index].distans} km',
+                                        style: style.copyWith(),
+                                      ),
                                       actions: <Widget>[
                                         FlatButton(
                                           onPressed: () =>
                                               Navigator.pop(context),
-                                          child: Text('Close', style: style.copyWith(fontSize: 15, color: Colors.black)),
+                                          child: Text('Close',
+                                              style: style.copyWith(
+                                                  fontSize: 15,
+                                                  color: Colors.black)),
                                         ),
                                         IconButton(
                                           icon: Icon(
@@ -500,8 +530,8 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                                         ),
                                         RaisedButton(
                                           shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(15)
-                                          ),
+                                              borderRadius:
+                                                  BorderRadius.circular(15)),
                                           color: Colors.green,
                                           onPressed: () {
                                             openSavedRoutes(savedRoutes[index]
@@ -510,7 +540,9 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
                                             Navigator.pop(context);
                                             Navigator.pop(context);
                                           },
-                                          child: Text('Open', style: style.copyWith(fontSize: 15)),
+                                          child: Text('Open',
+                                              style:
+                                                  style.copyWith(fontSize: 15)),
                                         ),
                                       ],
                                     );
@@ -523,13 +555,15 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
               ),
               actions: <Widget>[
                 RaisedButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  color: Colors.red,
-                  onPressed: () => Navigator.pop(context),
-                  child: Text("Cancel", style: style.copyWith(fontSize: 13),)
-                ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    color: Colors.red,
+                    onPressed: () => Navigator.pop(context),
+                    child: Text(
+                      "Cancel",
+                      style: style.copyWith(fontSize: 13),
+                    )),
               ],
             );
           },
@@ -615,11 +649,9 @@ class _MapPreviewPageState extends State<MapPreviewPage> {
       routeTimeString = estimatedTime;
       for (var i = 0; i < route.length; i++) {
         points.add(new LatLng(route[i][1], route[i][0]));
-
       }
       mapController.move(
-                            LatLng(points.first.latitude, points.first.longitude), 1);
-      
+          LatLng(points.first.latitude, points.first.longitude), 15);
     } else {
       // ERROR HÄR
     }
@@ -685,6 +717,17 @@ void getSavedRoutes() async {
 class MapPreviewPage extends StatefulWidget {
   @override
   var km;
-  MapPreviewPage({Key key, this.km}) : super(key: key);
+  var points = <LatLng>[];
+  String kmString = "0";
+  String routeTimeString = "0";
+  bool openedThroughprofile = false;
+  MapPreviewPage(
+      {Key key,
+      this.km,
+      this.kmString,
+      this.points,
+      this.routeTimeString,
+      this.openedThroughprofile})
+      : super(key: key);
   _MapPreviewPageState createState() => _MapPreviewPageState();
 }

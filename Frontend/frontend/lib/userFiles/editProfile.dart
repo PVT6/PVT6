@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:frontend/friendsAndContacts/addContactPage.dart';
 import 'package:frontend/loginFiles/MySignInPage.dart';
+import 'package:frontend/userFiles/profile.dart';
 import 'package:image_picker/image_picker.dart';
 import 'user.dart' as userlib;
 import 'package:http/http.dart' as http;
@@ -26,7 +27,12 @@ class EditProfileState extends State<EditProfile> {
   void _showPhotoLibrary() async {
     final file = await ImagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
-      _path = file.path;
+      if (file != null) {
+        _path = file.path;
+        Navigator.pop(context);
+      } else {
+        Navigator.pop(context);
+      }
     });
   }
 
@@ -79,8 +85,14 @@ class EditProfileState extends State<EditProfile> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     _path == null
-                        ? Image.asset("LeBistro.jpg", fit: BoxFit.cover,)
-                        : Image.file(File(_path), fit: BoxFit.cover,),
+                        ? Image.asset(
+                            "LeBistro.jpg",
+                            fit: BoxFit.cover,
+                          )
+                        : Image.file(
+                            File(_path),
+                            fit: BoxFit.cover,
+                          ),
                     IconButton(
                       icon: Icon(
                         FontAwesomeIcons.edit,
@@ -131,7 +143,10 @@ class EditProfileState extends State<EditProfile> {
                   print(userlib.uid);
                   print(response.body);
                   if (response.statusCode == 200) {
-                    Navigator.of(context).pop();
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => ProfileEightPage()));
                     var url =
                         'https://group6-15.pvt.dsv.su.se/user/find?uid=${userlib.uid}';
                     var response = await http.get(Uri.parse(url));
@@ -146,8 +161,9 @@ class EditProfileState extends State<EditProfile> {
                     // ERROR MEDELANDE HÄR
                   }
                 },
-                child: Text("Update", style: style.copyWith(fontWeight: FontWeight.bold,
-                color: colorDarkRed)),
+                child: Text("Update",
+                    style: style.copyWith(
+                        fontWeight: FontWeight.bold, color: colorDarkRed)),
               ),
             ],
           ))),
