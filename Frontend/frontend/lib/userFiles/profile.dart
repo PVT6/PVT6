@@ -255,15 +255,6 @@ class UserInfoState extends State<UserInfo> {
     }
   }
 
-  Future<Image> getPicture(Dog d) async {
-    Image temp;
-    await d.getPicture();
-    setState(() {
-      temp = d.dogPic;
-    });
-    return temp;
-  }
-
   showDogList(BuildContext context) {
     showDialog(
       context: context,
